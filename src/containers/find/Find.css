@@ -1,0 +1,8 @@
+.link{
+    display: flex;
+    justify-content: space-between;
+}
+.link-box{
+    border: 1px solid black;
+    width: 110px;
+}
