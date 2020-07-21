@@ -1,16 +1,52 @@
 .app-sign-titlebar{
-}
-.app-sign-title{
-    font-family: Ubuntu-Bold;
-    font-size: 30px;
-    line-height: 1.2;
-    text-align: center;
-    width: 100%;
+    align-items: center;
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 50px;
+
+    .app-sign-logo{
+        width: 100%;
+    }
+
+
+    .app-sign-item{
+        
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        justify-content: center;
+
+        .app-sign-title{
+            font-family: Ubuntu-Bold;
+            font-size: 30px;
+            line-height: 1.2;
+            text-align: center;
+            width: 100%;
+            // display: flex;
+            
+        }
+        .app-sign-back{
+            display: flex;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            // border: 1px solid red;
+        }
+
+        .app-sign-empty{
+            width: 50px;
+            height: 50px;
+        }
+        
     
-    padding-bottom: 51px
+
+    }
+
+
+  
 }
-.app-sign-logo{
-    width: 100%;
-}
+

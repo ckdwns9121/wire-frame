@@ -4,3 +4,7 @@ export { default as SignupComplete } from './sign/SignupComplete';
 export { default as RecoveryId } from './sign/RecoveryId';
 export { default as RecoveryPw } from './sign/RecoveryPw';
 export {default as Recovery} from './sign/Recover';
+
+export {default as Account} from './account/Account';
+export {default as Home} from './main/Home';
+

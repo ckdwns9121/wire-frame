@@ -2,7 +2,10 @@
   margin: 0;
   padding: 0;
 }
-.App {
+button{
+  cursor: pointer;
+}
+/* .App {
   text-align: center;
 }
 
@@ -39,4 +42,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

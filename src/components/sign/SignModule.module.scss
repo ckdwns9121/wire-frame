@@ -1,4 +1,4 @@
-.signInput {
+.sign-input {
     input {
         font-family: Ubuntu-Bold;
         color: #403866;
@@ -13,14 +13,16 @@
         &.normal{
             width: 100%;
         }
+        
         &.auth{
             width: 70%;
         }
     }
 
-    .authBtn{
+    .auth-btn{
         height: 62px;
         width: 25%;
         margin-left: 10px;
+        cursor: pointer;
     }
 }

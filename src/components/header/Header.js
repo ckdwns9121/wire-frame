@@ -1,24 +1,34 @@
 import React from 'react';
-import './header.css';
+import {useHistory} from 'react-router-dom';
+import './Header.scss';
+import logo from 'logo.svg';
 
-const logo ="http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 const Header =()=>{
+    const history = useHistory();
+
+    const goToBrand =()=>{
+        history.push('/');
+    }
+    const onLogin=()=>{
+        history.push('/signin');
+    }
+
     return(
         <div className="app-header">
             <div className ="app-header-nav">
-                <div className="app-header-logo">
+                <div className="app-header-logo" onClick={goToBrand}>
                     <img className ="app-header-logoimg" src={logo}></img>
                 </div>
                 <div className="app-header-menu">
                     <ui>
-                        <li>브랜드홈</li>
+                        <li onClick={goToBrand}>브랜드홈</li>
                         <li>예약주문</li>
                         <li>택배배송</li>
                         <li>이벤트</li>
                         <li>고객센터</li>
                     </ui>
                 </div>
-                <div className="app-header-user">
+                <div className="app-header-user" onClick={onLogin}>
                     <ui>
                         <li>로그인</li>
                     </ui>
@@ -27,5 +37,6 @@ const Header =()=>{
         </div>
     )
 }
+
 
 export default Header;

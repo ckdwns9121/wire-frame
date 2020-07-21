@@ -1,0 +1,49 @@
+.menu-list{
+    max-width: 50%;
+    min-width:700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top :50px;
+    margin-bottom :50px;
+
+.menu-item{
+    width: 180px;
+    border :1px solid black;
+    margin :0 20px 0 20px;
+
+    .img-item{
+        border: 0px solid blue;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        .img{
+            width: 90%;
+            height: auto;
+        }
+    }
+
+    //텍스트 영역
+    .text-area{
+        padding: 0 10px 0 10px;
+
+        .menu-title{
+            font-size: 20px;
+            font-weight: bold;
+            margin: 5px 0 5px 0;
+        }
+        .menu-text{
+            font-size:14px;
+            color :#999999;
+            margin: 5px 0 5px 0;
+        }
+        .menu-price{
+            font-size:16px;
+        }
+    }
+
+}
+}
+

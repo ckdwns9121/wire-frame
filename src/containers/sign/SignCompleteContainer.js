@@ -1,8 +1,8 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-import TitleBar from '../../components/titlebar/TitleBar';
-import SignComplete from '../../components/complete/SignComplete';
-import Button from '../../components/button/Button';
+import TitleBar from 'components/titlebar/TitleBar';
+import SignComplete from 'components/complete/SignComplete';
+import Button from 'components/button/Button';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 

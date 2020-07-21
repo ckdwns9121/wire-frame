@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback, useReducer} from 'react';
 import {useHistory} from 'react-router-dom';
 import styles from './Sign.module.scss';
-import SignNormalInput from '../../components/sign/SignNormalInput';
-import SignAuthInput from '../../components/sign/SignAuthInput';
-import TitleBar from '../../components/titlebar/TitleBar';
-import Button from '../../components/button/Button';
+import SignNormalInput from 'components/sign/SignNormalInput';
+import TitleBar from 'components/titlebar/TitleBar';
+import Button from 'components/button/Button';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 

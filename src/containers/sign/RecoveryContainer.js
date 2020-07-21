@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import {useHistory} from 'react-router-dom';
-import SignNormalInput from '../../components/sign/SignNormalInput';
-import SignAuthInput from '../../components/sign/SignAuthInput';
-import TitleBar from '../../components/titlebar/TitleBar';
-import Button from '../../components/button/Button';
 import styles from './Sign.module.scss';
-import SignComplete from '../../components/complete/SignComplete';
+
+import {useHistory} from 'react-router-dom';
+import SignNormalInput from 'components/sign/SignNormalInput';
+import SignAuthInput from 'components/sign/SignAuthInput';
+import TitleBar from 'components/titlebar/TitleBar';
+import Button from 'components/button/Button';
+import SignComplete from 'components/complete/SignComplete';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
 const RecoveryContainer = () => {
 
     const history = useHistory();
+    
     const onClickIdLink=()=>{
         history.push('/recovery_id');
     }

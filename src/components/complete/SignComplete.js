@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './SignComplete.module.scss';
-import TitleBar from '../titlebar/TitleBar';
-import Button from '../button/Button';
+import TitleBar from 'components/titlebar/TitleBar';
+import Button from 'components/button/Button';
 
 
 
@@ -13,7 +13,7 @@ const SignComplete =({mainTitle,subTitle,text})=>{
 
 function CompleteBox({mainTitle,subTitle,text}) {
     return (
-        <div className={styles.itemBox} >
+        <div className={styles['item-box']} >
             <MainTitle mainTitle={mainTitle}></MainTitle>
             <SubTitle subTitle={subTitle}></SubTitle>
             <Text text={text}></Text>
@@ -23,21 +23,21 @@ function CompleteBox({mainTitle,subTitle,text}) {
 
 function MainTitle({mainTitle}) {
     return (
-        <div className={styles.mainTitle}>
+        <div className={styles['main-title']}>
             {mainTitle}
         </div>
     )
 }
 function SubTitle({subTitle}) {
     return (
-        <div className={styles.subTitle}>
+        <div className={styles['sub-title']}>
             {subTitle}
         </div>
     )
 }
 function Text ({text}){
     return(
-        <div className={styles.text}>
+        <div className={styles['text']}>
             {text}
         </div>
     )
