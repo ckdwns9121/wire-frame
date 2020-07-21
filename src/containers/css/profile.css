@@ -44,7 +44,6 @@
     position: relative;
     width: 100%;
     border: 1px solid transparent;
-    border-radius: 3px;
     margin-bottom: 16px;
 
 }
@@ -53,12 +52,11 @@
     color: #403866;
     line-height: 1.2;
     font-size: 18px;
-    /* display: block; */
     width: 100%;
     background: #fff;
     height: 62px;
-    /* padding: 0 20px 0 20px; */
     outline: none;
+    box-sizing: border-box;
 }
 .app-profile-input .auth{
     width: 70%;

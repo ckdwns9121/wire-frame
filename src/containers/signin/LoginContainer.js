@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './LoginContainer.css';
+import '../css/profile.css';
 
 
 
@@ -23,6 +23,9 @@ const LoginContainer = () => {
         <div className="app-profile">
             <div className ="app-profile-content">        
                 <form className="app-profile-form">
+                <span className="app-profile-logo">
+                    LOGIN
+                </span>
                 <span className="app-profile-logo">
                     LOGIN
                 </span>
