@@ -48,7 +48,7 @@ const SignInContainer = () => {
         history.push("/signup");
     })
     const onLogin=useCallback(()=>{
-        history.push("/home");
+        history.push("/");
     })
     const goToRecovery=useCallback(()=>{
         history.push("/recovery");

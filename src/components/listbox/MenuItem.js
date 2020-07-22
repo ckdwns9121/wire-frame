@@ -3,14 +3,14 @@ import styles from './Menu.module.scss';
 
 const img ="http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg";
 
-const MenuItem =({menuTitle,menuText,src})=>{
+const MenuItem =({menuTitle,menuText,menuPrice,src})=>{
     return(
         <div className={styles['menu-item']}>
-            <MenuImg/>
+            <MenuImg src={src}/>
             <div className={styles['text-area']}>
-            <MenuTitle menuTitle={"김치"}/>
-            <MenuText menuText={"김치마싯어"}/>
-            <MenuPrice menuPrice={"5000"}/>
+            <MenuTitle menuTitle={menuTitle}/>
+            <MenuText menuText={menuText}/>
+            <MenuPrice menuPrice={menuPrice}/>
             </div>
         </div>
     )
@@ -20,7 +20,7 @@ const MenuItem =({menuTitle,menuText,src})=>{
 function MenuImg({src}){
     return(
         <div className={styles['img-item']}>
-        <img className={styles.img}src={img}></img>
+        <img className={styles.img}src={src}></img>
         </div>
     )
 }

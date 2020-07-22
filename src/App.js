@@ -2,12 +2,10 @@ import React from 'react';
 import {Signin,SignUp,SignupComplete,Recovery,RecoveryId,RecoveryPw} from 'pages';
 import {Home,Account} from 'pages';
 import {Route,Switch} from 'react-router-dom';
-import Header from 'components/header/Header';
 
 function App() {
   return (
     <div className="App">
-  
       <Route exact={true}path="/" component={Home}></Route>
       <Route path="/signin" component={Signin}></Route>
       <Route path="/signup" component={SignUp}></Route>

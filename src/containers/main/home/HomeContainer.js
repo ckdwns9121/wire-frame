@@ -1,8 +1,11 @@
 import React from 'react';
 import styles from './HomeContainer.module.scss';
 import Header from 'components/header/Header';
-import MenuList from 'components/listbox/MenuItemList';
+import MenuItemList from 'components/listbox/MenuItemList';
+import TempleteItmeList from 'components/listbox/TempleteItemList';
 import OrderButton from 'components/button/OrderButton';
+import SlickSlider from 'components/SlickSlider';
+import MenuListView from 'components/listbox/MenuListView';
 
 
 const HomeContainer = () => {
@@ -11,13 +14,13 @@ const HomeContainer = () => {
         <>
             <Header />
             <div className={styles['carousel']}>
-
+            <SlickSlider/>
             </div>
             <Banner 
             title={"건강 단체 도시락/베이커리 아주나무"} 
             subtitle={"건강한 단체 도시락/베이커리로 모두 fresh하게! "}
             />
-            <MenuList />
+            <MenuListView/>
             <Banner 
             title={"퀵 배달과 택배 배송 모두가능!"} 
             subtitle={"익일 배달서비스와 베이커리 택배 배송 서비스를 골라서 활용해보세요. "}
@@ -40,7 +43,7 @@ const HomeContainer = () => {
             title={"도시락 무료 문구서비스 제공"} 
             subtitle={"원하는 템플릿을 골라 정성과 마음을 전하세요. "}
             />
-            <MenuList />
+            <TempleteItmeList />
 
             
 

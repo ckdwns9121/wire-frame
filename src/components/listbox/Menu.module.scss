@@ -1,17 +1,9 @@
-.menu-list{
-    max-width: 50%;
-    min-width:700px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top :50px;
-    margin-bottom :50px;
 
 .menu-item{
     width: 180px;
     border :1px solid black;
-    margin :0 20px 0 20px;
+    margin :0 10px 0 10px;
+    cursor: pointer;
 
     .img-item{
         border: 0px solid blue;
@@ -20,8 +12,8 @@
         justify-content: center;
     
         .img{
-            width: 90%;
-            height: auto;
+            width: 100%;
+            height: 150px;
         }
     }
 
@@ -45,5 +37,5 @@
     }
 
 }
-}
+
 

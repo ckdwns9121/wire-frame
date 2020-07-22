@@ -1,0 +1,25 @@
+.templete-list{
+    max-width: 50%;
+    min-width:700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top :50px;
+    margin-bottom :50px;
+.templete-item{
+    width: 180px;
+    border: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .templete-img{
+        border-radius: 100%;
+        border :1px solid black;
+        img{
+        border-radius: 100%;
+            
+        }
+    }
+}
+}
