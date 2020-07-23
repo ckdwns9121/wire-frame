@@ -72,7 +72,6 @@ const initMenu = [
 
 class MeunListView extends React.Component {
 
-	
 	render() {
 
 		const menuList = initMenu.map(menu => (

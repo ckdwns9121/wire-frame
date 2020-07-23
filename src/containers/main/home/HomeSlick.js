@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 
 
-class SlickSlider extends React.Component {
+class HomeSlick extends React.Component {
 	render() {
 		const settings = {
 		  dots: true,
@@ -53,4 +53,4 @@ class SlickSlider extends React.Component {
 		color: #000;
 	}
 	`
-export default SlickSlider;
+export default HomeSlick;

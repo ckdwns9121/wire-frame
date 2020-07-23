@@ -49,10 +49,10 @@ const AccountContainer = () => {
                         <td>변경할 휴대폰 번호</td>
                     </tr>
                     <tr>
-                        <td><SignAuthInput buttonTitle={"인증번호전송"} /></td>
+                        <td className={styles['item']}><SignAuthInput buttonTitle={"인증번호전송"} /></td>
                     </tr>
                     <tr>
-                        <td><SignAuthInput buttonTitle={"인증하기"} /></td>
+                        <td className={styles['item']}><SignAuthInput buttonTitle={"인증하기"} /></td>
                     </tr>
                     <tr>
                         <td><button>취소</button> <button>확인</button></td>

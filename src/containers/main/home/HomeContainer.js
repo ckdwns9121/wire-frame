@@ -4,7 +4,7 @@ import Header from 'components/header/Header';
 import MenuItemList from 'components/listbox/MenuItemList';
 import TempleteItmeList from 'components/listbox/TempleteItemList';
 import OrderButton from 'components/button/OrderButton';
-import SlickSlider from 'components/SlickSlider';
+import HomeSlick from './HomeSlick';
 import MenuListView from 'components/listbox/MenuListView';
 
 
@@ -14,7 +14,7 @@ const HomeContainer = () => {
         <>
             <Header />
             <div className={styles['carousel']}>
-            <SlickSlider/>
+            <HomeSlick/>
             </div>
             <Banner 
             title={"건강 단체 도시락/베이커리 아주나무"} 

@@ -2,20 +2,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 40%;
+    max-width: 65%;
     margin: 0 auto;
     padding: 20px;
     table{
         border-spacing: 0;
         border:none;
-        width: 88%;
+        width: 100%;
         margin: 20px 0 50px 0;
         min-width: 500px;
     }
     tr{
         border:none;
         .item{
-            padding-right:80px;
+            padding-right:50%;
         }
     }
     td{
@@ -36,8 +36,4 @@
     display: grid;
     grid-template-columns: 300px 300px ;
     grid-template-rows: 50px 50px 50px;
-}
-.item{
-    padding-right: 0px;
-    border: 1px solid red;
 }

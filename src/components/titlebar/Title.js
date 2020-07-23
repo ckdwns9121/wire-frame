@@ -1,6 +1,6 @@
 import React from 'react';
 import './Title.scss';
-const Title = ({ mainTitle,subTitle,location }) => {
+const Title = ({ mainTitle,subTitle,addr }) => {
     return (
         <div className="app-title">
             <div className="app-title-main">
@@ -9,7 +9,7 @@ const Title = ({ mainTitle,subTitle,location }) => {
                         {mainTitle}
                 </div>
                     <div className="app-title-location">
-                     {location}
+                     {addr ? addr :"배달지를 설정해주세요"} 
                 </div>
                 </div>
             </div>
