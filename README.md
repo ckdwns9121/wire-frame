@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## 아주나무 배달앱 와이어 프레임 제작
 
 1. 필요한 패키지 정리
@@ -7,4 +8,7 @@
     - $yarn add react-slick
     - $yarn add node-sass
 
+2. 추후 생각해야할 패키지
 
+    - 미들웨어 saga thunk
+    

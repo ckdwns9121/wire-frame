@@ -9,7 +9,7 @@ const AccountContainer = () => {
     return (
         <>
             <Header/>
-            <Title mainTitle={"내 정보 관리"} subTitle={"내 정보 관리"} location={"동아대"} />
+            <Title mainTitle={"내 정보 관리!"} subTitle={"내 정보 관리"} location={"동아대"} />
             <div className={styles['main']}>
 
                 <table border="1">
