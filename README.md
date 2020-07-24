@@ -8,6 +8,3 @@
     - $yarn add node-sass
 
 
-2. 디렉토리 구조
-
-    
