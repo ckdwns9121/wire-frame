@@ -9,7 +9,7 @@ const AccountContainer = () => {
     return (
         <>
             <Header/>
-            <Title mainTitle={"내 정보 관리!"} subTitle={"내 정보 관리"} location={"동아대"} />
+            <Title mainTitle={"내 정보 관리"} subTitle={"내 정보 관리"} location={"동아대"} />
             <div className={styles['main']}>
 
                 <table border="1">
@@ -46,7 +46,7 @@ const AccountContainer = () => {
                         <td>010-1234-1234<button>변경하기</button></td>
                     </tr>
                     <tr>
-                        <td>변경할 휴대폰 번호</td>
+                        <td>휴대폰 번호</td>
                     </tr>
                     <tr>
                         <td className={styles['item']}><SignAuthInput buttonTitle={"인증번호전송"} /></td>
