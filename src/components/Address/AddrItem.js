@@ -3,6 +3,9 @@ import styles from './Addr.module.scss';
 
 const AddrItem =({jibunAddr,roadAddr,onClick})=>{
 
+    /*
+    주소를 검색했을 시 보여줄 컴포넌트.
+    */
     const handleClick =()=>{
         console.log("gd");
         var data = jibunAddr;
@@ -17,6 +20,11 @@ const AddrItem =({jibunAddr,roadAddr,onClick})=>{
     )
 }
 const JibunAddrBox =({jibunAddr}) =>{
+
+    /*
+    주소 컴포넌트 내에 지번을 보여줄 컴포넌트
+    */
+   
     return(
         <div className ={styles['jibun-box']}>
             {jibunAddr}

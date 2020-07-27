@@ -34,7 +34,7 @@ const HomeContainer = () => {
                 <div className={styles['order-btn']} onClick={goToReverve}>
                     <OrderButton title={"예약주문"} />
                 </div>
-                <div className={styles['order-btn']}>
+                <div className={styles['order-btn']} onClick={goToReverve}>
                     <OrderButton title={"배달주문"} />
                 </div>
             </div>

@@ -1,18 +1,15 @@
 
 
 .addr{
-    max-width: 66%;
+    max-width: 1374px;
     margin: 0 auto;
-    
     .addr-input{
         display: flex;
         justify-content: center;
         flex-direction: row;
-
         .input-box{
                 width: 100%;
         }
-
     }
     .addr-list{
         display: flex;
@@ -20,7 +17,6 @@
         margin: 20px 0 20px 0;
     }
 }  
-
 
 .modal-input-box{
     display: flex;
@@ -33,11 +29,9 @@
 }
 
 
-
 .addrs-box{
     display: flex;
     flex-direction: column;
-
 
     .addrs-list{
         width: auto;

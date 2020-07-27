@@ -1,6 +1,7 @@
 .menu-list{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 .menu-item{
     width: 180px;

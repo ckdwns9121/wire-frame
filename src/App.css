@@ -5,6 +5,10 @@
 button{
   cursor: pointer;
 }
+input{
+  box-sizing: border-box;
+  outline: none;
+}
 /* .App {
   text-align: center;
 }
