@@ -3,6 +3,8 @@ import styles from './Menu.module.scss';
 
 const img ="http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg";
 
+
+//추천 메뉴 아이템 컴포넌트
 const MenuItem =({menuTitle,menuText,menuPrice,src})=>{
     return(
         <div className={styles['menu-item']}>

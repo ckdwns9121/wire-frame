@@ -1,7 +1,7 @@
 import React from 'react';
-import RecoveryPwContainer from '../../containers/sign/RecoveryPwContainer';
+import RecoveryPwContainer from 'containers/sign/RecoveryPwContainer';
 
-const RecoveryPw =()=>{
+function RecoveryPw (){
     return(
         <RecoveryPwContainer/>
     )

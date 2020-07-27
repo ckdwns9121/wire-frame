@@ -1,6 +1,6 @@
 import React from 'react';
 import AccountContainer from 'containers/account/AccountContainer';
-const Account =()=>{
+function Account(){
     return(
         <AccountContainer/>
     )

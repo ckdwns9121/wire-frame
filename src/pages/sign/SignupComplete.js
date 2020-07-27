@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
-import SignCompleteContainer from '../../containers/sign/SignCompleteContainer';
+import SignCompleteContainer from 'containers/sign/SignCompleteContainer';
 
 const SignupComplete =({match})=>{
     console.log(match.params.name);

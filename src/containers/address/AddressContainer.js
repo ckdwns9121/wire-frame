@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
+import {BsSearch} from 'react-icons/bs';
 import styles from './Address.module.scss';
 import Header from 'components/header/Header';
-import AddrItem from 'components/Address/AddrItem';
-import AddrItemList from 'components/Address/AddrItemList';
-import LatestAddrItemList from 'components/Address/LatestAddrItemList';
+import AddrItemList from 'components/address/AddrItemList';
+import LatestAddrItemList from 'components/address/LatestAddrItemList';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -60,6 +60,7 @@ const AddressContainer = () => {
   const handleClickOpen = () => {
     if (userAddr == "") {
       alert("검색어를 입력해주세요.");
+      return;
     }
     else {
       setOpen(true);
@@ -88,6 +89,7 @@ const AddressContainer = () => {
         draft.push(item);
       })
     )
+    setDetailAddr("");
   };
 
   const onClickAddrItem = (data) => {
@@ -152,8 +154,8 @@ const AddressContainer = () => {
           </div>
           <DialogContent>
             <div className={styles['modal-input-box']}>
-              <input className={styles['modal-input']} type="text" value={userAddr} placeholder="주소를 입력" onChange={onChangeAddr} onKeyPress={handleKeyPress}></input>
-              <div className={styles['search-btn']} color="primary" onClick={onSearch} variant="outlined">검색</div>
+              <input className={styles['modal-input']} type="text" value={userAddr} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" onChange={onChangeAddr} onKeyPress={handleKeyPress}></input>
+              <div className={styles['search-btn']} onClick={onSearch} ><BsSearch/></div>
             </div>
           </DialogContent>
           <DialogContent>

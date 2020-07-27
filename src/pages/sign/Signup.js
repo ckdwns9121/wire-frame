@@ -1,7 +1,7 @@
 import React from 'react';
-import SignUpContainer from '../../containers/sign/SignUpContainer';
+import SignUpContainer from 'containers/sign/SignUpContainer';
 
-const SignUp =()=>{
+function SignUp (){
     return(
         <SignUpContainer/>
     )

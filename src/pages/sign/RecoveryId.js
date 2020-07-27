@@ -1,6 +1,6 @@
 import React from 'react';
-import RecoveryIdContainer from '../../containers/sign/RecoveryIdContainer';
-const RecoveryId =()=>{
+import RecoveryIdContainer from 'containers/sign/RecoveryIdContainer';
+function RecoveryId(){
     return(
         <RecoveryIdContainer/>
     )
