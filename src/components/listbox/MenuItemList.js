@@ -70,13 +70,13 @@ const initMenu = [
 
 const MenuItemList = () => {
     const menuList = initMenu.map(menu => (
-        <MenuItem menuTitle={menu.titlte} menuText={menu.text} menuPrice={menu.price} src ={menu.img}/>
+        <MenuItem menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src ={menu.img}/>
     )
     )
     return (
-        <>
+        <div className={styles['menu-list']}>
             {menuList}
-        </>
+        </div>
 
     )
 }

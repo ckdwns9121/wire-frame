@@ -9,4 +9,4 @@ export {default as Account} from './account/Account';
 export {default as Home} from './main/Home';
 export {default as Address} from './address/Address';
 
-export {default as Reserve} from './reserve/Reserve'; //함수형
+export {default as Reserve} from './reserve/Reserve'; 

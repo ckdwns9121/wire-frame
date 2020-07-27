@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
 import Header from 'components/header/Header';
 import MenuItemList from 'components/listbox/MenuItemList';
@@ -10,6 +11,10 @@ import MenuListView from 'components/listbox/MenuListView';
 
 const HomeContainer = () => {
 
+    const history = useHistory();
+    const goToReverve =()=>{
+        history.push("/reserve");
+    }
     return (
         <>
             <Header />
@@ -26,7 +31,7 @@ const HomeContainer = () => {
             subtitle={"익일 배달서비스와 베이커리 택배 배송 서비스를 골라서 활용해보세요. "}
             />
             <div className={styles['order']}>
-                <div className={styles['order-btn']}>
+                <div className={styles['order-btn']} onClick={goToReverve}>
                     <OrderButton title={"예약주문"} />
                 </div>
                 <div className={styles['order-btn']}>
@@ -44,9 +49,6 @@ const HomeContainer = () => {
             subtitle={"원하는 템플릿을 골라 정성과 마음을 전하세요. "}
             />
             <TempleteItmeList />
-
-            
-
         </>
     )
 }
