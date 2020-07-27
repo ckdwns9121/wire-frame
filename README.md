@@ -8,6 +8,7 @@
     - $yarn add react-slick
     - $yarn add node-sass
     - $yarn add @material-ui/core
+    - $yarn add immer
     
 2. 추후 생각해야할 패키지
 
