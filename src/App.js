@@ -14,7 +14,7 @@ function App() {
       <Route path="/recovery_id" component={RecoveryId}></Route>
       <Route path="/recovery_pw" component={RecoveryPw}></Route>
       <Route path="/account" component={Account}></Route>
-      <Route path ="/address" component={Address} ></Route>
+      <Route path="/address" component={Address} ></Route>
     </div>
   );
 }
