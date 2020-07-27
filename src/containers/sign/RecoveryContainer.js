@@ -20,6 +20,7 @@ const RecoveryContainer = () => {
     const onClickPwLink=()=>{
         history.push('/recovery_pw');
     }
+    
     return (
         <div className="sign-main">
             <div className="sign-content">

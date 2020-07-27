@@ -13,14 +13,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const ReserveContainer = () => {
 
-
-    const [price, setPrice] = React.useState(0);
+    
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
     const [open, setOpen] = React.useState(false);
-    const [result ,setResult] =React.useState(false);
 
-    const [selectValue, setSelectValue] = React.useState("reserve");
+    const [price, setPrice] = React.useState(0); //맞춤 가격
+    const [selectValue, setSelectValue] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
+    const [result ,setResult] =React.useState(false); // 예약주문 요청시 결과값.
+
 
     const onClickCustomOrder = () => {
         setOpen(true);
@@ -54,8 +55,6 @@ const ReserveContainer = () => {
                     <MenuItemList />
                 </Tabs>
             </div>
-
-
 
             <div className={styles['modal']}>
                 <Dialog

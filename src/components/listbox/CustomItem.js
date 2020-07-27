@@ -35,8 +35,9 @@ const initMenu = [
 ]
 
 
-
+//추천 메뉴 아이템
 const CoustomItem = ({datas}) => {
+
     return (
         <div className={styles['custom-item']}>
             <CustomImgList datas={datas}/>
@@ -50,6 +51,7 @@ const CoustomItem = ({datas}) => {
     )
 }
 
+//추천 메뉴에서 이미지를 렌더할 컴포넌트
 function CustomImg({ src }) {
     return (
         <div className={styles['custom-img']}>
@@ -57,6 +59,8 @@ function CustomImg({ src }) {
         </div>
     )
 }
+
+//추천 메뉴리스트에서 이미지를 렌더할 컴포넌트
 function CustomImgList({ datas }) {
     const list = datas.map(item => (
         <CustomImg src={logo} />
@@ -67,6 +71,8 @@ function CustomImgList({ datas }) {
         </div>
     )
 }
+
+//추천 메뉴리스트에서 메뉴, 가격 등 텍스트를 렌더할 컴포넌트
 function CustomTitleList({datas}){
     const list = datas.map((item,index) => (
         <CustomTitle 
@@ -83,6 +89,7 @@ function CustomTitleList({datas}){
     )
 }
 
+//추천 메뉴에서 메뉴, 가격 등 텍스트를 렌더할 컴포넌트
 function CustomTitle({ title,count,price }) {
     return (
         <div className={styles['custom-title']}>
@@ -91,7 +98,7 @@ function CustomTitle({ title,count,price }) {
     )
 }
 
-
+//추천 메뉴에서 수량을 렌더할 컴포넌트
 function CustomCount({ count }) {
     return (
         <div className={styles['custom-count']}>
@@ -99,6 +106,8 @@ function CustomCount({ count }) {
         </div>
     )
 }
+
+//추천 메뉴에서 가격을 렌더할 컴포넌트
 function CustomPrice({ price }) {
     return (
         <div className={styles['custom-price']}>

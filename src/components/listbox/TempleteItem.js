@@ -12,6 +12,7 @@ const TempleteItem = ({ src }) => {
     )
 
 }
+//문구 템플릿 이미지 컴포넌트
 function TempleteImg({ src }) {
     return (
         <div className={styles['templete-img']}>

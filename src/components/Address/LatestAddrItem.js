@@ -3,13 +3,21 @@ import styles from './Addr.module.scss';
 
 const LatestAddrItem = ({ jibunAddr, roadAddr, onClick }) => {
 
+    /* 
+        최근 배달 주소를 보여줄 컴포넌트
+    */
+
+
+    //배달 받을 주소로 설정
     const handleClick = () => {
         console.log("gd");
         var data = jibunAddr;
-        //  onClick(data);
     }
+
+    //최근 배달 주소 삭제
     const handleRemove = () => {
-        //나중에 id 넣어야함
+
+        // 최근 배달 주소 삭제시 id값 넣어줘야 함.
         console.log("삭제");
     }
 

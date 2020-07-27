@@ -4,7 +4,7 @@ import styles from './Menu.module.scss';
 const img ="http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg";
 
 
-//추천 메뉴 아이템 컴포넌트
+//홈 메뉴 아이템 컴포넌트
 const MenuItem =({menuTitle,menuText,menuPrice,src})=>{
     return(
         <div className={styles['menu-item']}>
@@ -19,6 +19,7 @@ const MenuItem =({menuTitle,menuText,menuPrice,src})=>{
 
 }
 
+//홈 메뉴 이미지 컴포넌트
 function MenuImg({src}){
     return(
         <div className={styles['img-item']}>
@@ -26,6 +27,7 @@ function MenuImg({src}){
         </div>
     )
 }
+//홈 메뉴 제목 컴포넌트
 function MenuTitle ({menuTitle}){
     return(
         <div className={styles['menu-title']}>
@@ -33,6 +35,8 @@ function MenuTitle ({menuTitle}){
         </div>
     )
 }
+
+//홈 메뉴 텍스트 컴포넌트
 function MenuText ({menuText}){
     return(
         <div className={styles['menu-text']}>
@@ -40,6 +44,8 @@ function MenuText ({menuText}){
         </div>
     )
 }
+
+//홈 메뉴 가격 컴포넌트
 function MenuPrice ({menuPrice}){
     return(
         <div className={styles['menu-price']}>

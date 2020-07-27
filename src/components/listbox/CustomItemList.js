@@ -65,7 +65,10 @@ const initMenu = [
 ]
 
 
-const CustomItemList = () => {
+//추천 메뉴 리스트를 렌더할 컴포넌트 추후 props로 list를 받아와야함  -> ReserveContainer에서 작업
+
+const CustomItemList = ({init}) => {
+
     const itemList = initMenu.map(data => (
         <CustomItem datas={data} />
     )

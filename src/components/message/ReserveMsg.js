@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './Message.module.scss';
 
+
+//맞춤 주문시 보여줄 컴포넌트
 const ReserveMsg =({onClick})=>{
 
     return(

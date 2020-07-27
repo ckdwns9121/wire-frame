@@ -4,7 +4,7 @@ import './TitleBar.scss';
 import {IoIosArrowRoundBack} from 'react-icons/io';
 import logo from 'logo.svg';
 
-
+// 메인 로고 이미지
 
 const TitleBar = ({ title, src, alt }) => {
     return (

@@ -24,7 +24,7 @@ const JibunAddrBox =({jibunAddr}) =>{
     /*
     주소 컴포넌트 내에 지번을 보여줄 컴포넌트
     */
-   
+
     return(
         <div className ={styles['jibun-box']}>
             {jibunAddr}
@@ -32,6 +32,11 @@ const JibunAddrBox =({jibunAddr}) =>{
     )
 }
 const RoadAddrBox =({roadAddr}) =>{
+
+    /*
+    주소 컴포넌트 내에 도로명을 보여줄 컴포넌트
+    */
+   
     return(
         <div className ={styles['roadAddr-box']}>
            <AddrBtn/> {roadAddr}
@@ -39,6 +44,10 @@ const RoadAddrBox =({roadAddr}) =>{
     )
 }
 const AddrBtn =()=>{
+
+    /*
+    주소 컴포넌트 내에 도로명박스 컴포넌트
+    */
     return(
         <div className={styles['btn']}>
             도로명
