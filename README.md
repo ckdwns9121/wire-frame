@@ -7,7 +7,8 @@
     - $yarn add redux react-redux
     - $yarn add react-slick
     - $yarn add node-sass
-
+    - $yarn add @material-ui/core
+    
 2. 추후 생각해야할 패키지
 
     - 미들웨어 saga thunk
