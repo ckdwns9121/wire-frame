@@ -7,4 +7,4 @@ export {default as Recovery} from './sign/Recover';
 
 export {default as Account} from './account/Account';
 export {default as Home} from './main/Home';
-
+export {default as Address} from './address/Address';

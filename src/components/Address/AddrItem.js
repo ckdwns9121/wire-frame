@@ -1,10 +1,16 @@
 import React from 'react';
 import styles from './Addr.module.scss';
 
-const AddrItem =({jibunAddr,roadAddr})=>{
+const AddrItem =({jibunAddr,roadAddr,onClick})=>{
+
+    const handleClick =()=>{
+        console.log("gd");
+        var data = jibunAddr;
+        onClick(data);
+    }
 
     return(
-        <div className={styles['address-item']}>
+        <div className={styles['address-item']} onClick={handleClick}>
                 <JibunAddrBox jibunAddr={jibunAddr}></JibunAddrBox>
                 <RoadAddrBox roadAddr={roadAddr}></RoadAddrBox>
         </div>

@@ -1,7 +1,6 @@
 .addr-list{
     overflow:scroll;
     overflow-x: hidden;
-    width: 500px;
     height: 500px;
     border: 1px solid black;
 
@@ -21,7 +20,8 @@
 .address-item{
         width: 100%;
         height: auto;
-        border: 1px solid red;
+        border-bottom: 1px solid gray;
+        padding: 7px;
         display: flex;
         flex-direction: column;
         cursor: pointer;
@@ -36,7 +36,7 @@
             flex-direction: row;
 
             .btn{
-                width: 30px;
+                width: auto;
                 height: 10px;
                 border: 1px solid black;
                 font-size: 10px;
