@@ -1,9 +1,14 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import ReserveContainer from 'containers/reserve/ReserveContainer';
 
-function Reserve(){
+function Reserve({match}){
+    console.log(match.params);
+    const tab = match.params.tab;
     return(
-        <ReserveContainer/>
+        <>
+        <ReserveContainer tab={tab} />
+        </>
+
     )
 }
 export default Reserve;

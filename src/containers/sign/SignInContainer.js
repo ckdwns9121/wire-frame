@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer} from 'react';
+import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
 import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
@@ -45,13 +46,13 @@ const SignInContainer = () => {
         console.log(user);
     })
     const goToSignup =useCallback(()=>{
-        history.push("/signup");
+        history.push(Paths.ajoonamu.signup);
     })
     const onLogin=useCallback(()=>{
-        history.push("/");
+        history.push(Paths.index);
     })
     const goToRecovery=useCallback(()=>{
-        history.push("/recovery");
+        history.push(Paths.ajoonamu.recovery);
     })
 
     return (

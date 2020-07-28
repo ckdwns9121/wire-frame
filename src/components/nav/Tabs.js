@@ -7,6 +7,27 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 
+const tabType = [
+  {
+    id:1,
+    type: "추천메뉴",
+  },
+  {
+    id:2,
+    type:"분류1",
+  },
+  {
+    id:3,
+    type:"분류2",
+  },
+  {
+    id:4,
+    type:"분류3",
+  },
+];
+
+
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -46,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleTabs({children}) {
+export default function SimpleTabs({ children }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -54,16 +75,14 @@ export default function SimpleTabs({children}) {
     setValue(newValue);
   };
 
+
   return (
     <div className={classes.root}>
       <Paper square>
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example"
-         indicatorColor="primary">
-          <Tab label="추천메뉴" {...a11yProps(0)} />
-          <Tab label="분류 1" {...a11yProps(1)} />
-          <Tab label="분류 2" {...a11yProps(2)} />
-          <Tab label="분류 3" {...a11yProps(3)} />
-          <Tab label="분류 4" {...a11yProps(4)} />
+        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" indicatorColor="primary">
+          {tabType.map(tab => (
+            <Tab label={tab.type} {...a11yProps(tab.id)} key= {tab.id}/>
+          ))}
         </Tabs>
       </Paper>
       <TabPanel value={value} index={0}>
@@ -73,7 +92,7 @@ export default function SimpleTabs({children}) {
         {children[1]}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        {children[2]}
       </TabPanel>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Sign.module.scss';
+import {Paths} from 'paths';
 
 import {useHistory} from 'react-router-dom';
 import SignNormalInput from 'components/sign/SignNormalInput';
@@ -15,10 +16,10 @@ const RecoveryContainer = () => {
     const history = useHistory();
     
     const onClickIdLink=()=>{
-        history.push('/recovery_id');
+        history.push(Paths.ajoonamu.recovery_id);
     }
     const onClickPwLink=()=>{
-        history.push('/recovery_pw');
+        history.push(Paths.ajoonamu.recovery_pw);
     }
     
     return (

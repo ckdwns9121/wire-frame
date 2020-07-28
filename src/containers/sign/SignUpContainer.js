@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import {useHistory} from 'react-router-dom';
+import {Paths} from 'paths'
 import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
@@ -114,7 +115,7 @@ const SignUpContainer = () => {
         }
     }
     const onSignup =()=>{
-        history.push(`/complete/${user.name}`);
+        history.push(`${Paths.ajoonamu.complete}/${user.name}` );
     }
 
 

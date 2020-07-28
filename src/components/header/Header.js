@@ -1,4 +1,5 @@
 import React from 'react';
+import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
 import './Header.scss';
 import logo from 'logo.svg';
@@ -7,10 +8,10 @@ const Header =()=>{
     const history = useHistory();
 
     const goToBrand =()=>{
-        history.push('/');
+        history.push(Paths.index);
     }
     const onLogin=()=>{
-        history.push('/signin');
+        history.push(Paths.ajoonamu.signin);
     }
 
     return(

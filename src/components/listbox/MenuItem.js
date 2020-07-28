@@ -1,12 +1,28 @@
 import React from 'react';
+import Paths from 'paths';
+import {NavLink} from 'react-router-dom';
+import styled from 'styled-components';
 import styles from './Menu.module.scss';
 
 const img ="http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg";
 
+const MenuDetailLink = styled(NavLink)`
+    text-decoration:none;
+    color:black;
+`;
+
 
 //홈 메뉴 아이템 컴포넌트
-const MenuItem =({menuTitle,menuText,menuPrice,src})=>{
+const MenuItem =({itemid,menuTitle,menuText,menuPrice,src})=>{
+    const data={
+        menuTitle :menuTitle,
+        menuText : menuText,
+        menuPrice : menuPrice,
+        src : src
+    }
     return(
+        // item_id 로 경로 줘야함
+        <MenuDetailLink to ={`/reserve/menu/detail/${menuTitle}`}>
         <div className={styles['menu-item']}>
             <MenuImg src={src}/>
             <div className={styles['text-area']}>
@@ -15,6 +31,7 @@ const MenuItem =({menuTitle,menuText,menuPrice,src})=>{
             <MenuPrice menuPrice={menuPrice}/>
             </div>
         </div>
+        </MenuDetailLink>
     )
 
 }

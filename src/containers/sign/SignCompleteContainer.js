@@ -1,4 +1,5 @@
 import React from 'react';
+import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
 import TitleBar from 'components/titlebar/TitleBar';
 import SignComplete from 'components/complete/SignComplete';
@@ -11,7 +12,7 @@ const SignCompleteContainer = ({name}) => {
     const history =useHistory();
 
     const goToLogin =()=>{
-        history.push('/signin');
+        history.push(Paths.ajoonamu.signin);
     }
     return (    
         <div className="sign-main">

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
 import Header from 'components/header/Header';
@@ -13,7 +14,7 @@ const HomeContainer = () => {
 
     const history = useHistory();
     const goToReverve =()=>{
-        history.push("/reserve");
+        history.push(Paths.ajoonamu.reserve);
     }
     return (
         <>
