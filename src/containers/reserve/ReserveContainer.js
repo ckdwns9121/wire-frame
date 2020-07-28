@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styles from './Reserve.module.scss';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
-import TabMenu from 'components/nav/TabMenu';
+import TabMenu from 'components/tab/TabMenu';
 import MenuItemList from 'components/listbox/MenuItemList';
 import Message from 'components/message/Message'
 import CustomItemList from 'components/listbox/CustomItemList';
