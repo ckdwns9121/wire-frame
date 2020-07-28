@@ -7,9 +7,10 @@ import logo from 'logo.svg';
 const Header =()=>{
     const history = useHistory();
 
-    const goToBrand =()=>{
+    const goToHome =()=>{
         history.push(Paths.index);
     }
+
     const onLogin=()=>{
         history.push(Paths.ajoonamu.signin);
     }
@@ -17,12 +18,12 @@ const Header =()=>{
     return(
         <div className="app-header">
             <div className ="app-header-nav">
-                <div className="app-header-logo" onClick={goToBrand}>
+                <div className="app-header-logo" onClick={goToHome}>
                     <img className ="app-header-logoimg" src={logo}></img>
                 </div>
                 <div className="app-header-menu">
                     <ui>
-                        <li onClick={goToBrand}>브랜드홈</li>
+                        <li onClick={goToHome}>브랜드홈</li>
                         <li>예약주문</li>
                         <li>택배배송</li>
                         <li>이벤트</li>

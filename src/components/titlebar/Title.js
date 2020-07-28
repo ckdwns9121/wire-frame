@@ -3,6 +3,8 @@ import './Title.scss';
 
 
 // 헤더 밑 서브 헤더 컴포넌트
+// 헤더 폴더로 이동시켜야할지 말지 고민중
+
 const Title = ({ mainTitle,subTitle,addr }) => {
 
     /* 

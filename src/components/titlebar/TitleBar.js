@@ -1,4 +1,5 @@
 import React from 'react';
+import {Paths} from 'paths';
 import { useHistory } from 'react-router-dom';
 import './TitleBar.scss';
 import {IoIosArrowRoundBack} from 'react-icons/io';
@@ -30,8 +31,12 @@ function Title({ title }) {
     )
 }
 function Logo({ src, alt }) {
+    const history = useHistory();
+    const goToHome =()=>{
+        history.push(Paths.index);
+    }
     return (
-        <img className="app-sign-logo" src={logo} alt={alt}></img>
+        <img className="app-sign-logo" src={logo} alt={alt} onClick={goToHome}></img>
     )
 }
 function BackButton(onClick) {
