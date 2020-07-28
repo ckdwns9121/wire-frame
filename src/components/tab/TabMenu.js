@@ -1,4 +1,5 @@
 import React ,{useState} from 'react';
+import {Paths} from 'paths';
 import {NavLink} from 'react-router-dom';
 import styles from './TabMenu.module.scss';
 
@@ -11,10 +12,11 @@ const TabMenu =({menu}) =>{
 
     return(
         <div className={styles['tab-menu']}>
-           <NavLink exact to="/reserve/custom" activeStyle={activeStyle}>  <TabItem title={"추천메뉴"}/> </NavLink>
-           <NavLink exact to="/reserve/menu1" activeStyle={activeStyle}> <TabItem title={"분류1"}/> </NavLink>
-           <NavLink to="/reserve/menu2" activeStyle={activeStyle}> <TabItem title={"분류2"}/> </NavLink>
-           <NavLink to ="/reserve/menu3" activeStyle={activeStyle}> <TabItem title={"분류3"}/> </NavLink>
+           <NavLink exact to={`${Paths.ajoonamu.reserve}/custom?`} activeStyle={activeStyle}>  <TabItem title={"추천메뉴"}/> </NavLink>
+           <NavLink exact to={`${Paths.ajoonamu.reserve}/menu1`} activeStyle={activeStyle}>  <TabItem title={"분류1"}/> </NavLink>
+           <NavLink exact to={`${Paths.ajoonamu.reserve}/menu2`} activeStyle={activeStyle}>  <TabItem title={"분류 2"}/> </NavLink>
+           <NavLink exact to={`${Paths.ajoonamu.reserve}/menu3`} activeStyle={activeStyle}>  <TabItem title={"분류3"}/> </NavLink>
+
         </div>
     )
 }

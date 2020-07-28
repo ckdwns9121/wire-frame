@@ -16,13 +16,13 @@ function App() {
       <Route path={Paths.ajoonamu.recovery} component={Recovery}></Route>
       <Route path={Paths.ajoonamu.recovery_id}  component={RecoveryId}></Route>
       <Route path={Paths.ajoonamu.recovery_pw} component={RecoveryPw}></Route>
-      <Route path="/account" component={Account}></Route>
-      <Route path="/address" component={Address} ></Route>
+      <Route path={Paths.ajoonamu.account}component={Account}></Route>
+      <Route path={Paths.ajoonamu.address} component={Address} ></Route>
       <Switch>
         {/* ? 붙이면 없어도 되는 밸류*/}
         {/* 디테일 메뉴는 어떤 값을 넣어줄지 생각해야함*/}
       {/* <Route path="/reserve/:tab/:value/:data" exact component={Detail}></Route>  */}
-      <Route path={`${Paths.ajoonamu.reserve}/:tab/:value/:data`} exact component={Detail}></Route>
+      <Route path={`${Paths.ajoonamu.reserve}/:tab/:value/:data?`} exact component={Detail}></Route>
       <Route path={`${Paths.ajoonamu.reserve}/:tab?`} component={Reserve}></Route>
       </Switch>
     </div>
