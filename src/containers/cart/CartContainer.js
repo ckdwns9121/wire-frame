@@ -4,9 +4,13 @@ import styles from './Cart.module.scss';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import CartItem from 'components/cart/CartItem';
+import { useHistory } from 'react-router';
 
 const CartContainer = () => {
+    const history = useHistory();
 
+    const goToOrder=()=> history.push(Paths.ajoonamu.order);
+    
     return (
         <>
             <Header />
@@ -21,6 +25,8 @@ const CartContainer = () => {
                     </div>
                 </div>
                 <div className={styles['cart-list']}>
+                    <CartItem />
+                    <CartItem />
                     <CartItem />
                 </div>
                 <div className={styles['finally']}>
@@ -47,12 +53,17 @@ const CartContainer = () => {
                         <div className={styles['estm']}>
                             <div className={styles['title']}>
                                 견적서 발송 여부
-                        </div>
+                           </div>
                             <div className={styles['check']}>
                                 <input type="checkbox"></input> 견적서 받음
                                 <input type="checkbox"></input> 견적서 안받음
                             </div>
                         </div>
+                        <div className={styles['btn']}>
+                            <div className={styles['btn-name']} onClick={goToOrder}>
+                            주문하기
+                            </div>
+                        </div>  
                     </div>
 
                 </div>

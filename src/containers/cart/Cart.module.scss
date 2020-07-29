@@ -23,8 +23,10 @@
         flex-direction: column;
         border: 1px solid black;
         font-size:20px;
+
         .pd-box{
             padding: 50px;
+
         .finally-price{
             display: flex;
             justify-content: space-between;
@@ -37,7 +39,29 @@
             color :#999999;
             margin: 20px 0;
         }
-    }
+        .estm{
+            .title{
+                margin-bottom: 20px;
+            }
+        }
+        .btn{
+            border: 0px solid black;
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+            .btn-name{
+                text-align: center;
+                width: 250px;
+                height:auto;
+                border: 1px solid black;
+                cursor: pointer;
+                &:hover{
+                    background-color: rgb(233, 233, 233);
+                }
+            }
+        }
+     }
+
 
 
     }
