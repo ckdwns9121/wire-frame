@@ -13,9 +13,10 @@ const initialUserState = {
     name:'',
     email: '',
     password: '',
-    compare: '',
+    password_confirm: '',
     phoneNumber: '',
     authNumber: '',
+    agree_marketing:0
 
 }
 
@@ -39,7 +40,7 @@ const userReducer = (state, action) => {
         case 'UPDATE_USER_COMPARE':
             return {
                 ...state,
-                compare: action.compare
+                password_confirm: action.password_confirm
             }
         case 'UPDATE_USER_PHONENUMBER':
             return {
@@ -82,7 +83,7 @@ const SignUpContainer = () => {
     })
     const updateCompare = useCallback((e) => {
         console.log(e.target.value);
-         dispatchUser({ type: 'UPDATE_USER_COMPARE', compare: e.target.value });
+         dispatchUser({ type: 'UPDATE_USER_COMPARE', password_confirm: e.target.value });
         console.log(user);
         setCheck(user.password===e.target.value);
     })
@@ -98,7 +99,7 @@ const SignUpContainer = () => {
     })
 
     const matchPassword =()=>{
-        if(check) return user.password=== user.compare;
+        if(check) return user.password=== user.password_confirm;
         else return false;
     }
 
@@ -121,7 +122,7 @@ const SignUpContainer = () => {
 
     useEffect(()=>{
 
-    },[user.password,user.compare])
+    },[user.password,user.password_confirm])
 
     return (
         <div className="sign-main">
@@ -133,7 +134,7 @@ const SignUpContainer = () => {
                 <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail}buttonTitle={"중복검사"} />
                 <label>비밀번호</label>
                 <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword}/>
-                <SignNormalInput inputType={"password"} initValue={user.compare} onChange={updateCompare}/>
+                <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateCompare}/>
                 <div className={(check)? styles.compare :styles.compare_fail}>
                     {renderCompaere()}
                 </div>

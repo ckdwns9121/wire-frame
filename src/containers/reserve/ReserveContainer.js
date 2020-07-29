@@ -5,6 +5,7 @@ import Title from 'components/titlebar/Title';
 import TabMenu from 'components/tab/TabMenu';
 import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message'
+import Counter from 'components/counter/Counter';
 import CustomItemList from 'components/item/CustomItemList';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -13,13 +14,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const ReserveContainer = ({ tab='custom'}) => {
 
-
+    //모달창 상태
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
     const [open, setOpen] = React.useState(false);
 
-    const [price, setPrice] = React.useState(0); //맞춤 가격
-    const [selectValue, setSelectValue] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
+
+    
+    const [budget, setBudget] = React.useState(0); //맞춤 가격
+    const [desireQuan , setDesireQuan] = React.useState(0); //희망수량
+    const [itemType, setItemType] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
     const [result, setResult] = React.useState(false); // 예약주문 요청시 결과값.
 
  
@@ -30,7 +34,7 @@ const ReserveContainer = ({ tab='custom'}) => {
 
     //주문 종류 선택
     const onChangeSelect = (e) => {
-        setSelectValue(e.target.value);
+        setItemType(e.target.value);
     }
 
     //전체 예산 입력
@@ -39,7 +43,7 @@ const ReserveContainer = ({ tab='custom'}) => {
         const re = /^[0-9\b]+$/;
         // if value is not blank, then test the regex
         if (e.target.value == '' || re.test(e.target.value)) {
-            setPrice(e.target.value)
+            setBudget(e.target.value)
         }
     }
 
@@ -51,7 +55,7 @@ const ReserveContainer = ({ tab='custom'}) => {
     // 모달창 설정 버튼 클릭 => 맞춤 주문 설정.
     const onCustomOrder = () => {
         setOpen(false);
-        if (price != 0) setResult(true);
+        if (budget != 0) setResult(true);
     }
     return (
         <>
@@ -95,7 +99,7 @@ const ReserveContainer = ({ tab='custom'}) => {
                     <DialogContent>
                         <div className={styles['modal-input-box']}>
                             <form>
-                                <select value={selectValue} onChange={onChangeSelect}>
+                                <select value={itemType} onChange={onChangeSelect}>
                                     <option value="reserve">예약주문</option>
                                     <option value="delivery">배달주문</option>
                                 </select>
@@ -105,18 +109,14 @@ const ReserveContainer = ({ tab='custom'}) => {
                     <DialogTitle id="form-dialog-title">전체 예산</DialogTitle>
                     <DialogContent>
                         <div className={styles['modal-input-box']}>
-                            <input value={price} onChange={onChangePrice} ></input>
+                            <input value={budget} onChange={onChangePrice} ></input>
                         </div>
                     </DialogContent>
                     <div className={styles['box']}>
                         <div className={styles['title']}>
                             희망 수량
                         </div>
-                        <div className={styles['counter']}>
-                            <button>-</button>
-                            <button>0</button>
-                            <button>+</button>
-                        </div>
+                        <Counter value={desireQuan}/>
                     </div>
                     <div className={styles['box']}>
                         <div className={styles['btn']} onClick={onCustomOrder}>

@@ -14,7 +14,7 @@ const HomeContainer = () => {
 
     const history = useHistory();
     const goToReverve =()=>{
-        history.push(Paths.ajoonamu.reserve);
+        history.push(`${Paths.ajoonamu.reserve}/custom`);
     }
     return (
         <>

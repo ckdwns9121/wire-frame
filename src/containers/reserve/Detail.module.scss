@@ -1,0 +1,50 @@
+.detail-view{
+    max-width: 1374px;
+    max-height: 700px;
+    height: 500px;
+    font-size: 24px;
+    margin: 0 auto;
+    display: flex;
+    .item-box{
+        border: 1px solid red;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .item-info{
+        border: 0px solid red;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        .item-text{
+            display: flex;
+            align-items: center;
+        
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .item-additional-list{
+            height: 200px;
+            font-size: 14px;
+        }
+        .item-desire-quan{
+            
+            display: flex;
+            justify-content: space-between;
+            margin :20px 0;
+        }
+        .item-price{
+            display: flex;
+            justify-content: space-between;
+            margin :20px 0;
+        }
+        .item-btn{
+            border: 1px solid black;
+            cursor: pointer;
+            text-align: center;
+            padding: 10px;
+            margin: 20px;
+        }
+    }
+}

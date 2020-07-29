@@ -10,5 +10,6 @@ export const Paths ={
         reserve : "/ajoonamu/reserve",
         account :"/ajoonamu/account",
         address :"/ajoonamu/address",
+        cart :"/ajoonamu/cart",
     }
 }
