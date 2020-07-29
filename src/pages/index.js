@@ -10,4 +10,4 @@ export {default as Home} from './main/Home';
 export {default as Address} from './address/Address';
 
 export {default as Reserve} from './reserve/Reserve';
-export {default as Detail} from './reserve/Detail'; 
+export {default as DetailMenu} from './reserve/DetailMenu'; 

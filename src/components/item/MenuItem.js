@@ -9,6 +9,10 @@ const img = "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumba
 const MenuDetailLink = styled(NavLink)`
     text-decoration:none;
     color:black;
+    margin-top :10px;
+    & + & {
+        margin-left: 10px
+    }
 `;
 
 

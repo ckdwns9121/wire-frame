@@ -4,9 +4,8 @@
     flex-wrap: wrap;
 }
 .menu-item{
-    width: 180px;
+    width: 100%;
     border :1px solid black;
-    margin :10px;
     cursor: pointer;
 
     .img-item{
@@ -17,6 +16,8 @@
     
         .img{
             width: 100%;
+            min-width: 200px;
+            max-width :200px;
             height: 150px;
         }
     }
