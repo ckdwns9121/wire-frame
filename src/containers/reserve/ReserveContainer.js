@@ -3,9 +3,9 @@ import styles from './Reserve.module.scss';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import TabMenu from 'components/tab/TabMenu';
-import MenuItemList from 'components/listbox/MenuItemList';
+import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message'
-import CustomItemList from 'components/listbox/CustomItemList';
+import CustomItemList from 'components/item/CustomItemList';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';

@@ -4,7 +4,7 @@ import {BsSearch} from 'react-icons/bs';
 import styles from './Address.module.scss';
 import Header from 'components/header/Header';
 import AddrItemList from 'components/address/AddrItemList';
-import LatestAddrItemList from 'components/address/LatestAddrItemList';
+import DeliveryItemList from 'components/address/DeliveryItemList';
 
 
 import Dialog from '@material-ui/core/Dialog';
@@ -136,7 +136,7 @@ const AddressContainer = () => {
         </div>
         <div className={styles['addr-list']}>
           <h3>최근 배달 주소</h3>
-          <LatestAddrItemList addrs={latestAddrs} />
+          <DeliveryItemList addrs={latestAddrs} />
         </div>
       </div>
       <div className={styles['modal']}>

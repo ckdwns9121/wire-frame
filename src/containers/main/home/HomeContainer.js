@@ -3,11 +3,11 @@ import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
 import Header from 'components/header/Header';
-import MenuItemList from 'components/listbox/MenuItemList';
-import TempleteItmeList from 'components/listbox/TempleteItemList';
+import MenuItemList from 'components/item/MenuItemList';
+import TempleteItmeList from 'components/item/TempleteItemList';
 import OrderButton from 'components/button/OrderButton';
 import HomeSlick from './HomeSlick';
-import MenuListView from 'components/listbox/MenuListView';
+import MenuListView from 'components/item/MenuListView';
 
 
 const HomeContainer = () => {

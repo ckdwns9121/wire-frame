@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Addr.module.scss';
 
-const LatestAddrItem = ({ jibunAddr, roadAddr, onClick }) => {
+const DeliveryrItem = ({ jibunAddr, roadAddr, onClick }) => {
 
     /* 
         최근 배달 주소를 보여줄 컴포넌트
@@ -57,4 +57,4 @@ const AddrBtn = () => {
     )
 }
 
-export default LatestAddrItem;
+export default DeliveryrItem;

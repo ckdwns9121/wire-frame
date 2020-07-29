@@ -1,15 +1,15 @@
 import React from 'react';
 import styles from './Addr.module.scss';
-import LatestAddrItem from './LatestAddrItem';
+import DeliveryrItem from './DeliveryrItem';
 
-const LatesAddrItemList =({addrs,onClick})=>{
+const DeliveryItemList =({addrs,onClick})=>{
 
     /*
         최근주소 컴포넌트를 렌더할 리스트
     */ 
     
     const list = addrs.map(addr =>(
-        <LatestAddrItem jibunAddr ={addr.jibunAddr} roadAddr={addr.roadAddr} onClick={onClick}/>
+        <DeliveryrItem jibunAddr ={addr.jibunAddr} roadAddr={addr.roadAddr} onClick={onClick}/>
     ))
     return(
         <div className={styles['addr-list']}>
@@ -19,4 +19,4 @@ const LatesAddrItemList =({addrs,onClick})=>{
 }
 
 
-export default LatesAddrItemList;
+export default DeliveryItemList;
