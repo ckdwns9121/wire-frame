@@ -21,8 +21,7 @@
         height: 50px;
         border: 0px solid red;
         color:white;
-        font-size:20px;
-        font-weight: bold;
+        font-size:22px;
         .app-title-maintitle{
             display: flex;
             align-items: center;
@@ -34,6 +33,7 @@
             align-items: center;
             width: 100%;
             height: auto;
+            cursor: pointer;
         }
 
     }

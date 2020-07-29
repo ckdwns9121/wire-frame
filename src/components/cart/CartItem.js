@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './Cart.module.scss';
 import Counter from 'components/counter/Counter';
+import logo from 'logo.svg';
+
 
 // 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
 
@@ -33,7 +35,7 @@ const CartItem = ({ menuName, menuOptions, menuCount, menuPrice, menuImg, check 
                     </div>
                 </div>
                 <div className={styles['item-img']}>
-                     <img></img>
+                     <img src={logo}></img>
                 </div>
             </div>
         </div>

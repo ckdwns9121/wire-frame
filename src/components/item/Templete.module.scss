@@ -1,5 +1,5 @@
 .templete-list{
-    max-width: 50%;
+    max-width: 1374px;
     min-width:700px;
     margin: 0 auto;
     display: flex;
@@ -9,16 +9,18 @@
     margin-bottom :50px;
 .templete-item{
     width: 180px;
-    border: 1px solid red;
+    height: 180px;
+    border: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
     .templete-img{
-        border-radius: 100%;
         border :1px solid black;
+        border-radius: 100px;
         img{
-        border-radius: 100%;
-            
+        width: 150px;
+        height: 150px;
+        border-radius: 100px;
         }
     }
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './Templete.module.scss';
+import logo from 'logo.svg';
 
-const img = "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg";
+const img = "https://garitonkids.com/wp-content/uploads/2020/03/1981_3.png";
 
 //문구 템플릿 컴포넌트
 const TempleteItem = ({ src }) => {

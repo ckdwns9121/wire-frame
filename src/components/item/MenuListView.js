@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
 import MenuItem from "./MenuItem";
-import MenuItemList from './MenuItemList';
 
+import logo from 'logo.svg';
 
 const initMenu = [
     {
@@ -83,7 +83,7 @@ class MeunListView extends React.Component {
 	render() {
 
 		const menuList = initMenu.map(menu => (
-			<MenuItem menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src={menu.img}/>
+			<MenuItem menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src={logo}/>
 		));
 
 		const settings = {
