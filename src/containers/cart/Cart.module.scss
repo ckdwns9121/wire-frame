@@ -14,4 +14,32 @@
     .cart-list{
 
     }
+
+    .finally{
+        margin: 150px 0 150px 0;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        font-size:20px;
+        .pd-box{
+            padding: 50px;
+        .finally-price{
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .order-text{
+            display: flex;
+            justify-content: flex-end;
+            font-size: 14px;
+            color :#999999;
+            margin: 20px 0;
+        }
+    }
+
+
+    }
+
 }
