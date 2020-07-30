@@ -5,6 +5,7 @@ import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import TabMenu from 'components/tab/TabMenu';
 import CouponItemList from 'components/coupon/CouponItemList';
+import UseCouponItemList from 'components/coupon/UseCouponItemList';
 
 const tabInit = [
     {
@@ -19,8 +20,6 @@ const tabInit = [
         url: `${Paths.ajoonamu.coupon}/list_use`,
         name: '쿠폰사용내역'
     },
-
-
 ]
 
 
@@ -32,9 +31,12 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
             <div className={stlyes['coupon-tab']}>
                 <TabMenu tabs={tabInit} />
                 {tab === 'mycoupon' &&
-                    <CouponItemList check= {true} />}
+                    <CouponItemList check= {false} />}
                 {tab === 'download_cp' &&
-                    <CouponItemList/>}
+                    <CouponItemList check={true}/>}
+                {tab === 'list_use' &&
+                    <UseCouponItemList/>
+                }
             </div>
         </>
     )

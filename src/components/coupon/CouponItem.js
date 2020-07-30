@@ -21,7 +21,7 @@ const CouponItem =(props)=>{
 }
 function CouponEventName({event_name}){
     return(
-        <div className={styles['name']}>
+        <div className={styles['event-name']}>
                 {event_name}
         </div>
     )
