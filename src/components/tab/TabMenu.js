@@ -12,8 +12,9 @@ const TabLink = styled(NavLink)`
 
 `;
 
-const TabMenu =({menu}) =>{
+const TabMenu =({tabs}) =>{
 
+    console.log(tabs);
     const activeStyle = {
         height :'100%',
         textDecoration:'none',
@@ -21,22 +22,22 @@ const TabMenu =({menu}) =>{
         borderBottom:'3px solid #000'
     };
 
+    const tabList = tabs.map(tab =>(
+        <TabLink key = {tab.url} exact to={tab.url} activeStyle={activeStyle}>  <TabItem name={tab.name}/> </TabLink>
+    ))
+    ;
     return(
         <div className={styles['tab-menu']}>
-           <TabLink exact to={`${Paths.ajoonamu.reserve}/custom?`} activeStyle={activeStyle}>  <TabItem title={"추천메뉴"}/> </TabLink>
-           <TabLink exact to={`${Paths.ajoonamu.reserve}/menu1`} activeStyle={activeStyle}>  <TabItem title={"분류1"}/> </TabLink>
-           <TabLink exact to={`${Paths.ajoonamu.reserve}/menu2`} activeStyle={activeStyle}>  <TabItem title={"분류 2"}/> </TabLink>
-           <TabLink exact to={`${Paths.ajoonamu.reserve}/menu3`} activeStyle={activeStyle}>  <TabItem title={"분류3"}/> </TabLink>
+            {tabList}
         </div>
     )
 }
 
-const TabItem= ({title}) =>{
-
+const TabItem= ({name}) =>{
 
     return(
         <div className={styles['tab-item']} >
-            {title}
+            {name}
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import {Paths} from 'paths';
 import styles from './Reserve.module.scss';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
@@ -11,6 +12,26 @@ import CustomItemList from 'components/item/CustomItemList';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+const tabInit = [
+    {
+        url: `${Paths.ajoonamu.reserve}/custom?`,
+        name: '추천메뉴'
+    },
+    {
+        url: `${Paths.ajoonamu.reserve}/menu1`,
+        name: '메뉴1'
+    },
+    {
+        url: `${Paths.ajoonamu.reserve}/menu2`,
+        name: '메뉴2'
+    },
+    {
+        url: `${Paths.ajoonamu.reserve}/menu3`,
+        name: '메뉴3'
+    },
+
+]
 
 const ReserveContainer = ({ tab='custom'}) => {
 
@@ -62,8 +83,8 @@ const ReserveContainer = ({ tab='custom'}) => {
             <Header />
             <Title mainTitle={"예약주문>메뉴"} subTitle={"예약주문 메뉴 리스트"}></Title>
             <div className={styles['reserve-tab']}>
-                <TabMenu/>
-
+                <TabMenu tabs={tabInit}/>
+                {/* 이부분 바꿔야함 */}
                 {tab === 'custom' &&
                         <Message
                         msg={"전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."}

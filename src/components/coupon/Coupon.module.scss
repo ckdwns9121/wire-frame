@@ -1,0 +1,34 @@
+.coupon-list{
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .coupon-item{
+        width: 340px;
+        height: 150px;
+        position: relative;
+        border: 1px solid black;
+        .coupon{
+         border: 1px solid black;
+         width: 100%;
+         height: 130px;
+         .name{
+             font-size: 20px;
+             margin-bottom: 20px;
+         }
+          .data{
+            position: relative;
+          }
+          .down{
+            border: 0px solid red;
+            position: absolute;
+            top:70px;
+            left:280px;
+            cursor: pointer;
+        }
+     }
+    }
+}
+.pd-box{
+    padding: 10px;
+}

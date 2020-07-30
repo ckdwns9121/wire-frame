@@ -2,7 +2,7 @@ import React from 'react';
 import {Paths} from 'paths';
 import {Signin,SignUp,SignupComplete,Recovery,RecoveryId,RecoveryPw} from 'pages';
 import {Home,Account,Address,Reserve,DetailMenu} from 'pages';
-import {Cart,Order} from 'pages';
+import {Cart,Order,Coupon} from 'pages';
 import {Route,Switch} from 'react-router-dom';
 
 function App() {
@@ -27,6 +27,7 @@ function App() {
       <Route path={`${Paths.ajoonamu.reserve}/:tab?`} component={Reserve}></Route>
       <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
       <Route path={Paths.ajoonamu.order} component={Order}></Route>
+      <Route path ={`${Paths.ajoonamu.coupon}/:tab`} component={Coupon}></Route>
       </Switch>
     </div>
   );

@@ -108,6 +108,7 @@ const AddressContainer = () => {
     else {
       const result = await callApi();
       setAddrs(result);
+      console.log(result);
     }
 
   }
