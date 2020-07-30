@@ -28,7 +28,7 @@ const DetailContainer = ({ match }) => {
             <Header />
             <Title mainTitle={"예약주문>메뉴>상세보기"} subTitle={"상세보기"} />
             <div className={styles['detail-view']}>
-                <div className={styles['item-box']}>
+                <div className={styles['menu-view']}>
                     <MenuItem menuTitle={initMenu.title} menuText={initMenu.text} src={initMenu.img} menuPrice={initMenu.price}></MenuItem>
                 </div>
                 <div className={styles['item-info']}>
@@ -38,10 +38,10 @@ const DetailContainer = ({ match }) => {
                     <div className={styles['item-additional-list']}>
                         <AdditionalList/>
                     </div>
-                    <div className={styles['item-desire-quan']}>
+                    <div className={styles['item-space']}>
                         희망수량 <Counter value={10}/>
                     </div>
-                    <div className={styles['item-price']}>
+                    <div className={styles['item-space']}>
                         <div className={styles['text']}>
                             주문금액
                         </div>

@@ -1,16 +1,36 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import CartItem from 'components/cart/CartItem';
-import { useHistory } from 'react-router';
+import CartModal from 'components/asset/CartModal';
+
+
+
 
 const CartContainer = () => {
     const history = useHistory();
 
-    const goToOrder=()=> history.push(Paths.ajoonamu.order);
-    
+    //모달창 상태
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState('sm');
+    const [open, setOpen] = React.useState(false);
+
+
+    // 주문 설정하기 버튼 클릭
+    const onClickOrder = () => {
+        setOpen(true);
+    }
+
+    // 모달창 닫기
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const goToOrder = () => history.push(Paths.ajoonamu.order);
+
     return (
         <>
             <Header />
@@ -60,15 +80,18 @@ const CartContainer = () => {
                             </div>
                         </div>
                         <div className={styles['btn']}>
-                            <div className={styles['btn-name']} onClick={goToOrder}>
-                            주문하기
+                            <div className={styles['btn-name']} onClick={onClickOrder}>
+                                주문하기
                             </div>
-                        </div>  
+                        </div>
                     </div>
-
                 </div>
-
             </div>
+                <CartModal
+                    open={open}
+                    handleClose={handleClose}
+                    order={goToOrder}
+                />
         </>
     )
 }

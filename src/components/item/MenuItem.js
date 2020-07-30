@@ -3,8 +3,8 @@ import { Paths } from 'paths';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from './Menu.module.scss';
+import logo from 'logo.svg';
 
-const img = "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg";
 
 const MenuDetailLink = styled(NavLink)`
     text-decoration:none;
@@ -24,7 +24,7 @@ const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
         <MenuDetailLink to={`${Paths.ajoonamu.reserve}/menu/detail/${menuTitle}`}>
             <div className={styles['menu-item']}>
                 <MenuImg src={src} />
-                <div className={styles['text-area']}>
+                <div className={styles['menu-info']}>
                     <MenuTitle menuTitle={menuTitle} />
                     <MenuText menuText={menuText} />
                     <MenuPrice menuPrice={menuPrice} />
@@ -38,8 +38,8 @@ const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
 //홈 메뉴 이미지 컴포넌트
 function MenuImg({ src }) {
     return (
-        <div className={styles['img-item']}>
-            <img className={styles.img} src={src}></img>
+        <div className={styles['menu-img']}>
+            <img className={styles.img} src={logo}></img>
         </div>
     )
 }

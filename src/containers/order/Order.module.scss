@@ -1,8 +1,9 @@
+@import '../../styels/Root.scss';
 .order{
     margin: 0 auto;
     width: 100%;
-    max-width: 1374px;
-    height: 100vh;
+    max-width: $max-width;
+    min-width: $min-width;
     border: 1px solid black;
     display: flex;
     flex-direction: column;

@@ -5,8 +5,28 @@ import Title from 'components/titlebar/Title';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import DatePicker from 'components/asset/DatePicker';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 const OrderContainer = () => {
+    //모달창 상태
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState('sm');
+    const [open, setOpen] = React.useState(false);
+
+
+    //맞춤 주문 설정하기 버튼 클릭
+    const onClickCustomOrder = () => {
+        setOpen(true);
+    }
+
+    // 모달창 닫기
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
         <>
             <Header />
@@ -85,10 +105,10 @@ const OrderContainer = () => {
                             <div className={styles['memo']}>
                                 <input></input>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
-         </div>
         </>
     )
 }

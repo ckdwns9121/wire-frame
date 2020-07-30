@@ -61,7 +61,7 @@ const initMenu = [
     },
     {
         id: 9,
-        title: "김치9",
+        title: "김치19",
         text: "김치 맛잇어",
         img:"http://cdn2.koreanbapsang.com/wp-content/uploads/2012/05/DSC_1238r-e1454170512295.jpg",
         price: "5000원"
@@ -73,7 +73,7 @@ const initMenu = [
 
 const MenuItemList = () => {
     const menuList = initMenu.map(menu => (
-        <MenuItem key={menu.item_id} menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src ={logo}/>
+        <MenuItem key={menu.item_id} menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src ={menu.img}/>
     )
     )
     return (

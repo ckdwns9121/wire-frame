@@ -9,6 +9,7 @@ import Message from 'components/message/Message'
 import Counter from 'components/counter/Counter';
 import CustomItemList from 'components/item/CustomItemList';
 
+import ReserveModal from 'components/asset/ReserveModal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -40,7 +41,6 @@ const ReserveContainer = ({ tab='custom'}) => {
     const [maxWidth, setMaxWidth] = React.useState('sm');
     const [open, setOpen] = React.useState(false);
 
-
     
     const [budget, setBudget] = React.useState(0); //맞춤 가격
     const [desireQuan , setDesireQuan] = React.useState(0); //희망수량
@@ -54,13 +54,14 @@ const ReserveContainer = ({ tab='custom'}) => {
     }
 
     //주문 종류 선택
-    const onChangeSelect = (e) => {
+    const onChangeType = (e) => {
         setItemType(e.target.value);
     }
 
     //전체 예산 입력
-    const onChangePrice = (e) => {
+    const onChangeBudget = (e) => {
 
+        console.log("들어오ㅓㅁ");
         const re = /^[0-9\b]+$/;
         // if value is not blank, then test the regex
         if (e.target.value == '' || re.test(e.target.value)) {
@@ -106,45 +107,16 @@ const ReserveContainer = ({ tab='custom'}) => {
                     />}
             </div>
             <div className={styles['modal']}>
-                <Dialog
-                    fullWidth={fullWidth}
-                    maxWidth={maxWidth}
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="form-dialog-title"
-                >
-                    <div className={styles['title']}>
-                        <DialogTitle id="form-dialog-title">맞춤 주문 설정</DialogTitle>
-                    </div>
-                    <DialogTitle id="form-dialog-title">주문 종류</DialogTitle>
-                    <DialogContent>
-                        <div className={styles['modal-input-box']}>
-                            <form>
-                                <select value={itemType} onChange={onChangeSelect}>
-                                    <option value="reserve">예약주문</option>
-                                    <option value="delivery">배달주문</option>
-                                </select>
-                            </form>
-                        </div>
-                    </DialogContent>
-                    <DialogTitle id="form-dialog-title">전체 예산</DialogTitle>
-                    <DialogContent>
-                        <div className={styles['modal-input-box']}>
-                            <input value={budget} onChange={onChangePrice} ></input>
-                        </div>
-                    </DialogContent>
-                    <div className={styles['box']}>
-                        <div className={styles['title']}>
-                            희망 수량
-                        </div>
-                        <Counter value={desireQuan}/>
-                    </div>
-                    <div className={styles['box']}>
-                        <div className={styles['btn']} onClick={onCustomOrder}>
-                            설정
-                        </div>
-                    </div>
-                </Dialog>
+                <ReserveModal 
+                open={open}
+                handleClose={handleClose}
+                itemType={itemType}
+                onChangeType={onChangeType}
+                budget={budget}
+                onChangeBudget={onChangeBudget}
+                desireQuan={desireQuan}
+                onCustomOrder={onCustomOrder}
+                />
             </div>
         </>
     )

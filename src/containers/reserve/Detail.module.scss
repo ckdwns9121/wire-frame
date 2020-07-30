@@ -1,13 +1,15 @@
+@import '../../styels//Root.scss';
+
 .detail-view{
-    max-width: 1374px;
-    max-height: 700px;
-    height: 500px;
+    max-width: $max-width;
+    min-width: $min-width;
+    border: 1px solid black;
     font-size: 24px;
     margin: 0 auto;
     display: flex;
-    .item-box{
-        border: 1px solid red;
-        width: 100%;
+    .menu-view{
+        border-right: 1px solid red;
+        width: 85%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -18,33 +20,25 @@
         display: flex;
         flex-direction: column;
         .item-text{
-            display: flex;
-            align-items: center;
-        
-            height: auto;
             margin-bottom: 20px;
         }
         .item-additional-list{
-            height: 200px;
+            height: 150px;
+            max-height: 200px;
             font-size: 14px;
         }
-        .item-desire-quan{
-            
+        .item-space{
             display: flex;
             justify-content: space-between;
             margin :20px 0;
         }
-        .item-price{
-            display: flex;
-            justify-content: space-between;
-            margin :20px 0;
-        }
+   
         .item-btn{
             border: 1px solid black;
             cursor: pointer;
             text-align: center;
             padding: 10px;
-            margin: 20px;
+            margin: 30px 0 ;
 
             &:hover{
                 background-color: rgb(230, 230, 230);

@@ -1,12 +1,10 @@
 .templete-list{
-    max-width: 1374px;
-    min-width:700px;
     margin: 0 auto;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin-top :50px;
-    margin-bottom :50px;
+    margin : 50px 0;
+    
 .templete-item{
     width: 180px;
     height: 180px;
@@ -17,9 +15,10 @@
     .templete-img{
         border :1px solid black;
         border-radius: 100px;
+
         img{
-        width: 150px;
-        height: 150px;
+        width: 100%;
+        height: 100%;
         border-radius: 100px;
         }
     }
