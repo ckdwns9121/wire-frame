@@ -13,4 +13,5 @@ export {default as Reserve} from './reserve/Reserve';
 export {default as DetailMenu} from './reserve/DetailMenu'; 
 export {default as Cart} from './cart/Cart';
 export {default as Order} from './order/Order';
+export {default as OrderList} from './order/OrderList';
 export {default as Coupon} from './coupon/Coupon';

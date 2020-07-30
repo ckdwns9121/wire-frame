@@ -11,7 +11,7 @@
         width: 340px;
         height: 150px;
         position: relative;
-        border: 1px solid black;
+        border: 0px solid black;
         .coupon{
          border: 1px solid black;
          width: 100%;
@@ -52,9 +52,10 @@
         flex-direction: row;
         justify-content: center;
         text-align: center;
-        border-top :1px solid black;
-        border-bottom:  1px solid black;
-        margin: 20px 0;
+        border-top :3px solid gray;
+        padding : 10px 0;
+        border-bottom:  1px solid gray;
+        margin: 10px 0;
         .event-name{
             width: 100%;
         }

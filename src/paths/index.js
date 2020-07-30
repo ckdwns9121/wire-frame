@@ -12,6 +12,7 @@ export const Paths ={
         address :"/ajoonamu/address",
         cart :"/ajoonamu/cart",
         order :"/ajoonamu/order",
+        order_list:"/ajoonamu/order_list",
         coupon :"/ajoonamu/coupon"
     }
 }

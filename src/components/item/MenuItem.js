@@ -15,6 +15,9 @@ const MenuDetailLink = styled(NavLink)`
     }
 `;
 
+const NewButton = styled.button`
+    background :red;
+`;
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
