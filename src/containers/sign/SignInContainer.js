@@ -5,6 +5,7 @@ import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
+import {userSignin} from '../../api/login';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -34,22 +35,27 @@ const userReducer = (state, action) => {
 const SignInContainer = () => {
     const history = useHistory();
     const [user,dispatchUser] = useReducer(userReducer,initialUserState);
+    const [checked , setChecked]  = useState(false);
 
     const updateEmail = useCallback((e) => {
-        console.log(e.target.value);
         dispatchUser({type:'UPDATE_USER_EMAIL', email:e.target.value});
-        console.log(user);
     })
     const updatePassword = useCallback((e) => {
-        console.log(e.target.value);
         dispatchUser({type:'UPDATE_USER_PASSWORD', password:e.target.value});
-        console.log(user);
+    })
+    const updateChecked = useCallback(()=>{
+        setChecked(!checked);
+        console.log(checked);
     })
     const goToSignup =useCallback(()=>{
         history.push(Paths.ajoonamu.signup);
     })
     const onLogin=useCallback(()=>{
         history.push(Paths.index);
+     //   const {email,password} = user;
+       // const result = userSignin(email,password);
+        //console.log(result);
+
     })
     const goToRecovery=useCallback(()=>{
         history.push(Paths.ajoonamu.recovery);
@@ -66,7 +72,7 @@ const SignInContainer = () => {
 
                 <div className={styles.sub}>
                     <div>
-                        <input type="radio" name="remember" />
+                        <input type="checkbox" name="remember" checked={checked} onChange={updateChecked}/>
                         <label className={styles.grayText}>이메일 기억하기</label><br />
                     </div>
                     <div onClick={goToRecovery}>

@@ -6,6 +6,7 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
+import {userSignup} from '../../api/login';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -66,34 +67,25 @@ const SignUpContainer = () => {
     const [check ,setCheck] =useState(false);
 
     const updateName = useCallback((e) => {
-        console.log(e.target.value);
         dispatchUser({ type: 'UPDATE_USER_NAME', name: e.target.value });
-        console.log(user);
     })
 
     const updateEmail = useCallback((e) => {
-        console.log(e.target.value);
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
-        console.log(user);
     })
     const updatePassword = useCallback((e) => {
-        console.log(e.target.value);
         dispatchUser({ type: 'UPDATE_USER_PASSWORD', password: e.target.value });
 
     })
     const updateCompare = useCallback((e) => {
-        console.log(e.target.value);
          dispatchUser({ type: 'UPDATE_USER_COMPARE', password_confirm: e.target.value });
-        console.log(user);
         setCheck(user.password===e.target.value);
     })
     const updatePhoneNumber = useCallback((e) => {
-        console.log(e.target.value);
         dispatchUser({ type: 'UPDATE_USER_PHONENUMBER', phoneNumber: e.target.value });
 
     })
     const updateAuthNumber = useCallback((e) => {
-        console.log(e.target.value);
         dispatchUser({ type: 'UPDATE_USER_AUTHNUMBER', authNumber: e.target.value });
   
     })
@@ -116,7 +108,12 @@ const SignUpContainer = () => {
         }
     }
     const onSignup =()=>{
-        history.push(`${Paths.ajoonamu.complete}/${user.name}` );
+        // history.push(`${Paths.ajoonamu.complete}/${user.name}` );
+        console.log(user.email);
+        const {name,email,password,password_confirm} = user;
+        console.log(email);
+        const result = userSignup(email,password,password_confirm);
+        console.log(result);
     }
 
 

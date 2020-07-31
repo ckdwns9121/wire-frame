@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import styles from './Cart.module.scss';
 import Counter from 'components/counter/Counter';
 import logo from 'logo.svg';
@@ -6,12 +6,28 @@ import logo from 'logo.svg';
 
 // 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
 
-const CartItem = ({ menuName, menuOptions, menuCount, menuPrice, menuImg, check }) => {
+const CartItem = ({ menuName, menuOptions, menuCount, menuPrice, menuImg,  allChecked ,initCheck}) => {
+    const [checked,setChecked] = useState(false);
+
+    const onChangeChecked= ()=>{
+        setChecked(!checked)
+    }  
+    useEffect(()=>{
+        setChecked(allChecked);
+    },[allChecked])
+
+ 
+    const testCheck = ()=>{
+        console.log("단일 선택"+checked);
+        console.log("전체선택"+ allChecked);
+    }
+ 
+    
     return (
-        <div className={styles['cart-item']}>
+        <div className={styles['cart-item']} onClick={testCheck}>
             <div className={styles['bar']}>
                 <div className={styles['check']}>
-                    <input type="checkbox"></input>
+                    <input type="checkbox" checked={checked} onChange={onChangeChecked}></input>
                 </div>
                 <div className={styles['delete']}>
                     &times;

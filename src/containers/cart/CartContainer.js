@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
-import CartItem from 'components/cart/CartItem';
+import CartItemList from 'components/cart/CartItemList';
 import CartModal from 'components/asset/CartModal';
 
 
@@ -17,6 +17,11 @@ const CartContainer = () => {
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
     const [open, setOpen] = React.useState(false);
+    const [allChcked ,setAllChecked] = React.useState(false);
+
+    useEffect(()=>{
+        console.log("리렌더");
+    },[allChcked])
 
 
     // 주문 설정하기 버튼 클릭
@@ -28,6 +33,14 @@ const CartContainer = () => {
     const handleClose = () => {
         setOpen(false);
     };
+    const onChangeCheck = useCallback(()=>{
+        setAllChecked(!allChcked);
+    })
+    const initCheck =useCallback(()=>{
+        setAllChecked(false);
+        console.log("전체선택 초기화");
+        console.log(allChcked);
+    });
 
     const goToOrder = () => history.push(Paths.ajoonamu.order);
 
@@ -38,16 +51,14 @@ const CartContainer = () => {
             <div className={styles['cart-page']}>
                 <div className={styles['bar']}>
                     <div className={styles['all-check']}>
-                        <input type="checkbox"></input><label>전체선택</label>
+                        <input type="checkbox" value={allChcked} onChange={onChangeCheck}></input><label>전체선택</label>
                     </div>
                     <div className={styles['select']}>
                         선택삭제
                     </div>
                 </div>
                 <div className={styles['cart-list']}>
-                    <CartItem />
-                    <CartItem />
-                    <CartItem />
+                    <CartItemList allChecked ={allChcked} initCheck={initCheck}/>
                 </div>
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>

@@ -10,6 +10,7 @@
     - $yarn add @material-ui/core
     - $yarn add immer
     - $yarn add styled-components
+    - $yarn add axios
     
 2. 추후 생각해야할 패키지
 
