@@ -24,7 +24,7 @@ const initMenu = [
 //문구 템플릿 리스트
 const TempleteItemList = () => {
     const templetes = initMenu.map(menu => (
-        <TempleteItem id={menu.id}/>
+        <TempleteItem id={menu.id} key={menu.id}/>
     )
     )
     return (

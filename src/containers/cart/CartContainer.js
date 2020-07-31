@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import {getCartList} from '../../api/test';
 import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
@@ -18,11 +19,22 @@ const CartContainer = () => {
     const [maxWidth, setMaxWidth] = React.useState('sm');
     const [open, setOpen] = React.useState(false);
     const [allChcked ,setAllChecked] = React.useState(false);
+    const [esitChcked ,setEsitChcked] = React.useState(true);
+
+    useEffect(()=>{
+        getList();
+
+    },[])
 
     useEffect(()=>{
         console.log("리렌더");
     },[allChcked])
 
+    const getList = useCallback(async()=>{
+        const result = await getCartList();
+        console.log(JSON.parse(result));
+        
+    })
 
     // 주문 설정하기 버튼 클릭
     const onClickOrder = () => {
@@ -36,11 +48,6 @@ const CartContainer = () => {
     const onChangeCheck = useCallback(()=>{
         setAllChecked(!allChcked);
     })
-    const initCheck =useCallback(()=>{
-        setAllChecked(false);
-        console.log("전체선택 초기화");
-        console.log(allChcked);
-    });
 
     const goToOrder = () => history.push(Paths.ajoonamu.order);
 
@@ -58,7 +65,7 @@ const CartContainer = () => {
                     </div>
                 </div>
                 <div className={styles['cart-list']}>
-                    <CartItemList allChecked ={allChcked} initCheck={initCheck}/>
+                    <CartItemList allChecked ={allChcked}/>
                 </div>
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>
@@ -86,8 +93,8 @@ const CartContainer = () => {
                                 견적서 발송 여부
                            </div>
                             <div className={styles['check']}>
-                                <input type="checkbox"></input> 견적서 받음
-                                <input type="checkbox"></input> 견적서 안받음
+                                <input type="checkbox" checked={esitChcked}></input> 견적서 받음
+                                <input type="checkbox" checked={!esitChcked}></input> 견적서 안받음
                             </div>
                         </div>
                         <div className={styles['btn']}>

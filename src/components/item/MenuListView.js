@@ -89,7 +89,7 @@ const MeunListView = () => {
 
 
     const menuList = initMenu.map(menu => (
-        <MenuItem menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src={menu.img} />
+        <MenuItem key = {menu.id} menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src={menu.img} />
     ));
 
     const settings = {
