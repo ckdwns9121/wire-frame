@@ -11,6 +11,7 @@
     - $yarn add immer
     - $yarn add styled-components
     - $yarn add axios
+    - $yarn add redux-devtools-extension
     
 2. 추후 생각해야할 패키지
 

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React from 'react';
 import PropsTypes from 'prop-types'; 
 import styles from './Cart.module.scss';
 import Counter from 'components/counter/Counter';
@@ -7,27 +7,20 @@ import logo from 'logo.svg';
 
 // 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
 
-const CartItem = ({ menuName, menuOptions, menuCount, menuPrice, menuImg, isChecked,  allChecked }) => {
-    const [checked,setChecked] = useState(isChecked);
+const CartItem = props => {
 
-    const onChangeChecked= ()=>{
-        setChecked(!checked)
-    }  
-    useEffect(()=>{
-        setChecked(allChecked);
-    },[allChecked]);
+    const {id, isChecked,menuName,menuOptions,menuCount,menuPrice} =props;
+    const {handleCheckChild} =props;
 
-    const testCheck = ()=>{
-        console.log("단일 선택"+checked);
-        console.log("전체선택"+ allChecked);
+    const onClick=()=>{
+        console.log(isChecked);
     }
- 
-    
+
     return (
-        <div className={styles['cart-item']} onClick={testCheck}>
+        <div className={styles['cart-item']}  onClick={onClick}>
             <div className={styles['bar']}>
                 <div className={styles['check']}>
-                    <input type="checkbox" checked={checked} onChange={onChangeChecked}></input>
+                    <input type="checkbox" checked={isChecked} id={id}onChange={handleCheckChild}></input>
                 </div>
                 <div className={styles['delete']}>
                     &times;
@@ -58,7 +51,6 @@ const CartItem = ({ menuName, menuOptions, menuCount, menuPrice, menuImg, isChec
 
     )
 }
-
 
 CartItem.PropsTypes ={
     isChecked : PropsTypes.bool,

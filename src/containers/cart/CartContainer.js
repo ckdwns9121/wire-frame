@@ -7,33 +7,57 @@ import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import CartItemList from 'components/cart/CartItemList';
 import CartModal from 'components/asset/CartModal';
+import produce from 'immer';
 
+const initCarts = [
+    {
+        id: 1,
+        menuName: "과일도시락",
+        menuOption: "딸기추가 (1000)원, 토마토추가 (1000)원",
+        menuCount: "5",
+        menuPrice: "23000원",
+        isChecked: false,
+    },
+    {
+        id: 2,
+        menuName: "그냥도시락zz",
+        menuOption: "딸기추가 (500)원, 토마토추가 (1000)원",
+        menuCount: "3",
+        menuPrice: "33000원",
+        isChecked: false,
+    },
+    {
+        id: 3,
+        menuName: "그냥도시락zz",
+        menuOption: "딸기추가 (500)원, 토마토추가 (1000)원",
+        menuCount: "3",
+        menuPrice: "33000원",
+        isChecked: false,
+    },
+
+];
 
 
 
 const CartContainer = () => {
     const history = useHistory();
-
-    //모달창 상태
-    const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState('sm');
     const [open, setOpen] = React.useState(false);
-    const [allChcked ,setAllChecked] = React.useState(false);
+    const [allChecked ,setAllChecked] = React.useState(false);
     const [esitChcked ,setEsitChcked] = React.useState(true);
+    const [carts , setCarts] = React.useState(initCarts);
 
     useEffect(()=>{
         getList();
-
     },[])
 
     useEffect(()=>{
-        console.log("리렌더");
-    },[allChcked])
+        haddleAllChecked();
+    },[carts])
+
 
     const getList = useCallback(async()=>{
         const result = await getCartList();
         console.log(JSON.parse(result));
-        
     })
 
     // 주문 설정하기 버튼 클릭
@@ -45,10 +69,41 @@ const CartContainer = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    const onChangeCheck = useCallback(()=>{
-        setAllChecked(!allChcked);
-    })
 
+    const handleAllChecked = useCallback((e)=>{
+        const newState = carts.map(cart => {
+            return {...cart ,isChecked : e.target.checked};
+        })
+        setCarts(newState)
+    });
+
+    const handleCheckChild =useCallback((e) =>{
+        setCarts(
+            produce(carts,draft =>{
+                const cart = draft.find(t=>t.id ==e.target.id);
+                cart.isChecked = !cart.isChecked;
+            })
+        );
+ 
+    },[carts]);
+
+    //전체 선택인지 아닌지 여부 판단
+    const haddleAllChecked =()=>{
+
+        for (let i = 0 ;i<carts.length;i++){
+            console.log(carts[i]);
+            if(carts[i].isChecked == false){
+                setAllChecked(false);
+                return ;
+            }
+        }
+        setAllChecked(true);
+        return;
+    }
+
+    const test =()=>{
+        console.log(allChecked);
+    }
     const goToOrder = () => history.push(Paths.ajoonamu.order);
 
     return (
@@ -56,16 +111,17 @@ const CartContainer = () => {
             <Header />
             <Title mainTitle={"장바구니"} subTitle={"장바구니"} />
             <div className={styles['cart-page']}>
+                <button onClick={test}>test</button>
                 <div className={styles['bar']}>
                     <div className={styles['all-check']}>
-                        <input type="checkbox" value={allChcked} onChange={onChangeCheck}></input><label>전체선택</label>
+                    <input type="checkbox" checked={allChecked} onClick={handleAllChecked} value="checkedall"></input><label>전체선택</label>
                     </div>
                     <div className={styles['select']}>
                         선택삭제
                     </div>
                 </div>
                 <div className={styles['cart-list']}>
-                    <CartItemList allChecked ={allChcked}/>
+                  <CartItemList allChecked ={allChecked} carts={carts}  handleCheckChild={handleCheckChild}/>
                 </div>
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>

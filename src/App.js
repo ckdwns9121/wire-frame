@@ -4,12 +4,13 @@ import {Signin,SignUp,SignupComplete,Recovery,RecoveryId,RecoveryPw} from 'pages
 import {Home,Account,Address,Reserve,DetailMenu} from 'pages';
 import {Cart,Order,OrderList,Coupon} from 'pages';
 import {Route,Switch} from 'react-router-dom';
+import CounterContainer from './containers/CounterContainer';
 
 function App() {
-  console.log(Paths.ajoonamu.complete);
-  console.log("/complete/:name");
+
   return (
     <div className="App">
+      <CounterContainer></CounterContainer>
       <Route exact={true}path={Paths.index} component={Home}></Route>
       <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
       <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
@@ -22,11 +23,12 @@ function App() {
       <Switch>
       <Route path={`${Paths.ajoonamu.reserve}/:tab/:value/:data?`} exact component={DetailMenu}></Route>
       <Route path={`${Paths.ajoonamu.reserve}/:tab?`} component={Reserve}></Route>
+      </Switch>
       <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
       <Route path={Paths.ajoonamu.order} component={Order}></Route>
       <Route path={`${Paths.ajoonamu.order_list}/:tab`} component={OrderList}></Route>
       <Route path ={`${Paths.ajoonamu.coupon}/:tab`} component={Coupon}></Route>
-      </Switch>
+ 
     </div>
   );
 }

@@ -6,7 +6,7 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-import {userSignup} from '../../api/login';
+import {userSignup} from '../../api/sign';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
