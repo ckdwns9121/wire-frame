@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
-import {getCartList} from '../../api/test';
+import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router';
+import {getCartList} from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import Header from 'components/header/Header';
@@ -9,55 +10,57 @@ import CartItemList from 'components/cart/CartItemList';
 import CartModal from 'components/asset/CartModal';
 import produce from 'immer';
 
-const initCarts = [
-    {
-        id: 1,
-        menuName: "과일도시락",
-        menuOption: "딸기추가 (1000)원, 토마토추가 (1000)원",
-        menuCount: "5",
-        menuPrice: "23000원",
-        isChecked: false,
-    },
-    {
-        id: 2,
-        menuName: "그냥도시락zz",
-        menuOption: "딸기추가 (500)원, 토마토추가 (1000)원",
-        menuCount: "3",
-        menuPrice: "33000원",
-        isChecked: false,
-    },
-    {
-        id: 3,
-        menuName: "그냥도시락zz",
-        menuOption: "딸기추가 (500)원, 토마토추가 (1000)원",
-        menuCount: "3",
-        menuPrice: "33000원",
-        isChecked: false,
-    },
-
-];
-
 
 
 const CartContainer = () => {
     const history = useHistory();
+
     const [open, setOpen] = React.useState(false);
-    const [allChecked ,setAllChecked] = React.useState(false);
-    const [esitChcked ,setEsitChcked] = React.useState(true);
-    const [carts , setCarts] = React.useState(initCarts);
+    const [allChecked ,setAllChecked] = React.useState(false); //전체선택
+    const [esitChcked ,setEsitChcked] = React.useState(true); //견적서 발송
+    const [cartList ,setCartList] = React.useState([]); //장바구니
+    const [total ,setTotal] =React.useState(0);  //총 주문금액
+    const [delivery_cost ,setCost] = React.useState(0); // 배달비
+
+    const {user} = useSelector(state=>state.auth);
 
     useEffect(()=>{
+        console.log("들어옴");
         getList();
     },[])
 
     useEffect(()=>{
         haddleAllChecked();
-    },[carts])
+        totalPrice();
+    },[cartList])
 
-
+    //장바구니 들고와서 check 추가
     const getList = useCallback(async()=>{
-        const result = await getCartList();
-        console.log(JSON.parse(result));
+        const token = sessionStorage.getItem("access_token");
+        const res = await getCartList(token);
+        console.log(res);
+        let len = Object.keys(res).length;
+        let list= new Array();
+        for(let i =0 ; i<len-1;i++){
+            list[i] = res[i];
+            list[i].isChecked = false;
+          } 
+        setCost(res.delivery_cost); 
+        setCartList(list);
+
+    },[cartList]);
+
+    const totalPrice =useCallback(()=>{
+        setTotal(0);
+        let total = 0;
+        console.log("계산하자");
+        for (let i=0 ;i<cartList.length;i++){
+            if(cartList[i].isChecked){
+                console.log(cartList[i].item.item_price);
+                total+= cartList[i].item.item_price
+            }
+        }
+        setTotal(total);
     })
 
     // 주문 설정하기 버튼 클릭
@@ -71,28 +74,28 @@ const CartContainer = () => {
     };
 
     const handleAllChecked = useCallback((e)=>{
-        const newState = carts.map(cart => {
+        const newState = cartList.map(cart => {
             return {...cart ,isChecked : e.target.checked};
         })
-        setCarts(newState)
+        setCartList(newState)
     });
 
     const handleCheckChild =useCallback((e) =>{
-        setCarts(
-            produce(carts,draft =>{
-                const cart = draft.find(t=>t.id ==e.target.id);
-                cart.isChecked = !cart.isChecked;
+        const index = e.target.id;
+        setCartList(
+            produce(cartList,draft =>{
+                draft[index].isChecked= !draft[index].isChecked;
             })
         );
  
-    },[carts]);
+    },[cartList]);
 
     //전체 선택인지 아닌지 여부 판단
     const haddleAllChecked =()=>{
 
-        for (let i = 0 ;i<carts.length;i++){
-            console.log(carts[i]);
-            if(carts[i].isChecked == false){
+        for (let i = 0 ;i<cartList.length;i++){
+            console.log(cartList[i]);
+            if(cartList[i].isChecked == false){
                 setAllChecked(false);
                 return ;
             }
@@ -121,7 +124,7 @@ const CartContainer = () => {
                     </div>
                 </div>
                 <div className={styles['cart-list']}>
-                  <CartItemList allChecked ={allChecked} carts={carts}  handleCheckChild={handleCheckChild}/>
+                  <CartItemList allChecked ={allChecked} carts={cartList}  handleCheckChild={handleCheckChild}/>
                 </div>
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>
@@ -130,7 +133,7 @@ const CartContainer = () => {
                                 총 주문금액
                         </div>
                             <div className={styles['price']}>
-                                30000
+                               {total}원
                         </div>
                         </div>
                         <div className={styles['finally-price']}>
@@ -138,7 +141,7 @@ const CartContainer = () => {
                                 배달비
                         </div>
                             <div className={styles['price']}>
-                                3000
+                               {delivery_cost}원
                         </div>
                         </div>
                         <div className={styles['order-text']}>

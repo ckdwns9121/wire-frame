@@ -6,7 +6,7 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-import {userSignup} from '../../api/sign';
+// import {userSignup} from '../../api/sign';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -109,13 +109,9 @@ const SignUpContainer = () => {
     }
     const onSignup =()=>{
         // history.push(`${Paths.ajoonamu.complete}/${user.name}` );
-        console.log(user.email);
         const {name,email,password,password_confirm} = user;
-        console.log(email);
-        const result = userSignup(email,password,password_confirm);
-        console.log(result);
+        // const result = userSignup(email,password,password_confirm);
     }
-
 
     useEffect(()=>{
 
@@ -157,13 +153,13 @@ function AcceptContainer() {
         <div className={styles.agree}>
             <div className={styles.item}>
                 <div className={styles.sub}>
-                    <input type="radio" checked={allCheck} onClick={onChangeCheck}/>
+                    <input type="checkbox" checked={allCheck} onClick={onChangeCheck}/>
                     <label>모두 동의합니다</label>
                 </div>
             </div>
             <div className={styles.item}>
                 <div className={styles.subtitle}>
-                    <input type="radio" />
+                    <input type="checkbox" />
                     <label>개인정보처리방침 필수 동의</label>
                 </div>
                 <div className={styles.subtitle}>
@@ -172,7 +168,7 @@ function AcceptContainer() {
             </div>
             <div className={styles.item}>
                 <div className={styles.subtitle}>
-                    <input type="radio" />
+                    <input type="checkbox" />
                     <label>이용약관 필수 동의</label>
                 </div>
                 <div className={styles.subtitle}>
@@ -181,7 +177,7 @@ function AcceptContainer() {
             </div>
             <div className={styles.item}>
                 <div className={styles.subtitle}>
-                    <input type="radio" />
+                    <input type="checkbox" />
                     <label>이벤트알림 선택 동의</label>
                 </div>
                 <div className={styles.subtitle}>

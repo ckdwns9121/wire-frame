@@ -1,12 +1,11 @@
 import {combineReducers} from 'redux';
-import counter from './counter';
-import signin,{signin_saga} from './signin';
+import auth,{auth_saga} from './auth/auth';
 import {all} from 'redux-saga/effects';
 
-const rootReducer = combineReducers({counter,signin});
+const rootReducer = combineReducers({auth});
 
 export function* rootSaga(){
-    yield all([signin_saga()]);
+    yield all([auth_saga()]);
 }
 
 export default rootReducer;

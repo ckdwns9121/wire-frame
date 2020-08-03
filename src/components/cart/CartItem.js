@@ -9,11 +9,16 @@ import logo from 'logo.svg';
 
 const CartItem = props => {
 
-    const {id, isChecked,menuName,menuOptions,menuCount,menuPrice} =props;
-    const {handleCheckChild} =props;
+    console.log(props);
+    console.log(props.item);
+    console.log(props.options);
+    const {id,isChecked,handleCheckChild} = props;
+    const {item_img,item_name,item_option_id,item_price,item_quanity} =props.item;
+    const options = props.options;
+    console.log(options);
 
     const onClick=()=>{
-        console.log(isChecked);
+        console.log(options);
     }
 
     return (
@@ -29,17 +34,24 @@ const CartItem = props => {
             <div className={styles['item-box']}>
                 <div className={styles['item-info']}>
                     <div className={styles['name']}>
-                        {menuName}
+                        {item_name}
                     </div>
                     <div className={styles['options']}>
-                        {menuOptions}
+                        추가선택 
+                        {
+                            options.map(
+                                op =>(
+                                   op.option_name
+                                )
+                            )
+                        }
                     </div>
                     <div className={styles['count-price']}>
                         <div className={styles['count']}>
-                            수량 <Counter value={menuCount} />
+                            수량 <Counter value={item_quanity} />
                         </div>
                         <div className={styles['price']}>
-                            {menuPrice}
+                            {item_price}
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import {useSelector} from 'react-redux';
 import {Paths} from 'paths';
 import styles from './Reserve.module.scss';
 import Header from 'components/header/Header';
@@ -13,6 +14,7 @@ import ReserveModal from 'components/asset/ReserveModal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useHistory } from 'react-router';
 
 const tabInit = [
     {
@@ -36,18 +38,18 @@ const tabInit = [
 
 const ReserveContainer = ({ tab='custom'}) => {
 
-    //모달창 상태
-    const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState('sm');
+    const history = useHistory();
     const [open, setOpen] = React.useState(false);
-
-    
+    const {user} = useSelector(state=>state.auth);
     const [budget, setBudget] = React.useState(0); //맞춤 가격
     const [desireQuan , setDesireQuan] = React.useState(0); //희망수량
     const [itemType, setItemType] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
     const [result, setResult] = React.useState(false); // 예약주문 요청시 결과값.
 
  
+    useEffect(()=>{
+   
+    },[])
     //맞춤 주문 설정하기 버튼 클릭
     const onClickCustomOrder = () => {
         setOpen(true);
@@ -61,7 +63,6 @@ const ReserveContainer = ({ tab='custom'}) => {
     //전체 예산 입력
     const onChangeBudget = (e) => {
 
-        console.log("들어오ㅓㅁ");
         const re = /^[0-9\b]+$/;
         // if value is not blank, then test the regex
         if (e.target.value == '' || re.test(e.target.value)) {

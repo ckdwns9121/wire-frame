@@ -8,11 +8,14 @@ import TempleteItmeList from 'components/item/TempleteItemList';
 import OrderButton from 'components/button/OrderButton';
 import HomeSlick from './HomeSlick';
 import MenuListView from 'components/item/MenuListView';
+import { useSelector } from 'react-redux';
 
 
 const HomeContainer = () => {
 
     const history = useHistory();
+    const {user} = useSelector(state=>state.auth);
+
     const goToReverve = () => {
         history.push(`${Paths.ajoonamu.reserve}/custom`);
     }

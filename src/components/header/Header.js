@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {useSelector} from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
 import styles from './Header.module.scss';
 import logo from 'logo.svg';
+import styled from 'styled-components';
+
+const TabLink = styled(NavLink)`
+    text-decoration:none;
+    color:black;
+`;
 
 const Header =()=>{
+    const {user} = useSelector(state=>state.auth);
     const history = useHistory();
+    useEffect(()=>{
+        console.log(user);
+    },[user])
 
     const goToHome =()=> history.push(Paths.index);
-    const onLogin=()=>history.push(Paths.ajoonamu.signin);
     const goToReserve =() =>history.push(`${Paths.ajoonamu.reserve}/custom`);
 
     return(
@@ -26,10 +37,17 @@ const Header =()=>{
                         <li>고객센터</li>
                     </ui>
                 </div>
-                <div className={styles['header-user']} onClick={onLogin}>
-                    <ui>
-                        <li>로그인</li>
-                    </ui>
+                <div className={styles['header-user']}>
+                        {user ? 
+                        <TabLink  exact to={Paths.ajoonamu.account}>
+                        <>{user.name}님 반갑습니다</> 
+                        </TabLink>
+                        : 
+                        <TabLink  exact to={Paths.ajoonamu.signin}>
+                        <>로그인</> 
+                        </TabLink>
+                        }
+                        
                 </div>
             </div>
         </div>

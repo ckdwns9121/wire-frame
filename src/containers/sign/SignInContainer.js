@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback, useReducer} from 'react';
 import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
 import {localLogin} from '../../api/auth/auth';
-import {local_login} from '../../store/signin';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -36,35 +34,11 @@ const userReducer = (state, action) => {
 
 const SignInContainer = () => {
     const history = useHistory();
-    const {loading,error,succeed,auth} = useSelector (state=>state.signin);
-    const dispatch = useDispatch();
-    console.log(succeed);
     const [user,dispatchUser] = useReducer(userReducer,initialUserState);
     const [checked , setChecked]  = useState(false);
     useEffect(()=>{
         console.log("로그인 렌더");
     },[])
-
-    useEffect(()=>{
-        console.log(succeed);
-        console.log("이건 왜 실행");
-    },[dispatch])
-    
-    useEffect(()=>{
-        if(loading){
-            alert("로딩중");
-            return;
-        }
-        if(succeed){
-            alert("로그인 성공");
-            console.log(auth);
-            return;
-        }
-        else if (error){
-            alert("로그인 실패");
-            return;
-        }
-    },[succeed,error,loading,dispatch])
 
     const updateEmail = useCallback((e) => {
         dispatchUser({type:'UPDATE_USER_EMAIL', email:e.target.value});
@@ -79,12 +53,17 @@ const SignInContainer = () => {
     const goToSignup =useCallback(()=>{
         history.push(Paths.ajoonamu.signup);
     })
-    const onLogin=useCallback(()=>{
+    const onLogin = useCallback(async ()=>{
  
       const {email,password} = user;
-    //   const result = localLogin(email,password);
-    //     console.log(result);
-    dispatch(local_login(email,password));
+      const res = await localLogin(email,password);
+        if(res.status ==200){
+            sessionStorage.setItem("access_token" , res.data.access_token);
+            // history.push(Paths.index);
+        }
+        else{
+            alert("이메일 혹은 패스워드를 확인해주세요");
+        }
 
     })
     const goToRecovery=useCallback(()=>{

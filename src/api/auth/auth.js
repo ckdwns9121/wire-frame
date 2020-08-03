@@ -1,31 +1,55 @@
 import axios from 'axios';
 
-const DEFAULT_URL ="http://devapi.ajoonamu.com/api/";
-export const localLogin = async (email,password) => { 
-    const REQ_URL =DEFAULT_URL + "user/login";
+const DEFAULT_URL = "http://devapi.ajoonamu.com/api/";
 
-    const formdata ={
-        email:email,
-        password:password
+export const getUserInfo = async (token) => {
+    console.log("들어옴" + token);
+    const req = DEFAULT_URL + "user/me";
+    // console.log(req);
+    const config = {
+        headers: {
+            // 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
     }
-
-    const result = await axios.post(REQ_URL,formdata);
-    console.log(result);
-    return result.data;
+    const post_type ={
+        'Content-Type': 'application/json',
+    }
+    axios.defaults.baseURL = req;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const res = await axios.post();
+    console.log(res.data);
+    return res.data;
 }
 
-export const localRegister = async (email,password,password_confirm)=>{
+export const localLogin = async (email, password) => {
+    const req = DEFAULT_URL + "user/login";
 
-    const REQ_URL =DEFAULT_URL+ "user/register";
-    const formdata ={
+    const form_data = {
+        email: email,
+        password: password
+    }
+    const res = await axios.post(req, form_data);
+    console.log(res);
+    return res;
+}
 
-        email:email,
-        password:password,
+export const localRegister = async (email, password, password_confirm) => {
+
+    const req = DEFAULT_URL + "user/register";
+    const form_data = {
+
+        email: email,
+        password: password,
         password_confirm: password_confirm,
-        agree_marketing:0,
+        agree_marketing: 0,
 
     }
 
-    const result = await axios.post(REQ_URL,formdata);
-    console.log(result);
+    const res = await axios.post(req, form_data);
+    console.log(res);
+    return res;
 }
+
+

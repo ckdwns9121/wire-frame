@@ -1,16 +1,30 @@
-import React from 'react';
+import React ,{useEffect,useCallback} from 'react';
+import {useDispatch} from 'react-redux';
+import {get_user_info} from './store/auth/auth';
+
 import {Paths} from 'paths';
 import {Signin,SignUp,SignupComplete,Recovery,RecoveryId,RecoveryPw} from 'pages';
 import {Home,Account,Address,Reserve,DetailMenu} from 'pages';
 import {Cart,Order,OrderList,Coupon} from 'pages';
 import {Route,Switch} from 'react-router-dom';
-import CounterContainer from './containers/CounterContainer';
 
 function App() {
 
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+   getInfo();
+  },[])
+
+  const getInfo= useCallback(async()=>{
+    const token = sessionStorage.getItem("access_token");
+    if(token!=null || token!=undefined){
+    dispatch(get_user_info(token));
+    }
+  });
+
   return (
     <div className="App">
-      <CounterContainer></CounterContainer>
       <Route exact={true}path={Paths.index} component={Home}></Route>
       <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
       <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
@@ -28,7 +42,6 @@ function App() {
       <Route path={Paths.ajoonamu.order} component={Order}></Route>
       <Route path={`${Paths.ajoonamu.order_list}/:tab`} component={OrderList}></Route>
       <Route path ={`${Paths.ajoonamu.coupon}/:tab`} component={Coupon}></Route>
- 
     </div>
   );
 }
