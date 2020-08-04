@@ -5,7 +5,9 @@ import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-import {localLogin} from '../../api/auth/auth';
+import {localLogin,getUserInfo} from '../../api/auth/auth';
+import {get_user_info} from '../../store/auth/auth';
+import { useDispatch } from 'react-redux';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -34,10 +36,11 @@ const userReducer = (state, action) => {
 
 const SignInContainer = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
     const [user,dispatchUser] = useReducer(userReducer,initialUserState);
     const [checked , setChecked]  = useState(false);
     useEffect(()=>{
-        console.log("로그인 렌더");
+        
     },[])
 
     const updateEmail = useCallback((e) => {
@@ -54,12 +57,14 @@ const SignInContainer = () => {
         history.push(Paths.ajoonamu.signup);
     })
     const onLogin = useCallback(async ()=>{
- 
+        console.log("Gd");
       const {email,password} = user;
       const res = await localLogin(email,password);
+      console.log(res);
         if(res.status ==200){
             sessionStorage.setItem("access_token" , res.data.access_token);
-            // history.push(Paths.index);
+             dispatch(get_user_info(res.data.access_token));
+            history.push(Paths.index);
         }
         else{
             alert("이메일 혹은 패스워드를 확인해주세요");

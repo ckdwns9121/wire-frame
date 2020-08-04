@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import {getCartList} from '../../api/cart/cart';
+import { getCartList } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import Header from 'components/header/Header';
@@ -9,55 +9,58 @@ import Title from 'components/titlebar/Title';
 import CartItemList from 'components/cart/CartItemList';
 import CartModal from 'components/asset/CartModal';
 import produce from 'immer';
-
+import Progress from 'components/asset/Progress';
 
 
 const CartContainer = () => {
     const history = useHistory();
 
     const [open, setOpen] = React.useState(false);
-    const [allChecked ,setAllChecked] = React.useState(false); //전체선택
-    const [esitChcked ,setEsitChcked] = React.useState(true); //견적서 발송
-    const [cartList ,setCartList] = React.useState([]); //장바구니
-    const [total ,setTotal] =React.useState(0);  //총 주문금액
-    const [delivery_cost ,setCost] = React.useState(0); // 배달비
+    const [allChecked, setAllChecked] = React.useState(false); //전체선택
+    const [esitChcked, setEsitChcked] = React.useState(true); //견적서 발송
+    const [cartList, setCartList] = React.useState([]); //장바구니
+    const [total, setTotal] = React.useState(0);  //총 주문금액
+    const [delivery_cost, setCost] = React.useState(0); // 배달비
+    const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState(false);
 
-    const {user} = useSelector(state=>state.auth);
+    const { user } = useSelector(state => state.auth);
 
-    useEffect(()=>{
-        console.log("들어옴");
+    useEffect(() => {
+        setLoading(true);
         getList();
-    },[])
+    }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         haddleAllChecked();
         totalPrice();
-    },[cartList])
+    }, [cartList])
 
     //장바구니 들고와서 check 추가
-    const getList = useCallback(async()=>{
+    const getList = useCallback(async () => {
         const token = sessionStorage.getItem("access_token");
         const res = await getCartList(token);
         console.log(res);
         let len = Object.keys(res).length;
-        let list= new Array();
-        for(let i =0 ; i<len-1;i++){
+        let list = new Array();
+        for (let i = 0; i < len - 1; i++) {
             list[i] = res[i];
             list[i].isChecked = false;
-          } 
-        setCost(res.delivery_cost); 
+        }
+        setCost(res.delivery_cost);
         setCartList(list);
+        setLoading(false);
 
-    },[cartList]);
+    }, [cartList]);
 
-    const totalPrice =useCallback(()=>{
+    const totalPrice = useCallback(() => {
         setTotal(0);
         let total = 0;
         console.log("계산하자");
-        for (let i=0 ;i<cartList.length;i++){
-            if(cartList[i].isChecked){
+        for (let i = 0; i < cartList.length; i++) {
+            if (cartList[i].isChecked) {
                 console.log(cartList[i].item.item_price);
-                total+= cartList[i].item.item_price
+                total += cartList[i].item.item_price
             }
         }
         setTotal(total);
@@ -73,102 +76,117 @@ const CartContainer = () => {
         setOpen(false);
     };
 
-    const handleAllChecked = useCallback((e)=>{
+    const handleAllChecked = useCallback((e) => {
         const newState = cartList.map(cart => {
-            return {...cart ,isChecked : e.target.checked};
+            return { ...cart, isChecked: e.target.checked };
         })
         setCartList(newState)
     });
 
-    const handleCheckChild =useCallback((e) =>{
+    const handleCheckChild = useCallback((e) => {
         const index = e.target.id;
         setCartList(
-            produce(cartList,draft =>{
-                draft[index].isChecked= !draft[index].isChecked;
+            produce(cartList, draft => {
+                draft[index].isChecked = !draft[index].isChecked;
             })
         );
- 
-    },[cartList]);
+
+    }, [cartList]);
 
     //전체 선택인지 아닌지 여부 판단
-    const haddleAllChecked =()=>{
+    const haddleAllChecked = () => {
 
-        for (let i = 0 ;i<cartList.length;i++){
+        for (let i = 0; i < cartList.length; i++) {
             console.log(cartList[i]);
-            if(cartList[i].isChecked == false){
+            if (cartList[i].isChecked == false) {
                 setAllChecked(false);
-                return ;
+                return;
             }
         }
         setAllChecked(true);
         return;
     }
-
-    const test =()=>{
+    const onChangeEsit = (e) => {
+        setEsitChcked(e.target.checked);
+    }
+    const test = () => {
         console.log(allChecked);
     }
     const goToOrder = () => history.push(Paths.ajoonamu.order);
 
-    return (
-        <>
-            <Header />
-            <Title mainTitle={"장바구니"} subTitle={"장바구니"} />
+
+    
+    const render = () => {
+        return (
             <div className={styles['cart-page']}>
                 <button onClick={test}>test</button>
                 <div className={styles['bar']}>
                     <div className={styles['all-check']}>
-                    <input type="checkbox" checked={allChecked} onClick={handleAllChecked} value="checkedall"></input><label>전체선택</label>
+                        <input type="checkbox" checked={allChecked} onClick={handleAllChecked} value="checkedall"></input><label>전체선택</label>
                     </div>
                     <div className={styles['select']}>
                         선택삭제
-                    </div>
+                      </div>
                 </div>
                 <div className={styles['cart-list']}>
-                  <CartItemList allChecked ={allChecked} carts={cartList}  handleCheckChild={handleCheckChild}/>
+                    <CartItemList allChecked={allChecked} carts={cartList} handleCheckChild={handleCheckChild} />
                 </div>
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>
                         <div className={styles['finally-price']}>
                             <div className={styles['title']}>
                                 총 주문금액
-                        </div>
+                           </div>
                             <div className={styles['price']}>
-                               {total}원
-                        </div>
+                                {total}원
+                          </div>
                         </div>
                         <div className={styles['finally-price']}>
                             <div className={styles['title']}>
                                 배달비
-                        </div>
+                          </div>
                             <div className={styles['price']}>
-                               {delivery_cost}원
-                        </div>
+                                {delivery_cost}원
+                         </div>
                         </div>
                         <div className={styles['order-text']}>
                             * 배달비는 거리에 따라 측정되며, 20만원 이상 결제시 배달비는 무료입니다.
-                        </div>
+                      </div>
                         <div className={styles['estm']}>
                             <div className={styles['title']}>
                                 견적서 발송 여부
-                           </div>
+                              </div>
                             <div className={styles['check']}>
-                                <input type="checkbox" checked={esitChcked}></input> 견적서 받음
-                                <input type="checkbox" checked={!esitChcked}></input> 견적서 안받음
-                            </div>
+                                <input type="checkbox" checked={esitChcked} onChange={onChangeEsit}></input> 견적서 받음
+                                 <input type="checkbox" checked={!esitChcked} onChange={onChangeEsit}></input> 견적서 안받음
+                           </div>
                         </div>
                         <div className={styles['btn']}>
                             <div className={styles['btn-name']} onClick={onClickOrder}>
                                 주문하기
-                            </div>
+                              </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
                 <CartModal
-                    open={open}
-                    handleClose={handleClose}
-                    order={goToOrder}
-                />
+                open={open}
+                handleClose={handleClose}
+                order={goToOrder}
+                 />
+            </div>
+        )
+    }
+    return (
+        <>
+            <Header />
+            <Title mainTitle={"장바구니"} subTitle={"장바구니"} />
+            {loading ?
+                <div className={styles['load']}>
+                    <Progress />
+                </div> :  render()
+            }
+            
         </>
     )
 }

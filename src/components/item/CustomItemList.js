@@ -59,8 +59,6 @@ const initMenu = [
         count :"2",
         price: "5000원"
     }],
-    
-
 
 ]
 

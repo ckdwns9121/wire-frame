@@ -1,5 +1,13 @@
 @import '../../styels//Root.scss';
-
+.load{
+    max-width: $max-width;
+    min-width: $min-width;
+    margin :0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+}
 .cart-page{
     max-width: $max-width;
     min-width: $min-width;

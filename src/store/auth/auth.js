@@ -23,7 +23,6 @@ function* get_user_info_saga(action) {
     console.log(action);
     try {
         const res = yield call(auth_api.getUserInfo, action.token);
-        console.log(res);
         yield put(
             {
                 type: GET_USERINFO_SUCCEED,
@@ -47,13 +46,11 @@ export function* auth_saga() {
 export default function auth(state = initState, action) {
     switch (action.type) {
         case GET_USERINFO:
-            console.log("유저정보 들고오기");
             return {
                 ...state,
                 loading: true,
             }
         case GET_USERINFO_SUCCEED:
-            console.log("정보들고오기 성공");
             return {
                 ...state,
                 loading: false,

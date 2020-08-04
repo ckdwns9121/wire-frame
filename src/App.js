@@ -1,5 +1,5 @@
 import React ,{useEffect,useCallback} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 import {get_user_info} from './store/auth/auth';
 
 import {Paths} from 'paths';
@@ -11,13 +11,15 @@ import {Route,Switch} from 'react-router-dom';
 function App() {
 
   const dispatch = useDispatch();
+  const {user} = useSelector(state=>state.auth);
 
   useEffect(()=>{
-   getInfo();
+  getInfo();
   },[])
 
   const getInfo= useCallback(async()=>{
     const token = sessionStorage.getItem("access_token");
+    console.log(token);
     if(token!=null || token!=undefined){
     dispatch(get_user_info(token));
     }

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import SignNormalInput from 'components/sign/SignNormalInput';
@@ -6,65 +7,129 @@ import SignAuthInput from 'components/sign/SignAuthInput';
 import styles from './Account.module.scss';
 
 const AccountContainer = () => {
+    const { user } = useSelector(state => state.auth);
+
+    console.log(user);
+    useEffect(() => {
+
+    }, [user]);
+
     return (
         <>
-            <Header/>
+            <Header />
             <Title mainTitle={"내 정보 관리"} subTitle={"내 정보 관리"} location={"동아대"} />
             <div className={styles['main']}>
+                <div className={styles['pd-box']}>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                             이름
+                        </div>
+                        <div className={styles['value']}>
+                            <SignNormalInput initValue={user?user.name :""}/>
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                             이메일
+                        </div>
+                        <div className={styles['value']}>
+                           {user? user.email : ""}
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                            비밀번호
+                        </div>
+                        <div className={styles['value']}>
+                            <button>변경하기</button>
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['value']}>
+                            변경할 비밀번호
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['value']}>
+                            <SignNormalInput/>
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['value']}>
+                        <SignNormalInput/>
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['compare']}>
+                        비밀번호가 일치합니다
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['value']}>
+                        <button>취소</button>
+                        <button>확인</button>
+                        </div>
+                    </div>
 
-                <table border="1">
-                    <tr>
-                        <td>이름</td>
-                        <td className={styles['item']}><SignNormalInput /></td>
-                    </tr>
-                    <tr>
-                        <td>이메일</td>
-                        <td>test@email</td>
-                    </tr>
-                    <tr>
-                        <td rowSpan="6">비밀번호</td>
-                        <td><button>변경하기</button></td>
-                    </tr>
-                    <tr>
-                        <td>변경할 비밀번호</td>
-                    </tr>
-                    <tr>
-                        <td className={styles['item']}><SignNormalInput /></td>
-                    </tr>
-                    <tr>
-                        <td className={styles['item']}><SignNormalInput /></td>
-                    </tr>
-                    <tr>
-                        <td>비밀번호 일치</td>
-                    </tr>
-                    <tr>
-                        <td><button>취소</button> <button>확인</button></td>
-                    </tr>
 
-                    <tr>
-                        <td rowSpan="5">휴대폰 번호</td>
-                        <td>010-1234-1234<button>변경하기</button></td>
-                    </tr>
-                    <tr>
-                        <td>휴대폰 번호</td>
-                    </tr>
-                    <tr>
-                        <td className={styles['item']}><SignAuthInput buttonTitle={"인증번호전송"} /></td>
-                    </tr>
-                    <tr>
-                        <td className={styles['item']}><SignAuthInput buttonTitle={"인증하기"} /></td>
-                    </tr>
-                    <tr>
-                        <td><button>취소</button> <button>확인</button></td>
-                    </tr>
-                    <tr>
-                        <td rowSpan="2">알림 설정</td>
-                        <td>SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를 받아보실 수 있습니다.</td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio"></input>SMS</td>
-                    </tr>
-                </table>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                            휴대폰 번호
+                        </div>
+                        <div className={styles['value']}>
+                            {user ? user.hp :""}<button>변경하기</button>
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['value']}>
+                            변경할 휴대폰번호
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['value']}>
+                            <SignAuthInput buttonTitle={"인증번호발송"}/>
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['value']}>
+                        <SignAuthInput buttonTitle={"인증하기"}/>
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                        </div>
+                        <div className={styles['value']}>
+                        <button>취소</button>
+                        <button>확인</button>
+                        </div>
+                    </div>
+                    <div className={styles['item']}>
+                        <div className={styles['text']}>
+                            알림설정
+                        </div>
+                        <div className={styles['value']}>
+                            <input type="checkbox" />알림
+                        </div>
+                    </div>
+
+                    
+                </div>
             </div>
         </>
     )

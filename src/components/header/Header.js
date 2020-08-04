@@ -29,13 +29,13 @@ const Header =()=>{
                     <img className ={styles['header-logoimg']} src={logo}></img>
                 </div>
                 <div className={styles['header-menu']}>
-                    <ui>
+                    <ul>
                         <li onClick={goToHome}>브랜드홈</li>
                         <li onClick={goToReserve}>예약주문</li>
                         <li>택배배송</li>
                         <li>이벤트</li>
                         <li>고객센터</li>
-                    </ui>
+                    </ul>
                 </div>
                 <div className={styles['header-user']}>
                         {user ? 

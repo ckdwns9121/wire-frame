@@ -1,8 +1,9 @@
 import React from 'react';
 import styles from './Custom.module.scss';
-const logo = "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg";
+import logo from 'logo.svg';
 
 const initMenu = [
+
     {
         id: 1,
         title: "떡볶이",
@@ -31,13 +32,10 @@ const initMenu = [
         price: "5000원"
     },
 
-
 ]
-
 
 //추천 메뉴 아이템
 const CoustomItem = ({datas}) => {
-
     return (
         <div className={styles['custom-item']}>
             <CustomImgList datas={datas}/>

@@ -3,6 +3,7 @@ import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
 import Header from 'components/header/Header';
+import Footer from 'components/footer/Footer';
 import MenuItemList from 'components/item/MenuItemList';
 import TempleteItmeList from 'components/item/TempleteItemList';
 import OrderButton from 'components/button/OrderButton';
@@ -51,6 +52,7 @@ const HomeContainer = () => {
                 <TempleteItmeList />
                 </div>
             </div>
+            <Footer/>
         </>
     )
 }
