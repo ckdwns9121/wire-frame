@@ -3,52 +3,108 @@ import styles from './HomeSlick.module.scss';
 import Slider from "react-slick";
 
 
+
+function SampleNextArrow(props) {
+	const { className, style, onClick } = props;
+	return (
+	  <div
+		className={className}
+		style={{ ...style, display: "block", background: "red" }}
+		onClick={onClick}
+	  />
+	);
+  }
+  
+  function SamplePrevArrow(props) {
+	  console.log(props);
+	const { className, style, onClick } = props;
+	return (
+	  <div
+		className="slick-arrow slick-prev"
+		style={{ ...style, display: "block", background: "green" }}
+		onClick={onClick}
+	  />
+	);
+  }
+  
+
+
 class HomeSlick extends React.Component {
+	state = {
+		oldSlide: 0,
+		activeSlide: 1,
+		end: 3
+	};
+
 	render() {
+
 		const settings = {
 			dots: true,
 			infinite: true,
-			speed: 500,
+			autoplay: true,
+			speed: 1000,
 			slidesToShow: 1,
 			slidesToScroll: 1,
-			autoplay: true,
-			autoplaySpeed: 3000
+			nextArrow: <SampleNextArrow />,
+			prevArrow: <SamplePrevArrow />,
+			appendDots: dots => <ul>{dots}</ul>,
+ 			beforeChange: (current, next) =>
+				this.setState({ oldSlide: current, activeSlide: next + 1 }),
 		};
+
+
+		const cssstyle = `
+		.slick-next, .slick-prev {
+			color: #000;
+		}`
+
 		return (
 			<div className={styles['container']}>
-				<link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-				<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
-				<Slider {...settings}>
-					<div className={styles['item']}>
-						1
-			 	 </div>
-					<div className={styles['item']}>
-						2
-			  </div>
-					<div className={styles['item']}>
-						3
-			  </div>
+            <style>{cssstyle}</style>
+				<Slider {...settings} className={styles['test']}>
+				<div className={styles['item']}>
+						<div className={styles['count']}>
+							<span>
+								{this.state.activeSlide}
+							</span>
+							<span>
+								{this.state.end}
+							</span>
+						</div>
+					</div>
+					<div className={styles['item2']}>
+						<div className={styles['count']}>
+							<span>
+								{this.state.activeSlide}
+							</span>
+							<span>
+								{this.state.end}
+							</span>
+						</div>
+					</div>
+					<div className={styles['item3']}>
+						<div className={styles['count']}>
+							<span>
+								{this.state.activeSlide}
+							</span>
+							<span>
+								{this.state.end}
+							</span>
+						</div>
+					</div>
+
 				</Slider>
 			</div>
 		);
 	}
 }
 
-const cssstyle = `
-	.container {
 
-	  width: 90%;
-	}
-	h3 {
-		background: #5f9ea0;
-		color: #fff;
-		font-size: 36px;
-		line-height: 100px;
-		margin: 10px;
-		padding: 2%;
-		height:20vh;
-		text-align: center;
-	}
 
+
+	const cssstyle = `
+	.slick-next:before, .slick-prev:before {
+		color: #000;
+	}
 	`
 export default HomeSlick;

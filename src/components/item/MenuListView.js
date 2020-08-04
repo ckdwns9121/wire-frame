@@ -81,8 +81,9 @@ const MeunListView = () => {
         여기서 didmount로 메뉴 리스트 받아오기
     */
     const cssstyle = `
-   .slick-next:before, .slick-prev:before {
+   .slick-next, .slick-prev {
        color: #000;
+       top: 20px;
    }
    `
 
@@ -102,9 +103,6 @@ const MeunListView = () => {
 
     return (
         <div className={styles['container']}>
-            <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
-            <style>{cssstyle}</style>
             <Slider {...settings}>
                 {menuList}
             </Slider>
