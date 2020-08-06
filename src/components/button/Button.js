@@ -4,7 +4,7 @@ import './Button.scss';
 
 const Button =({title, onClick})=>{
     return(
-        <div className="sign-btn" onClick ={onClick}>{title}</div>
+        <div className="btn" onClick ={onClick}>{title}</div>
     )
 }
 
