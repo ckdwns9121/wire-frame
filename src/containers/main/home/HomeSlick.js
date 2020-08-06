@@ -41,12 +41,12 @@ class HomeSlick extends React.Component {
 		const settings = {
 			dots: true,
 			infinite: true,
-			autoplay: false,
+			autoplay: true,
 			speed: 1000,
 			slidesToShow: 1,
 			slidesToScroll: 1,
-			nextArrow: <SampleNextArrow />,
-			prevArrow: <SamplePrevArrow />,
+			nextArrow: <SampleNextArrow />, //없어도됨
+			prevArrow: <SamplePrevArrow />, //없어도됨
 			appendDots: dots => <ul>{dots}</ul>,
  			beforeChange: (current, next) =>
 				this.setState({ oldSlide: current, activeSlide: next + 1 }),

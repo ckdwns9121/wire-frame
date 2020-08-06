@@ -94,8 +94,9 @@ const MeunListView = () => {
     ));
 
     const settings = {
-        dots: false,
+        dots: true,
         infinite: true,
+        autoplay:true,
         speed: 500,
         slidesToShow: 4,
         slidesToScroll: 4

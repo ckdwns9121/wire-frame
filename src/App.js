@@ -43,7 +43,7 @@ function App() {
       </Switch>
       <Route exact path={Paths.ajoonamu.cart} component={Cart}></Route>
       <Route path={Paths.ajoonamu.order} component={Order}></Route>
-      <Route path={`${Paths.ajoonamu.order_list}/:tab`} component={OrderList}></Route>
+      <Route path={`${Paths.ajoonamu.order_list}/:tab?`} component={OrderList}></Route>
       <Route path ={`${Paths.ajoonamu.coupon}/:tab`} component={Coupon}></Route>
     </div>
   );

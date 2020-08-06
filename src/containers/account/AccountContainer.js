@@ -5,6 +5,9 @@ import Title from 'components/titlebar/Title';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import styles from './Account.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
 
 const AccountContainer = () => {
     const { user } = useSelector(state => state.auth);
@@ -17,23 +20,23 @@ const AccountContainer = () => {
     return (
         <>
             <Header />
-            <Title mainTitle={"내 정보 관리"} subTitle={"내 정보 관리"} location={"동아대"} />
+            <Title mainTitle={"내 정보 관리"} subTitle={"내 정보 관리"} location={"내집"} />
             <div className={styles['main']}>
                 <div className={styles['pd-box']}>
-                    <div className={styles['item']}>
-                        <div className={styles['text']}>
-                             이름
+                    <div className={cx('item','top-line','bottom-line')}>
+                        <div className={cx('text')}>
+                            이름
                         </div>
                         <div className={styles['value']}>
-                            <SignNormalInput initValue={user?user.name :""}/>
+                            <SignNormalInput initValue={user ? user.name : ""} />
                         </div>
                     </div>
-                    <div className={styles['item']}>
+                    <div className={cx('item','bottom-line')}>
                         <div className={styles['text']}>
-                             이메일
+                            이메일
                         </div>
                         <div className={styles['value']}>
-                           {user? user.email : ""}
+                            {user ? user.email : ""}
                         </div>
                     </div>
                     <div className={styles['item']}>
@@ -55,29 +58,32 @@ const AccountContainer = () => {
                         <div className={styles['text']}>
                         </div>
                         <div className={styles['value']}>
-                            <SignNormalInput/>
+                            <SignNormalInput />
                         </div>
                     </div>
                     <div className={styles['item']}>
                         <div className={styles['text']}>
                         </div>
                         <div className={styles['value']}>
-                        <SignNormalInput/>
+                            <SignNormalInput />
                         </div>
                     </div>
                     <div className={styles['item']}>
                         <div className={styles['text']}>
                         </div>
                         <div className={styles['compare']}>
-                        비밀번호가 일치합니다
+                            비밀번호가 일치하지 않습니다.
                         </div>
                     </div>
-                    <div className={styles['item']}>
+                    <div className={cx('item','bottom-line')}>
                         <div className={styles['text']}>
                         </div>
                         <div className={styles['value']}>
-                        <button>취소</button>
-                        <button>확인</button>
+                            <div className={styles['value-pd-box']}>
+                                <button>취소</button>
+                                <button>확인</button>
+                            </div>
+
                         </div>
                     </div>
 
@@ -87,48 +93,68 @@ const AccountContainer = () => {
                             휴대폰 번호
                         </div>
                         <div className={styles['value']}>
-                            {user ? user.hp :""}<button>변경하기</button>
+                            <div className={styles['value-pd-box']}>
+                                {user ? user.hp : ""}<button>변경하기</button>
+                            </div>
                         </div>
                     </div>
                     <div className={styles['item']}>
                         <div className={styles['text']}>
                         </div>
                         <div className={styles['value']}>
-                            변경할 휴대폰번호
+                            <div className={styles['value-pd-box']}>
+                                변경할 휴대폰번호
+                            </div>
                         </div>
                     </div>
                     <div className={styles['item']}>
                         <div className={styles['text']}>
                         </div>
                         <div className={styles['value']}>
-                            <SignAuthInput buttonTitle={"인증번호발송"}/>
+                            <SignAuthInput buttonTitle={"인증번호발송"} />
                         </div>
                     </div>
                     <div className={styles['item']}>
                         <div className={styles['text']}>
                         </div>
                         <div className={styles['value']}>
-                        <SignAuthInput buttonTitle={"인증하기"}/>
+                            <SignAuthInput buttonTitle={"인증하기"} />
                         </div>
                     </div>
-                    <div className={styles['item']}>
+                    <div className={cx('item','bottom-line')}>
                         <div className={styles['text']}>
                         </div>
                         <div className={styles['value']}>
-                        <button>취소</button>
-                        <button>확인</button>
+                            <div className={styles['value-pd-box']}>
+                                <button>취소</button>
+                                <button>확인</button>
+                            </div>
                         </div>
                     </div>
-                    <div className={styles['item']}>
+                    <div className={cx('item','bottom-line')}>
                         <div className={styles['text']}>
                             알림설정
                         </div>
                         <div className={styles['value']}>
-                            <input type="checkbox" />알림
+                            <div className={styles['value-pd-box']}>
+                                <input type="checkbox" />SMS
+                            </div>
                         </div>
                     </div>
+                    <div className={styles['test']}>
+                        <div className={styles['bar']}>
+                           <div className={styles['btn']}>
+                               회원탈퇴 
+                           </div>
+                         </div>    
+                         <div className={styles['box']}>
+                            <div className={cx('btn','large')}>
+                                 내정보수정
+                            </div>
+                         </div>            
+                    </div>
 
-                    
+
                 </div>
             </div>
         </>
