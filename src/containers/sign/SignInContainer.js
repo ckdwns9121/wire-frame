@@ -76,8 +76,8 @@ const SignInContainer = () => {
     })
 
     return (
-        <div className="sign-main">
-            <div className="sign-content">
+        <div className={styles['sign-main']}>
+            <div className={styles ['sign-content']}>
                 <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
                 <label>이메일</label>
                 <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail}/>
@@ -87,25 +87,25 @@ const SignInContainer = () => {
                 <div className={styles.sub}>
                     <div>
                         <input type="checkbox" name="remember" checked={checked} onChange={updateChecked}/>
-                        <label className={styles.grayText}>이메일 기억하기</label><br />
+                        <label className={styles['sub-text']}>이메일 기억하기</label><br />
                     </div>
                     <div onClick={goToRecovery}>
-                        <label className={styles.grayText}>아이디/비밀번호 찾기</label>
+                        <label className={styles['sub-text']}>아이디/비밀번호 찾기</label>
                     </div>
                 </div>
                 <Button title={"로그인"} onClick ={onLogin}></Button>
                 <Button title={"회원가입"} onClick={goToSignup}></Button>
 
                 {/* 이부분 컴포넌트 만들어야함 */}
-                <div className={styles.social}>
+                <div className={styles['social']}>
                     <div style={{ marginBottom: 50 }}>간편로그인</div>
-                    <div className={styles.sns}>
+                    <div className={styles['sns']}>
                         <span> 네이버 로그인</span>
                     </div>
-                    <div className={styles.sns}>
+                    <div className={styles['sns']}>
                         <span> 카카오 로그인</span>
                     </div>
-                    <div className={styles.sns}>
+                    <div className={styles['sns']}>
                         <span> 페이스북 로그인</span>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Paths} from 'paths';
+import styles from './Sign.module.scss';
 import {useHistory} from 'react-router-dom';
 import TitleBar from 'components/titlebar/TitleBar';
 import SignComplete from 'components/sign/SignComplete';
@@ -15,8 +16,8 @@ const SignCompleteContainer = ({name}) => {
         history.push(Paths.ajoonamu.signin);
     }
     return (    
-        <div className="sign-main">
-            <div className="sign-content">
+        <div className={styles['sign-main']}>
+            <div className={styles ['sign-content']}>
                 <TitleBar title={"회원가입 완료"} src ={logo} alt={"회원가입 완료"}/>
                 <SignComplete mainTitle={`축하합니다 ${name}님`} subTitle={"회원가입 완료"} text={"지금 로그인 가능"}/>
                 <Button title={"로그인"} onClick={goToLogin}></Button>

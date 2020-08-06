@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -12,8 +13,8 @@ const RecoveryPwContainer = () => {
     const [userPhone, setUserPhone] = useState('');
 
     return (
-        <div className="sign-main">
-            <div className="sign-content">
+        <div className={styles['sign-main']}>
+            <div className={styles ['sign-content']}>
                 <TitleBar title="비밀번호 찾기" src={logo} alt="비밀번호 찾기"></TitleBar>
                 <label>이름</label>
                 <SignNormalInput/>
@@ -23,9 +24,7 @@ const RecoveryPwContainer = () => {
                 <SignAuthInput inputType={""} initValue={""} buttonTitle={"인증번호 발송"}/>
                 <SignAuthInput inputType={""} initValue={""} buttonTitle={"인증하기"}/>
                 <Button title={"확인"}></Button>
-
             </div>
-
         </div>
     )
 }
