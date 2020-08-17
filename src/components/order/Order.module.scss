@@ -1,5 +1,49 @@
 .order-item{
     width: 100%;
-    height: 300px;
+    height: auto;
     border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    .order-sub{
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid red;
+        .bar{
+            display: flex;
+            flex-direction: row;
+            margin: 5px 0;
+        .info{
+            color:#999999;
+            &:not(:first-child){
+            margin: 0 10px;
+            }
+        }
+    }
+    }
+    .order-info{
+        display: flex;
+        flex-direction: column;
+        .info{
+            width: 100%;
+            border: 1px solid blue;
+            .cost{
+                margin: 50px 0 20px 0;
+            }
+        }
+        .cost{
+            display: flex;
+            justify-content: space-between;
+            .delivery-cost{
+                width: 100%;
+            }
+        .total-cost{
+            width: 100%;
+            border: 1px solid red;
+            text-align: right;
+        }
+    }
+    }
+}
+.pd-box{
+    padding: 10px;
 }

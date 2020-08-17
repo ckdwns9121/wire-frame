@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Paths} from 'paths'
 import styles from './Detail.module.scss';
 import Header from 'components/header/Header';
@@ -18,8 +18,7 @@ const initMenu = {
 
 const DetailContainer = ({ match }) => {
     const history = useHistory();
-    console.log(match.params.data)
-
+    console.log(match.params.data) //프라이머리 id로 들고와야함
     const getCart =()=>{
         history.push(Paths.ajoonamu.cart);
     }

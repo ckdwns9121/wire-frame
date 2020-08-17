@@ -15,7 +15,7 @@
         display: flex;
         flex-direction: column;
         margin: 50px 0 ;
-        .text-info{
+        .text-value{
             display: flex;
             flex-direction: row;
             margin: 10px 0;
@@ -26,7 +26,7 @@
                 font-size: 0.8em;
 
             }
-            .info{
+            .value{
                 width: 100%;
                 border: 0px solid black;
                 
@@ -36,11 +36,6 @@
         .date-picker{
             border: 0px solid black;
         }
-        .memo-save{
-            font-size: 25px;
-            display: flex;
-            justify-content: space-between;
-        }
         .memo{
             width: 100%;
             margin: 30px 0;
@@ -49,7 +44,63 @@
                 height: 62px;
             }
         }
+        .payment{
+            display: flex;
+            flex-direction: row;
+            .item{
+                width: 470px;
+                height: 120px;
+                border: 1px solid black;
+                margin: 5px;
+            }
+        }
     }
+}
+
+
+//회원가입 창 동의서
+.agree{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    padding-top:30px;
+    font-size: 20px;
+
+    .item{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        .sub{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding-bottom: 24px;
+            padding-top:3px; 
+        }
+    }
+
+
+    
+}
+
+
+.space-between{
+    font-size: 25px;
+    justify-content: space-between;
+}
+
+select{
+    width: 100%; /* 원하는 너비설정 */
+    padding: .8em .5em; /* 여백으로 높이 설정 */
+    font-family: inherit;  /* 폰트 상속 */
+    border: 1px solid #999;
+    border-radius: 0px; /* iOS 둥근모서리 제거 */
+    // -webkit-appearance: none; /* 네이티브 외형 감추기 */
+    // -moz-appearance: none;
+    // appearance: none;
+
 }
 .pd-box{
     padding:20px 120px;

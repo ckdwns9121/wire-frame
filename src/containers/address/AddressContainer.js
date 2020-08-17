@@ -54,60 +54,62 @@ const AddressContainer = () => {
   }, []);
 
 
-
-
-  const handleClickOpen = () => {
+  const handleClickOpen = useCallback(() => {
     if (search == "") {
-      alert("검색어를 입력해주세요.");
+      alert("검색어를 입력해주세요!!.");
       return;
     }
     else {
       setOpen(true);
       onSearchClick();
     }
-  };
+  }, [search,open]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
-  };
-  const handleKeyPress = (e) => {
+  }, [open]);
+
+  const handleKeyPress = useCallback((e) => {
     if (e.key == 'Enter') {
       handleClickOpen();
     }
-  }
+  },[search]); //마운트시 함수생성
 
-  const onInsertAddr = () => {
+  const onInsertAddr = useCallback(() => {
+    console.log(detailAddr);
     setOpen(false);
     setDetailAddr("");
-  };
+  }, [open, detailAddr]);
 
-  const onClickAddrItem = (data) => {
+  const onClickAddrItem = useCallback((data) => {
     setSelectAddr(data);
-  }
-  const onChangeSearch = e => {
+    alert(data);
+  }, [selectAddr]);
+
+  const onChangeSearch = useCallback(e => {
     serSearch(e.target.value);
-  };
+  }, [search]);
   const onChangeDetail = e => {
     setDetailAddr(e.target.value);
   }
+  const onSearchClick =useCallback(async () => {
 
-  const onSearchClick = async () => {
     if (search == "") {
-      alert("검색어를 입력해주세요.");
+      alert("검색어를 입력해주세요.~");
       return;
     }
     else {
       const result = await callApi();
       setAddrs(result);
     }
-  }
+  },[search,addrs]); //search 혹은 addrs 가 바뀌었을때만 함수생성
 
-  const callApi = () => {
+  const callApi = useCallback(() => {
     return fetch(`http://www.juso.go.kr/addrlink/addrLinkApi.do?currrentPage=1&countPerPage=100&keyword=${search}&confmKey=${key}=&resultType=json`)
       .then(res => res.json())
       .then(json => json.results.juso)
       .catch(err => console.log(err));
-  }
+  },[search]); //search가 바뀌었을때 함수생성
 
   return (
     <>
@@ -123,7 +125,7 @@ const AddressContainer = () => {
           <DeliveryItemList addrs={delivery_addrs} />
         </div>
       </div>
-      
+
       <div className={styles['modal']}>
         <Dialog
           fullWidth={fullWidth}

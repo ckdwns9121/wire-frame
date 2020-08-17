@@ -16,7 +16,6 @@ function SampleNextArrow(props) {
   }
   
   function SamplePrevArrow(props) {
-	  console.log(props);
 	const { className, style, onClick } = props;
 	return (
 	  <div
@@ -37,7 +36,6 @@ class HomeSlick extends React.Component {
 	};
 
 	render() {
-
 		const settings = {
 			dots: true,
 			infinite: true,

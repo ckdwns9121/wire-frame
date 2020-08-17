@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import {Paths} from 'paths';
-import {useHistory} from 'react-router-dom';
+import { Paths } from 'paths';
+import { useHistory } from 'react-router-dom';
 import styles from './Header.module.scss';
 import logo from 'logo.svg';
 import styled from 'styled-components';
@@ -10,23 +10,24 @@ import styled from 'styled-components';
 const TabLink = styled(NavLink)`
     text-decoration:none;
     color:black;
+    cursor: pointer;
 `;
 
-const Header =()=>{
-    const {user} = useSelector(state=>state.auth);
+const Header = () => {
+    const { user } = useSelector(state => state.auth);
     const history = useHistory();
-    useEffect(()=>{
+    useEffect(() => {
         console.log(user);
-    },[user])
+    }, [user])
 
-    const goToHome =()=> history.push(Paths.index);
-    const goToReserve =() =>history.push(`${Paths.ajoonamu.reserve}/custom`);
+    const goToHome = () => history.push(Paths.index);
+    const goToReserve = () => history.push(`${Paths.ajoonamu.reserve}/custom`);
 
-    return(
+    return (
         <div className={styles['header']}>
-            <div className ={styles['header-nav']}>
+            <div className={styles['header-nav']}>
                 <div className={styles['header-logo']} onClick={goToHome}>
-                    <img className ={styles['header-logoimg']} src={logo}></img>
+                    <img className={styles['header-logoimg']} src={logo}></img>
                 </div>
                 <div className={styles['header-menu']}>
                     <ul>
@@ -38,16 +39,16 @@ const Header =()=>{
                     </ul>
                 </div>
                 <div className={styles['header-user']}>
-                        {user ? 
-                        <TabLink  exact to={Paths.ajoonamu.account}>
-                        <>{user.name}님 반갑습니다</> 
+                    {user ?
+                        <TabLink exact to={Paths.ajoonamu.account}>
+                            <>{user.name}님 반갑습니다</>
                         </TabLink>
-                        : 
-                        <TabLink  exact to={Paths.ajoonamu.signin}>
-                        <>로그인</> 
+                        :
+                        <TabLink exact to={Paths.ajoonamu.signin}>
+                            <>로그인</>
                         </TabLink>
-                        }
-                        
+                    }
+
                 </div>
             </div>
         </div>
