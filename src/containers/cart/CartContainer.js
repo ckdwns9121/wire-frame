@@ -119,7 +119,7 @@ const CartContainer = () => {
     
     const render = () => {
         return (
-            <div className={styles['cart-page']}>
+            <div className={styles['container']}>
                 <button onClick={test}>test</button>
                 <div className={styles['bar']}>
                     <div className={styles['all-check']}>

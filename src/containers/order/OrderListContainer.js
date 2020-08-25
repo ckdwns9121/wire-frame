@@ -24,7 +24,7 @@ const OrderListContainer=({tab='order'})=>{
         <>
         <Header/>
         <Title mainTitle={"주문내역"} subTitle={"주문내역"}/>
-        <div className={styles['order-list-tab']}>
+        <div className={styles['container']}>
         <TabMenu tabs={tabInit}/>
             {tab==='order' && <OrderItem/>}
         </div>

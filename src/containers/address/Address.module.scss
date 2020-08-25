@@ -1,9 +1,7 @@
 @import '../../styels//Root.scss';
 
-.addr{
-    max-width: $max-width;
-    min-width: $min-width;
-    margin: 0 auto;
+.container{
+    @include wireframe;
     .addr-input{
         display: flex;
         justify-content: center;

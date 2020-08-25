@@ -29,8 +29,8 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
         <>
             <Header />
             <Title mainTitle={"쿠폰함>내쿠폰"} subTitle={"쿠폰함"} />
-            <div className={styles['coupon-tab']}>
-                <TabMenu tabs={tabInit} />
+            <div className={styles['container']}>
+            <TabMenu tabs={tabInit} />
                 {tab === 'mycoupon' &&
                     <>
                     <div className={styles['title-input']}>

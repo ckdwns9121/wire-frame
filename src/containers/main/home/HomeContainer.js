@@ -26,7 +26,7 @@ const HomeContainer = () => {
             <div className={styles['carousel']}>
                 <HomeSlick />
             </div>
-            <div className={styles['home']}>
+            <div className={styles['container']}>
                 <Banner title={"건강 단체 도시락/베이커리 아주나무"}subtitle={"건강한 단체 도시락/베이커리로 모두 fresh하게! "}/>
                 <div className={styles['menu-list']}>
                     <MenuListView />

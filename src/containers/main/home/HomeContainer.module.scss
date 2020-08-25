@@ -1,8 +1,6 @@
 @import '../../../styels/Root.scss';
-.home{
-    max-width: $max-width;
-    min-width: $min-width;
-    margin: 0 auto;
+.container{
+    @include wireframe;
     border: 1px solid gray;
 
 }

@@ -1,18 +1,13 @@
 @import '../../styels//Root.scss';
 .load{
-    max-width: $max-width;
-    min-width: $min-width;
-    margin :0 auto;
+    @include wireframe;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 500px;
 }
-.cart-page{
-    max-width: $max-width;
-    min-width: $min-width;
-    margin :0 auto;
-    width: 100%;
+.container{
+    @include wireframe;
     border: 0px solid black;
     height: 100vh;
     .bar{

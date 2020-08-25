@@ -114,7 +114,7 @@ const AddressContainer = () => {
   return (
     <>
       <Header />
-      <div className={styles['addr']}>
+      <div className={styles['container']}>
         <h1 onClick={calltest}>배달지 검색</h1>
         <div className={styles['addr-input']}>
           <input className={styles['input-box']} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" value={search} onChange={onChangeSearch} onKeyPress={handleKeyPress} />

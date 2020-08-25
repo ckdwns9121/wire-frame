@@ -1,2 +1,34 @@
 $max-width: 1374px;
 $min-width: 1170px;
+$font-size :12px;
+$mg-top :80px;
+$mg-top40 : 40px;
+$pd-top:80px;
+$pd-top40:40px;
+$padding-all : 24px;
+$padding-side : 0 24px;
+$main-color:#007246;
+$normal-color:#999999;
+$border-radius :10px;
+
+
+@mixin padding-side{
+    padding : 0 24px;
+}
+
+@mixin wireframe{
+    max-width: 1374px;
+    min-width: 1170px;
+    margin:0 auto;
+    width: 100%;
+}
+
+@mixin animation ($delay ,$name){
+    animation: $name .2s linear;
+}
+
+@mixin keyframe($name){
+    @keyframes #{$name}{
+        @content
+    }
+}
