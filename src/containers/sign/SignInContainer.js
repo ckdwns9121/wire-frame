@@ -8,6 +8,9 @@ import Button from 'components/button/Button';
 import {localLogin,getUserInfo} from '../../api/auth/auth';
 import {get_user_info} from '../../store/auth/auth';
 import { useDispatch } from 'react-redux';
+import Header from '../../components/header/Header';
+import cn from 'classnames/bind';
+const cx = cn.bind(styles);
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -76,24 +79,28 @@ const SignInContainer = () => {
     })
 
     return (
-        <div className={styles['sign-main']}>
-            <div className={styles ['sign-content']}>
-                <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
-                <label>이메일</label>
-                <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail}/>
-                <label>비밀번호</label>
-                <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword}/>
-
+        <>
+        <Header/>
+        <div className={styles['container']}>
+            <div className={cx ('content','sign-in')}>
+                <div className={styles['title']}>
+                    로그인
+                </div>
+                <div className={styles['user-input']}>
+                    <input type="text" value={user.email} onChange={updateEmail} placeholder="이메일"></input>
+                    <input type="password" value={user.password} onChange={updatePassword} placeholder="비밀번호"></input>
+                </div>
                 <div className={styles.sub}>
                     <div>
                         <input type="checkbox" name="remember" checked={checked} onChange={updateChecked}/>
-                        <label className={styles['sub-text']}>이메일 기억하기</label><br />
+                        <label className={styles['sub-text']}>이메일 저장하기</label><br />
                     </div>
                     <div onClick={goToRecovery}>
                         <label className={styles['sub-text']}>아이디/비밀번호 찾기</label>
                     </div>
                 </div>
-                <Button title={"로그인"} onClick ={onLogin}></Button>
+       
+                <Button title={"로그인"} onClick ={onLogin} toggle={true}></Button>
                 <Button title={"회원가입"} onClick={goToSignup}></Button>
 
                 {/* 이부분 컴포넌트 만들어야함 */}
@@ -112,6 +119,7 @@ const SignInContainer = () => {
             </div>
 
         </div>
+        </>
     )
 }
 

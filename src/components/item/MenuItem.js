@@ -27,7 +27,7 @@ const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
                 <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>
                     <MenuTitle menuTitle={menuTitle} />
-                    <MenuText menuText={menuText} />
+                    {/* <MenuText menuText={menuText} /> */}
                     <MenuPrice menuPrice={menuPrice} />
                 </div>
                 </div>
@@ -41,7 +41,7 @@ const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles.img} src={logo}></img>
+            <img className={styles['img']} src={src}></img>
         </div>
     )
 }

@@ -1,36 +1,36 @@
+@import '../../../styles/Root.scss';
 .container{
     width: 100%;
-    height: 530px;
-    border: 0px solid red;
+    height: 360px;
     overflow: hidden;
-    margin-bottom: 20px;
 }
 .slick-arrow .slick-prev{
     border: 1px solid black;
 }
 
 .item{
+    @include animation(1s,fadeIn);
+
     position: relative;
     width: 100%;
     background-size: cover;
-    background-image: url("https://image-uploader-bucket-prod.s3.ap-northeast-2.amazonaws.com/jocad159617279784827.jpeg");
+    background-image: url("../../../components/svg/home/slick.png");
     color: #fff;
-    height:500px;
+    height:360px;
 }
-.item2{
-    position: relative;
-    width: 500px;
-    background-image: url("https://image-uploader-bucket-prod.s3.ap-northeast-2.amazonaws.com/jocad1595568928245150.jpeg");
-    color: #fff;
-    height:500px;
+
+
+@include keyframe(fadeIn){
+    from{
+        filter: blur(100px);
+    }
+    to{
+        filter: blur(0);
+    }
 }
-.item3{
-    position: relative;
-    width: 500px;
-    background-image: url("https://image-uploader-bucket-prod.s3.ap-northeast-2.amazonaws.com/jocad1596172797242773.jpeg");
-    color: #fff;
-    height:500px;
-}
+
+
+
 
 .count{
     display: flex;
@@ -65,24 +65,24 @@
 
 }
 
-:global  .slick-next {
-    background: url('https://pocketsalad.co.kr/SkinImg/layout/btnNextVisual.png') center center no-repeat!important;
-    background-size: cover;
-    width: 160px;
-    height: 160px;
+// :global  .slick-next {
+//     background: url('https://pocketsalad.co.kr/SkinImg/layout/btnNextVisual.png') center center no-repeat!important;
+//     background-size: cover;
+//     width: 160px;
+//     height: 160px;
     
-    z-index: 5;
-    &::before {
-      display: none;
-    }
-}
-:global .slick-prev {
-    background: url('https://pocketsalad.co.kr/SkinImg/layout/btnPrevVisual.png') center center no-repeat!important;
-    background-size: cover;
-    width: 160px;
-    height: 160px;
-    z-index: 5;
-        &::before {
-          display: none;
-    }
-}
+//     z-index: 5;
+//     &::before {
+//       display: none;
+//     }
+// }
+// :global .slick-prev {
+//     background: url('https://pocketsalad.co.kr/SkinImg/layout/btnPrevVisual.png') center center no-repeat!important;
+//     background-size: cover;
+//     width: 160px;
+//     height: 160px;
+//     z-index: 5;
+//         &::before {
+//           display: none;
+//     }
+// }

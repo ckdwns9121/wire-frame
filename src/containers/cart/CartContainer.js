@@ -9,7 +9,6 @@ import Title from 'components/titlebar/Title';
 import CartItemList from 'components/cart/CartItemList';
 import CartModal from 'components/asset/CartModal';
 import produce from 'immer';
-import Progress from 'components/asset/Progress';
 
 
 
@@ -184,7 +183,7 @@ const CartContainer = () => {
             <Title mainTitle={"장바구니"} subTitle={"장바구니"} />
             {loading ?
                 <div className={styles['load']}>
-                    <Progress />
+                 로딩
                 </div> :  render()
             }
             

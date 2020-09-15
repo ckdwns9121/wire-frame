@@ -1,11 +1,19 @@
+@import '../../styles/Root.scss';
 .sign-input {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    margin:10px 0;
+    .label{
+        width: 130px;
+        height: 62px;
+        line-height: 62px;
+        font-size: 20px;
+        padding-left: 13px;
+        color:#222222;
+    }
     input {
-        font-family: Ubuntu-Bold;
-        color: #403866;
-        line-height: 1.2;
+        outline: none;
+        border:1px solid #ccc;
         font-size: 18px;
         background: #fff;
         height: 62px;
@@ -13,17 +21,21 @@
         box-sizing: border-box;
     
         &.normal{
-            width: 100%;
+            width: 540px;
         }
         
         &.auth{
-            width: 100%;
+            width: 360px;
         }
     }
     .auth-btn{
-        width: 40%;
-        margin-left: 10px;
-        border: 1px solid black;
+        width: 160px;
+        margin-left: 20px;
+        border: 1px solid $main-color;
+        box-sizing: border-box;
+        color:$main-color;
+        font-size:18px;
+        font-weight: bold;
         cursor: pointer;
         display: flex;
         justify-content: center;

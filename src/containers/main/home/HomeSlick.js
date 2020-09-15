@@ -70,7 +70,7 @@ class HomeSlick extends React.Component {
 							</span>
 						</div>
 					</div>
-					<div className={styles['item2']}>
+					<div className={styles['item']}>
 						<div className={styles['count']}>
 							<span>
 								{this.state.activeSlide}
@@ -80,7 +80,7 @@ class HomeSlick extends React.Component {
 							</span>
 						</div>
 					</div>
-					<div className={styles['item3']}>
+					<div className={styles['item']}>
 						<div className={styles['count']}>
 							<span>
 								{this.state.activeSlide}

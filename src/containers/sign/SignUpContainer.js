@@ -6,7 +6,7 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-// import {userSignup} from '../../api/sign';
+import Header from '../../components/header/Header';
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -118,28 +118,34 @@ const SignUpContainer = () => {
     }, [user.password, user.password_confirm])
 
     return (
-        <div className={styles['sign-main']}>
-            <div className={styles['sign-content']}>
-                <TitleBar title="회원가입" src={logo} alt="회원가입"></TitleBar>
-                <label>이름</label>
-                <SignNormalInput inputType={"text"} initValue={user.name} onChange={updateName} />
-                <label>이메일</label>
-                <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail} buttonTitle={"중복검사"} />
-                <label>비밀번호</label>
-                <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} />
+        <>
+        <Header/>
+        <div className={styles['container']}>
+   
+            <div className={styles['content']}>
+            <div className={styles['title']}>
+                회원가입
+            </div>
+            <div className={styles}>
+
+            </div>
+                <SignAuthInput label={"이메일"}inputType={"text"} initValue={user.email} onChange={updateEmail} buttonTitle={"중복검사"} />
+                <SignNormalInput label={"비밀번호"}inputType={"password"} initValue={user.password} onChange={updatePassword} />
                 <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateCompare} />
                 <div className={(check) ? styles.compare : styles.compare_fail}>
                     {renderCompaere()}
                 </div>
-                <label>휴대폰 인증</label>
-                <SignAuthInput inputType={"text"} initValue={user.phoneNumber} onChange={updatePhoneNumber} buttonTitle={"인증번호 발송"} />
+                <SignAuthInput label={"휴대폰 번호"}inputType={"text"} initValue={user.phoneNumber} onChange={updatePhoneNumber} buttonTitle={"인증번호 발송"} />
                 <SignAuthInput inputType={"text"} initValue={user.authNumber} onChange={updateAuthNumber} buttonTitle={"인증하기"} />
                 <AcceptContainer></AcceptContainer>
+                <div className={styles['btn']}>
                 <Button title={"회원가입"} onClick={onSignup}></Button>
+                </div>
 
             </div>
 
         </div>
+        </>
     )
 }
 

@@ -1,4 +1,36 @@
+@import '../../styles/Root.scss';
 .container{
+    max-width: $max-width;
     margin: 0 auto;
     padding: 40px;
+
 }
+.arrow{
+    border:1px solid blue;
+}
+
+// :global  .slick-next {
+//     background: url('https://pocketsalad.co.kr/SkinImg/layout/btnNextVisual.png') center center no-repeat!important;
+//     background-size: cover;
+//     width: 160px;
+//     height: 160px;
+//     border:1px solid red;
+    
+//     z-index: 5;
+//     &::before {
+//       display: none;
+//     }
+// }
+// :global .slick-prev {
+//     background: url('https://pocketsalad.co.kr/SkinImg/layout/btnPrevVisual.png') center center no-repeat!important;
+//     background-size: cover;
+//     width: 160px;
+//     height: 160px;
+//     border:1px solid red;
+
+//     z-index: 5;
+//         &::before {
+//           display: none;
+//     }
+// }
+

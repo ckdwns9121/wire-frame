@@ -1,21 +1,41 @@
-@import '../../styels/Root.scss';
+@import '../../styles/Root.scss';
 
-.sign-main{
-    max-width: $max-width;
-    margin: 0 auto;
+.container{
+    @include wireframe;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     padding: 20px;
 
-    .sign-content{
-        width: 485px;
-        background: #fff;
-        border-radius: 10px;
+    .content{
+        &.sign-in{
+            width: 500px;
+        }
+        width: 670px;
         position: relative;
-        padding-bottom: 90px;
-        padding-top: 50px;
+        padding-top:73px;
+        .title{
+            width: 100%;
+            margin:  0 auto;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 60px;
+        }
+        .user-input{
+            input{
+                width: 100%;
+                height: 64px;
+                outline: none;
+                border:1px solid #ccc;
+                background-color: #fff;
+                border-radius: 10px;
+                padding-left: 20px;
+                margin: 13px 0;
+                box-sizing: border-box;
+            }
+        }
     }
 }
 
@@ -95,11 +115,13 @@
 
 //회원가입창 비밀번호 일치 불일치
 .compare{
+    padding-left:143px;
     font-size: 14px;
-    color:blue;
+    color:$main-color;
     margin-bottom:30px;
 }
 .compare_fail{
+    padding-left:143px;
     font-size: 14px;
     color:red;
     margin-bottom:30px;
@@ -123,4 +145,7 @@
         // border: 1px solid black;
     }
 
+}
+.btn{
+    padding: 0 94px;
 }
