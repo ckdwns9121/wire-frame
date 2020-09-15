@@ -10,10 +10,7 @@ import Message from 'components/message/Message'
 import Counter from 'components/counter/Counter';
 import CustomItemList from 'components/item/CustomItemList';
 
-import ReserveModal from 'components/asset/ReserveModal';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import ReserveModal from 'components/modal/ReserveModal';
 import { useHistory } from 'react-router';
 
 const tabInit = [

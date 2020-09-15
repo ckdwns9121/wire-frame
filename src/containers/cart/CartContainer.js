@@ -7,7 +7,7 @@ import styles from './Cart.module.scss';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import CartItemList from 'components/cart/CartItemList';
-import CartModal from 'components/asset/CartModal';
+import CartModal from 'components/modal/CartModal';
 import produce from 'immer';
 
 

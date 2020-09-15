@@ -5,7 +5,7 @@ import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import SignNormalInput from 'components/sign/SignNormalInput';
-import DatePicker from 'components/asset/DatePicker';
+import DatePicker from 'components/modal/DatePicker';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
