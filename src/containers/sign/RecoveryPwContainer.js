@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Sign.module.scss';
+import styles from './Recovery.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -13,21 +13,25 @@ const RecoveryPwContainer = () => {
     const [userPhone, setUserPhone] = useState('');
 
     return (
-        <div className={styles['sign-main']}>
-            <div className={styles ['sign-content']}>
-                <TitleBar title="비밀번호 찾기" src={logo} alt="비밀번호 찾기"></TitleBar>
-                <label>이름</label>
-                <SignNormalInput/>
-                <label>아이디(이메일)</label>
-                <SignNormalInput/>
-                <label>휴대폰 인증</label>
-                <SignAuthInput inputType={""} initValue={""} buttonTitle={"인증번호 발송"}/>
+        <div className={styles['container']}>
+            <div className={styles ['content']}>
+            <div className={styles['title']}>
+                    비밀번호 찾기
+                </div>
+                <div className={styles['box']}>
+                <SignNormalInput label={"이름"}/>
+                <SignNormalInput label={"이메일"}/>
+                </div>
+                <div className={styles['box']}>
+                <SignAuthInput label={"휴대폰"} inputType={""} initValue={""} buttonTitle={"인증번호 발송"}/>
                 <SignAuthInput inputType={""} initValue={""} buttonTitle={"인증하기"}/>
+                </div>
+                <div className={styles['btn']}>
                 <Button title={"확인"}></Button>
+                </div>
             </div>
         </div>
     )
 }
-
 
 export default RecoveryPwContainer;

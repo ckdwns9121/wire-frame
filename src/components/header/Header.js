@@ -23,8 +23,8 @@ const Header = () => {
 
     const onClickLogin = () =>history.push(Paths.ajoonamu.signin);
     const onClickSignup = () =>history.push(Paths.ajoonamu.signup);
-    const goToHome = () => history.push(Paths.index);
-    const goToReserve = () => history.push(`${Paths.ajoonamu.reserve}/custom`);
+    const onClickHome = () => history.push(Paths.index);
+    const onClickShop = () => history.push(`${Paths.ajoonamu.shop}/custom`);
 
     return (
       <div className={styles["header"]}>
@@ -47,13 +47,13 @@ const Header = () => {
           </div>
         </div>
         <div className={styles["header-nav"]}>
-          <div className={styles["header-logo"]} onClick={goToHome}>
+          <div className={styles["header-logo"]} onClick={onClickHome}>
             <img className={styles["logo"]} alt={"로고"} src={logo}></img>
           </div>
           <div className={styles["header-menu"]}>
             <ul>
-              <li onClick={goToHome}>브랜드홈</li>
-              <li onClick={goToReserve}>예약주문</li>
+              <li onClick={onClickHome}>브랜드홈</li>
+              <li onClick={onClickShop}>예약주문</li>
               <li>기업조식</li>
               <li>이벤트</li>
               <li>고객센터</li>

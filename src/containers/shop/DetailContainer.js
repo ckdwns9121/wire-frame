@@ -24,7 +24,6 @@ const DetailContainer = ({ match }) => {
     }
     return (
         <>
-            <Header />
             <Title mainTitle={"예약주문>메뉴>상세보기"} subTitle={"상세보기"} />
             <div className={styles['container']}>
                 <div className={styles['menu-view']}>

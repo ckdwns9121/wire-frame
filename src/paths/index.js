@@ -1,18 +1,33 @@
-export const Paths ={
-    index:'/',
-    ajoonamu : {
-        signin :"/ajoonamu/login",
-        signup :"/ajoonamu/register",
-        recovery :"/ajoonamu/recovery",
-        recovery_id :"/ajoonamu/recovery_id",
-        recovery_pw :"/ajoonamu/recovery_pw",
-        complete :"/ajoonamu/complete",
-        reserve : "/ajoonamu/reserve",
-        account :"/ajoonamu/account",
-        address :"/ajoonamu/address",
-        cart :"/ajoonamu/cart",
-        order :"/ajoonamu/order",
-        order_list:"/ajoonamu/order_list",
-        coupon :"/ajoonamu/coupon"
-    }
-}
+
+export const Paths = {
+    index: '/',
+    ajoonamu: {
+        signin: '/login',
+        signup: '/register',
+        recovery: '/recovery',
+        recovery_id: '/recovery_id',
+        recovery_pw: '/recovery_pw',
+        complete: '/complete',
+        find_email :'/find_email',
+        find_password : '/find_password',
+        shop: '/shop',
+        product:'/product',
+        mypage: '/mypage',
+        account: '/account',
+        update_name: '/update_name',
+        update_phone: '/update_phone',
+        update_password: '/update_password',
+        address: '/address',
+        cart: '/cart',
+        order: '/order',
+        order_list: '/order_list',
+        order_detail:'/order_detail',
+        order_complete :'/order_complete',
+        coupon: '/coupon',
+        support: '/support',
+        notice: '/notice',
+        event: '/event',
+        tos :'/tos',
+    },
+    api: 'http://devapi.ajoonamu.com/api/',
+};

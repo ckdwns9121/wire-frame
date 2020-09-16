@@ -80,11 +80,8 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     }
     return (
         <>
-            <Header />
-            <Title mainTitle={"예약주문>메뉴"} subTitle={"예약주문 메뉴 리스트"}></Title>
             <div className={styles['container']}>
                 <TabMenu tabs={tabInit} />
-
                 {(tab === 'custom' && result) ? <CustomItemList /> :
                     (tab === 'custom' && !result) &&
                     <Message

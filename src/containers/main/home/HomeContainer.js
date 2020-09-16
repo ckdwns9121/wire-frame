@@ -32,7 +32,6 @@ const HomeContainer = () => {
   };
   return (
     <>
-      <Header />
       <div className={styles["carousel"]}>
         <HomeSlick />
       </div>
@@ -104,7 +103,6 @@ const HomeContainer = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

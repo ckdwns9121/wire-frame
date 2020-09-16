@@ -16,6 +16,22 @@ $border-radius :10px;
     padding : 0 24px;
 }
 
+@mixin content{
+    margin : 0 auto;
+    padding-top:120px;
+    padding-bottom:260px;
+}
+
+@mixin title{
+    color:#222;
+    width: 100%;
+    margin:  0 auto;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 60px;
+}
+
 @mixin wireframe{
     max-width: 1374px;
     min-width: 1170px;
@@ -32,3 +48,4 @@ $border-radius :10px;
         @content
     }
 }
+

@@ -2,20 +2,20 @@
 
 .container{
     @include wireframe;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-
     .content{
         &.sign-in{
             width: 500px;
         }
+        &.complete{
+            width: 480px;
+        }
         width: 670px;
         position: relative;
+        @include content;
         padding-top:73px;
+        padding-bottom:85px;
         .title{
+               color:#222;
             width: 100%;
             margin:  0 auto;
             font-size: 36px;
@@ -36,16 +36,57 @@
                 box-sizing: border-box;
             }
         }
+        .sns-box{
+            .social-login{
+                position: relative;
+                padding-top :60px;
+                text-align: center;
+                .text{
+                    color:#222;
+                    font-size: 20px;
+                    height: auto;
+                    text-align: center;
+                    background-color:white;
+                    z-index: 900;
+                    display: inline-block;
+                    position: absolute;
+                    top:80%;
+                    left:50%;
+                    padding: 0 24px;
+                    transform: translateX(-50%);
+                    
+                }
+                .line{
+                    border:1px solid #EBEBEB;
+                    border-radius: 2px;
+                    width: 100%;
+                    position: absolute;
+                    z-index: 5;
+                }
+            }
+        }
     }
 }
 
 
-.sub{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding-bottom: 24px;
-    padding-top:3px;
+.util{
+    margin: 20px 0;
+    overflow: hidden;
+    display: table;
+    width: 100%;
+    height: 0;
+    padding: 0;
+    clear: both;
+    .keep-mail{
+        float: left;
+        display: inline;
+
+    }
+    .forgot-mail{
+        padding:5px 0;
+        float:right;
+        display: inline;
+    }
 }
 
 
@@ -58,77 +99,78 @@
 }
 
 
-
-// 로그인창 소셜 로그인
-.social{
-    margin-top: 50px;
+.social {
+    margin: 28px 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
     justify-content: center;
-    margin-bottom: 50px;
 
-    .sns{
+    .sns {
         width: 100%;
-        vertical-align: middle;
         height: 50px;
-        border: 2px solid black;
-        border-radius: 50px;
-        margin: 20px 0 20px 0;
-    }
-    
-}
-
-
-//회원가입 창 동의서
-.agree{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding-bottom: 14px;
-    padding-top:30px;
-
-    .item{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        .sub{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            padding-bottom: 24px;
-            padding-top:3px; 
-        }
-    }
-
-    .box{
-        width: 100%;
         display: flex;
         justify-content: center;
-        text-align: center;
-        margin-top: 20px;
+        margin: 20px 0 20px 0;
+        img {
+            width: 50px;
+        }
     }
-    
 }
 
+
+.agree {
+    max-width: $max-width;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    border-top:2px solid #EBEBEB;
+    border-bottom:2px solid #EBEBEB;
+    margin:60px 0;
+    padding:36px 0;
+    padding-left:143px;
+    .all{
+        label{
+        font-size: 20px;
+        font-weight: bold;
+        color:#222;
+        }
+    }
+    label {
+        color: #777777;
+    }
+    //SMS 알림
+    .sms {
+        padding-left :49px;
+        width: 100%;
+        margin-top: 24px;
+    }
+    .chk-box{
+        margin:15px 0;
+
+    }
+}
 
 //회원가입창 비밀번호 일치 불일치
-.compare{
-    padding-left:143px;
+.compare {
     font-size: 14px;
-    color:$main-color;
-    margin-bottom:30px;
-}
-.compare_fail{
     padding-left:143px;
-    font-size: 14px;
-    color:red;
-    margin-bottom:30px;
+    color: #a61332;
+    margin-bottom: 30px;
+    overflow: hidden;
+    transition: all 0.15s ease-in-out;
+    height: 20px;
+    &.on {
+        font-size: 14px;
+        color: $main-color;
+        margin-bottom: 30px;
+    }
+    &.not_view {
+        height: 0px;
+    }
 }
+
 
 // 회원정보 찾기 링크
-
 .link-box{
     width: 100%;
     height: 192px;
@@ -147,5 +189,9 @@
 
 }
 .btn{
-    padding: 0 94px;
+    padding-bottom:160px;
+}
+.pd-box{
+    padding-left: 94px;
+    padding-right:94px;
 }

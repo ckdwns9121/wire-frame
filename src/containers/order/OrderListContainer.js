@@ -22,7 +22,6 @@ const tabInit = [
 const OrderListContainer=({tab='order'})=>{
     return(
         <>
-        <Header/>
         <Title mainTitle={"주문내역"} subTitle={"주문내역"}/>
         <div className={styles['container']}>
         <TabMenu tabs={tabInit}/>

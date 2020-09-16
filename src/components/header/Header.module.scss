@@ -83,7 +83,9 @@ $header-height : 120px;
             align-items: center;
             width: 320px;
             height:$header-height;
-            position: relative;
+            .input{
+                position: relative;
+            }
             .search{
                 width: 320px;
                 box-sizing: border-box;

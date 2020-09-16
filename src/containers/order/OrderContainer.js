@@ -31,7 +31,6 @@ const OrderContainer = () => {
 
     return (
         <>
-            <Header />
             <Title mainTitle={"장바구니>주문하기"} subTitle={"주문하기"} />
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>

@@ -1,11 +1,13 @@
 .item-box{
-    border: 1px solid black;
+    border: 1px solid #EBEBEB;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     text-align: center;
     margin-bottom: 40px;
+    padding:24px;
     .main-title{
         font-size:25px;
         font-weight: bold;
@@ -13,6 +15,7 @@
     }
     .sub-title{
         font-size: 16px;
+        color :#555555;
         margin: 10px 0 10px 0;
     }
     .text{
