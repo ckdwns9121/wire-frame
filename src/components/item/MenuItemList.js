@@ -11,62 +11,62 @@ import menu4 from '../svg/menu/menu4.png';
 const initMenu = [
     {
         item_id: 1,
-        title: "김치1",
-        text: "김치 맛잇어",
+        title: "과일도시락",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img: menu1,
         price: "5000원"
     },
     {
         item_id: 2,
-        title: "김치2",
-        text: "김치 맛잇어",
+        title: "과일도시락2",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img:menu2,
         price: "5000원"
     },
     {
         item_id: 3,
-        title: "김치3",
-        text: "김치 맛잇어",
+        title: "과일도시락3",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img : menu3,
         price: "5000원"
     },    
     {
         id: 4,
-        title: "김치4",
-        text: "김치 맛잇어",
+        title: "과일도시락4",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img: menu4,
         price: "5000원"
     },    {
         id: 5,
-        title: "김치5",
+        title: "과일도시락5",
         img: menu1,
-        text: "김치 맛잇어",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         price: "5000원"
     },    {
         id: 6,
-        title: "김치6",
-        text: "김치 맛잇어",
+        title: "과일도시락6",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img:menu2,
         price: "5000원"
     },
     {
         id: 7,
-        title: "김치7",
-        text: "김치 맛잇어",
+        title: "과일도시락7",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img:menu3,
         price: "5000원"
     },
     {
         id: 8,
-        title: "김치8",
-        text: "김치 맛잇어",
+        title: "과일도시락8",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img:menu4,
         price: "5000원"
     },
     {
         id: 9,
-        title: "김치19",
-        text: "김치 맛잇어",
+        title: "과일도시락9",
+        text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img:menu1,
         price: "5000원"
     },

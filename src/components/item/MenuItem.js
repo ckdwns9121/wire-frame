@@ -1,38 +1,24 @@
 import React from 'react';
-import { Paths } from 'paths';
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
 import styles from './Menu.module.scss';
-import logo from 'logo.svg';
 
 
-const MenuDetailLink = styled(NavLink)`
-    text-decoration:none;
-    color:black;
-    margin:10px;
-`;
 
-const NewButton = styled.button`
-    background :red;
-`;
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
 
     return (
         // item_id 로 경로 줘야함
-        <MenuDetailLink to={`${Paths.ajoonamu.reserve}/menu/detail/${menuTitle}`}>
             <div className={styles['menu-item']}>
                 <MenuImg src={src} />
                 <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>
                     <MenuTitle menuTitle={menuTitle} />
-                    {/* <MenuText menuText={menuText} /> */}
+                    <MenuText menuText={menuText} />
                     <MenuPrice menuPrice={menuPrice} />
                 </div>
                 </div>
             </div>
-        </MenuDetailLink>
     )
 
 }

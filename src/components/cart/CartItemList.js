@@ -7,7 +7,6 @@ const CartItemList = (props) => {
     console.log(props.carts)
     const list = props.carts.map((cart,index) =>(
             <CartItem id={index} key={index} {...cart} handleCheckChild={props.handleCheckChild} />
-
     ));
     return (
         <div>

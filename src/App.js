@@ -45,10 +45,8 @@ function App() {
       <Route path={Paths.ajoonamu.find_password} component={FindPassword}></Route>
       <Route path={Paths.ajoonamu.account}component={Account}></Route>
       <Route path={Paths.ajoonamu.address} component={Address} ></Route>
-      <Switch>
       <Route path={`${Paths.ajoonamu.shop}/:tab/:value/:data`} exact component={DetailMenu}></Route>
-      <Route path={`${Paths.ajoonamu.shop}/:tab`} component={Reserve}></Route>
-      </Switch>
+      <Route path={Paths.ajoonamu.shop} component={Reserve}></Route>
       <Route exact path={Paths.ajoonamu.cart} component={Cart}></Route>
       <Route path={Paths.ajoonamu.order} component={Order}></Route>
       <Route path={`${Paths.ajoonamu.order_list}/:tab?`} component={OrderList}></Route>

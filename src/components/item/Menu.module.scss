@@ -1,20 +1,41 @@
 @import '../../styles/Root.scss';
+
+$pd-none :true;
+$value1 :-71px;
+$value2 : 71px;
 .menu-list{
-    display: inline-flex;
-    flex-wrap: wrap;
+    margin: $value1 0 0 $value1;
+    box-sizing: border-box;
+    &::after{
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        clear: both;
+    }
 }
 .menu-item{
     @include animation(0.5s,fadeIn);
+    float: left;
+    margin: $value2 0 0 $value2;
+    box-sizing: border-box;
     width: 290px;
+    padding-top:40px;
     height: auto;
     cursor: pointer;
+    @if $pd-none {
+        @for $i from 1 through 4 {
+            @if $i==4{
+          &:nth-child(#{$i}) {
+           padding-right: 0;
+          }
+        }
+        }
+      }
+
     .menu-img{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: auto;
         img{
-            border-bottom: 1px solid black;
             width: 290px;
             height: 344px;
         }
@@ -24,10 +45,10 @@
     .menu-info{
         width: 100%;
         padding-top:38px;
-        text-align: center;
         .menu-title{
-            font-size: 20px;
+            font-size: 22px;
             color:#222;
+            font-weight: bold;
             margin: 5px 0 5px 0;
         }
         .menu-text{

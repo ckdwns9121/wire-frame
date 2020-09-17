@@ -1,44 +1,71 @@
-import React ,{useState} from 'react';
-import {Paths} from 'paths';
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './TabMenu.module.scss';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { makeStyles } from '@material-ui/core/styles';
 
 
 
-const TabLink = styled(NavLink)`
-    text-decoration:none;
-    color:black;
+const useStyles = makeStyles((theme) => ({
+    tabs: {
+        width: '100%',
+        maxWidth: '1374px',
+        minHeight: '40px',
+        margin: '0 auto',
+        backgroundColor: '#fff',
+        borderBottom:"2px solid black",
+    },
+}));
 
-`;
+const TabMenu =({tabs,index,onChange}) =>{
 
-const TabMenu =({tabs}) =>{
+    const classes = useStyles();
 
-    console.log(tabs);
-    const activeStyle = {
-        height :'100%',
-        textDecoration:'none',
-        color:'black',
-        borderBottom:'3px solid #000'
+    const history = useHistory();
+
+    const onClickTab = (url) => {
+        history.push(url) 
     };
 
-    const tabList = tabs.map(tab =>(
-        <TabLink key = {tab.url} exact to={tab.url} activeStyle={activeStyle}>  <TabItem name={tab.name}/> </TabLink>
-    ))
+    const tabList = tabs.map((tab) => (
+        <Tab
+            label={tab.name}
+            key={tab.name}
+            className={styles['tab-item']}
+            onClick={() => onClickTab(tab.url)}
+        />
+    ));
     ;
-    return(
-        <div className={styles['tab-menu']}>
+    return (
+        <Tabs
+            value={index}
+            onChange={onChange}
+            TabIndicatorProps={{
+                style: {
+                    backgroundColor: 'transparent',
+                    height:'46px',
+                    border: "2px solid black",
+                    borderBottom:"0px solid black",
+                    boxSizing:"border-box"
+
+                },
+            }}
+            className={classes.tabs}
+            centered
+        >
             {tabList}
-        </div>
-    )
+        </Tabs>
+    );
 }
 
-const TabItem= ({name}) =>{
 
-    return(
-        <div className={styles['tab-item']} >
-            {name}
-        </div>
-    )
-}
+
+TabMenu.defaultProps = {
+    tabs: null,
+    index: 0,
+    isPush : false,
+    onChange: () => console.warn(null),
+};
+
 export default TabMenu;

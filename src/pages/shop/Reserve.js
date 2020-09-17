@@ -1,14 +1,18 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import ReserveContainer from 'containers/shop/ReserveContainer';
+import qs from 'qs'
+function Reserve({location}) {
 
-function Reserve({match}){
-    console.log(match.params);
-    const tab = match.params.tab;
-    return(
-        <>
-        <ReserveContainer tab={tab} />
-        </>
-
+    const query = qs.parse(location.search,{
+        ignoreQueryPrefix: true
+    });
+    console.log(query.menu);
+    let menu = query.menu;
+    if(menu===undefined){
+        menu='0';
+    }
+    return (
+    <ReserveContainer menu={parseInt(menu)}/>
     )
 }
 export default Reserve;
