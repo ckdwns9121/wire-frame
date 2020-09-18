@@ -12,6 +12,9 @@ $normal-color:#999999;
 $border-radius :10px;
 
 
+:global input[type="checkbox"] {
+    display: none;
+}
 @mixin padding-side{
     padding : 0 24px;
 }

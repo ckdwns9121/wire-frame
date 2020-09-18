@@ -6,7 +6,7 @@ import MenuItemList from "components/item/MenuItemList";
 import Message from "components/message/Message";
 import Counter from "components/counter/Counter";
 import CustomItemList from "components/item/CustomItemList";
-import {getCustomMenuList } from '../../api/menu/menu';
+import {getCustomMenuList,getMenuList } from '../../api/menu/menu';
 
 import PreferModal from "../../components/modal/PreferModal";
 import { useHistory } from "react-router";
@@ -62,8 +62,17 @@ const ReserveContainer = ({ menu = "0" }) => {
   const [success, setSuccess] = useState(false);
   const [error , setError] = useState(false);
   const [customMenuList, setCustomMenuList] = useState([]);
+  const [menuList,setMenuList] = useState([]);
   const handleOpen=()=>setOpen(true);
   const handleClose = () => setOpen(false);
+
+  
+
+  const getMenuListApi =async()=>{
+    const res = await getMenuList();
+    setMenuList(res);
+  }
+
 
 
 
@@ -107,7 +116,10 @@ const ReserveContainer = ({ menu = "0" }) => {
 
   useEffect(()=>{
     getCustomList();
+    getMenuListApi();
   },[])
+
+
 
   const renderContent = () => {
     const list = tabInit.map((tab, index) => (
@@ -128,7 +140,9 @@ const ReserveContainer = ({ menu = "0" }) => {
           )  :
           (
             <>
-              <MenuItemList/>
+            {menuList.length!==0 && 
+              <MenuItemList menu_list={menuList}/>
+            }
             </>
           )
         }

@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './Custom.module.scss';
-import logo from 'logo.svg';
-import Button from '../../components/button/Button';
-
+import cn from 'classnames/bind';
 
 
 //추천 메뉴 아이템
@@ -15,13 +13,18 @@ const CustomItem = ({datas}) => {
                 </div>
                 <div className={styles['order']}>
                     <div className={styles['order-count']}>
-                        주문수량 10개
+                        주문수량 <span className={styles['count']}>10개</span>
                     </div>
                     <div className={styles['order-price']}>
-                        결제금액 5000원
+                        결제금액 <span className={styles['price']}>1,110,000원</span>
                     </div>
                     <div className={styles['box']}>
-                        <Button/>
+                        <div className={styles['cart-btn']}>
+                            장바구니
+                        </div>
+                        <div className={styles['order-btn']}>
+                            주문하기
+                        </div>
                     </div>
                 </div>
 
@@ -45,7 +48,7 @@ function CustomMenuItem({ src,menu_name,menu_count,menu_price }) {
                 {menu_count}개
                 </div>
                 <div className={styles['menu-price']}>
-                {menu_price}원
+                ({menu_price}원)
                 </div>
             </div>
         </div>

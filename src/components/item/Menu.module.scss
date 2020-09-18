@@ -16,6 +16,7 @@ $value2 : 71px;
     }
 }
 .menu-item{
+
     @include animation(0.5s,fadeIn);
     float: left;
     margin: $value2 0 0 $value2;
@@ -24,15 +25,6 @@ $value2 : 71px;
     padding-top:40px;
     height: auto;
     cursor: pointer;
-    @if $pd-none {
-        @for $i from 1 through 4 {
-            @if $i==4{
-          &:nth-child(#{$i}) {
-           padding-right: 0;
-          }
-        }
-        }
-      }
 
     .menu-img{
         img{

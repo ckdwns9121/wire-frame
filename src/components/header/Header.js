@@ -24,7 +24,7 @@ const Header = () => {
     const onClickLogin = () =>history.push(Paths.ajoonamu.signin);
     const onClickSignup = () =>history.push(Paths.ajoonamu.signup);
     const onClickHome = () => history.push(Paths.index);
-    const onClickShop = () => history.push(`${Paths.ajoonamu.shop}/custom`);
+    const onClickShop = () => history.push(`${Paths.ajoonamu.shop}?menu=0`);
 
     return (
       <div className={styles["header"]}>

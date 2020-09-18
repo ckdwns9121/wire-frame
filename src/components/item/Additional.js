@@ -1,14 +1,17 @@
 import React from 'react';
 import styles from './Additional.module.scss';
-
+import Select from '../svg/select/Select';
 
 //추가선택 아이템
-const Additional =({menuName, menuPrice})=>{
-    return(
+const Additional = (props) => {
+    return (
         <div className={styles['additional-item']}>
-            <label><input type="checkbox"></input>{menuName} 추가 </label> +{menuPrice}원
+            <input type="checkbox" id="test"></input>
+            <label onClick={props.onClickAddItem} className={styles['label']} htmlFor="test">
+                <Select check={props.check} />{props.option_name} 추가 <span> + {props.option_price} 원</span>
+            </label>
         </div>
-    )
-}
+    );
+};
 
-export default Additional
+export default Additional;

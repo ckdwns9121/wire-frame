@@ -1,74 +1,68 @@
-import React from 'react';
-import PropsTypes from 'prop-types'; 
-import styles from './Cart.module.scss';
-import Counter from 'components/counter/Counter';
-import logo from 'logo.svg';
-
+import React from "react";
+import PropsTypes from "prop-types";
+import styles from "./Cart.module.scss";
+import Counter from "components/counter/Counter";
+import Menu1 from "../svg/menu/menu1.png";
+import CloseIcon from '../svg/modal/CloseIcon';
 
 // 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
 
-const CartItem = props => {
+const CartItem = (props) => {
 
-    console.log(props);
-    console.log(props.item);
-    console.log(props.options);
-    const {id,isChecked,handleCheckChild} = props;
-    const {item_img,item_name,item_option_id,item_price,item_quanity} =props.item;
-    const options = props.options;
-    console.log(options);
 
-    const onClick=()=>{
-        console.log(options);
-    }
+  const { id, isChecked, handleCheckChild } = props;
+  const { item_name, item_price, item_quanity } = props.item;
+  const options = props.options;
 
-    return (
-        <div className={styles['cart-item']}  onClick={onClick}>
-            <div className={styles['bar']}>
+  return (
+    <div className={styles["cart-item"]} >
+      <div className={styles['check-box']}>
                 <div className={styles['check']}>
                     <input type="checkbox" checked={isChecked} id={id}onChange={handleCheckChild}></input>
-                </div>
-                <div className={styles['delete']}>
-                    &times;
-                </div>
-            </div>
-            <div className={styles['item-box']}>
-                <div className={styles['item-info']}>
-                    <div className={styles['name']}>
-                        {item_name}
-                    </div>
-                    <div className={styles['options']}>
-                        추가선택 
-                        {
-                            options.map(
-                                op =>(
-                                   op.option_name
-                                )
-                            )
-                        }
-                    </div>
-                    <div className={styles['count-price']}>
-                        <div className={styles['count']}>
-                            수량 <Counter value={item_quanity} />
-                        </div>
-                        <div className={styles['price']}>
-                            {item_price}
-                        </div>
-                    </div>
-                </div>
-                <div className={styles['item-img']}>
-                     <img src={logo}></img>
+                    <label className={styles['label']} htmlFor={id}>
+                    </label>
                 </div>
             </div>
+      <div className={styles["menu-info"]}>
+        <div className={styles["menu-img"]}>
+          <img src={Menu1} alt="menu" />
         </div>
+        <div className={styles["menu-value"]}>
+          <div className={styles["menu-name-price"]}>
+            {item_name} <span>{item_price}</span>원
+          </div>
+          <div className={styles["menu-option"]}>
+            추가선택:
+            {options.length !== 0
+              ? options.map((op) => op.option_name)
+              : "없음"}
+          </div>
+          <div className={styles["box"]}>
+            <div className={styles["box-item"]}>
+              <div className={styles["opert"]}>-</div>
+              <div className={styles["value"]}>10</div>
+              <div className={styles["opert"]}>+</div>
+            </div>
+            <div className={styles["box-item"]}>
+                수량 변경
+            </div>
+          </div>
+      
+        </div>
+      </div>
+      <div className={styles["menu-price"]}>{item_price}원</div>
+      <div className={styles['close-box']}>
+           <CloseIcon black={true}/>
+        </div>
+    </div>
+  );
+};
 
-    )
-}
-
-CartItem.PropsTypes ={
-    isChecked : PropsTypes.bool,
-}
-CartItem.defaultProps={
-    isChecked :false,
-}
+CartItem.PropsTypes = {
+  isChecked: PropsTypes.bool,
+};
+CartItem.defaultProps = {
+  isChecked: false,
+};
 
 export default React.memo(CartItem);
