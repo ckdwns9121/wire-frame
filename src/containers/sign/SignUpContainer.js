@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import useInputs from '../../hooks/useInputs';
 import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths'
 import styles from './Sign.module.scss';
@@ -22,6 +23,7 @@ const initialUserState = {
 
 }
 
+
 const initCheck = {
     allCheck: false,
     check1: false,
@@ -29,43 +31,6 @@ const initCheck = {
     check3: false,
 }
 
-const userReducer = (state, action) => {
-    switch (action.type) {
-        case 'UPDATE_USER_NAME':
-            return {
-                ...state,
-                name: action.name
-            }
-        case 'UPDATE_USER_EMAIL':
-            return {
-                ...state,
-                email: action.email
-            }
-        case 'UPDATE_USER_PASSWORD':
-            return {
-                ...state,
-                password: action.password
-            }
-        case 'UPDATE_USER_COMPARE':
-            return {
-                ...state,
-                password_confirm: action.password_confirm
-            }
-        case 'UPDATE_USER_PHONENUMBER':
-            return {
-                ...state,
-                phoneNumber: action.phoneNumber
-            }
-        case 'UPDATE_USER_AUTHNUMBER':
-            return {
-                ...state,
-                authNumber: action.authNumber
-            }
-        default:
-            return state;
-
-    }
-}
 
 const checkReducer = (state, action) => {
 
@@ -99,12 +64,12 @@ const checkReducer = (state, action) => {
 const SignUpContainer = () => {
 
 
+
+
+    const [user_state,onChange] = useInputs(initialUserState);
+    const {email,name,password,password_confirm,phoneNumber,authNumber,agree_marketing} = user_state;
+
     const history = useHistory();
-
-    const [user, dispatchUser] = useReducer(userReducer, initialUserState);
-
-    const { email, password, password_confirm } = user;
-
     const [compare, setCompare] = useState(false);
     const [toggle, setToggle] = useState(false);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
@@ -116,6 +81,7 @@ const SignUpContainer = () => {
         let result = (checkbox && userinfo) ? true : false;
         setToggle(result);
     }, [check1, check2, email, compare]);
+
 
 
     //패스워드 매칭 체크
@@ -151,24 +117,6 @@ const SignUpContainer = () => {
         }
     }, [check1, check2, check3]);
 
-    useEffect(() => {
-        updateToggle();
-    }, [updateToggle])
-
-    useEffect(() => {
-        matchPassword();
-    }, [matchPassword])
-
-    useEffect(() => {
-        isAllCheck();
-    }, [isAllCheck]);
-
-    useEffect(() => {
-        onToggleCheck();
-    }, [onToggleCheck])
-
-
-
 
     const updateAllCheck = (e) => {
         dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
@@ -186,24 +134,24 @@ const SignUpContainer = () => {
         dispatchCheck({ type: 'CHECK3', check: e.target.checked });
     };
 
-    const updateEmail = (e) => {
-        dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
-    };
-    const updatePassword = (e) => {
-        dispatchUser({ type: 'UPDATE_USER_PASSWORD', password: e.target.value });
 
-    };
-    const updateConfirm = (e) => {
-        dispatchUser({ type: 'UPDATE_USER_COMPARE', password_confirm: e.target.value });
-    };
+    useEffect(() => {
+        updateToggle();
+    }, [updateToggle])
 
-    const updatePhoneNumber = (e) => {
-        dispatchUser({ type: 'UPDATE_USER_PHONENUMBER', phoneNumber: e.target.value });
+    useEffect(() => {
+        matchPassword();
+    }, [matchPassword])
 
-    };
-    const updateAuthNumber = (e) => {
-        dispatchUser({ type: 'UPDATE_USER_AUTHNUMBER', authNumber: e.target.value });
-    };
+    useEffect(() => {
+        isAllCheck();
+    }, [isAllCheck]);
+
+    useEffect(() => {
+        onToggleCheck();
+    }, [onToggleCheck])
+
+
     const onClickSignUp = () => {
         console.log("회원가입");
     }
@@ -232,14 +180,14 @@ const SignUpContainer = () => {
             <div className={styles}>
 
             </div>
-                <SignAuthInput label={"이메일"}inputType={"text"} initValue={user.email} onChange={updateEmail} buttonTitle={"중복검사"} />
-                <SignNormalInput label={"비밀번호"}inputType={"password"} initValue={user.password} onChange={updatePassword} />
-                <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateConfirm} />
-                <div className={cx('compare', { on: compare, not_view: user.password.length === 0 && user.password_confirm.length === 0 })}>
+                <SignAuthInput label={"이메일"}inputType={"text"} name={"email"} initValue={email} onChange={onChange} buttonTitle={"중복검사"} />
+                <SignNormalInput label={"비밀번호"}inputType={"password"}  name={"password"} initValue={password} onChange={onChange} />
+                <SignNormalInput inputType={"password"} name={"password_confirm"}initValue={password_confirm} onChange={onChange} />
+                <div className={cx('compare', { on: compare, not_view: password.length === 0 && password_confirm.length === 0 })}>
                         <label>{confirm()}</label>
                     </div>
-                <SignAuthInput label={"휴대폰 번호"}inputType={"text"} initValue={user.phoneNumber} onChange={updatePhoneNumber} buttonTitle={"인증번호 발송"} />
-                <SignAuthInput inputType={"text"} initValue={user.authNumber} onChange={updateAuthNumber} buttonTitle={"인증하기"} />
+                <SignAuthInput label={"휴대폰 번호"}inputType={"text"} name={"phoneNumber"} initValue={phoneNumber} onChange={onChange} buttonTitle={"인증번호 발송"} />
+                <SignAuthInput inputType={"text"} initValue={authNumber} name={"authNumber"} onChange={onChange} buttonTitle={"인증하기"} />
                 <AcceptContainer
                     {...check}
                     updateAllCheck={updateAllCheck}

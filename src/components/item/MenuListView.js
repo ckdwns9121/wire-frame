@@ -32,40 +32,40 @@ const initMenu = [
         price: "5000원"
     },    
     {
-        id: 4,
+        item_id: 4,
         title: "과일도시락4",
         text: "과일도시락 맛잇어",
         img: menu4,
         price: "5000원"
     },    {
-        id: 5,
+        item_id: 5,
         title: "과일도시락5",
         img: menu1,
         text: "과일도시락 맛잇어",
         price: "5000원"
     },    {
-        id: 6,
+        item_id: 6,
         title: "과일도시락6",
         text: "과일도시락 맛잇어",
         img:menu2,
         price: "5000원"
     },
     {
-        id: 7,
+        item_id: 7,
         title: "과일도시락7",
         text: "과일도시락 맛잇어",
         img:menu3,
         price: "5000원"
     },
     {
-        id: 8,
+        item_id: 8,
         title: "과일도시락8",
         text: "과일도시락 맛잇어",
         img:menu4,
         price: "5000원"
     },
     {
-        id: 9,
+        item_id: 9,
         title: "과일도시락19",
         text: "과일도시락 맛잇어",
         img:menu1,
@@ -103,20 +103,6 @@ function SampleNextArrow(props) {
 
 // 슬릭추가 
 const MeunListView = () => {
-
-    /*
-        슬릭 추가시 <slider>가 태그를 생성시킴
-        그래서 따로 list를 렌더 해야함 
-        여기서 didmount로 메뉴 리스트 받아오기
-    */
-    const cssstyle = `
-   .slick-next, .slick-prev {
-       color: #000;
-       top: 20px;
-   }
-   `
-
-
 
     const menuList = initMenu.map(menu => (
         <MenuItem key = {menu.id} menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src={menu.img} />

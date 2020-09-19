@@ -46,7 +46,7 @@ function TabPanel(props) {
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
     >
-      {value === index && <Typography>{children}</Typography>}
+      {value === index && <>{children}</>}
     </div>
   );
 }
@@ -123,8 +123,8 @@ const ReserveContainer = ({ menu = "0" }) => {
 
   const renderContent = () => {
     const list = tabInit.map((tab, index) => (
-      <TabPanel value={tab_index} index={index} children={
-          <>
+      <TabPanel key={index}value={tab_index} index={index} children={
+          <span>
           {tab.name==="추천메뉴"?(
             <>
               {
@@ -146,13 +146,7 @@ const ReserveContainer = ({ menu = "0" }) => {
             </>
           )
         }
-
-
-
-          </>
-
-
-
+          </span>
       }/>
     ));
     return <>{list}</>;

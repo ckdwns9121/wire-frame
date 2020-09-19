@@ -167,19 +167,19 @@ const initMenu2 = [
         price: "5000원"
     },    
     {
-        id: 4,
+        item_id: 4,
         title: "과일도시락4",
         text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img: Menu4,
         price: "5000원"
     },    {
-        id: 5,
+        item_id: 5,
         title: "과일도시락5",
         img: Menu1,
         text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         price: "5000원"
     },    {
-        id: 6,
+        item_id: 6,
         title: "과일도시락6",
         text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img:Menu2,
@@ -210,20 +210,20 @@ const initMenu3= [
         price: "5000원"
     },    
     {
-        id: 4,
+        item_id: 4,
         title: "과일도시락4",
         text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img: Menu4,
         price: "5000원"
     },    {
-        id: 5,
+        item_id: 5,
         title: "과일도시락5",
         img: Menu1,
         text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         price: "5000원"
     },    
     {
-        id: 6,
+        item_id: 6,
         title: "과일도시락6",
         text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img:Menu2,
@@ -231,7 +231,7 @@ const initMenu3= [
     },
 
     {
-        id: 7,
+        item_id: 7,
         title: "과일도시락6",
         text: "아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다",
         img:Menu2,

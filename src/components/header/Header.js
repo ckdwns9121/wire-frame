@@ -25,6 +25,7 @@ const Header = () => {
     const onClickSignup = () =>history.push(Paths.ajoonamu.signup);
     const onClickHome = () => history.push(Paths.index);
     const onClickShop = () => history.push(`${Paths.ajoonamu.shop}?menu=0`);
+    const onClickAddr =() => history.push(Paths.ajoonamu.address);
 
     return (
       <div className={styles["header"]}>
@@ -32,8 +33,8 @@ const Header = () => {
           <div className={styles["content"]}>
             <div className={styles["addr-store"]}>
               <div className={styles["info"]}>
-                <img src={locationIcon} alt="배달"></img>
-                <div className={styles["text"]}>
+                <img src={locationIcon} alt="배달" onClick={onClickAddr}></img>
+                <div className={styles["text"]} onClick={onClickAddr}>
                   배달 받으실 주소를 입력해주세요
                 </div>
                 <img src={storeIcon} alt="배달"></img>

@@ -12,6 +12,7 @@ import menu4 from '../svg/menu/menu4.png';
 
 
 const MenuItemList = ({menu_list}) => {
+    console.log(menu_list)
     const menuList = menu_list.map(menu => (
         <MenuItem key={menu.item_id} menuTitle={menu.title} menuText={menu.text} menuPrice={menu.price} src ={menu.img}/>
     )

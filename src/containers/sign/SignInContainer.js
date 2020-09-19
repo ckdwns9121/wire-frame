@@ -1,67 +1,47 @@
 import React, { useState, useEffect, useCallback, useReducer } from "react";
+import useInputs from '../../hooks/useInputs';
 import { Paths } from "paths";
 import { useHistory } from "react-router-dom";
 import styles from "./Sign.module.scss";
-import SignNormalInput from "components/sign/SignNormalInput";
 import Button from "components/button/Button";
-import { localLogin, getUserInfo } from "../../api/auth/auth";
+import { localLogin } from "../../api/auth/auth";
 import { get_user_info } from "../../store/auth/auth";
 import { useDispatch } from "react-redux";
-import Header from "../../components/header/Header";
 import cn from "classnames/bind";
 import {KakaoLogo,NaverLogo,FacebookLogo} from '../../components/svg/sign/social';
 import CheckBox from 'components/checkbox/CheckBox';
 
 const cx = cn.bind(styles);
 
-const logo =
-  "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
 const initialUserState = {
   email: "",
   password: "",
 };
 
-const userReducer = (state, action) => {
-  switch (action.type) {
-    case "UPDATE_USER_EMAIL":
-      return {
-        ...state,
-        email: action.email,
-      };
-    case "UPDATE_USER_PASSWORD":
-      return {
-        ...state,
-        password: action.password,
-      };
-    default:
-      return state;
-  }
-};
 
 const SignInContainer = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [user, dispatchUser] = useReducer(userReducer, initialUserState);
-  const [checked, setChecked] = useState(false);
-  useEffect(() => {}, []);
 
-  const updateEmail = useCallback((e) => {
-    dispatchUser({ type: "UPDATE_USER_EMAIL", email: e.target.value });
-  });
-  const updatePassword = useCallback((e) => {
-    dispatchUser({ type: "UPDATE_USER_PASSWORD", password: e.target.value });
-  });
-  const updateChecked = useCallback(() => {
-    setChecked(!checked);
-    console.log(checked);
-  });
-  const goToSignup = useCallback(() => {
+  const [user_state,onChangeUserInput] = useInputs(initialUserState);
+  const {email,password} = user_state;
+
+  const [checked, setChecked] = useState(false);
+
+
+  const onChangeChecked =(e)=>{
+    setChecked(e.target.checked);
+  }
+  const onClickSignUp = () => {
     history.push(Paths.ajoonamu.signup);
-  });
-  const onLogin = useCallback(async () => {
-    console.log("Gd");
-    const { email, password } = user;
+  };
+
+  const onClickRecovery = () => {
+    history.push(Paths.ajoonamu.recovery);
+  };
+
+  const onClickLogin = useCallback(async () => {
     const res = await localLogin(email, password);
     console.log(res);
     if (res.status == 200) {
@@ -71,10 +51,8 @@ const SignInContainer = () => {
     } else {
       alert("이메일 혹은 패스워드를 확인해주세요");
     }
-  });
-  const goToRecovery = useCallback(() => {
-    history.push(Paths.ajoonamu.recovery);
-  });
+  },[email,password]);
+
 
   return (
       <div className={styles["container"]}>
@@ -83,28 +61,30 @@ const SignInContainer = () => {
           <div className={styles["user-input"]}>
             <input
               type="text"
-              value={user.email}
-              onChange={updateEmail}
+              name={"email"}
+              value={email}
+              onChange={onChangeUserInput}
               placeholder="이메일"
             ></input>
             <input
               type="password"
-              value={user.password}
-              onChange={updatePassword}
+              name={"password"}
+              value={password}
+              onChange={onChangeUserInput}
               placeholder="비밀번호"
             ></input>
           </div>
           <div className={styles['util']}>
             <div className={styles['keep-mail']}>
-            <CheckBox id={"check1"} text={"이메일 저장하기"} />
+            <CheckBox id={"check1"} text={"이메일 저장하기"} onChange={onChangeChecked} check={checked}/>
             </div>
-            <div className={styles['forgot-mail']} onClick={goToRecovery}>
+            <div className={styles['forgot-mail']}onClick={onClickRecovery}>
               <label className={styles["sub-text"]}>아이디/비밀번호 찾기</label>
             </div>
           </div>
 
-          <Button title={"로그인"} onClick={onLogin} toggle={true}></Button>
-          <Button title={"회원가입"} onClick={goToSignup}></Button>
+          <Button title={"로그인"} onClick={onClickLogin} toggle={true}></Button>
+          <Button title={"회원가입"} onClick={onClickSignUp}></Button>
 
           <div className={styles["sns-box"]}>
             <div className={styles["social-login"]}>

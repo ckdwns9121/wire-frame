@@ -1,7 +1,5 @@
 import React from 'react';
 import styles from './Custom.module.scss';
-import cn from 'classnames/bind';
-
 
 //추천 메뉴 아이템
 const CustomItem = ({datas}) => {
@@ -58,7 +56,7 @@ function CustomMenuItem({ src,menu_name,menu_count,menu_price }) {
 //추천 메뉴리스트에서 아이템 리스트를 렌더
 function CustomMenuItemList({ datas }) {
     const list = datas.map(item => (
-        <CustomMenuItem src={item.img}  menu_name={item.title} menu_count={item.count} menu_price={item.price}/>
+        <CustomMenuItem src={item.img} key={item.id} menu_name={item.title} menu_count={item.count} menu_price={item.price}/>
     ))
     return (
         <div className={styles['menu-list']}>
