@@ -23,7 +23,7 @@ const HomeContainer = () => {
     const [category, setCategory] = useState(0);
 
     const goToReverve = () => {
-        history.push(`${Paths.ajoonamu.reserve}/custom`);
+        history.push(`${Paths.ajoonamu.breakfast}`);
     };
 
     useEffect(() => {

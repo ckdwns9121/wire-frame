@@ -86,7 +86,7 @@ const Header = () => {
                             <HeadLink to={Paths.ajoonamu.shop}>예약주문</HeadLink>
                         </li>
                         <li>
-                            <HeadLink to="/">기업조식</HeadLink>
+                            <HeadLink to={Paths.ajoonamu.breakfast}>기업조식</HeadLink>
                         </li>
                         <li>
                             <HeadLink to={Paths.ajoonamu.event}>이벤트</HeadLink>

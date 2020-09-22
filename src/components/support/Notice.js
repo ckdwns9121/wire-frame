@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
 
 export default () => {
-
     const [list, setList] = useState([]);
     const history = useHistory();
 
@@ -25,7 +24,6 @@ export default () => {
     useEffect(() => {
         getNoticeList();
     }, [getNoticeList]);
-
 
     return (
         <div className={styles['box']}>
