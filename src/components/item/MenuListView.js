@@ -70,8 +70,7 @@ const initMenu = [
 function SampleNextArrow(props) {
     const { style, onClick } = props;
     return (
-        <div
-            style={{
+        <div style={{
                 ...style,
                 cursor: 'pointer',
                 position: 'absolute',
@@ -87,7 +86,7 @@ function SampleNextArrow(props) {
             }}
             onClick={onClick}
         >
-            <img src={Next} alt="next" />
+            <img style={{ display: 'block', width: '32px', height: '32px' }} src={Next} alt="next" />
         </div>
     );
 }
@@ -95,8 +94,7 @@ function SampleNextArrow(props) {
 function SamplePrevArrow(props) {
     const { style, onClick } = props;
     return (
-        <div
-            style={{
+        <div style={{
                 ...style,
                 cursor: 'pointer',
                 position: 'absolute',
@@ -112,7 +110,7 @@ function SamplePrevArrow(props) {
             }}
             onClick={onClick}
         >
-            <img src={Prev} alt="prev" />
+            <img style={{ display: 'block', width: '32px', height: '32px' }} src={Prev} alt="prev" />
         </div>
     );
 }
