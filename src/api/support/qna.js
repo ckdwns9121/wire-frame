@@ -1,17 +1,34 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
-export const requestQNAList = async (token) => {
+export const requestQNAList = async (token, limit, offset) => {
     const req = Paths.api + 'user/qna/list';
     const config = {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
+        params: {
+            limit, offset
+        }
     };
     const result = await axios.get(req, config);
     return result.data.query;
 };
+
+export const requestQNADetail = async (token, id) => {
+    const req = Paths.api + 'user/qna/view';
+    
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        params: { id }
+    };
+    const res = await axios.get(req, config);
+    return res;
+}
 
 export const requestQNAStore = async (token, {
     title: subject,

@@ -8,7 +8,7 @@ const Footer = () => (
             <div className={styles['title']}>
                 <div className={styles['tos']}>
                     <div className={styles['text1']}>
-                        <span>개인정보 처리방침</span>
+                        <span>개인정보처리방침</span>
                         <span>이용약관</span>
                     </div>
                 </div>

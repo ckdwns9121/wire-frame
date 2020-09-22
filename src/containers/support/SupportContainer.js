@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styles from './SupportContainer.module.scss';
 
@@ -15,21 +15,24 @@ const LinkList = [
     { name: "1:1문의", url: `${Paths.ajoonamu.support}/qna` },
 ];
 
-const content_titles = {
-    '/notice': "공지사항",
-    '/faq': "자주 묻는 질문",
-    '/qna': "1:1 문의"
-};
-
 export default ({ pathname }) => {
+    console.log(pathname);
 
-
+    const getTitle = useCallback((path) => {
+        if (path.indexOf('/qna') !== -1) {
+            return "1:1 문의";
+        } else if (path.indexOf('/faq') !== -1) {
+            return "자주 묻는 질문";
+        } else {
+            return "공지사항";
+        }
+    }, [])
 
     return (
         <div className={styles['container']}>
             <Sidebar title={"고객센터"} linkList={LinkList} active={'/support' + pathname} />
             <div className={styles['content']}>
-                <h2 className={styles['title']}>{content_titles[pathname]}</h2>
+                <h2 className={styles['title']}>{getTitle(pathname)}</h2>
                 <Switch>
                     <Route path={`${Paths.ajoonamu.support}/notice/:id?`} component={Notice} />
                     <Route path={`${Paths.ajoonamu.support}/qna/:id?`} component={QNA} />

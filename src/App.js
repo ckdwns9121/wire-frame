@@ -54,7 +54,7 @@ function App() {
                         <Route exact path={Paths.ajoonamu.cart} component={Cart}></Route>
 
                         <Route path={Paths.ajoonamu.support} component={Support}></Route>
-                        <Route path={Paths.ajoonamu.event} component={Event}></Route>
+                        <Route path={`${Paths.ajoonamu.event}/:id?`} component={Event}></Route>
                         <Route path={Paths.ajoonamu.order} component={Order}></Route>
                         <Route path ={`${Paths.ajoonamu.mypage}/:tab`} component={Mypage}></Route>
                     </Switch>

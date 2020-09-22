@@ -10,9 +10,9 @@ export default ({ title, linkList, active }) => (
         <h3 className={styles['title']}>{title}</h3>
         <ul className={styles['list']}>
             {linkList.map((item) => (
-                <li className={styles['item']}>
+                <li key={item.url} className={styles['item']}>
                     <Link
-                        className={cn('link', { active: active === item.url })}
+                        className={cn('link', { active: active.indexOf(item.url) !== -1 })}
                         to={item.url}
                     >
                         {item.name}
