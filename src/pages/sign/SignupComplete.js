@@ -1,13 +1,8 @@
 import React from 'react';
-import {Route} from 'react-router-dom';
 import SignCompleteContainer from 'containers/sign/SignCompleteContainer';
 
-const SignupComplete =({match})=>{
-    console.log(match.params.name);
-    return(
-        <SignCompleteContainer name={match.params.name}/>
-        // <Route path={`${match.url}/:name`} component={SignCompleteContainer}> </Route>
-    )
-}
+const SignupComplete = ({ match }) => (
+    <SignCompleteContainer name={match.params.name} />
+);
 
 export default SignupComplete;

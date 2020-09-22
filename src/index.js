@@ -1,35 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import * as serviceWorker from './serviceWorker';
-import {BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import createSagaMiddleware from 'redux-saga';
-import rootReducer,{rootSaga} from './store';
-import { createStore,applyMiddleware } from 'redux';
-import {createLogger} from 'redux-logger';
+import rootReducer, { rootSaga } from './store';
+import { createStore, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
 import { Provider } from 'react-redux';
-import {composeWithDevTools} from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const logger = createLogger();
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(logger,sagaMiddleware))
+    rootReducer,
+    composeWithDevTools(applyMiddleware(logger, sagaMiddleware)),
 );
 
 sagaMiddleware.run(rootSaga);
-  
+
 ReactDOM.render(
-  <BrowserRouter>
-  <Provider store={store}>
-    <App />
-  </Provider>
-  </BrowserRouter>,
-  document.getElementById('root')
+    <BrowserRouter>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </BrowserRouter>,
+    document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

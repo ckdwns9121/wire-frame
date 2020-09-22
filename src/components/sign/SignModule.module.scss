@@ -2,46 +2,59 @@
 .sign-input {
     display: flex;
     flex-direction: row;
-    margin:10px 0;
-    .label{
-        width: 130px;
-        height: 62px;
-        line-height: 62px;
+    margin-bottom: 10px;
+    .label {
+        max-width: 130px;
+        min-width: 130px; height: 56px;
+        line-height: 56px;
         font-size: 20px;
+        font-weight: 500;
         padding-left: 13px;
-        color:#222222;
+        color: #222222;
     }
     input {
         outline: none;
-        border:1px solid #ccc;
-        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        font-size: 1.333rem;
+        
         background: #fff;
-        height: 62px;
+        height: 56px;
         outline: none;
         box-sizing: border-box;
-    
-        &.normal{
+        padding: 16px;
+
+        &.normal {
             width: 540px;
         }
-        
-        &.auth{
+        &.auth {
             width: 360px;
         }
+        &::placeholder {
+            font-weight: 500;
+            color: #ccc;
+        }
     }
-    .auth-btn{
-        width: 160px;
+    .auth-btn {
+        max-width: 160px;
+        min-width: 160px;
         margin-left: 20px;
         border: 1px solid $main-color;
+        border-radius: 2px;
         box-sizing: border-box;
-        color:$main-color;
-        font-size:18px;
+        color: $main-color;
+        font-size: 1.5rem;
         font-weight: bold;
         cursor: pointer;
+
+
         display: flex;
         justify-content: center;
         align-items: center;
-        &:hover{
-            background-color: rgb(219, 219, 219);
+
+        transition: all .3s cubic-bezier(0.075, 0.82, 0.165, 1);
+        &:hover {
+            background-color: #f9f9f9;
         }
     }
 }

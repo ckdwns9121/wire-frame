@@ -1,88 +1,30 @@
 @import '../../../styles/Root.scss';
-.container{
+.container {
     width: 100%;
     height: 360px;
     overflow: hidden;
 }
-.slick-arrow .slick-prev{
+.slick-arrow .slick-prev {
     border: 1px solid black;
 }
 
-.item{
-    @include animation(1s,fadeIn);
+.item {
+    @include animation(1s, fadeIn);
 
     position: relative;
     width: 100%;
     background-size: cover;
-    background-image: url("../../../components/svg/home/slick.png");
+    background-position: center;
+    background-image: url('../../../components/svg/home/slick.png');
     color: #fff;
-    height:360px;
+    height: 360px;
 }
 
-
-@include keyframe(fadeIn){
-    from{
+@include keyframe(fadeIn) {
+    from {
         filter: blur(100px);
     }
-    to{
+    to {
         filter: blur(0);
     }
 }
-
-
-
-
-.count{
-    display: flex;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    width: 48px;
-    height: 22px;
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    text-align: center;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    color:rgb(197, 197, 197);
-
-    span:nth-child(1){
-        color:white;
-
-        &::after{
-         display: inline-block;
-         width: 1px;
-         height: 10px;
-         content: " ";
-         background: rgba(255, 255, 255, 0.8);
-         margin: 0px 6px;
-        }
-        
-    }
-
-}
-
-// :global  .slick-next {
-//     background: url('https://pocketsalad.co.kr/SkinImg/layout/btnNextVisual.png') center center no-repeat!important;
-//     background-size: cover;
-//     width: 160px;
-//     height: 160px;
-    
-//     z-index: 5;
-//     &::before {
-//       display: none;
-//     }
-// }
-// :global .slick-prev {
-//     background: url('https://pocketsalad.co.kr/SkinImg/layout/btnPrevVisual.png') center center no-repeat!important;
-//     background-size: cover;
-//     width: 160px;
-//     height: 160px;
-//     z-index: 5;
-//         &::before {
-//           display: none;
-//     }
-// }

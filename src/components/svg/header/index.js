@@ -1,4 +1,4 @@
-export {default as locationIcon} from './location.png';
-export {default as searchIcon} from './search.png';
-export {default as storeIcon} from './store.png';
-export {default as logo} from './logo.png';
+export { default as locationIcon } from './location.svg';
+export { default as searchIcon } from './search.svg';
+export { default as storeIcon } from './store.svg';
+export { default as logo } from './logo.svg';

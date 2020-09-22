@@ -1,128 +1,123 @@
 @import '../../styles/Root.scss';
-$header-height : 120px;
-.header{
+$header-height: 120px;
+.header {
     height: 176px;
-    color:black;
+    color: black;
     min-width: $min-width;
-    margin:0 auto;
-   .sub{
+    margin: 0 auto;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
+    .sub {
         width: 100%;
-        border-bottom:1px solid #F0F0F0;
+        border-bottom: 1px solid #f0f0f0;
         height: 55px;
-        .content{
-            padding:16px 0;
+        .content {
+            padding: 16px 24px;
             max-width: $max-width;
             min-width: $min-width;
             margin: 0 auto;
-            .addr-store{
+            .addr-store {
                 display: flex;
                 flex-direction: row;
-                .info{
-                  width: 100%;
+                .info {
+                    width: 100%;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
-                    &:first-child{
+                    &:first-child {
                         padding-right: 10px;
                     }
-                    img{
+                    img {
                         cursor: pointer;
-                        padding-right:5px;
+                        padding-right: 10px;
                     }
-                    .text{
-                        cursor : pointer;
-                    padding-right: 20px;
+                    .text {
+                        cursor: pointer;
+                        padding-right: 40px;
+                        color: #555;
+                        font-size: 1.333rem;
+                        font-weight: normal;
                     }
                 }
 
-                .auth{
+                .auth {
                     width: 100%;
                     display: flex;
                     align-items: center;
                     justify-content: flex-end;
-                    .box{
+                    .box {
                         cursor: pointer;
-                        &:first-child{
+                        &:first-child {
                             padding-right: 34px;
                         }
                     }
-    
                 }
-            
             }
-
-       
-            
         }
     }
-    .header-nav{
+    .header-nav {
         display: flex;
-        height: $header-height;
         align-items: center;
-        max-width: $max-width;
-        margin: 0 auto;
+        height: $header-height;
+        @include wireframe;
 
-        .header-logo{
-            width: 300px;
-            height:$header-height;
+        .header-logo {
+            height: $header-height;
             cursor: pointer;
-            .logo{
+            .logo {
                 width: 120px;
-                height:96px;
-                padding:11px 0;
+                height: 96px;
+                padding: 11px 0;
             }
         }
 
-        .header-menu{
+        .header-menu {
             display: flex;
             align-items: center;
+            justify-content: center;
             width: 100%;
-            height:$header-height;
+            height: $header-height;
         }
 
-        .header-input{
+        .header-input {
             display: flex;
             align-items: center;
-            width: 320px;
-            height:$header-height;
-            .input{
+            height: $header-height;
+            .input {
                 position: relative;
             }
-            .search{
+            .search {
                 width: 320px;
                 box-sizing: border-box;
-                border:1px solid #EBEBEB;
+                border: 2px solid #ebebeb;
                 border-radius: 100px;
                 height: 48px;
                 outline: none;
-                padding-left:24px;
+                padding-left: 24px;
             }
-            .icon{
+            .icon {
                 position: absolute;
-                top:50%;
+                top: 50%;
                 transform: translateY(-50%);
                 right: 20px;
             }
-
         }
-        
     }
 }
 
-.header ul{
-    list-style:none;
-    min-width: 720px;
-    
+.header ul {
+    list-style: none;
 }
-.header li{
+.header li {
     float: left;
-    margin: 0 30px 0 30px;
+    margin: 0 37px;
     cursor: pointer;
     font-size: 22px;
     font-weight: bold;
-    color:#222;
-    &:first-child{
-        margin-left:0;
+    color: #222;
+    &:first-child {
+        margin-left: 0;
+    }
+    &:last-child {
+        margin-right: 0;
     }
 }
-

@@ -1,74 +1,81 @@
 @import '../../styles/Root.scss';
 
-.container{
+.container {
     @include wireframe;
-    .content{
+    .content {
         width: 680px;
         @include content;
-            .title{
-                @include title;
+        .title {
+            @include title;
+        }
+        .box {
+            &:first-child {
+                margin-bottom: 50px;
             }
-            .box{
-                &:first-child{
-                    margin-bottom: 50px;
-                }
+        }
+        .item {
+            cursor: pointer;
+            margin-top: 20px;
+            &:first-child {
+                margin-top: 0zpx;
             }
-            .item{
-                cursor: pointer;
-                margin-top: 20px;
-                &:first-child{
-                    margin-top: 0Zpx;
-                }
-                .link-box{
-                    width: 100%;
-                    height: 160px;
-                    border:1px solid #dbdbdb;
-                    border-radius: 10px;
-                    box-sizing: border-box;
-                    .icon{
-                        display: inline-block;
-                        float: left;
-                        width: 180px;
-                        height: 100%;
-                        text-align: center;
-                        line-height: 160px;
-                        img{
-                            vertical-align: middle;
-                        }
-                    }
-                    .table{
-                        display:table;
-                        float: left;
-                        height: 160px;
-                        .cell{
-                            display: table-cell;
-                            vertical-align: middle;
-                            .main{
-                                font-size: 26px;
-                                font-weight: bold;
-                                color:#222;
-                                margin-bottom: 18px;
-                            }
-                            .coment{
-                                font-size: 16px;
-                                color:#555;
-                            }
-                        }
-                    }
-                }
-            }
-            .auth-phone{
-                width: 100%;
-                height: 82px;
+            .link-box {
+                width: 100%; height: 160px;
+                border: 1px solid #dbdbdb;
+                border-radius: 10px;
                 box-sizing: border-box;
+                text-align: left;
+                display: block;
+                .icon {
+                    display: inline-block;
+                    width: 180px; height: 100%;
+                    float: left;
+                    text-align: center;
+                    line-height: 160px;
+                    img {
+                        vertical-align: middle;
+                    }
+                }
+                .table {
+                    display: table;
+                    float: left;
+                    height: 160px;
+                    .cell {
+                        display: table-cell;
+                        vertical-align: middle;
+                        .main {
+                            font-size: 26px;
+                            font-weight: bold;
+                            color: #222;
+                            margin-bottom: 18px;
+                        }
+                        .coment {
+                            font-size: 16px;
+                            color: #555;
+                        }
+                    }
+                }
             }
-
-
+        }
+        .auth-phone {
+            width: 100%;
+            height: 82px;
+            box-sizing: border-box;
+        }
     }
-    .btn{
-        padding-top:80px;
-        padding-left:95px;
-        padding-right:95px;
-
+    .btn {
+        padding-top: 80px;
+        padding-left: 95px;
+        padding-right: 95px;
     }
+}
+
+.small-divider {
+    padding: 5px;
+}
+.divider {
+    padding: 15px;
+}
+.big-divider {
+    padding: 25px;
 }

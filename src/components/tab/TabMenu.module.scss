@@ -1,13 +1,13 @@
 @import '../../styles/Root.scss';
 
-
-.tab-item{
-
-    height: 100%;
-    cursor: pointer;
-    width: 100% !important;
-    font-size: 20px !important;
-    flex : 1 1 auto !important;
-    max-width: unset !important;
- }
-
+html, body {
+    .tab-item{
+        height: 100%;
+        cursor: pointer;
+        width: 100% !important;
+        font-size: 20px !important;
+        flex : 1 1 auto !important;
+        max-width: unset !important;
+        border-bottom: solid 2px #000;
+    }
+}

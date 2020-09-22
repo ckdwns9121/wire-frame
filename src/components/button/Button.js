@@ -1,17 +1,20 @@
 import React from 'react';
 import styles from './Button.module.scss';
 import cn from 'classnames/bind';
+import { ButtonBase } from '@material-ui/core';
 const cx = cn.bind(styles);
 
+const Button = ({ title, disable, onClick, toggle }) => {
+    return (
+        <ButtonBase className={cx('btn', { toggle, disable })} onClick={onClick}>
+            {title}
+        </ButtonBase>
+    );
+};
 
-const Button =({title, onClick,toggle})=>{
-    return(
-        <div className={cx('btn',{toggle:toggle})} onClick ={onClick}>{title}</div>
-    )
-}
+Button.defaultProps = {
+    toggle: false,
+    disable: false,
+};
 
-Button.defaultProps={
-    toggle:false,
-}
-
-export default Button; 
+export default Button;

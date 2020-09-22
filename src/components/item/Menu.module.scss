@@ -1,13 +1,12 @@
 @import '../../styles/Root.scss';
 
-$pd-none :true;
-$value1 :-71px;
-$value2 : 71px;
-.menu-list{
-    margin: $value1 0 0 $value1;
+$pd-none: true;
+$value1: -71px;
+$value2: 71px;
+.menu-list {
     box-sizing: border-box;
-    &::after{
-        content: "";
+    &::after {
+        content: '';
         display: block;
         width: 0;
         height: 0;
@@ -15,57 +14,61 @@ $value2 : 71px;
         clear: both;
     }
 }
-.menu-item{
-
-    @include animation(0.5s,fadeIn);
+.menu-item {
+    @include animation(0.5s, fadeIn);
     float: left;
-    margin: $value2 0 0 $value2;
     box-sizing: border-box;
     width: 290px;
-    padding-top:40px;
+    padding-top: 40px;
     height: auto;
     cursor: pointer;
 
-    .menu-img{
-        img{
+    .menu-img {
+        img {
             width: 290px;
             height: 344px;
         }
     }
 
     //메뉴 정보 텍스트 영역
-    .menu-info{
+    .menu-info {
         width: 100%;
-        padding-top:38px;
-        .menu-title{
+        padding-top: 38px;
+        .menu-title {
             font-size: 22px;
-            color:#222;
+            color: #222;
             font-weight: bold;
             margin: 5px 0 5px 0;
         }
-        .menu-text{
-            font-size:14px;
-            color :#999999;
+        .menu-text {
+            font-size: 14px;
+            color: #999999;
             margin: 5px 0 5px 0;
         }
-        .menu-price{
-            font-size:24px;
-            color:#222222;
+        .menu-price {
+            font-size: 24px;
+            color: #222222;
             font-weight: bold;
         }
     }
-
+    & + & {
+        margin-left: 40px;
+    }
+    &:nth-child(4n+1) {
+        margin-left: 0;
+    }
+    
 }
 
-@include keyframe(fadeIn){
-    from{
+@include keyframe(fadeIn) {
+    from {
         filter: blur(100px);
     }
-    to{
+    to {
         filter: blur(0);
     }
 }
 
-.pd-box{
+.pd-box {
     padding: 0 20px;
 }

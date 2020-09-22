@@ -1,63 +1,70 @@
 @import '../../styles/Root.scss';
 
-.container{
+.container {
     @include wireframe;
-    .content{
-        &.sign-in{
-            width: 500px;
+    .content {
+        &.sign-in {
+            width: 480px;
         }
-        &.complete{
+        &.complete {
             width: 480px;
         }
         width: 670px;
         position: relative;
         @include content;
-        padding-top:73px;
-        padding-bottom:85px;
-        .title{
-               color:#222;
+        padding-top: 73px;
+        padding-bottom: 85px;
+        .title {
+            color: #222;
             width: 100%;
-            margin:  0 auto;
-            font-size: 36px;
+            margin: 0 auto;
+            font-size: 3rem;
             font-weight: bold;
             text-align: center;
-            padding-bottom: 60px;
+            margin-bottom: 65px;
         }
-        .user-input{
-            input{
-                width: 100%;
-                height: 64px;
+        .user-input {
+            input {
+                width: 100%; height: 64px;
                 outline: none;
-                border:1px solid #ccc;
+                border: 1px solid #ccc;
                 background-color: #fff;
                 border-radius: 10px;
                 padding-left: 20px;
-                margin: 13px 0;
                 box-sizing: border-box;
+                margin-bottom: 12px;
+
+                font-size: 1.333rem;
+
+                &::placeholder {
+                    color: #ccc;
+                    font-weight: 500;
+                }
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
         }
-        .sns-box{
-            .social-login{
+        .sns-box {
+            .social-login {
                 position: relative;
-                padding-top :60px;
+                padding-top: 60px;
                 text-align: center;
-                .text{
-                    color:#222;
+                .text {
+                    color: #222;
                     font-size: 20px;
-                    height: auto;
-                    text-align: center;
-                    background-color:white;
+                    font-weight: 500;
+                    background-color: #fff;
                     z-index: 900;
                     display: inline-block;
                     position: absolute;
-                    top:80%;
-                    left:50%;
-                    padding: 0 24px;
+                    top: 80%; left: 50%;
+                    width: 140px;
+                    text-align: center;
                     transform: translateX(-50%);
-                    
                 }
-                .line{
-                    border:1px solid #EBEBEB;
+                .line {
+                    border: 1px solid #ebebeb;
                     border-radius: 2px;
                     width: 100%;
                     position: absolute;
@@ -68,131 +75,140 @@
     }
 }
 
-
-.util{
-    margin: 20px 0;
+.util {
+    margin-top: 20px;
+    margin-bottom: 40px;
     overflow: hidden;
     display: table;
     width: 100%;
     height: 0;
     padding: 0;
     clear: both;
-    .keep-mail{
+    .keep-mail {
         float: left;
         display: inline;
-
     }
-    .forgot-mail{
-     
-        padding:5px 0;
-        float:right;
+    .forgot-mail {
+        padding: 5px 0;
+        float: right;
         display: inline;
     }
 }
 
-
-.sub-text{
-    font-size: 14px;
-    color: #999999;
+.sub-text {
+    font-size: 1.333rem;
+    color: #555;
+    font-weight: 500;
     line-height: 1.2;
     position: relative;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
-
 .social {
-    margin: 28px 0;
+    margin: 28px auto;
+    width: 320px;
     display: flex;
     flex-direction: row;
     justify-content: center;
 
     .sns {
-        width: 100%;
-        height: 50px;
         display: flex;
         justify-content: center;
+        width: 100%;
         margin: 20px 0 20px 0;
         img {
-            width: 50px;
+            width: 80px;
+            height: 80px;
         }
     }
 }
-
 
 .agree {
     max-width: $max-width;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
-    border-top:2px solid #EBEBEB;
-    border-bottom:2px solid #EBEBEB;
-    margin:60px 0;
-    padding:36px 0;
-    padding-left:143px;
-    .all{
-        label{
+    border-top: 2px solid #ebebeb;
+    border-bottom: 2px solid #ebebeb;
+    margin: 60px 0;
+    padding: 40px 0;
+    .const {
+        max-width: 130px;
+        min-width: 130px;
         font-size: 20px;
-        font-weight: bold;
-        color:#222;
-        }
+        font-weight: 500;
+        padding-left: 13px;
+        color: #222222;
     }
-    label {
-        color: #777777;
+    .all {
+        margin-bottom: 40px;
+        label {
+            font-size: 1.667rem;
+            font-weight: bold;
+            color: #222;
+        }
     }
     //SMS 알림
     .sms {
-        padding-left :49px;
-        width: 100%;
-        margin-top: 24px;
-    }
-    .chk-box{
-        margin:15px 0;
-
+        .sub-text {
+            label {
+                width: 100%;
+                font-size: 1.167rem;
+                font-weight: normal;
+                color: #777;
+                padding-left: 49px;
+            }
+        }
     }
 }
 
+.chk-box {
+    & + & {
+        margin-top: 20px;
+    }
+}
 //회원가입창 비밀번호 일치 불일치
 .compare {
-    font-size: 14px;
-    padding-left:143px;
+    font-size: 1.167rem;
+    padding-left: 143px;
     color: #a61332;
-    margin-bottom: 30px;
+    margin-bottom: 60px;
     overflow: hidden;
     transition: all 0.15s ease-in-out;
     height: 20px;
     &.on {
-        font-size: 14px;
         color: $main-color;
-        margin-bottom: 30px;
     }
     &.not_view {
         height: 0px;
     }
 }
 
+.divider {
+    width: 100%;
+    padding: 15px;
+}
 
 // 회원정보 찾기 링크
-.link-box{
+.link-box {
     width: 100%;
     height: 192px;
     border: 0px solid red;
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    .item{
+    .item {
         margin: 0 20px 0 20px;
         width: 200px;
         height: 80%;
         cursor: pointer;
         // border: 1px solid black;
     }
-
 }
-.btn{
-    padding-bottom:160px;
+.btn {
+    padding-bottom: 160px;
 }
-.pd-box{
+.pd-box {
     padding-left: 94px;
-    padding-right:94px;
+    padding-right: 94px;
 }

@@ -1,72 +1,65 @@
 @import '../../styles/Root.scss';
-.footer{
-    min-width: $min-width;
-    width: 100%;
+.footer {
     height: 250px;
-    background-color:#F9F9F9;
-    .content{
-        border-top:1px  solid #ebebeb;
-        border-bottom:1px  solid #ebebeb;
+    background-color: #f9f9f9;
+    .content {
+        border-top: 1px solid #ebebeb;
+        border-bottom: 1px solid #ebebeb;
         height: 64px;
         background-color: #fff;
-        .title{
-            width: 100%;
-            max-width: $min-width;
-            margin : 0 auto;
+        .title {
+            @include wireframe;
             height: 100%;
-            .tos{
+            .tos {
                 font-size: 16px;
                 height: 64px;
                 display: table;
                 float: left;
-                .text1{  
+                .text1 {
                     display: table-cell;
                     vertical-align: middle;
-                        color:#777;
-                   span{
-                    cursor: pointer;
+                    color: #777;
+                    span {
+                        cursor: pointer;
 
-                       &:first-child{
-                        font-weight: bold;
-                        color: #222;
-                        padding-right:24px;
-                       }
-                   }
-                   
+                        &:first-child {
+                            font-weight: bold;
+                            color: #222;
+                            padding-right: 24px;
+                        }
+                    }
                 }
             }
-            .sns{
+            .sns {
                 height: 64px;
                 width: 30px;
-                float:right;
+                float: right;
                 display: table;
-                .asset{
+                .asset {
                     cursor: pointer;
                     width: 32px;
                     height: 32px;
                     display: table-cell;
                     vertical-align: middle;
-                    padding:0 20px;
+                    padding: 0 20px;
                 }
             }
         }
-        .context{
-            width: 100%;
-            max-width: $min-width;
-            margin : 0 auto;
+        .context {
+            @include wireframe;
             height: 186px;
-            .contact-table{
+            .contact-table {
                 width: 260px;
                 height: 100%;
                 display: table;
-                .cell{
+                .cell {
                     font-size: 26px;
                     display: table-cell;
                     vertical-align: middle;
-                    .text{
-                        color:#222;
+                    .text {
+                        color: #222;
                     }
-                    .number{
+                    .number {
                         font-weight: bold;
                         font-size: 40px;
                     }
