@@ -28,33 +28,33 @@ const AddressContainer = () => {
     }, [calltest]);
 
     const callApi = useCallback(() => {
-      return fetch(
-          `http://www.juso.go.kr/addrlink/addrLinkApi.do?currrentPage=1&countPerPage=100&keyword=${searchAddr}&confmKey=${key}=&resultType=json`,
-      )
-          .then((res) => res.json())
-          .then((json) => json.results.juso)
-          .catch((err) => console.log(err));
-  }, [searchAddr]); //search가 바뀌었을때 함수생성
-  
+        return fetch(
+            `http://www.juso.go.kr/addrlink/addrLinkApi.do?currrentPage=1&countPerPage=100&keyword=${searchAddr}&confmKey=${key}=&resultType=json`,
+        )
+            .then((res) => res.json())
+            .then((json) => json.results.juso)
+            .catch((err) => console.log(err));
+    }, [searchAddr]); //search가 바뀌었을때 함수생성
+
     const onSearchClick = useCallback(async () => {
-      if (searchAddr === '') {
-          alert('검색어를 입력해주세요.~');
-          return;
-      } else {
-          const result = await callApi();
-          setAddrs(result);
-      }
-  }, [searchAddr, callApi]); //search 혹은 addrs 가 바뀌었을때만 함수생성
+        if (searchAddr === '') {
+            alert('검색어를 입력해주세요.~');
+            return;
+        } else {
+            const result = await callApi();
+            setAddrs(result);
+        }
+    }, [searchAddr, callApi]); //search 혹은 addrs 가 바뀌었을때만 함수생성
 
     const handleOpen = useCallback(() => {
-      if (searchAddr === '') {
-          alert('검색어를 입력해주세요!!.');
-          return;
-      } else {
-          setOpen(true);
-          onSearchClick();
-      }
-  }, [searchAddr, onSearchClick]);
+        if (searchAddr === '') {
+            alert('검색어를 입력해주세요!!.');
+            return;
+        } else {
+            setOpen(true);
+            onSearchClick();
+        }
+    }, [searchAddr, onSearchClick]);
 
     const handleClose = useCallback(() => {
         setOpen(false);
@@ -75,24 +75,16 @@ const AddressContainer = () => {
         setDetailAddr('');
     }, [detailAddr]);
 
-    const onClickAddrItem = useCallback(
-        (data) => {
-            setSelectAddr(data);
-        },
-        [],
-    );
-    const onChangeSearchAddr = useCallback(
-        (e) => {
-            serSearch(e.target.value);
-        },
-        [],
-    );
+    const onClickAddrItem = useCallback((data) => {
+        setSelectAddr(data);
+    }, []);
+    const onChangeSearchAddr = useCallback((e) => {
+        serSearch(e.target.value);
+    }, []);
 
     const onChangeDetail = (e) => {
         setDetailAddr(e.target.value);
     };
-
-
 
     return (
         <>
@@ -114,9 +106,11 @@ const AddressContainer = () => {
                 </div>
             </div>
             <div className={styles['container']}>
-                <div className={styles['addr-list']}>
+                <div className={styles['content']}>
                     <div className={styles['addr-title']}>최근 배달 주소</div>
-                    <DeliveryItemList addrs={delivery_addrs} />
+                    <div className={styles['addr-list']}>
+                        <DeliveryItemList addrs={delivery_addrs} />
+                    </div>
                 </div>
             </div>
             <AddressModal

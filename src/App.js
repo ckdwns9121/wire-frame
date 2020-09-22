@@ -19,7 +19,7 @@ import {
     Event
 } from 'pages';
 import { Home, Address, Reserve, DetailMenu } from 'pages';
-import { Cart, Order } from 'pages';
+import { Cart, Order ,OrderComplete} from 'pages';
 import { Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -56,6 +56,7 @@ function App() {
                         <Route path={Paths.ajoonamu.support} component={Support}></Route>
                         <Route path={Paths.ajoonamu.event} component={Event}></Route>
                         <Route path={Paths.ajoonamu.order} component={Order}></Route>
+                        <Route path={Paths.ajoonamu.order_complete} component={OrderComplete}></Route>
                         <Route path ={`${Paths.ajoonamu.mypage}/:tab`} component={Mypage}></Route>
                     </Switch>
                 <Footer/>

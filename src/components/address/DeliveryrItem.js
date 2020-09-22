@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Addr.module.scss';
-
+import Cross from '../svg/cross/Cross';
 const DeliveryrItem = (props) => {
 
     /* 
@@ -20,16 +20,12 @@ const DeliveryrItem = (props) => {
     }
 
     return (
-        <div className={styles['latest-item']} onClick={handleClick}>
-            <div className={styles['item-box']}>
+        <div className={styles['address-item']} onClick={handleClick}>
                 <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
                 <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
-            </div>
-            <div className={styles['item-remove']} onClick={(e) => {
-                e.stopPropagation();
-                handleRemove()
-            }}> &times;
-            </div>
+                <div className={styles['delete']}>
+                <Cross color="#555" angle={45} />
+                </div>
         </div>
     )
 }
@@ -50,7 +46,7 @@ const RoadAddrBox = ({ roadAddr }) => {
 const AddrBtn = () => {
     return (
         <div className={styles['btn']}>
-            도로명
+            지번
         </div>
     )
 }
