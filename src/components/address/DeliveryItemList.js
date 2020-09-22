@@ -7,7 +7,6 @@ const DeliveryItemList =(props)=>{
     /*
         최근주소 컴포넌트를 렌더할 리스트
     */ 
-   console.log(props);
    const list = props.addrs.map((addr) =>(
        <DeliveryrItem {...addr} key={addr.delivery_id}/>
    ))

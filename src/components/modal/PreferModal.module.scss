@@ -1,6 +1,7 @@
 @import '../../styles/Modal.scss';
-.modal{
-    // max-width: 600px;
+
+.dialog >div >div{
+    max-width: 540px !important;
 }
 .title-bar{
     position: relative;

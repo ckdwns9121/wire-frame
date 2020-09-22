@@ -15,6 +15,10 @@ $border-radius :10px;
 :global input[type="checkbox"] {
     display: none;
 }
+:global input{
+    outline: none;
+    box-sizing: border-box;
+}
 @mixin padding-side{
     padding : 0 24px;
 }

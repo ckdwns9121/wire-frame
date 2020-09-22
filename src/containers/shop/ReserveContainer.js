@@ -115,7 +115,7 @@ const ReserveContainer = ({ menu = "0" }) => {
   };
 
   useEffect(()=>{
-    getCustomList();
+    // getCustomList();
     getMenuListApi();
   },[])
 

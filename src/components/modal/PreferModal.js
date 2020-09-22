@@ -1,30 +1,19 @@
 import React from "react";
 import styles from "./PreferModal.module.scss";
 import Dialog from "@material-ui/core/Dialog";
-import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from '../svg/modal/CloseIcon';
 
-import Counter from "components/counter/Counter";
-
-const useStyles = makeStyles((theme) => ({
-  dialog: {
-    width: 540,
-    border: "1px solid red",
-  },
-}));
 
 const ReserveModal = (props) => {
-  const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("sm");
-  const classes = useStyles();
 
   return (
     <Dialog
-      fullWidth={fullWidth}
-      maxWidth={maxWidth}
+      fullWidth={true}
+      maxWidth={"sm"}
       open={props.open}
       onClose={props.handleClose}
       aria-labelledby="form-dialog-title"
+      className={styles['dialog']}
     >
       <div className={styles["title-bar"]}>
         <div className={styles["title"]}> 맞춤주문 설정 </div>
