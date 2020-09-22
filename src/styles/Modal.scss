@@ -1,25 +1,25 @@
 @import './Root.scss';
 
-@mixin modal-title{
-    background-color:$main-color;
-    font-size:24px;
+@mixin modal-title {
+    background-color: $main-color;
+    font-size: 24px;
     font-weight: bold;
-    padding:24px 40px;
-    color:#fff;
+    padding: 24px 40px;
+    color: #fff;
 }
-@mixin modal-content{
-    padding :40px;
+@mixin modal-content {
+    padding: 40px;
 }
 
-@mixin modal-label{
-    font-size:18px;
-    color:#555;
-    padding : 20px 0;
+@mixin modal-label {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #555;
     font-weight: bold;
 }
-@mixin close-icon{
+@mixin close-icon {
     position: absolute;
-    top:50%;
+    top: 50%;
     right: 40px;
     transform: translateY(-50%);
     cursor: pointer;

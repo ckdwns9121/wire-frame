@@ -1,13 +1,19 @@
 @import '../../styles/Root.scss';
 
 html, body {
-    .tab-item{
-        height: 100%;
+    .tab-item {
+        height: 64px;
         cursor: pointer;
         width: 100% !important;
         font-size: 20px !important;
         flex : 1 1 auto !important;
-        max-width: unset !important;
         border-bottom: solid 2px #000;
+        color: #999;
+        font-weight: normal;
+
+    }
+    :global(.Mui-selected) {
+        color: #222;
+        font-weight: 20px;
     }
 }

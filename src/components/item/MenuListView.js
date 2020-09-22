@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './MenuList.module.scss';
 import Slider from 'react-slick';
-import MenuItem from './MainMenuItem';
+import MainMenuItem from './MainMenuItem';
 import menu1 from '../svg/menu/menu1.png';
 import menu2 from '../svg/menu/menu2.png';
 import menu3 from '../svg/menu/menu3.png';
@@ -9,6 +9,7 @@ import menu4 from '../svg/menu/menu4.png';
 
 import Prev from '../svg/menu/prev.svg';
 import Next from '../svg/menu/next.svg';
+import { IconButton } from '@material-ui/core';
 
 const initMenu = [
     {
@@ -70,7 +71,7 @@ const initMenu = [
 function SampleNextArrow(props) {
     const { style, onClick } = props;
     return (
-        <div style={{
+        <IconButton style={{
                 ...style,
                 cursor: 'pointer',
                 position: 'absolute',
@@ -87,14 +88,14 @@ function SampleNextArrow(props) {
             onClick={onClick}
         >
             <img style={{ display: 'block', width: '32px', height: '32px' }} src={Next} alt="next" />
-        </div>
+        </IconButton>
     );
 }
 
 function SamplePrevArrow(props) {
     const { style, onClick } = props;
     return (
-        <div style={{
+        <IconButton style={{
                 ...style,
                 cursor: 'pointer',
                 position: 'absolute',
@@ -111,14 +112,14 @@ function SamplePrevArrow(props) {
             onClick={onClick}
         >
             <img style={{ display: 'block', width: '32px', height: '32px' }} src={Prev} alt="prev" />
-        </div>
+        </IconButton>
     );
 }
 
 // 슬릭추가
 const MeunListView = () => {
     const menuList = initMenu.map((menu) => (
-        <MenuItem
+        <MainMenuItem
             key={menu.id}
             menuTitle={menu.title}
             menuText={menu.text}

@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     tabs: {
         width: '100%',
-        minHeight: '40px',
+        minHeight: '64px',
         margin: '0 auto',
         backgroundColor: '#fff',
     },
@@ -37,7 +37,7 @@ const TabMenu = ({ tabs, index, onChange }) => {
             TabIndicatorProps={{
                 style: {
                     backgroundColor: 'transparent',
-                    height: '46px',
+                    height: '64px',
                     border: '2px solid black',
                     borderBottom: '2px solid white',
                     boxSizing: 'border-box',

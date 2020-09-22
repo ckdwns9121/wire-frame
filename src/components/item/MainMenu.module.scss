@@ -20,6 +20,7 @@ $value2: 71px;
     box-sizing: border-box;
     width: 290px;
     padding-top: 40px;
+    margin: 0 20px;
     height: auto;
     cursor: pointer;
 
@@ -33,7 +34,7 @@ $value2: 71px;
     //메뉴 정보 텍스트 영역
     .menu-info {
         width: 100%;
-        padding-top: 38px;
+        padding-top: 40px;
         text-align: center;
         .menu-title {
             font-size: 20px;
@@ -47,13 +48,6 @@ $value2: 71px;
             font-weight: bold;
         }
     }
-    & + & {
-        margin-left: 40px;
-    }
-    &:nth-child(4n+1) {
-        margin-left: 0;
-    }
-    
 }
 
 @include keyframe(fadeIn) {

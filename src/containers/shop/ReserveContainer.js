@@ -11,7 +11,6 @@ import { getCustomMenuList, getMenuList } from '../../api/menu/menu';
 import PreferModal from '../../components/modal/PreferModal';
 import { useHistory } from 'react-router';
 
-import Typography from '@material-ui/core/Typography';
 import ShopBanner from '../../components/svg/shop/shop_banner.png';
 
 const tabInit = [
@@ -54,7 +53,8 @@ function TabPanel(props) {
 const ReserveContainer = ({ menu = '0' }) => {
     const history = useHistory();
     const [open, setOpen] = useState(false);
-    const [budget, setBudget] = useState(0); //맞춤 가격
+    const [budget, setBudget] = useState(0); // 맞춤 가격
+    const [endBudget, setEndBudget] = useState(0); // 맞춤 가격 끝
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [tab_index, setTab] = useState(parseInt(menu));
@@ -81,7 +81,6 @@ const ReserveContainer = ({ menu = '0' }) => {
     };
 
     const onClickCustomOrder = () => {
-        console.log('GD');
         setOpen(false);
         getCustomList();
     };
@@ -166,7 +165,6 @@ const ReserveContainer = ({ menu = '0' }) => {
                     <div className={styles['shop']}>{renderContent()}</div>
                 </div>
             </div>
-
             <PreferModal
                 open={open}
                 handleClose={handleClose}

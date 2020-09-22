@@ -20,7 +20,7 @@ $value2: 71px;
     box-sizing: border-box;
     width: 290px;
     padding-top: 40px;
-    height: auto;
+    padding-bottom: 60px;
     cursor: pointer;
 
     .menu-img {
@@ -33,17 +33,17 @@ $value2: 71px;
     //메뉴 정보 텍스트 영역
     .menu-info {
         width: 100%;
-        padding-top: 38px;
+        padding-top: 20px;
         .menu-title {
             font-size: 22px;
             color: #222;
             font-weight: bold;
-            margin: 5px 0 5px 0;
+            margin-bottom: 12px;
         }
         .menu-text {
             font-size: 14px;
             color: #999999;
-            margin: 5px 0 5px 0;
+            margin-bottom: 20px;
         }
         .menu-price {
             font-size: 24px;
@@ -54,10 +54,9 @@ $value2: 71px;
     & + & {
         margin-left: 40px;
     }
-    &:nth-child(4n+1) {
+    &:nth-child(4n + 1) {
         margin-left: 0;
     }
-    
 }
 
 @include keyframe(fadeIn) {
@@ -70,5 +69,5 @@ $value2: 71px;
 }
 
 .pd-box {
-    padding: 0 20px;
+    padding: 0 10px;
 }
