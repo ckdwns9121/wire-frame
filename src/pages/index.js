@@ -13,5 +13,7 @@ export { default as DetailMenu } from './shop/DetailMenu';
 export { default as Cart } from './cart/Cart';
 export { default as Order } from './order/Order';
 export { default as Mypage } from './mypage/Mypage';
+export { default as Support } from './support/Support';
+export { default as Event } from './event/Event';
 
 export { default as Error } from './error/Error';

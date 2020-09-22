@@ -4,9 +4,12 @@ import styles from './Custom.module.scss';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 //추천 메뉴 아이템
 const CustomItem = ({ datas, index }) => {
+    const history = useHistory();
     useEffect(() => {
         AOS.init({ duration: 1000 });
     }, []);
@@ -25,8 +28,8 @@ const CustomItem = ({ datas, index }) => {
                         <span className={styles['price']}>1,110,000원</span>
                     </div>
                     <div className={styles['box']}>
-                        <ButtonBase className={styles['cart-btn']}>장바구니</ButtonBase>
-                        <ButtonBase className={styles['order-btn']}>구매하기</ButtonBase>
+                        <ButtonBase onClick={() => history.push(Paths.ajoonamu.cart)} className={styles['cart-btn']}>장바구니</ButtonBase>
+                        <ButtonBase onClick={() => history.push(Paths.ajoonamu.product)} className={styles['order-btn']}>구매하기</ButtonBase>
                     </div>
                 </div>
             </div>

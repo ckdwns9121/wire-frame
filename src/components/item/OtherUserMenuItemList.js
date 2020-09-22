@@ -3,33 +3,6 @@ import styles from './OtherMenu.module.scss';
 import Slider from 'react-slick';
 import OtherUserMenuItem from './OtherUserMenuItem';
 
-function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-        <div
-            className={className}
-            style={{ ...style, display: 'block', background: 'red' }}
-            onClick={onClick}
-        />
-    );
-}
-
-function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    console.log(props);
-    return (
-        <div
-            className={className}
-            style={{
-                ...style,
-                display: 'block',
-                background: 'black',
-                border: '1px solid blue',
-            }}
-            onClick={onClick}
-        />
-    );
-}
 
 // 슬릭추가
 const OtherUserMenuItemList = ({ menu_list }) => {
@@ -51,12 +24,9 @@ const OtherUserMenuItemList = ({ menu_list }) => {
 
     const settings = {
         infinite: true,
-        autoplay: true,
         speed: 500,
         slidesToShow: 5,
         slidesToScroll: 5,
-        nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />,
     };
 
     return (

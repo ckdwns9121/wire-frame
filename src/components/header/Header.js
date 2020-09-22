@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Header.module.scss';
@@ -18,11 +18,17 @@ const TabLink = styled(NavLink)`
     }
 `;
 
+const HeadLink = styled(Link)`
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    text-decoration: none;
+`;
+
 const Header = () => {
     const history = useHistory();
 
     const onClickHome = () => history.push(Paths.index);
-    const onClickShop = () => history.push(`${Paths.ajoonamu.shop}?menu=0`);
     const onClickAddr = () => history.push(Paths.ajoonamu.address);
 
     return (
@@ -73,11 +79,21 @@ const Header = () => {
                 </div>
                 <div className={styles['header-menu']}>
                     <ul>
-                        <li onClick={onClickHome}>브랜드홈</li>
-                        <li onClick={onClickShop}>예약주문</li>
-                        <li>기업조식</li>
-                        <li>이벤트</li>
-                        <li>고객센터</li>
+                        <li onClick={onClickHome}>
+                            <HeadLink to={Paths.index}>브랜드홈</HeadLink>
+                        </li>
+                        <li>
+                            <HeadLink to={Paths.ajoonamu.shop}>예약주문</HeadLink>
+                        </li>
+                        <li>
+                            <HeadLink to="/">기업조식</HeadLink>
+                        </li>
+                        <li>
+                            <HeadLink to={Paths.ajoonamu.event}>이벤트</HeadLink>
+                        </li>
+                        <li>
+                            <HeadLink to={Paths.ajoonamu.support}>고객센터</HeadLink>
+                        </li>
                     </ul>
                 </div>
                 <div className={styles['header-input']}>

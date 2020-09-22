@@ -1,0 +1,19 @@
+@import '../../styles/Root.scss';
+
+.container {
+    display: table;
+    @include wireframe;
+
+
+    .content {
+        padding-left: 80px;
+        padding-top: 80px;
+        padding-bottom: 160px;
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #222;
+        }
+    }
+}

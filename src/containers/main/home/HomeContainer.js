@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
 import HomeSlick from './HomeSlick';
 import MenuListView from 'components/item/MenuListView';
-import { useSelector } from 'react-redux';
 import {
     bannerImg,
     backImg,

@@ -6,6 +6,7 @@ html, body {
         cursor: pointer;
         width: 100% !important;
         font-size: 20px !important;
+        max-width: unset;
         flex : 1 1 auto !important;
         border-bottom: solid 2px #000;
         color: #999;

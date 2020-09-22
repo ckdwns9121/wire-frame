@@ -4,6 +4,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 import styles from './Menu.module.scss';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src, index }) => {
@@ -11,9 +13,13 @@ const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src, index }) => {
         AOS.init({ duration: 1000 });
     }, []);
 
+    const history = useHistory();
+
     return (
         // item_id 로 경로 줘야함
-        <div className={styles['menu-item']} data-aos='fade-up' data-aos-delay={200 * index}>
+        <div className={styles['menu-item']}
+            data-aos='fade-up' data-aos-delay={200 * index}
+            onClick={() => history.push(Paths.ajoonamu.product)}>
             <MenuImg src={src} />
             <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>

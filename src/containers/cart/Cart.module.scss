@@ -1,129 +1,126 @@
 @import '../../styles/Root.scss';
-.load{
+.load {
     @include wireframe;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 500px;
 }
-.container{
+.container {
     @include wireframe;
-    .title{
+    .title {
+        padding-top: 120px;
         @include title;
     }
-    .bar{
+    .bar {
         width: 100%;
         height: 70px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-top: 1px solid #dbdbdb;
-        border-bottom :2px solid #222;
-        .check{
+        border-bottom: 2px solid #222;
+        .check {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-left:40px;
+            padding-left: 40px;
             input[type='checkbox'] {
                 display: block;
-                width: 16px; height: 16px;
+                width: 16px;
+                height: 16px;
                 border: 1px solid #dbdbdb;
                 cursor: pointer;
             }
             label {
                 padding-left: 5px;
             }
-    
         }
-        .select{
-            border:1px solid #dbdbdb;
+        .select {
+            border: 1px solid #dbdbdb;
             width: 88px;
             height: 34px;
             text-align: center;
             font-size: 16px;
-            color:#222;
+            color: #222;
             line-height: 34px;
-            margin-right:40px;
+            margin-right: 40px;
         }
     }
 
-
-    .finally{
-
-       display: flex;
-       margin-top:75px;
-       justify-content: center;
-       align-items: center;
-       height: 132px;
-       width: 100%;
-       border:2px solid $main-color;
-       border-radius: 10px;
-       box-sizing: border-box;
-       font-size:22px;
-       color:#555;
-       .order-text{
-           font-size:22px;
-            padding-right:5px;
-       }
-       .order-price{
-           font-size: 24px;
-           font-weight: bold;
-           color:#222;
-           &.total{
-               color:$main-color;
-           }
-       }
-       .box{
-           padding:0 40px;
-       }
-    
+    .finally {
+        display: flex;
+        margin-top: 75px;
+        justify-content: center;
+        align-items: center;
+        height: 132px;
+        width: 100%;
+        border: 2px solid $main-color;
+        border-radius: 10px;
+        box-sizing: border-box;
+        font-size: 22px;
+        color: #555;
+        .order-text {
+            font-size: 22px;
+            padding-right: 5px;
+        }
+        .order-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #222;
+            &.total {
+                color: $main-color;
+            }
+        }
+        .box {
+            padding: 0 40px;
+        }
     }
-    .order-text{
-        padding:17px 0;
+    .order-text {
+        padding: 17px 0;
         font-size: 16px;
-        color:#AAA;
+        color: #aaa;
         text-align: center;
     }
 
-    .estm-box{
-        margin-top:80px;
+    .estm-box {
+        margin-top: 80px;
         width: 100%;
         height: 132px;
         display: flex;
 
         justify-content: center;
         align-items: center;
-        border:1px solid #dbdbdb;
+        border: 1px solid #dbdbdb;
         border-radius: 10px;
-        .estm-title{
-            font-size:24px;
+        .estm-title {
+            font-size: 24px;
             font-weight: bold;
-            color:#222;
-            padding-left:56px;
+            color: #222;
+            padding-left: 56px;
         }
-        .estm-check{
+        .estm-check {
             display: flex;
-            .chk-box{
-            padding-left:56px;
-            label{
-                font-size: 18px !important;
-                color:#222;
+            .chk-box {
+                padding-left: 56px;
+                label {
+                    font-size: 18px !important;
+                    color: #222;
+                }
+                svg {
+                    margin-right: 10px !important;
+                    padding: 0 !important;
+                }
             }
-            svg{
-                margin-right: 10px !important;
-                padding: 0 !important;
-            }
-        }
         }
     }
-    .order-btn{
-        padding:120px 320px;
+    .order-btn {
+        padding: 120px 320px;
         display: flex;
         justify-content: center;
         align-items: center;
-        div{
+        div {
             width: 580px !important;
         }
     }
 }
-

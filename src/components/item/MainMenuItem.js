@@ -1,11 +1,17 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 import styles from './MainMenu.module.scss';
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src }) => {
+
+    const history = useHistory();
+
     return (
         // item_id 로 경로 줘야함
-        <div className={styles['menu-item']}>
+        <div className={styles['menu-item']}
+            onClick={() => history.push(Paths.ajoonamu.product)}>
             <MenuImg src={src} />
             <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>
