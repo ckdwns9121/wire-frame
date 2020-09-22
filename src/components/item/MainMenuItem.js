@@ -22,7 +22,7 @@ const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src }) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles['img']} src={src}></img>
+            <img className={styles['img']} src={src} alt="메뉴 이미지" />
         </div>
     );
 }

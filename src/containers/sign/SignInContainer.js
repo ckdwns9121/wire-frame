@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import React, { useState, useCallback } from 'react';
 import useInputs from '../../hooks/useInputs';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
@@ -44,14 +44,14 @@ const SignInContainer = () => {
 
     const onClickLogin = useCallback(async () => {
         const res = await localLogin(email, password);
-        if (res.status == 200) {
+        if (res.status === 200) {
             sessionStorage.setItem('access_token', res.data.access_token);
             dispatch(get_user_info(res.data.access_token));
             history.push(Paths.index);
         } else {
             alert('이메일 혹은 패스워드를 확인해주세요');
         }
-    }, [email, password]);
+    }, [dispatch, email, history, password]);
 
     return (
         <div className={styles['container']}>

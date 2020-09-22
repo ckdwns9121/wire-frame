@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from './HomeSlick.module.scss';
 import Slider from 'react-slick';
 
-class HomeSlick extends React.Component {
+class HomeSlick extends Component {
     state = {
         oldSlide: 0,
         activeSlide: 1,

@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
@@ -20,7 +19,6 @@ const TabLink = styled(NavLink)`
 `;
 
 const Header = () => {
-    // const { user } = useSelector((state) => state.auth);
     const history = useHistory();
 
     const onClickHome = () => history.push(Paths.index);

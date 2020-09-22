@@ -1,53 +1,42 @@
 import React from 'react';
 import styles from './OtherMenu.module.scss';
 
-
-
-
 //홈 메뉴 아이템 컴포넌트
-const OtherUserMenuItem = ({ item_id, menuTitle, menuText, menuPrice, src }) => {
-
+const OtherUserMenuItem = ({
+    item_id,
+    menuTitle,
+    menuText,
+    menuPrice,
+    src,
+}) => {
     return (
         // item_id 로 경로 줘야함
-            <div className={styles['menu-item']}>
-                <MenuImg src={src} />
-                <div className={styles['menu-info']}>
-                    <MenuTitle menuTitle={menuTitle} />
-                    <MenuPrice menuPrice={menuPrice} />
-                </div>
+        <div className={styles['menu-item']}>
+            <MenuImg src={src} />
+            <div className={styles['menu-info']}>
+                <MenuTitle menuTitle={menuTitle} />
+                <MenuPrice menuPrice={menuPrice} />
             </div>
-    )
-
-}
+        </div>
+    );
+};
 
 //홈 메뉴 이미지 컴포넌트
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles['img']} src={src}></img>
+            <img className={styles['img']} src={src} alt="메뉴 아이템" />
         </div>
-    )
+    );
 }
 //홈 메뉴 제목 컴포넌트
 function MenuTitle({ menuTitle }) {
-    return (
-        <div className={styles['menu-title']}>
-            {menuTitle}
-        </div>
-    )
+    return <div className={styles['menu-title']}>{menuTitle}</div>;
 }
-
-
 
 //홈 메뉴 가격 컴포넌트
 function MenuPrice({ menuPrice }) {
-    return (
-        <div className={styles['menu-price']}>
-            {menuPrice}
-        </div>
-    )
+    return <div className={styles['menu-price']}>{menuPrice}</div>;
 }
-
-
 
 export default OtherUserMenuItem;

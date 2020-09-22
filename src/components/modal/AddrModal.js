@@ -8,8 +8,8 @@ import { ButtonBase } from '@material-ui/core';
 
 
 const AddressModal = (props) => {
-    const [fullWidth, setFullWidth] = useState(true);
-    const [maxWidth, setMaxWidth] = useState('sm');
+    const [fullWidth] = useState(true);
+    const [maxWidth] = useState('sm');
 
     const { open, addrs, searchAddr, detailAddr, selectAddr } = props;
     const {

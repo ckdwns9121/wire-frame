@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { get_user_info } from './store/auth/auth';
 import Header from 'components/header/Header';
@@ -30,6 +30,7 @@ function App() {
     };
     useEffect(() => {
         getInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <>

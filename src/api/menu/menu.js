@@ -1,14 +1,10 @@
-import axios from 'axios';
-import { Paths } from '../../paths';
 import {
     Menu1,
     Menu2,
     Menu3,
     Menu4,
-    Menu5,
     Menu6,
 } from '../../components/svg/prefer';
-import { Menu } from '@material-ui/core';
 
 const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
 

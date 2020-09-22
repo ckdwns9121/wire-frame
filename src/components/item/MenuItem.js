@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 import styles from './Menu.module.scss';
 
 //홈 메뉴 아이템 컴포넌트
-const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src }) => {
+const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src, index }) => {
+    useEffect(() => {
+        AOS.init({ duration: 1000 });
+    }, []);
+
     return (
         // item_id 로 경로 줘야함
-        <div className={styles['menu-item']}>
+        <div className={styles['menu-item']} data-aos='fade-up' data-aos-delay={200 * index}>
             <MenuImg src={src} />
             <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>
@@ -22,7 +30,7 @@ const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src }) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles['img']} src={src}></img>
+            <img className={styles['img']} src={src} alt={"메뉴 이미지"} />
         </div>
     );
 }

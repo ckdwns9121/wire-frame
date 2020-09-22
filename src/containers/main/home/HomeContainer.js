@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
@@ -14,16 +14,22 @@ import {
 import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 const cx = cn.bind(styles);
 
 const HomeContainer = () => {
     const history = useHistory();
     const [category, setCategory] = useState(0);
-    const { user } = useSelector((state) => state.auth);
 
     const goToReverve = () => {
         history.push(`${Paths.ajoonamu.reserve}/custom`);
     };
+
+    useEffect(() => {
+        AOS.init({ duration: 1500 });
+    }, []);
 
     return (
         <>
@@ -55,7 +61,7 @@ const HomeContainer = () => {
                     />
                     <div className={cx('box')}>
                         <div className={styles['service']}>
-                            <div className={styles['pd-box']}>
+                            <div className={styles['pd-box']} data-aos='fade-up'>
                                 <div className={styles['title']}>
                                     기업조식 정기배송 서비스
                                 </div>
@@ -78,7 +84,7 @@ const HomeContainer = () => {
                 />
                 <div className={styles['service-box']}>
                     <div className={styles['service-type']}>
-                        <div className={styles['box']}>
+                        <div className={styles['box']} data-aos='fade-up'>
                             <img
                                 className={styles['box-img']}
                                 alt="template"
@@ -95,7 +101,7 @@ const HomeContainer = () => {
                         </div>
                     </div>
                     <div className={styles['service-type']}>
-                        <div className={styles['box']}>
+                        <div className={styles['box']} data-aos='fade-up'>
                             <img
                                 className={styles['box-img']}
                                 src={orderServiceImg}

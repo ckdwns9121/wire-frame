@@ -2,7 +2,7 @@
 .custom-lists {
     .custom-item {
         max-width: $max-width;
-        min-width: 1374px;
+        min-width: $min-width;
         width: 100%;
         height: 360px;
         padding: 50px;
@@ -17,7 +17,7 @@
             width: 100%;
             height: 100%;
             .menu {
-                width: 784px;
+                width: 750px;
                 float: left;
                 .menu-list {
                     .menu-item {
@@ -54,6 +54,7 @@
             .order {
                 float: left;
                 width: 400px;
+                box-sizing: border-box;
                 padding-left: 40px;
                 padding-right: 40px;
                 font-size: 18px;
