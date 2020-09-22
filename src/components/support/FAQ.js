@@ -8,6 +8,8 @@ import Message from '../../components/message/Message';
 import UpArrow from '../svg/support/up.svg';
 import DownArrow from '../svg/support/down.svg';
 import { requestFAQList } from '../../api/support/faq';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 const cn = classnames.bind(styles);
 
@@ -21,6 +23,7 @@ const faq_list = [
 ];
 
 export default () => {
+    const history = useHistory();
     const [quesCategory, setQuesCategory] = useState('회원가입');
     const [selectOpen, setSelectOpen] = useState(false);
 
@@ -40,8 +43,9 @@ export default () => {
             setList(res);
         } else {
             alert('로그인 후 이용해 주시기 바랍니다.');
+            history.push(Paths.ajoonamu.signin);
         }
-    }, [quesCategory]);
+    }, [quesCategory, history]);
 
     useEffect(() => {
         getFAQList();

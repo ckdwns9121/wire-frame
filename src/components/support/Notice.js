@@ -3,10 +3,13 @@ import styles from './Notice.module.scss';
 
 import Message from '../message/Message';
 import { requestNoticeList } from '../../api/support/notice';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 export default () => {
 
     const [list, setList] = useState([]);
+    const history = useHistory();
 
     const getNoticeList = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
@@ -15,8 +18,9 @@ export default () => {
             setList(res.notices);
         } else {
             alert('로그인 후 이용해 주시기 바랍니다.');
+            history.push(Paths.ajoonamu.signin);
         }
-    }, [])
+    }, [history]);
 
     useEffect(() => {
         getNoticeList();

@@ -4,6 +4,7 @@
 }
 
 html, body {
+    min-width: 1328px;
     font-size: 12px;
 }
 
