@@ -39,7 +39,7 @@ const AddrBtn = () => {
     /*
     주소 컴포넌트 내에 도로명박스 컴포넌트
     */
-    return <div className={styles['btn']}>도로명</div>;
+    return <div className={styles['btn']}>지번</div>;
 };
 
 export default AddrItem;

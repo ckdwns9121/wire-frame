@@ -27,10 +27,14 @@
 }
 
 .sub-text {
-    font-size: 1.333rem;
+    display: flex;
+    align-items: center;
+    font-size:18px;
     color: #222;
     font-weight: 500;
-    line-height: 1.2;
     position: relative;
+    cursor: pointer;
+}
+.link{
     cursor: pointer;
 }

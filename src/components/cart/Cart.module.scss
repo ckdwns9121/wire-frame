@@ -12,18 +12,6 @@
         display: flex;
         padding-left:40px;
         padding-top:40px;
-        .check{
-            input[type='checkbox'] {
-                display: block;
-                width: 16px; height: 16px;
-                border: 1px solid #dbdbdb;
-                cursor: pointer;
-            }
-            label {
-                padding-left: 5px;
-            }
-
-        }
     }
     .close-box{
         padding-right:40px;
@@ -70,6 +58,10 @@
                     justify-content: center;
                     align-items: center;
                     text-align: center;
+                    font-size:16px;
+                   .value{
+                       font-size:20px;
+                   }
                     div{
                         width: 100%;
                         &.opert{

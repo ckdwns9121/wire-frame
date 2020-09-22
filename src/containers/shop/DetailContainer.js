@@ -7,7 +7,7 @@ import Button from 'components/button/Button';
 import OtherUserMenuItemList from 'components/item/OtherUserMenuItemList';
 import { getOtherUserMenu } from '../../api/menu/menu';
 import TabMenu from '../../components/tab/TabMenu';
-
+import Count from '../../components/svg/counter/Count';
 import CartMenuImg from '../../components/svg/cart/cart_menu.png';
 import DetailImg from '../../components/svg/cart/detail_img.png';
 
@@ -63,8 +63,12 @@ const DetailContainer = ({ item_id }) => {
                         <div className={styles['counter']}>
                             <div className={styles['value']}>10</div>
                             <div className={styles['control']}>
-                                <div className={styles['increment']}>+</div>
-                                <div className={styles['decrement']}>-</div>
+                                <div className={styles['increment']}>
+                                <Count plus={true}/>
+                                </div>
+                                <div className={styles['decrement']}>
+                                <Count plue={false}/>
+                                </div>
                             </div>
                         </div>
                         <div className={styles['btn']}>

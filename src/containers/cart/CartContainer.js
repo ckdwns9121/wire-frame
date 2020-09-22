@@ -10,7 +10,7 @@ import produce from 'immer';
 import PlusIcon from '../../components/svg/cart/PlusIcon';
 import CheckBox from '../../components/checkbox/CheckBox';
 import Button from '../../components/button/Button';
-
+import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
 import cn from 'classnames/bind';
 const cx = cn.bind(styles);
 
@@ -118,13 +118,7 @@ const CartContainer = () => {
                 <div className={styles['title']}>장바구니</div>
                 <div className={styles['bar']}>
                     <div className={styles['check']}>
-                        <input
-                            type="checkbox"
-                            checked={allChecked}
-                            onChange={onClickAllCheck}
-                            value="checkedall"
-                        ></input>
-                        <label>전체선택</label>
+                       <SquareCheckBox id={"allCheck"} text={"전체삭제"}/>
                     </div>
                     <div className={styles['select']}>선택삭제</div>
                 </div>

@@ -15,7 +15,7 @@ const DeliveryItemList =(props)=>{
     //     <DeliveryrItem key={index} jibunAddr ={addr.jibunAddr} roadAddr={addr.roadAddr} onClick={onClick}/>
     // ))
     return(
-        <div className={styles['addr-list']}>
+        <div className={styles['delivery-list']}>
             {list}
         </div>
     )

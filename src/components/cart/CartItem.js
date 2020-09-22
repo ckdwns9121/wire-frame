@@ -4,7 +4,8 @@ import styles from "./Cart.module.scss";
 import Counter from "components/counter/Counter";
 import Menu1 from "../svg/menu/menu1.png";
 import CloseIcon from '../svg/modal/CloseIcon';
-
+import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
+import Count from '../../components/svg/counter/Count';
 // 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
 
 const CartItem = (props) => {
@@ -18,9 +19,7 @@ const CartItem = (props) => {
     <div className={styles["cart-item"]} >
       <div className={styles['check-box']}>
                 <div className={styles['check']}>
-                    <input type="checkbox" checked={isChecked} id={id}onChange={handleCheckChild}></input>
-                    <label className={styles['label']} htmlFor={id}>
-                    </label>
+                <SquareCheckBox/>
                 </div>
             </div>
       <div className={styles["menu-info"]}>
@@ -39,9 +38,9 @@ const CartItem = (props) => {
           </div>
           <div className={styles["box"]}>
             <div className={styles["box-item"]}>
-              <div className={styles["opert"]}>-</div>
+              <div className={styles["opert"]}><Count plus={false}/></div>
               <div className={styles["value"]}>10</div>
-              <div className={styles["opert"]}>+</div>
+              <div className={styles["opert"]}><Count plus={true}/></div>
             </div>
             <div className={styles["box-item"]}>
                 수량 변경
