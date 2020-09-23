@@ -31,16 +31,17 @@ const SignInContainer = () => {
 
     const [checked, setChecked] = useState(false);
 
-    const onChangeChecked = (e) => {
+    const onChangeChecked = useCallback(e => {
         setChecked(e.target.checked);
-    };
-    const onClickSignUp = () => {
+    }, []);
+    
+    const onClickSignUp = useCallback(() => {
         history.push(Paths.ajoonamu.signup);
-    };
+    }, [history]);
 
-    const onClickRecovery = () => {
+    const onClickRecovery = useCallback(() => {
         history.push(Paths.ajoonamu.recovery);
-    };
+    }, [history]);
 
     const onClickLogin = useCallback(async () => {
         const { email, password } = user;
@@ -58,14 +59,13 @@ const SignInContainer = () => {
             else if (res.data.access_token) {
                 sessionStorage.setItem('access_token', res.data.access_token);
                 dispatch(get_user_info(res.data.access_token));
-                history.push(Paths.index);
+                history.redirect(Paths.index);
             }
         } else {
             alert('이메일 혹은 패스워드를 확인해주세요');
         }
     }, [user, history, dispatch]);
 
-    
     return (
         <div className={styles['container']}>
             <div className={cx('content', 'sign-in')}>

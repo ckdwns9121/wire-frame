@@ -6,9 +6,9 @@ import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import Button from 'components/button/Button';
-import Header from '../../components/header/Header';
 import CheckBox from 'components/checkbox/CheckBox';
 import classNames from 'classnames/bind';
+import { localLogin, localRegister } from '../../api/auth/auth';
 
 const cx = classNames.bind(styles);
 
@@ -29,7 +29,6 @@ const initCheck = {
 };
 
 const checkReducer = (state, action) => {
-    // console.log(action);
     switch (action.type) {
         case 'ALL_CHECK':
             return {
@@ -64,21 +63,22 @@ const SignUpContainer = () => {
         password_confirm,
         phoneNumber,
         authNumber,
-        agree_marketing,
     } = user_state;
 
     const history = useHistory();
     const [compare, setCompare] = useState(false);
     const [toggle, setToggle] = useState(false);
+    const [overlap, setOverlap] = useState(false);
+    const [phoneAuth, setPhoneAuth] = useState(false);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const { check1, check2, check3 } = check;
 
     const updateToggle = useCallback(() => {
         let checkbox = check1 && check2 ? true : false;
         let userinfo = email.length !== 0 && compare ? true : false;
-        let result = checkbox && userinfo ? true : false;
+        let result = checkbox && userinfo && overlap && phoneAuth ? true : false;
         setToggle(result);
-    }, [check1, check2, email, compare]);
+    }, [check1, check2, email, compare, overlap, phoneAuth]);
 
     //패스워드 매칭 체크
     const matchPassword = useCallback(() => {
@@ -124,6 +124,10 @@ const SignUpContainer = () => {
     };
 
     useEffect(() => {
+        setOverlap(false);
+    }, [email])
+
+    useEffect(() => {
         updateToggle();
     }, [updateToggle]);
 
@@ -139,10 +143,22 @@ const SignUpContainer = () => {
         onToggleCheck();
     }, [onToggleCheck]);
 
-    const onClickSignUp = () => {
-        
+    const onClickSignUp = useCallback(async () => {
+        const res = await localRegister(email, password, password_confirm, check3);
+        console.log(res);
+
         history.push(`${Paths.ajoonamu.complete}/${email}`);
-    };
+    }, [history, email, password, password_confirm, check3]);
+
+    const onClickOverlapCheck = useCallback(async () => {
+        const res = await localLogin(email);
+        if (res.data.msg === '비밀번호가 틀렸습니다.') {
+            alert('중복된 이메일입니다.');
+        } else {
+            alert('사용 가능한 아이디입니다!');
+            setOverlap(true);
+        }
+    }, [email]);
 
     const confirm = () => {
         if (password.length !== 0 || password_confirm.length !== 0) {
@@ -163,9 +179,11 @@ const SignUpContainer = () => {
                     name={'email'}
                     initValue={email}
                     onChange={onChange}
+                    onClick={onClickOverlapCheck}
+                    disabled={overlap}
                     buttonTitle={'중복검사'}
                 />
-                <div className={styles['divider']}/>
+                <div className={styles['divider']} />
                 <SignNormalInput
                     label={'비밀번호'}
                     inputType={'password'}
@@ -215,7 +233,8 @@ const SignUpContainer = () => {
                 <div className={cx('btn', 'pd-box')}>
                     <Button
                         title={'가입하기'}
-                        onClick={onClickSignUp}
+                        onClick={toggle ? onClickSignUp
+                        : () => alert('정보를 모두 입력해 주세요.')}
                         toggle={toggle}
                         disable={true}
                     ></Button>
