@@ -17,6 +17,7 @@ import { ButtonBase } from '@material-ui/core';
 import Loading from '../../components/assets/Loading';
 import {useStore} from '../../hooks/useStore';
 import { numberFormat } from '../../lib/formatter';
+import Message from '../../components/message/Message';
 
 const cx = cn.bind(styles);
 
@@ -72,7 +73,7 @@ const CartContainer = () => {
             console.log(res);
             let len = Object.keys(res).length;
             let list = [];
-            for (let i = 0; i < len - 1; i++) {
+            for (let i = 0; i < len - 2; i++) {
                 list[i] = res[i];
                 list[i].isChecked = false;
             }
@@ -154,7 +155,10 @@ const CartContainer = () => {
         return (
             <div className={styles['container']}>
                 <div className={styles['title']}>장바구니</div>
-                <div className={styles['bar']}>
+                {cartList.length!==0 ? 
+                <>
+            
+            <div className={styles['bar']}>
                     <div className={styles['check']}>
                         <SquareCheckBox id={'allCheck'} text={'전체삭제'} />
                     </div>
@@ -219,6 +223,20 @@ const CartContainer = () => {
                     handleClose={handleClose}
                     order={onClickOrder}
                 />
+            
+                </> :
+
+                (
+                    <Message
+                    msg={"장바구니가 비었습니다."}
+                    buttonName={'주문하러 가기'}
+                    isButton={true}
+                    onClick={()=>history.push(Paths.ajoonamu.shop)}
+                    />
+                )
+            
+            }
+
             </div>
         );
     };

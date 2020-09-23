@@ -28,7 +28,7 @@ const TabMenu = ({ tabs, index, onChange }) => {
     const tabList = tabs.map((tab) => (
         <Tab
             label={tab.name ? tab.name : tab.ca_name}
-            key={tab.name}
+            key={tab.name ? tab.name : tab.ca_name}
             className={styles['tab-item']}
         />
     ));

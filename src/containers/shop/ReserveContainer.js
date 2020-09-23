@@ -37,6 +37,7 @@ function TabPanel(props) {
 }
 
 const ReserveContainer = ({ menu = '0' }) => {
+
     const user_token = useStore();
     const { categorys, items } = useSelector((state) => state.product);
     const dispatch = useDispatch();
@@ -179,8 +180,10 @@ const ReserveContainer = ({ menu = '0' }) => {
     }, []);
 
     useEffect(()=>{
-        history.replace(`${Paths.ajoonamu.shop}?tab=${tab_index}`);
-    },[tab_index,history])
+        if(user_token){
+         history.replace(`${Paths.ajoonamu.shop}?tab=${tab_index}`);
+        }
+    },[tab_index,history,user_token])
 
 
     return (
