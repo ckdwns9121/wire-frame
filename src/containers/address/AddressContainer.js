@@ -19,7 +19,6 @@ const AddressContainer = () => {
     const calltest = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
         const res = await getDeliveryList(token);
-        console.log(res.data.query);
         setDeliveryAddrs(res.data.query);
     }, []);
 

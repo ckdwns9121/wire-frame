@@ -6,7 +6,6 @@ import CloseIcon from '../svg/modal/CloseIcon';
 import { searchIcon } from 'components/svg/header';
 import { ButtonBase } from '@material-ui/core';
 
-
 const AddressModal = (props) => {
     const [fullWidth] = useState(true);
     const [maxWidth] = useState('sm');

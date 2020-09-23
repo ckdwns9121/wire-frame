@@ -10,9 +10,6 @@ const DeliveryItemList = (props) => {
         <DeliveryrItem {...addr} key={addr.delivery_id} />
     ));
 
-    // const list = addrs.map((addr,index) =>(
-    //     <DeliveryrItem key={index} jibunAddr ={addr.jibunAddr} roadAddr={addr.roadAddr} onClick={onClick}/>
-    // ))
     return <div className={styles['delivery-list']}>{list}</div>;
 };
 

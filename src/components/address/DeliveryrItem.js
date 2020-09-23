@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Addr.module.scss';
 import Cross from '../svg/cross/Cross';
+
 const DeliveryrItem = (props) => {
     /* 
         최근 배달 주소를 보여줄 컴포넌트
