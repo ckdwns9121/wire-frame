@@ -8,8 +8,9 @@ import { Paths } from '../../paths';
 import Message from '../message/Message';
 
 import styles from './QNA.module.scss';
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, IconButton } from '@material-ui/core';
 import { dateToYYYYMMDD } from '../../lib/formatter';
+import Delete from '../svg/support/Delete';
 
 const cn = classnames.bind(styles);
 
@@ -74,7 +75,7 @@ const QNATable = ({ list, handleClick }) => (
                 </ButtonBase>
             ))
         ) : (
-            <Message msg={'등록된 문의내역이 없습니다.'} size={260} />
+            <Message src={false} msg={'등록된 문의내역이 없습니다.'} size={260} />
         )}
     </div>
 );
@@ -82,25 +83,41 @@ const QNAWrite = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [files, setFiles] = useState([]);
+    const history = useHistory();
 
     const onChangeTitle = useCallback(e => setTitle(e.target.value), [])
     const onChangeContent = useCallback(e => setContent(e.target.value), [])
     const onChangeFiles = useCallback(e => {
-        console.log(e.target.files);
-        setFiles(e.target.files[0]);
+        const { files: f } = e.target;
+        const fileArray = [];
+        for (let i = 0; i < f.length; i++) {
+            fileArray.push(f[i]);
+        }
+        setFiles(fileArray);
     }, []);
+
+    const onDeleteFile = useCallback(name => setFiles(files => files.filter(file => file.name !== name)), []);
 
     const sendQNAStore = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
-        if (token) {
+        try {
             const res = await requestQNAStore(token, {
-                title, content, files
+                title,
+                content,
+                files,
             });
             console.log(res);
-        } else {
-            alert('로그인 후 이용 가능합니다.');
+            if (res.data.msg === "성공") {
+                alert('성공적으로 작성하였습니다!');
+                history.replace(`${Paths.ajoonamu.support}/qna`);
+            } else {
+                alert('작성하는 도중 오류가 발생했습니다!');
+            }
+        } catch (e) {
+            alert('잘못된 접근입니다.');
+            history.replace(Paths.index);
         }
-    }, [title, content, files]);
+    }, [title, content, files, history]);
 
     return (
         <>
@@ -123,15 +140,25 @@ const QNAWrite = () => {
                         <div className={styles['file']}>
                             <div className={styles['unknown-area']}></div>
                             <div style={{ display: 'table-cell', textAlign: 'right' }}>
-                                <input className={styles['q-files']} multiple="multiple" type="file" onChange={onChangeFiles} id="file-setter" />
+                                <input className={styles['q-files']} multiple="multiple" type="file" onChange={onChangeFiles} id="file-setter" accept="image/gif, image/jpeg, image/png, image/svg" />
                                 <ButtonBase className={styles['file-finder']}>
                                     <label htmlFor="file-setter">
                                         찾아보기
-                                    </label>
+                                    </label> 
                                 </ButtonBase>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className={styles['file-list']}>
+                    {files.map(file => (
+                        <div className={styles['file-item']} key={file.name}>
+                            {file.name}
+                            <IconButton className={styles['delete']} onClick={() => onDeleteFile(file.name)}>
+                                <Delete/>
+                            </IconButton>
+                        </div>
+                    ))}
                 </div>
             </div>
             <div className={styles['button-area']}>

@@ -9,6 +9,8 @@ import DownArrow from '../svg/support/down.svg';
 import { requestFAQList } from '../../api/support/faq';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
+import { dateToYYYYMMDD } from '../../lib/formatter';
+import { ButtonBase } from '@material-ui/core';
 
 const cn = classnames.bind(styles);
 
@@ -25,6 +27,9 @@ export default () => {
     const history = useHistory();
     const [quesCategory, setQuesCategory] = useState('회원가입');
     const [selectOpen, setSelectOpen] = useState(false);
+    const [list, setList] = useState([]);
+
+    const [openIndex, setOpenIndex] = useState(-1);
 
     const handelSelectToggle = useCallback(() => setSelectOpen(!selectOpen), [
         selectOpen,
@@ -33,7 +38,13 @@ export default () => {
         setQuesCategory(cate);
     }, []);
 
-    const [list, setList] = useState([]);
+    const handleChange = useCallback((index) => {
+        if (openIndex !== index ) {
+            setOpenIndex(index);
+        } else {
+            setOpenIndex(-1);
+        }
+    }, [openIndex]);
 
     const getFAQList = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
@@ -53,51 +64,34 @@ export default () => {
     return (
         <div className={styles['box']}>
             <div className={styles['select']}>
-                <p className={styles['q-title']}>
-                    궁금하신 질문의 유형을 선택해주세요.
-                </p>
-                <div
-                    className={styles['select-box']}
-                    onClick={handelSelectToggle}
-                >
-                    <img
-                        className={styles['opener']}
-                        src={DownArrow}
-                        alt="더보기"
-                    />
+                <p className={styles['q-title']}>궁금하신 질문의 유형을 선택해주세요.</p>
+                <div className={styles['select-box']} onClick={handelSelectToggle}>
+                    <img className={styles['opener']} src={DownArrow} alt="더보기" />
                     <div className={styles['current']}>{quesCategory}</div>
                     <div className={cn('embed', { open: selectOpen })}>
-                        {faq_list.map(
-                            (item) =>
-                                item.value !== quesCategory && (
-                                    <div
-                                        key={item.id}
-                                        className={cn('selector')}
-                                        onClick={() =>
-                                            onChangeCategory(item.value)
-                                        }
-                                    >
-                                        {item.value}
-                                    </div>
-                                ),
-                        )}
+                        {faq_list.map((item) => item.value !== quesCategory
+                            &&(<div key={item.id} className={cn('selector')}
+                                    onClick={() => onChangeCategory(item.value)}>
+                                    {item.value}
+                                </div>))}
                     </div>
                 </div>
-            </div>
+            </div> 
             <div className={styles['table']}>
                 {list.length > 0 ? (
-                    list.map((item) => (
-                        <div className={styles['column']}>
-                            <div className={styles['row']}></div>
+                    list.map((item, index) => (
+                        <div key={item.id} className={cn('column', { open: openIndex === index })}>
+                            <ButtonBase onClick={() => handleChange(index)} className={styles['row']}>
+                                <div className={styles['question']}>{item.question}</div>
+                                <div className={styles['created']}>{dateToYYYYMMDD(item.created_at, '/')}</div>
+                                <div className={styles['opener']}><img className={styles['direct']} src={DownArrow} alt="더보기" /></div>
+                            </ButtonBase>
+                            <div className={styles['answer']}>
+                                {item.answer}
+                            </div>
                         </div>
-                    ))
-                ) : (
-                    <Message
-                        src={false}
-                        msg={'등록된 자주 묻는 질문이 없습니다.'}
-                        size={260}
-                    />
-                )}
+                    )) 
+                ) : (<Message src={false} msg={'등록된 자주 묻는 질문이 없습니다.'} size={260} />)}
             </div>
         </div>
     );

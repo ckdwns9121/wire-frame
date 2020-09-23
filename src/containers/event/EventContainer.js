@@ -109,7 +109,7 @@ export default ({ match, location }) => {
                         );
                     })
                 ) : (
-                    <Message msg={'조회 결과가 없습니다 '} size={260} />
+                    <Message src={false} msg={'조회 결과가 없습니다 '} size={260} />
                 )}
             </div>
         </div>

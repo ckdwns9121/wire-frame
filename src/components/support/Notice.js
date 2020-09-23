@@ -79,10 +79,10 @@ const NoticeList = ({ list }) => list.map(item => (
                 {numbering(item.id)}
             </div>
             <div className={styles['title']}>
-                {item.title}
+                {item.title} 
             </div>
             <div className={styles['created']}>
-                {dateToYYYYMMDD(item.created_at)}
+                {dateToYYYYMMDD(item.created_at, '/')}
             </div>
         </Link>
     </div>

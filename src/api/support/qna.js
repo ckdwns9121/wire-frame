@@ -37,14 +37,15 @@ export const requestQNAStore = async (token, {
 }) => {
     const req = Paths.api + 'user/qna';
     
-    const form_data = {
-        subject,
-        question,
-        q_files
-    };
+    const formData = new FormData();
+    
+    formData.append('subject', subject);
+    formData.append('question', question);
+    formData.append('q_files', q_files);
+    
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
-    const res = await axios.post(req, form_data);
+    const res = await axios.post(req, formData);
     return res;
 };
