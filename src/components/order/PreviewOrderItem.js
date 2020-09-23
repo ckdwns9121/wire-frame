@@ -5,6 +5,20 @@ import menu2 from '../svg/menu/menu2.png';
 import menu3 from '../svg/menu/menu3.png';
 import Arrow from '../svg/arrow/Arrow';
 const PreviewOrderItem = (props) => {
+
+
+    const {
+        cp_price,
+        items,
+        order_id,
+        point_price,
+        receipt_price,
+        send_cost,
+        total_price,
+    } = props;
+
+
+
     return (
         <div className={styles['preview-item']}>
             <div className={styles['preview-title-bar']}>
@@ -14,7 +28,7 @@ const PreviewOrderItem = (props) => {
                             2020/06/01 13:30:10
                         </div>
                         <div className={styles['order-id']}>
-                            주문번호 : 54545475741
+                            주문번호 : {order_id}
                         </div>
                         <div className={styles['order-type']}>배달완료</div>
                     </div>
@@ -26,24 +40,7 @@ const PreviewOrderItem = (props) => {
                 </div>
             </div>
             <div className={styles['menu-list']}>
-                <MenuItem
-                    src={menu1}
-                    item_name={'떡볶이'}
-                    item_quanity={'10'}
-                    item_price={'100,000원'}
-                />
-                <MenuItem
-                    src={menu2}
-                    item_name={'떡볶이'}
-                    item_quanity={'10'}
-                    item_price={'100,000원'}
-                />
-                <MenuItem
-                    src={menu3}
-                    item_name={'떡볶이'}
-                    item_quanity={'10'}
-                    item_price={'100,000원'}
-                />
+                <MenuList items= {items}/>
             </div>
             <div className={styles['href-detail']} onClick={props.onClick}>
                 <div className={styles['text']}>주문 상세보기</div>
@@ -55,17 +52,31 @@ const PreviewOrderItem = (props) => {
     );
 };
 
-function MenuItem({ src, item_name, item_quanity, item_price }) {
+function MenuList ({items}){
+    const list =items.map( (item,index) =>(
+        <MenuItem  
+        key={index} 
+        item_name={item.item_name} 
+        item_option={item.item_option}
+        item_price={item.item_price}
+        />
+    ));
+    return(
+        <> {list}</>
+    )
+}
+
+function MenuItem({ src, item_name, item_option, item_price }) {
     return (
         <div className={styles['menu-item']}>
             <div className={styles['menu-img']}>
-                <img src={src} alt="메뉴" />
+                <img src={menu1} alt="메뉴" />
             </div>
             <div className={styles['menu-name']}>{item_name}</div>
             <div className={styles['menu-price']}>
-                {item_quanity}개 {item_price}
+                {1}개 {item_price}
             </div>
-            <div className={styles['menu-options']}>(추가선택: 없음)</div>
+            <div className={styles['menu-options']}>(추가선택: {item_option ? item_option : '없음'})</div>
         </div>
     );
 }
