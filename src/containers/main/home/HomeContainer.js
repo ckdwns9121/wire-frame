@@ -15,6 +15,7 @@ import { ButtonBase } from '@material-ui/core';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import KakaoMap from '../../../components/map/KakaoMap';
 
 const cx = cn.bind(styles);
 
@@ -117,6 +118,7 @@ const HomeContainer = () => {
                         </div>
                     </div>
                 </div>
+                <KakaoMap/>
             </div>
         </>
     );

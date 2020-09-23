@@ -21,7 +21,7 @@ const CartContainer = () => {
 
     const [open, setOpen] = React.useState(false);
     const [allChecked, setAllChecked] = React.useState(false); //전체선택
-    const [esitChcked, setEsitChcked] = React.useState(true); //견적서 발송
+    const [estm, setEstm] = React.useState(true); //견적서 발송
     const [cartList, setCartList] = React.useState([]); //장바구니
     const [total, setTotal] = React.useState(0); //총 주문금액
     const [delivery_cost, setCost] = React.useState(0); // 배달비
@@ -55,10 +55,9 @@ const CartContainer = () => {
         setTotal(total);
     }, [cartList]);
 
-    const onChangeEsit = useCallback((e) => {
-        setEsitChcked(e.target.checked);
-    }, []);
-    
+
+    const onChangeEstm = useCallback(e => setEstm(true), []);
+    const onChangeNotEstm = useCallback(e => setEstm(false), []);
     const onClickEstmOpen = () => {
         setOpen(true);
     };
@@ -156,16 +155,16 @@ const CartContainer = () => {
                             <CheckBox
                                 id={'check1'}
                                 text={'견적서를 받고싶습니다.'}
-                                check={esitChcked}
-                                onChange={onChangeEsit}
+                                check={estm}
+                                onChange={onChangeEstm}
                             />
                         </div>
                         <div className={styles['chk-box']}>
                             <CheckBox
                                 id={'check2'}
                                 text={'견적서를 받지 않아도 됩니다.'}
-                                check={!esitChcked}
-                                onChange={onChangeEsit}
+                                check={!estm}
+                                onChange={onChangeNotEstm}
                             />
                         </div>
                     </div>
