@@ -176,7 +176,12 @@ const OrderContainer = () => {
 
         const pay_type = "card";  //결제 수단
         const pay_work = "PAY"; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
-        const payple_payer_id = PCD_PAYER_ID;
+        const payple_payer_id = '';
+
+        if(PCD_PAYER_ID!==null){
+            payple_payer_id =PCD_PAYER_ID;
+        }
+
         const buyer_no = ""; //고객 고유번호
         const buyer_name = ""; //고객 이름
         const buyer_hp = ""; //고객 번호
@@ -190,7 +195,7 @@ const OrderContainer = () => {
         const pay_year = "";
         const pay_month = "";
         const is_taxsave = "N";
-        const simple_flag = "";
+        const simple_flag = "Y";
         const card_ver = "";
         // const auth_type = "";
         // const is_direct = "";
@@ -235,7 +240,7 @@ const OrderContainer = () => {
         // 	//## 2.1 최초결제 및 단건(일반,비회원)결제
         	if (pay_work != 'AUTH') {
           
-        		if (simple_flag !== 'Y' || payple_payer_id === null) {
+        		if (simple_flag !== 'Y' || payple_payer_id === '') {
       
         			obj.PCD_PAYER_NO = buyer_no;						// (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
         			obj.PCD_PAYER_NAME = buyer_name;					// (선택) 결제자 이름
@@ -255,7 +260,7 @@ const OrderContainer = () => {
           
         		//## 2.2 간편결제 (재결제)
           
-        		if (simple_flag === 'Y' && payple_payer_id !== null) {
+        		if (simple_flag === 'Y' && payple_payer_id !== '') {
       
         			obj.PCD_SIMPLE_FLAG = 'Y';						// 간편결제 여부 (Y|N)
         			//-- PCD_PAYER_ID 는 소스상에 표시하지 마시고 반드시 Server Side Script 를 이용하여 불러오시기 바랍니다. --//		
