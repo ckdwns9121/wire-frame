@@ -120,7 +120,7 @@ function SamplePrevArrow(props) {
 const MeunListView = () => {
     const menuList = initMenu.map((menu) => (
         <MainMenuItem
-            key={menu.id}
+            key={menu.item_id}
             menuTitle={menu.title}
             menuText={menu.text}
             menuPrice={menu.price}

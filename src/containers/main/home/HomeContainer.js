@@ -118,7 +118,7 @@ const HomeContainer = () => {
                         </div>
                     </div>
                 </div>
-                <KakaoMap/>
+                <KakaoMap />
             </div>
         </>
     );
