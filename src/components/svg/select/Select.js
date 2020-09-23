@@ -4,7 +4,7 @@ import React from 'react';
 
 const Select = ({ check }) => {
     return (
-        <svg width="24" height="24" viewBox="0 0 24 24">
+        <svg width="24" height="24" viewBox="0 0 24 24" style={{cursor:'pointer'}}>
             <g transform="translate(-753 -827)">
                 <g
                     transform="translate(753 827)"

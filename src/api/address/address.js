@@ -63,5 +63,17 @@ export const selectAddress =async (token,delivery_id) =>{
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
     const res = await axios.put(req, form_data);
+    console.log(res);
+    return res;
+}
+
+export const deleteAddr = async (token, delivery_id) => {
+    const req = Paths.api + 'user/delivery/delete';
+    const form_data = { delivery_id };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const res = await axios.delete(req, {
+        data: form_data
+    });
     return res;
 }

@@ -29,7 +29,7 @@ const CustomItem = ({ datas, index }) => {
                     </div>
                     <div className={styles['box']}>
                         <ButtonBase onClick={() => history.push(Paths.ajoonamu.cart)} className={styles['cart-btn']}>장바구니</ButtonBase>
-                        <ButtonBase onClick={() => history.push(Paths.ajoonamu.product)} className={styles['order-btn']}>구매하기</ButtonBase>
+                        <ButtonBase className={styles['order-btn']}>구매하기</ButtonBase>
                     </div>
                 </div>
             </div>
