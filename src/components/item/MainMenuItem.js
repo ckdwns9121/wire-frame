@@ -8,8 +8,8 @@ const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src }) => {
 
     const history = useHistory();
 
-    return (
         // item_id 로 경로 줘야함
+    return (
         <div className={styles['menu-item']}
             onClick={() => history.push(Paths.ajoonamu.product)}>
             <MenuImg src={src} />

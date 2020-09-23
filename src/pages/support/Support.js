@@ -5,13 +5,7 @@ const Support = ({ match, location }) => {
     const { pathname } = location;
     const selector = pathname.replace('/support', '');
     return (
-        <SupportContainer
-            pathname={
-                selector !== ''
-                    ? selector
-                    : '/notice'
-            }
-        />
+        <SupportContainer pathname={selector !== '' ? selector : '/notice'} />
     );
 };
 

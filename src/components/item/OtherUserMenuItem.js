@@ -8,8 +8,8 @@ const OtherUserMenuItem = ({
     menuPrice,
     src,
 }) => {
+    // item_id 로 경로 줘야함
     return (
-        // item_id 로 경로 줘야함
         <div className={styles['menu-item']}>
             <MenuImg src={src} />
             <div className={styles['menu-info']}>

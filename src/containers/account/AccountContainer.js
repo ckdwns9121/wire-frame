@@ -8,8 +8,7 @@ const cx = classNames.bind(styles);
 
 const AccountContainer = () => {
     const { user } = useSelector((state) => state.auth);
-
-    console.log(user);
+    
     useEffect(() => {}, [user]);
 
     return (

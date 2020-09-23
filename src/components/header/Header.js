@@ -32,7 +32,7 @@ const Header = () => {
     useEffect(() => {
         const token = sessionStorage.getItem('access_token');
         setLogon(token !== null);
-    }, []);
+    }, [history]);
 
     const onClickHome = () => history.push(Paths.index);
     const onClickAddr = () => history.push(Paths.ajoonamu.address);

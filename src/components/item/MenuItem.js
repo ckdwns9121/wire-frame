@@ -14,9 +14,9 @@ const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src, index }) => {
     }, []);
 
     const history = useHistory();
+    // item_id 로 경로 줘야함
 
     return (
-        // item_id 로 경로 줘야함
         <div className={styles['menu-item']}
             data-aos='fade-up' data-aos-delay={200 * index}
             onClick={() => history.push(Paths.ajoonamu.product)}>
