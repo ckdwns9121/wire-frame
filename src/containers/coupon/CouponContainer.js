@@ -8,9 +8,10 @@ import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 import DownCouponItemList from '../../components/coupon/DownCouponList';
 import { useStore } from '../../hooks/useStore';
-import { getMyCoupons, getDownloadCp } from '../../api/coupon/coupon';
+import { getMyCoupons,  getDownloadCpList ,downloadCoupon } from '../../api/coupon/coupon';
 import Loading from '../../components/assets/Loading';
 import Message from '../../components/message/Message';
+import produce from 'immer';
 
 const tabInit = [
     {
@@ -74,13 +75,32 @@ const CouponConatiner = (props) => {
         setLoading(true);
 
         if (user_token) {
-            const res = await getDownloadCp(user_token);
+            const res = await getDownloadCpList(user_token);
             console.log(res);
             setDownCpList(res);
             setSuccess(true);
         } else setError(true);
         setLoading(false);
     };
+
+
+    const callCouponDownload = useCallback(async(cz_id)=>{
+        try{
+        const res= await downloadCoupon(user_token,cz_id);
+        console.log(res);
+        console.log(cz_id);
+
+        const idx = down_cp_list.findIndex(item => item.cz_id ===cz_id);
+        setDownCpList(
+            produce(down_cp_list, draft =>{
+                draft[idx].check=true;
+            })  
+        );
+        }
+        catch(e){
+            console.error(e);
+        }
+    },[user_token,down_cp_list])
 
     useEffect(() => {
         getMyCouponList();
@@ -92,6 +112,10 @@ const CouponConatiner = (props) => {
             setIndex(parseInt(query.tab));
         }
     }, [query]);
+
+    useEffect(()=>{
+        console.log(down_cp_list);
+    },[down_cp_list])
 
     return (
         <div className={styles['container']}>
@@ -147,7 +171,7 @@ const CouponConatiner = (props) => {
                     {index === 1 && (
                         <>
                             {down_cp_list.length !== 0 ? (
-                                <DownCouponItemList cp_list={down_cp_list} />
+                                <DownCouponItemList cp_list={down_cp_list}  onClick={callCouponDownload}/>
                             ) : (
                                 <Message
                                     msg={'발급 받을 수 있는 쿠폰이 없습니다.'}

@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import styles from './Address.module.scss';
 import DeliveryItemList from '../../components/address/DeliveryItemList';
 import { searchIcon } from 'components/svg/header';
 import AddressModal from '../../components/modal/AddrModal';
 import { insertAddress,deleteAddr,selectAddress, searchAddress,getDeliveryList } from '../../api/address/address';
 import {useStore} from '../../hooks/useStore';
+import {get_address} from '../../store/address/address';
 
 const AddressContainer = () => {
 
+    const dispatch= useDispatch();
     const user_token = useStore();
     const [searchAddr, serSearch] = useState(''); //검색
     const [selectAddr, setSelectAddr] = useState(''); //선택
@@ -102,10 +105,11 @@ const AddressContainer = () => {
 
 
     //선택한 주소지로 설정
-    const onClickDeliveyAddr = useCallback(async (delivery_id) =>{
+    const onClickDeliveyAddr = useCallback(async (delivery_id ,addr1) =>{
        try{ 
             const res = await selectAddress(user_token, delivery_id);
             console.log(res);
+            dispatch(get_address(addr1));
        }
        catch(e){
            console.error(e);

@@ -19,7 +19,7 @@ const SignAuthInput = ({
     onClick = () => {}
 }) => {
     return (
-        <div className={styles['sign-input']}>
+        <div className={cx('sign-input')}>
             <div className={styles['label']}>{label}</div>
             <input
                 className={styles['auth']}
