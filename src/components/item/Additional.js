@@ -7,8 +7,13 @@ const Additional = (props) => {
     return (
         <div className={styles['additional-item']}>
             <input type="checkbox" id="test"></input>
-            <label onClick={props.onClickAddItem} className={styles['label']} htmlFor="test">
-                <Select check={props.check} />{props.option_name} 추가 <span> + {props.option_price} 원</span>
+            <label
+                onClick={props.onClickAddItem}
+                className={styles['label']}
+                htmlFor="test"
+            >
+                <Select check={props.check} />
+                {props.option_name} <span> +{props.option_price}원</span>
             </label>
         </div>
     );

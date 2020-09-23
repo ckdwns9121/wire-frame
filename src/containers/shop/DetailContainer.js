@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Paths } from 'paths';
 import styles from './Detail.module.scss';
 import AdditionalList from 'components/item/AdditionalList';
 import { useHistory } from 'react-router';
-import Button from 'components/button/Button';
 import OtherUserMenuItemList from 'components/item/OtherUserMenuItemList';
 import { getOtherUserMenu } from '../../api/menu/menu';
 import TabMenu from '../../components/tab/TabMenu';
 import Count from '../../components/svg/counter/Count';
 import CartMenuImg from '../../components/svg/cart/cart_menu.png';
 import DetailImg from '../../components/svg/cart/detail_img.png';
+import { ButtonBase } from '@material-ui/core';
 
 const DetailContainer = ({ item_id }) => {
     const history = useHistory();
@@ -26,18 +26,18 @@ const DetailContainer = ({ item_id }) => {
         { option_id: 2, option_name: '토마토 추가', option_price: '2200' },
     ]);
 
-    const onClickOptionItem = (id) => {
+    const onClickOptionItem = useCallback((id) => {
         console.log(id);
-    };
-    const getOtherUserMenuApi = async () => {
+    }, []);
+    const getOtherUserMenuApi = useCallback(async () => {
         const res = await getOtherUserMenu();
         console.log(res);
         setOtherMenuList(res);
-    };
+    }, []);
 
     useEffect(() => {
         getOtherUserMenuApi();
-    }, []);
+    }, [getOtherUserMenuApi]);
 
     return (
         <div className={styles['container']}>
@@ -51,7 +51,7 @@ const DetailContainer = ({ item_id }) => {
                         여러가지 과일로 알찬 구성 도시락 입니다!
                     </div>
                     <div className={styles['item-price']}>3,000원</div>
-                    <div className={styles['option-text']}>추가 옵션</div>
+                    <div className={styles['option-text']}>추가선택</div>
                     <div className={styles['item-additional-list']}>
                         <AdditionalList
                             itemList={item_options}
@@ -63,20 +63,19 @@ const DetailContainer = ({ item_id }) => {
                         <div className={styles['counter']}>
                             <div className={styles['value']}>10</div>
                             <div className={styles['control']}>
-                                <div className={styles['increment']}>
-                                <Count plus={true}/>
-                                </div>
-                                <div className={styles['decrement']}>
-                                <Count plue={false}/>
-                                </div>
+                                <ButtonBase className={styles['increment']}>
+                                    <Count plus={true} />
+                                </ButtonBase>
+                                <ButtonBase className={styles['decrement']}>
+                                    <Count plue={false} />
+                                </ButtonBase>
                             </div>
                         </div>
                         <div className={styles['btn']}>
-                            <Button
+                            <ButtonBase
                                 toggle={true}
-                                title={'10개 담기(3,000원)'}
                                 onClick={getCart}
-                            ></Button>
+                            >{'10개 담기(3,000원)'}</ButtonBase>
                         </div>
                     </div>
                 </div>
@@ -105,7 +104,7 @@ const DetailContainer = ({ item_id }) => {
                         </div>
                         <div className={styles['explan']}>
                             제철 과일은 종류에 따라 당도가 높고, 가장 맛있는
-                            맛을 내기 때문에 알맞은 때에 먹어주는 것이 좋습니다.{' '}
+                            맛을 내기 때문에 알맞은 때에 먹어주는 것이 좋습니다.
                             <br />
                             (쿠키 추가 가능 개당 1천 원) (불고기 샌드위치,
                             크랜베리 허니에그 샌드위치 변경가능 - 변경 시 단가

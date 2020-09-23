@@ -1,239 +1,224 @@
 @import '../../styles/Root.scss';
 
-$pd :20px;
-.container{
+$pd: 20px;
+.container {
     @include wireframe;
-    .content{
+    .content {
         @include content;
         overflow: hidden;
-        .title{
+        .title {
             @include title;
         }
 
-        .delivery-info-box{
+        .delivery-info-box {
             float: left;
             width: 850px;
-            .info-box{
-                .sub-title{
+            .info-box {
+                .sub-title {
                     font-size: 24px;
                     font-weight: bold;
-                    border-bottom:2px solid #222;
-                    padding:$pd;
+                    border-bottom: 2px solid #222;
+                    padding: $pd;
                 }
-                .user-info{
-                    padding-top : 36px;
-                    padding-left:$pd;
-                    padding-right:$pd;
-                    padding-bottom:96px;
-                    color:#555555; 
+                .user-info {
+                    padding-top: 36px;
+                    padding-left: $pd;
+                    padding-right: $pd;
+                    padding-bottom: 100px;
+                    color: #555555;
 
-                    select{
-                        border:1px solid #dbdbdb;
+                    select {
+                        border: 1px solid #dbdbdb;
                         outline: none;
                         height: 56px;
                         padding: 0;
                         padding-left: $pd;
                         width: 100%;
-
                     }
-                    input{
-                        border:1px solid #dbdbdb;
+                    input {
+                        border: 1px solid #dbdbdb;
                         outline: none;
                         height: 56px;
                         box-sizing: border-box;
-                        padding-left:$pd;
+                        padding-left: $pd;
                     }
 
-                    .name{
-                           font-size:26px;
-                           font-weight: bold;
-                           padding-bottom: $pd;
-                    }
-                    .addr{
-                        font-size:20px;
+                    .name {
+                        font-size: 26px;
+                        font-weight: bold;
                         padding-bottom: $pd;
                     }
-                    .hp{    
+                    .addr {
+                        font-size: 20px;
+                        padding-bottom: $pd;
+                    }
+                    .hp {
                         display: flex;
                         padding-bottom: $pd;
-                        select{
-                            border:1px solid #DBDBDB;
+                        select {
+                            border: 1px solid #dbdbdb;
                             width: 120px;
                             height: 48px;
                             outline: none;
                             box-sizing: border-box;
                             font-size: 20px;
-                            padding:0;
-                            padding-left:20px;
-                            padding-right:20px;
+                            padding: 0;
+                            padding-left: 20px;
+                            padding-right: 20px;
                         }
-                        .second{
-                            padding-left:20px;
-                            input{
-                                border:1px solid #dbdbdb;
+                        .second {
+                            padding-left: 20px;
+                            input {
+                                border: 1px solid #dbdbdb;
                                 box-sizing: border-box;
                                 outline: none;
-                            font-size: 16px;
+                                font-size: 16px;
                                 width: 160px;
                                 height: 48px;
-                                padding-left:20px;
+                                padding-left: 20px;
                             }
                         }
-
-              
                     }
-                    .coupon{
-                        select{
+                    .coupon {
+                        select {
                             font-size: 16px;
-                            color:#999999;
-
+                            color: #999999;
                         }
                     }
-                    .date{
+                    .date {
                         display: flex;
-                        select{
+                        select {
                             font-size: 20px;
-                            border:1px solid #DBDBDB;
-
+                            border: 1px solid #dbdbdb;
                         }
-                        .first{
-                            select{
+                        .first {
+                            select {
                                 width: 320px;
-                            background: url('../../components/svg/date/date.png') no-repeat 98% 50% #fff;
+                                background: url('../../components/svg/date/date.png')
+                                    no-repeat 98% 50% #fff;
 
-                      
-                  
-                                background-size:24px 24px;
+                                background-size: 24px 24px;
                             }
-
                         }
-                        .second{
-                            padding-left:$pd;
+                        .second {
+                            padding-left: $pd;
                             width: 160px;
-
-
                         }
                     }
 
-                    .order-memo{
-                  
-                        .bar{
+                    .order-memo {
+                        .bar {
                             padding-bottom: $pd;
-                            padding-top:20px;
-                            position: relative;;
+                            padding-top: 20px;
+                            position: relative;
                             width: 100%;
-                            .text{
+                            .text {
                                 font-weight: bold;
                                 font-size: 22px;
-                                color:#222;
+                                color: #222;
                             }
-                            .check-box{
+                            .check-box {
                                 position: absolute;
                                 right: 0;
-                                top:20px;
+                                top: 20px;
                             }
                         }
-                        .memo-input{
-                            .input{
+                        .memo-input {
+                            .input {
                                 width: 100%;
                                 height: 56px;
-                                border:1px solid #dbdbdb;
+                                border: 1px solid #dbdbdb;
                                 box-sizing: border-box;
                                 outline: none;
                             }
                         }
                     }
 
-                    .payments{
+                    .payments {
                         display: flex;
-                        .payment-item{
-                            cursor: pointer;
-                        display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            border:1px solid #DBDBDB;
+                        .payment-item {
+                            box-sizing: border-box;
+                            border: 1px solid #dbdbdb;
                             width: 200px;
                             height: 64px;
-                            color:#222;
+                            color: #222;
                             font-size: 18px;
 
-                            &.check{
-                                border:1px solid $main-color;
+                            &.check {
+                                border: 2px solid $main-color;
                                 color: $main-color;
                                 font-size: 20px;
                                 font-weight: bold;
-
                             }
                         }
                     }
-                    .point{
+                    .point {
                         display: flex;
                         align-items: center;
-                        .text{
+                        .text {
                             font-size: 22px;
-                            color:#555;
-                            padding-right:$pd;
+                            color: #555;
+                            padding-right: $pd;
                         }
-                        .point-input{
+                        .point-input {
                             width: 280px;
                         }
-                        .btn{
+                        .btn {
                             margin-left: $pd;
                             width: 160px;
                             height: 56px;
-                            border:1px solid #dbdbdb;
+                            border: 1px solid #dbdbdb;
                             box-sizing: border-box;
                             text-align: center;
                             font-size: 18px;
-                            color:#222;
+                            color: #222;
                             line-height: 56px;
                             cursor: pointer;
                         }
-            
                     }
 
-                    .user-point{
-                        padding-left:160px;
+                    .user-point {
+                        margin-top: 10px;
+                        padding-left: 160px;
                         font-size: 18px;
-                        color:#222;
-                        span{
+                        color: #222;
+                        span {
                             font-size: 20px;
                             font-weight: bold;
                         }
                     }
                 }
             }
-        
-            
         }
 
-        .order-info-box{
+        .order-info-box {
             float: right;
-            border:1px solid #DBDBDB;
+            border: 1px solid #dbdbdb;
             width: 400px;
             height: 1800px;
-            padding:40px;
+            padding: 20px;
             box-sizing: border-box;
 
-            .order-box-item{
-                padding-bottom:62px;
-                .title{
+            .order-box-item {
+                padding: 20px;
+                padding-bottom: 62px;
+                .title {
                     text-align: left;
                     font-size: 28px;
-                    color:#222;
+                    color: #222;
                     font-weight: bold;
                 }
-                .text-price{
-                    padding:12px 0;
+                .text-price {
+                    padding: 12px 0;
                     width: 100%;
                     display: flex;
                     align-items: center;
-                    .text{
+                    .text {
                         font-size: 18px;
                         text-align: left;
                         width: 100%;
                     }
-                    .price{
+                    .price {
                         width: 100%;
                         font-size: 24px;
                         font-weight: bold;
@@ -241,48 +226,39 @@ $pd :20px;
                     }
                 }
             }
-   
         }
-        .total-price{
-            border-top:1px solid #999999;
-            padding-top:35px;
-            padding-bottom:60px;
-            padding-left:$pd;
+        .total-price {
+            border-top: 1px solid #999999;
+            padding-top: 35px;
+            padding-bottom: 60px;
+            padding-left: $pd;
             padding-right: $pd;
             display: flex;
             align-items: center;
-            .text{
+            .text {
                 text-align: left;
                 font-size: 28px;
-                color:#222;
+                color: #222;
                 font-weight: bold;
                 width: 100%;
-
             }
-            .price{
-                color:$main-color;
+            .price {
+                color: $main-color;
                 font-weight: bold;
                 font-size: 32px;
                 width: 100%;
-
             }
-            span{
-                color:$main-color;
+            span {
+                color: $main-color;
                 font-size: 26px;
             }
-
         }
     }
-
 }
-  
 
 .agree {
-    max-width: $max-width;
-    margin: 0 auto;
-    display: flex;
     margin: 60px 0;
-    padding: 40px 0;
+    padding: 0 20px;
     .const {
         max-width: 130px;
         min-width: 130px;
@@ -299,7 +275,6 @@ $pd :20px;
             color: #222;
         }
     }
-
 }
 
 .chk-box {
@@ -308,10 +283,6 @@ $pd :20px;
     }
 }
 
-
-
-
-
-.pd-box{
-    padding:20px 120px;
+.pd-box {
+    padding: 20px 120px;
 }

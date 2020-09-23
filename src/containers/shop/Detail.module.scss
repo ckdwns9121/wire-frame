@@ -77,14 +77,24 @@
                         justify-content: center;
                         align-items: center;
                         border-left: 1px solid #dbdbdb;
+                        .increment, .decrement {
+                            width: 100%; height: 35px;
+                        }
+                        .decrement {
+                            border-top: solid 1px #dbdbdb;
+                        }
                     }
                 }
                 .btn {
-                    width: 100%;
+                    width: 100%; height: 72px;
                     padding-left: 15px;
-                    button{
-                        margin: 0 !important;
-                        height: 72px !important;
+                    button {
+                        width: 100%; height: 100%;
+                        border-radius: 2px;
+                        font-size: 1.833rem;
+                        font-weight: bold;
+                        color: #fff;
+                        background-color: #007246;
                     }
                 }
             }
@@ -97,7 +107,7 @@
             font-size: 28px;
             font-weight: bold;
             color: #222;
-            padding: 40px 0;
+            padding-top: 120px;
         }
         .other-menu-list {
             height: 450px;
@@ -131,6 +141,7 @@
                 }
                 .explan {
                     font-size: 16px;
+                    line-height: 1.8;
                     color: #222;
                     word-break: keep-all;
                 }

@@ -5,13 +5,15 @@ import { getTestCartList } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import CartItemList from 'components/cart/CartItemList';
-import CartModal from 'components/modal/CartModal';
+import CartModal from 'components/modal/EstmModal';
 import produce from 'immer';
 import PlusIcon from '../../components/svg/cart/PlusIcon';
+import EqualsIcon from '../../components/svg/cart/EqualsIcon';
 import CheckBox from '../../components/checkbox/CheckBox';
 import Button from '../../components/button/Button';
 import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
 import cn from 'classnames/bind';
+import { ButtonBase } from '@material-ui/core';
 const cx = cn.bind(styles);
 
 const CartContainer = () => {
@@ -25,7 +27,6 @@ const CartContainer = () => {
     const [delivery_cost, setCost] = React.useState(0); // 배달비
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
-
 
     //장바구니 들고와서 check 추가
     const getCartListApi = useCallback(async () => {
@@ -45,7 +46,6 @@ const CartContainer = () => {
     const onChangeTotalPrice = useCallback(() => {
         setTotal(0);
         let total = 0;
-        console.log('계산하자');
         for (let i = 0; i < cartList.length; i++) {
             if (cartList[i].isChecked) {
                 console.log(cartList[i].item.item_price);
@@ -55,11 +55,11 @@ const CartContainer = () => {
         setTotal(total);
     }, [cartList]);
 
-    const onChangeEsit = (e) => {
+    const onChangeEsit = useCallback((e) => {
         setEsitChcked(e.target.checked);
-    };
-    // 주문 설정하기 버튼 클릭
-    const onClickPreferOrder = () => {
+    }, []);
+    
+    const onClickEstmOpen = () => {
         setOpen(true);
     };
 
@@ -68,12 +68,15 @@ const CartContainer = () => {
         setOpen(false);
     };
 
-    const onClickAllCheck = useCallback((e) => {
-        const newState = cartList.map((cart) => {
-            return { ...cart, isChecked: e.target.checked };
-        });
-        setCartList(newState);
-    }, [cartList]);
+    const onClickAllCheck = useCallback(
+        (e) => {
+            const newState = cartList.map((cart) => {
+                return { ...cart, isChecked: e.target.checked };
+            });
+            setCartList(newState);
+        },
+        [cartList],
+    );
 
     const onClickCheckChild = useCallback(
         (e) => {
@@ -106,7 +109,7 @@ const CartContainer = () => {
         onCompareAllChecked();
         onChangeTotalPrice();
     }, [cartList, onChangeTotalPrice, onCompareAllChecked]);
-    
+
     useEffect(() => {
         setLoading(true);
         getCartListApi();
@@ -118,9 +121,9 @@ const CartContainer = () => {
                 <div className={styles['title']}>장바구니</div>
                 <div className={styles['bar']}>
                     <div className={styles['check']}>
-                       <SquareCheckBox id={"allCheck"} text={"전체삭제"}/>
+                        <SquareCheckBox id={'allCheck'} text={'전체삭제'} />
                     </div>
-                    <div className={styles['select']}>선택삭제</div>
+                    <ButtonBase className={styles['select']}>선택삭제</ButtonBase>
                 </div>
                 <div className={styles['cart-list']}>
                     <CartItemList
@@ -138,7 +141,7 @@ const CartContainer = () => {
                     <div className={styles['order-text']}>배달비</div>
                     <div className={styles['order-price']}>5,000원</div>
                     <div className={styles['box']}>
-                        <PlusIcon />
+                        <EqualsIcon />
                     </div>
                     <div className={cx('order-price', 'total')}>68,000원</div>
                 </div>
@@ -153,19 +156,22 @@ const CartContainer = () => {
                             <CheckBox
                                 id={'check1'}
                                 text={'견적서를 받고싶습니다.'}
-                                check={true}
+                                check={esitChcked}
+                                onChange={onChangeEsit}
                             />
                         </div>
                         <div className={styles['chk-box']}>
                             <CheckBox
                                 id={'check2'}
                                 text={'견적서를 받지 않아도 됩니다.'}
+                                check={!esitChcked}
+                                onChange={onChangeEsit}
                             />
                         </div>
                     </div>
                 </div>
                 <div className={styles['order-btn']}>
-                    <Button toggle={true} title={'주문하기'}></Button>
+                    <Button onClick={onClickEstmOpen} toggle={true} title={'주문하기'}></Button>
                 </div>
                 <CartModal
                     open={open}

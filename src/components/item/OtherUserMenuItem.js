@@ -5,7 +5,6 @@ import styles from './OtherMenu.module.scss';
 const OtherUserMenuItem = ({
     item_id,
     menuTitle,
-    menuText,
     menuPrice,
     src,
 }) => {

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import styles from './SupportContainer.module.scss';
 
 import { Paths } from '../../paths';
@@ -16,7 +16,6 @@ const LinkList = [
 ];
 
 export default ({ pathname }) => {
-    console.log(pathname);
 
     const getTitle = useCallback((path) => {
         if (path.indexOf('/qna') !== -1) {
@@ -26,7 +25,7 @@ export default ({ pathname }) => {
         } else {
             return "공지사항";
         }
-    }, [])
+    }, []);
 
     return (
         <div className={styles['container']}>
@@ -37,6 +36,7 @@ export default ({ pathname }) => {
                     <Route path={`${Paths.ajoonamu.support}/notice/:id?`} component={Notice} />
                     <Route path={`${Paths.ajoonamu.support}/qna/:id?`} component={QNA} />
                     <Route path={`${Paths.ajoonamu.support}/faq`} component={FAQ} />
+                    <Route render={() => <Redirect to={`${Paths.ajoonamu.support}/notice`} />}/>
                 </Switch>
             </div>
         </div>

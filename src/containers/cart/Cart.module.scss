@@ -25,8 +25,8 @@
             justify-content: center;
             align-items: center;
             padding-left: 40px;
-     
-            span{
+
+            span {
                 font-size: 18px;
             }
             // label {
@@ -61,15 +61,16 @@
         font-size: 22px;
         color: #555;
         .order-text {
-            font-size: 22px;
-            padding-right: 5px;
+            font-size: 1.833rem;
+            padding-right: 20px;
         }
         .order-price {
-            font-size: 24px;
+            font-size: 2.333rem;
             font-weight: bold;
             color: #222;
             &.total {
                 color: $main-color;
+                font-size: 2.667rem;
             }
         }
         .box {
@@ -78,7 +79,7 @@
     }
     .order-text {
         padding: 17px 0;
-        font-size: 16px;
+        font-size: 1.333rem;
         color: #aaa;
         text-align: center;
     }
@@ -119,8 +120,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        div {
-            width: 580px !important;
+        button {
+            width: 580px;
         }
     }
 }

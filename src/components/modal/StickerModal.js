@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import styles from './PreferModal.module.scss';
+import styles from './StickerModal.module.scss';
 import Dialog from '@material-ui/core/Dialog';
 import CloseIcon from '../svg/modal/CloseIcon';
 import { ButtonBase, IconButton } from '@material-ui/core';

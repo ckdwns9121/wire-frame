@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import {Paths} from 'paths';
+import { Paths } from 'paths';
 import styles from './Order.module.scss';
 import classNames from 'classnames/bind';
 import CircleCheckBox from '../../components/checkbox/CircleCheckBox';
 import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
 import Button from '../../components/button/Button';
 import CheckBox from '../../components/checkbox/CheckBox';
+import { ButtonBase } from '@material-ui/core';
 const cx = classNames.bind(styles);
 
 const OrderContainer = () => {
@@ -83,25 +84,27 @@ const OrderContainer = () => {
                                             <option value="2002">
                                                 2000-00-00
                                             </option>
-                                            <option value="203">
+                                            <option value="2003">
                                                 2000-00-00
                                             </option>
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
-                                        <select name="phone">
-                                            <option value="9">오전9시</option>
-                                            <option value="10">오전10시</option>
-                                            <option value="11">오전11시</option>
-                                            <option value="12">오전12시</option>
+                                        <select name="hours">
+                                            <option value="9">오전 9시</option>
+                                            <option value="10">오전 10시</option>
+                                            <option value="11">오전 11시</option>
+                                            <option value="12">오전 12시</option>
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
-                                        <select name="phone">
-                                            <option value="010">010</option>
-                                            <option value="011">011</option>
-                                            <option value="016">016</option>
-                                            <option value="019">019</option>
+                                        <select name="minute">
+                                            <option value="00">00분</option>
+                                            <option value="10">10분</option>
+                                            <option value="20">20분</option>
+                                            <option value="30">30분</option>
+                                            <option value="40">40분</option>
+                                            <option value="50">50분</option>
                                         </select>
                                     </div>
                                 </div>
@@ -184,22 +187,21 @@ const OrderContainer = () => {
                             </div>
                             <div className={styles['user-info']}>
                                 <div className={styles['coupon']}>
-                                <select name="coupon">
-                                    <option value="cp1">
-                                        적용할 쿠폰을 선택해주세요.
-                                    </option>
-                                    <option value="cp2">
-                                        ABCD-EFGE-ABCD-EFGE
-                                    </option>
-                                    <option value="cp3">
-                                        ABCD-EFGE-ABCD-EFGE
-                                    </option>
-                                    <option value="cp4">
-                                        ABCD-EFGE-ABCD-EFGE
-                                    </option>
-                                </select>
+                                    <select name="coupon">
+                                        <option value="cp1">
+                                            적용할 쿠폰을 선택해주세요.
+                                        </option>
+                                        <option value="cp2">
+                                            ABCD-EFGE-ABCD-EFGE
+                                        </option>
+                                        <option value="cp3">
+                                            ABCD-EFGE-ABCD-EFGE
+                                        </option>
+                                        <option value="cp4">
+                                            ABCD-EFGE-ABCD-EFGE
+                                        </option>
+                                    </select>
                                 </div>
-                    
                             </div>
                         </div>
 
@@ -213,9 +215,9 @@ const OrderContainer = () => {
                                         사용할 포인트
                                     </div>
                                     <input className={styles['point-input']} />
-                                    <div className={styles['btn']}>
+                                    <ButtonBase className={styles['btn']}>
                                         사용하기
-                                    </div>
+                                    </ButtonBase>
                                 </div>
                                 <div className={styles['user-point']}>
                                     보유포인트 <span>5,000P</span>
@@ -263,13 +265,18 @@ const OrderContainer = () => {
                         </div>
                         <div className={styles['total-price']}>
                             <div className={styles['text']}>합계</div>
-                            <div className={styles['price']}>100,000</div><span>원</span>
+                            <div className={styles['price']}>100,000</div>
+                            <span>원</span>
                         </div>
                         <div className={styles['order-btn']}>
-                                <Button title={"결제하기"} disable={true} toggle={true}></Button>
+                            <Button
+                                title={'결제하기'}
+                                disable={true}
+                                toggle={true}
+                            ></Button>
                         </div>
                         <div className={styles['agree-order']}>
-                            <AcceptContainer/>
+                            <AcceptContainer />
                         </div>
                     </div>
                 </div>
@@ -280,9 +287,9 @@ const OrderContainer = () => {
 
 function Payment({ text, onClick, check }) {
     return (
-        <div className={cx('payment-item', { check: check })} onClick={onClick}>
+        <ButtonBase className={cx('payment-item', { check: check })} onClick={onClick}>
             {text}
-        </div>
+        </ButtonBase>
     );
 }
 

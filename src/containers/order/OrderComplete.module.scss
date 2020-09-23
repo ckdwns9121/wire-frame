@@ -1,51 +1,53 @@
 @import '../../styles/Root.scss';
 
-$pd :40px;
-.container{
+$pd: 40px;
+.container {
     @include wireframe;
-    .content{
+    .content {
         @include content;
-        padding-bottom:0;
-        .message{
-            padding : 0 350px;
+        padding-bottom: 0;
+        .message {
+            padding: 0 350px;
             text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            .title{
-
+            .title {
                 font-size: 36px;
             }
-            .msg{
-                padding : $pd 0;
+            .msg {
+                padding-top: 60px;
+                padding-bottom: 48px;
                 font-size: 18px;
-                color:#777;
+                line-height: 2;
+                font-weight: normal;
+                color: #777;
                 word-break: keep-all;
             }
-            .order-number{
+            .order-number {
                 font-size: 20px;
             }
-            .btn{
-                padding-top:80px;
-                padding-bottom:110px;
-            .item{
-                cursor: pointer;
-                width: 320px;
-                height: 64px;
-                color:$main-color;
-                border:1px solid $main-color;
-                font-size: 22px;
-                font-weight: bold;
-                border-radius: 10px;
-                line-height: 64px;
+            .btn {
+                padding-top: 80px;
+                padding-bottom: 120px;
+                .item {
+                    cursor: pointer;
+                    width: 320px;
+                    height: 64px;
+                    color: $main-color;
+                    border: 1px solid $main-color;
+                    font-size: 22px;
+                    font-weight: bold;
+                    border-radius: 10px;
+                    line-height: 64px;
+                }
             }
         }
-        }
     }
-    .view-content{
+    .view-content {
         overflow: hidden;
-        
+
         &::after {
             content: '';
             display: block;
@@ -54,106 +56,103 @@ $pd :40px;
             overflow: hidden;
             clear: both;
         }
-        .title{
+        .title {
             font-size: 24px;
             font-weight: bold;
-            color:#222;
-            padding :20px;
-            border-bottom: 2px solid #222;;
+            color: #222;
+            padding: 20px;
+            border-bottom: 2px solid #222;
         }
 
-        .order-view{
+        .order-view {
             float: left;
             width: 740px;
-            .order-list{
-                padding-top:40px;
+            .order-list {
+                margin-top: 40px;
+                border-top: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
             }
-          
         }
-     
 
-        .payment-view{
+        .payment-view {
             width: 500px;
             float: right;
-            .box{
-                 padding: 40px 20px;
+            .box {
+                padding: 40px 20px;
             }
-            .title{
+            .title {
                 font-size: 24px;
                 font-weight: bold;
-                color:#222;
-                padding :20px;
-                border-bottom: 2px solid #222;;
-             }
-             .text-price{
-                padding-bottom: 20px;
-                 display: flex;
-                 .text{
-                     width: 100%;
-                     font-size: 20px;
-                     font-weight: bold;
-                     color:#222;
-                     &.auto{
-                         width: 61%;
-                     }
-                 }
-                 .price{
-                     text-align: right;
-                    width: 100%;
-                     font-size: 18px;
-                     color:555;
-                 }
-             }
-
-        }
-    }
-    .user-content{
-        .user-info{
-            padding-bottom:90px;
-            .title{
-                font-size: 20px;
-                font-weight: bold;
-                color:#222;
-                padding:20px;
+                color: #222;
+                padding: 20px;
                 border-bottom: 2px solid #222;
             }
-            .context{
-                padding:40px; 
-                .box{
+            .text-price {
+                padding-bottom: 20px;
+                display: flex;
+                .text {
+                    width: 100%;
+                    font-size: 20px;
+                    font-weight: bold;
+                    color: #444;
+                    &.auto {
+                        width: 61%;
+                    }
+                }
+                .price {
+                    text-align: right;
+                    width: 100%;
+                    font-size: 18px;
+                    color: #555;
+                }
+            }
+        }
+    }
+    .user-content {
+        .user-info {
+            padding-bottom: 90px;
+            .title {
+                font-size: 24px;
+                font-weight: bold;
+                color: #222;
+                padding: 20px;
+                border-bottom: 2px solid #222;
+            }
+            .context {
+                padding: 40px;
+                .box {
                     display: flex;
                     padding-bottom: 20px;
-                    .text{
+                    .text {
                         font-size: 20px;
                         font-weight: bold;
-                        color:#222;
+                        color: #444;
                         min-width: 140px;
-                        padding-right:20px;
+                        padding-right: 20px;
                     }
-                    .value{
+                    .value {
                         font-size: 18px;
-                        color:#555;
+                        font-weight: normal;
+                        color: #555;
                     }
                 }
             }
         }
-        .order-cancle{
-
+        .order-cancle {
             width: 100%;
             display: flex;
             justify-content: center;
-            .btn{
-                cursor: pointer;
-                width: 400px;
-                height: 64px;
-                border:1px solid #dbdbdb;
+            .btn {
+                width: 400px; height: 64px;
+                border: 1px solid #dbdbdb;
                 text-align: center;
-                line-height: 64px;
                 font-size: 20px;
-                background-color: #FFFFFF;
+                border-radius: 20px;
+                color: #555;
+                font-weight: 500;
+                background-color: #ffffff;
             }
-            padding-bottom:160px;
+            padding-bottom: 160px;
         }
     }
-    
-
 }
