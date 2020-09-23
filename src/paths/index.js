@@ -22,7 +22,7 @@ export const Paths = {
         order_list: '/order_list',
         order_detail: '/order_detail',
         order_complete: '/order_complete',
-        breakfast: '/morning',
+        breakfast: '/breakfast',
         coupon: '/coupon',
         support: '/support',
         notice: '/notice',

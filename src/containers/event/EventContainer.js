@@ -13,8 +13,7 @@ import { ButtonBase } from '@material-ui/core';
 
 const cn = classnames.bind(styles);
 
-const offset = 0,
-    limit = 30;
+const offset = 0, limit = 30;
 
 export default ({ match, location }) => {
     const history = useHistory();
