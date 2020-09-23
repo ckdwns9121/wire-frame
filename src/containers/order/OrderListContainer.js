@@ -9,6 +9,7 @@ import Loading from '../../components/assets/Loading';
 import {getOrderList} from '../../api/order/orderItem';
 import {useStore} from '../../hooks/useStore';
 import PreviewOrderList from '../../components/order/PreviewOrderItemList';
+import { dateToYYYYMMDD } from '../../lib/formatter';
 
 //주문내역 페이지
 const OrderListContainer = () => {
@@ -66,11 +67,11 @@ const OrderListContainer = () => {
                         <div className={styles['date-input-box']}>
                             <div className={styles['text']}>기간 입력</div>
                             <div className={styles['input']}>
-                                <input />
+                                <input value={dateToYYYYMMDD(new Date(), '/')} />
                             </div>
                             <div className={styles['line']} />
                             <div className={styles['input']}>
-                                <input />
+                                <input value={dateToYYYYMMDD(new Date(), '/')} />
                             </div>
                             <ButtonBase className={styles['btn']}>
                                 조회

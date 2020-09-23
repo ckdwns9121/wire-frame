@@ -11,10 +11,17 @@ import styles from './QNA.module.scss';
 import { ButtonBase, IconButton } from '@material-ui/core';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import Delete from '../svg/support/Delete';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../../store/modal';
 
 const cn = classnames.bind(styles);
 
 export default ({ match, location }) => {
+    const modalDispatch = useDispatch();
+    const openAlert = useCallback((title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(false, title, text, handleClick));
+    }, [modalDispatch]);
+    
     const [list, setList] = useState([]);
     const history = useHistory();
 
@@ -30,10 +37,10 @@ export default ({ match, location }) => {
             const res = await requestQNAList(token);
             setList(res.qnas);
         } catch (e) {
-            alert('잘못된 접근입니다.');
+            openAlert('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.replace(Paths.index);
         }
-    }, [history]);
+    }, [history, openAlert]);
 
     const handleClickDetail = useCallback(id => {
         history.push(`${Paths.ajoonamu.support}/qna/view?id=${id}`)
@@ -80,6 +87,10 @@ const QNATable = ({ list, handleClick }) => (
     </div>
 );
 const QNAWrite = () => {
+    const modalDispatch = useDispatch();
+    const openAlert = useCallback((title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(false, title, text, handleClick));
+    }, [modalDispatch]);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [files, setFiles] = useState([]);
@@ -106,18 +117,17 @@ const QNAWrite = () => {
                 content,
                 files,
             });
-            console.log(res);
             if (res.data.msg === "성공") {
-                alert('성공적으로 작성하였습니다!');
+                openAlert('성공적으로 작성하였습니다!', '답변이 올 때까지는 조금 시간이 소요됩니다.');
                 history.replace(`${Paths.ajoonamu.support}/qna`);
             } else {
-                alert('작성하는 도중 오류가 발생했습니다!');
+                openAlert('작성하는 도중 오류가 발생했습니다!', '다시 시도해 주세요.');
             }
         } catch (e) {
-            alert('잘못된 접근입니다.');
+            openAlert('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.replace(Paths.index);
         }
-    }, [title, content, files, history]);
+    }, [title, content, files, history, openAlert]);
 
     return (
         <>
@@ -170,6 +180,10 @@ const QNAWrite = () => {
     )
 }
 const QNADetail = ({ id }) => {
+    const modalDispatch = useDispatch();
+    const openAlert = useCallback((title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(false, title, text, handleClick));
+    }, [modalDispatch]);
     const history = useHistory();
 
     const [data, setData] = useState({
@@ -181,18 +195,17 @@ const QNADetail = ({ id }) => {
         const token = sessionStorage.getItem('access_token');
         if (token) {
             const res = await requestQNADetail(token, id);
-            console.log(res);
             if (res.data.query !== null) {
                 setData(res.data.query);
             } else {
-                alert('잘못된 접근입니다.')
+                openAlert('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
                 history.push(Paths.ajoonamu.signin);
             }
         } else {
-            alert('잘못된 접근입니다.')
+            openAlert('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.push(Paths.ajoonamu.signin);
         }
-    }, [history, id])
+    }, [history, id, openAlert])
 
     useEffect(() => {
         getQNADetail();

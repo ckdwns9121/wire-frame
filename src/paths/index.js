@@ -29,6 +29,9 @@ export const Paths = {
         notice: '/notice',
         event: '/event',
         tos: '/tos',
+        policy: '/agree/policy',
+        term_use: '/agree/term_use',
+        agree: '/agree'
     },
     api: 'http://devapi.ajoonamu.com/api/',
 };

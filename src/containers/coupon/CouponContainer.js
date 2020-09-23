@@ -12,6 +12,8 @@ import { getMyCoupons,  getDownloadCpList ,downloadCoupon } from '../../api/coup
 import Loading from '../../components/assets/Loading';
 import Message from '../../components/message/Message';
 import produce from 'immer';
+import { ButtonBase } from '@material-ui/core';
+import { dateToYYYYMMDD } from '../../lib/formatter';
 
 const tabInit = [
     {
@@ -136,22 +138,22 @@ const CouponConatiner = (props) => {
                 {index === 2 && (
                     <div className={styles['use-coupon']}>
                         <div className={styles['date']}>
-                            <div className={styles['date-box']}>1주일</div>
-                            <div className={styles['date-box']}>1개월</div>
-                            <div className={styles['date-box']}>3개월</div>
-                            <div className={styles['date-box']}>6개월</div>
+                            <ButtonBase className={styles['date-box']}>1주일</ButtonBase>
+                            <ButtonBase className={styles['date-box']}>1개월</ButtonBase>
+                            <ButtonBase className={styles['date-box']}>3개월</ButtonBase>
+                            <ButtonBase className={styles['date-box']}>6개월</ButtonBase>
                         </div>
                         <div className={styles['date-input-box']}>
                             <div className={styles['text']}>기간 입력</div>
                             <div className={styles['input']}>
-                                <input></input>
+                                <input value={dateToYYYYMMDD(new Date(), '/')} />
                             </div>
                             <div className={styles['line']}></div>
 
                             <div className={styles['input']}>
-                                <input></input>
+                                <input value={dateToYYYYMMDD(new Date(), '/')} />
                             </div>
-                            <div className={styles['btn']}>조회</div>
+                            <ButtonBase className={styles['btn']}>조회</ButtonBase>
                         </div>
                     </div>
                 )}
@@ -163,6 +165,7 @@ const CouponConatiner = (props) => {
                                 <CouponItemList cp_list={cp_list} />
                             ) : (
                                 <Message
+                                    src={false}
                                     msg={'보유하고 있는 쿠폰이 없습니다.'}
                                 />
                             )}
@@ -174,6 +177,7 @@ const CouponConatiner = (props) => {
                                 <DownCouponItemList cp_list={down_cp_list}  onClick={callCouponDownload}/>
                             ) : (
                                 <Message
+                                    src={false}
                                     msg={'발급 받을 수 있는 쿠폰이 없습니다.'}
                                 />
                             )}
