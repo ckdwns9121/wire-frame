@@ -36,8 +36,8 @@ const initMenu = [
 
 
 const DownCouponItemList = ({cp_list, check }) => {
-    const list = initMenu.map((cp) => (
-        <DownCouponItem key={cp.id} item={cp} check={check} />
+    const list = cp_list.map((cp) => (
+        <DownCouponItem key={cp.cz_id} item={cp} check={check} />
     ));
 
     return (<div className={styles['downcoupon-list']}>{list}</div>);

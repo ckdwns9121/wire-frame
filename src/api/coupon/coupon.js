@@ -24,3 +24,14 @@ export const getOrderCoupons = async(token) =>{
     const result = await axios.get(req, config);
     return result.data.query;
 }
+export const getDownloadCp = async(token) =>{
+    const req = Paths.api +'user/coupon/list_zone';
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const result = await axios.get(req, config);
+    return result.data.query;
+}

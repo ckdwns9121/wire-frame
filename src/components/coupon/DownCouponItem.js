@@ -5,18 +5,18 @@ import { numberFormat } from '../../lib/formatter';
 
 const DownCouponItem = (props) => {
     const {
-        cp_datetime,
-        // cp_end,
         cp_id,
-        // cp_minimum,
-        cp_price,
-        // cp_start,
-        cp_subject,
-        // cp_target,
-        // cp_use,
-        // cp_use_date,
-        // cz_id,
-        // user_id,
+        cz_datetime,
+        cz_download,
+        cz_end,
+        cz_id,
+        cz_limit,
+        cz_minimum,
+        cz_period,
+        cz_price,
+        cz_start,
+        cz_subject,
+        cz_target,
     } = props.item;
     return (
         <div className={styles['coupon-item']}>
@@ -25,10 +25,10 @@ const DownCouponItem = (props) => {
             </div>
             <div className={styles['info']}>
                 <div className={styles['pd-box']}>
-                    <CouponEventName event_name={cp_id} />
-                    <CouponSale sale={cp_price} />
-                    <CouponEventSub sub_name={cp_subject} />
-                    <CouponDate date={cp_datetime} />
+                    <CouponEventName event_name={`첫 주문 ${numberFormat(cz_price)} 원 할인 쿠폰`} />
+                    <CouponSale sale={cz_price} />
+                    <CouponEventSub sub_name={cz_subject} />
+                    <CouponDate date={cz_datetime} />
                 </div>
             </div>
         </div>

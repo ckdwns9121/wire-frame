@@ -5,6 +5,7 @@ import MenuItem from './MenuItem';
 const MenuItemList = ({ menuList,onClick }) => {
     const list = menuList.map((menu, index) => (
         <MenuItem
+        index={index}
         ca_id ={menu.ca_id}
         created_at ={menu.created_at}
         deleted={menu.deleted}
