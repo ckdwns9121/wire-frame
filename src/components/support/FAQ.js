@@ -5,7 +5,6 @@ import styles from './FAQ.module.scss';
 
 import Message from '../../components/message/Message';
 
-import UpArrow from '../svg/support/up.svg';
 import DownArrow from '../svg/support/down.svg';
 import { requestFAQList } from '../../api/support/faq';
 import { useHistory } from 'react-router-dom';
