@@ -1,21 +1,21 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 import styles from './OrderList.module.scss';
 import { Paths } from 'paths';
 import PreviewOrderItem from '../../components/order/PreviewOrderItem';
 
-const tabInit = [
-    {
-        url: `${Paths.ajoonamu.order_list}/order?`,
-        name: '예약주문',
-    },
-    {
-        url: `${Paths.ajoonamu.order_list}/delivery`,
-        name: '배달주문',
-    },
-];
+
 
 //주문내역 페이지
 const OrderListContainer = () => {
+
+    const history = useHistory();
+
+    const onClickOrderItem =()=>{
+        console.log("gd");
+        history.push(`${Paths.ajoonamu.mypage}/order_detail?order_id=1234`);
+    }
+
     return (
         <div className={styles['container']}>
             <div className={styles['content']}>
@@ -42,7 +42,8 @@ const OrderListContainer = () => {
                 </div>
             </div>
             <div className={styles['order-list']}>
-                <PreviewOrderItem/>
+                <PreviewOrderItem onClick={onClickOrderItem}/>
+                <PreviewOrderItem onClick={onClickOrderItem}/>
             </div>
 
         </div>

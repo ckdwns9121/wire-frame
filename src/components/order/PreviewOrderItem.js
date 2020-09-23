@@ -4,7 +4,7 @@ import menu1 from '../svg/menu/menu1.png';
 import menu2 from '../svg/menu/menu2.png';
 import menu3 from '../svg/menu/menu3.png';
 import Arrow from '../svg/arrow/Arrow';
-const PreviewOrderItem = () => {
+const PreviewOrderItem = (props) => {
     return (
         <div className={styles['preview-item']}>
             <div className={styles['preview-title-bar']}>
@@ -32,7 +32,7 @@ const PreviewOrderItem = () => {
                 <MenuItem src={menu2}item_name={"떡볶이"} item_quanity={"10"} item_price={"100,000원"}/>
                 <MenuItem src={menu3} item_name={"떡볶이"} item_quanity={"10"} item_price={"100,000원"}/>
             </div>
-            <div className={styles['href-detail']}>
+            <div className={styles['href-detail']} onClick={props.onClick}>
                 <div className={styles['text']}>
                     주문 상세보기
                 </div>

@@ -1,10 +1,13 @@
 import React from 'react';
 import styles from './Order.module.scss';
+import cn from 'classnames/bind';
 import menu1 from '../svg/order/menu1.png';
 
-const OrderItem = () => {
+const cx = cn.bind(styles);
+
+const OrderItem = (props) => {
     return (
-        <div className={styles['order-item']}>
+        <div className={cx('order-item',{space : props.center})}>
             <div className={styles['menu-img']}>
                 <img src={menu1} alt="menu" />
             </div>
@@ -16,10 +19,16 @@ const OrderItem = () => {
                 <div className={styles['quanity']}>
                     수량: <span>10</span>
                 </div>
-                <div className={styles['price']}>32,000원</div>
+                {!props.center && <div className={cx('price')}>32,000원</div>  }
+                
             </div>
+            {props.center && <div className={cx('center-price')}>32,000원</div>  }
         </div>
     );
 };
 
+
+OrderItem.defaultProps={
+    center:false
+}
 export default OrderItem;
