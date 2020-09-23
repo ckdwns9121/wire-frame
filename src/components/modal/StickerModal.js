@@ -1,18 +1,79 @@
 import React, { useCallback, useState } from 'react';
+import classnames from 'classnames/bind'
+
 import styles from './StickerModal.module.scss';
 import Dialog from '@material-ui/core/Dialog';
 import CloseIcon from '../svg/modal/CloseIcon';
-import { ButtonBase, IconButton } from '@material-ui/core';
+import PhraseTemplateList from '../assets/PhraseTemplateList';
+import { requestPostPhraseSerive } from '../../api/order/sticker';
 
-const ReserveModal = (props) => {
-    const [value, setValue] = useState(1);
+import { ButtonBase } from '@material-ui/core';
 
-    const setMinus = useCallback(() => {
-        if (value > 1) {
-            setValue(value - 1);
+const cn = classnames.bind(styles);
+
+const InputLogo = ({ handleChange }) => {
+    const [image, setImage] = useState(null);
+    const handleImageChange = (e) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const URL = reader.result;
+            setImage(URL);
         }
-    }, [value]);
-    const setPlus = useCallback(() => setValue(value + 1), [value]);
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0]);
+            handleChange(e.target.files[0]);
+        }
+    };
+
+    return (
+        <div className={styles['input-area']}>
+            <ButtonBase className={cn('input-logo', 'input-box')}>
+                <input id="import-logo" className={styles['filebox']} type="file" onChange={handleImageChange}/>
+                <label className={styles['label']} htmlFor="import-logo" style={{ backgroundImage: 'url(' + image + ')'}}>
+                    <div className={styles['text']}>로고 가져오기</div>
+                </label>
+            </ButtonBase>
+        </div>
+    );
+};
+const InputPhrase = ({ handleChange }) => {
+    return (
+        <div className={styles['input-area']}>
+            <textarea
+                className={cn('input-phrase', 'input-box')}
+                onChange={handleChange} />
+        </div>
+    )
+}
+const InputPreview = () => {
+    return (
+        <div className={styles['preview']}>
+            <ButtonBase className={cn('input-preview', 'input-box')}>
+                
+            </ButtonBase>
+        </div>
+    )
+}
+const GuideTemplate = ({ title, children, className }) => (
+    <div className={cn('guide', className)}>
+        <h3 className={styles['label']}>{title}</h3>
+        <div className={styles['content']}>
+            {children}
+        </div>
+    </div>
+);
+
+const StickerModal = (props) => {
+    const [template, setTemplate] = useState(0);
+    const [logo, setLogo] = useState(null);
+    const [phrase, setPhrase] = useState('');
+    
+    const TemplateList = [
+        { class: 'template', title: '템플릿을 선택해주세요.', content: <PhraseTemplateList template={template} handleChange={setTemplate} /> },
+        { class: 'logo', title: '로고 이미지를 선택해주세요.', content: <InputLogo handleChange={setLogo} /> },
+        { class: 'phrase', title: '입력하실 문구를 입력하세요.', content: <InputPhrase phrase={phrase} handleChange={setPhrase} /> },
+        { class: 'preview', title: '미리보기', content: <InputPreview template={template} logo={logo} phrase={phrase} /> }
+    ];
 
     return (
         <Dialog
@@ -24,69 +85,30 @@ const ReserveModal = (props) => {
             className={styles['dialog']}
         >
             <div className={styles['title-bar']}>
-                <div className={styles['title']}> 맞춤 주문 설정 </div>
+                <div className={styles['title']}>문구 서비스 신청</div>
                 <div className={styles['close']} onClick={props.handleClose}>
                     <CloseIcon />
                 </div>
             </div>
             <div className={styles['modal-content']}>
-                <div className={styles['label']}>주문종류</div>
-                <div className={styles['modal-input-box']}>
-                    <form>
-                        <select
-                            value={props.itemType}
-                            onChange={props.onChangeType}
-                        >
-                            <option value="reserve">예약주문</option>
-                            <option value="delivery">배달주문</option>
-                        </select>
-                    </form>
+                <div className={styles['container']}>
+                    {TemplateList.map((template, index) => (
+                        <GuideTemplate key={index} title={template.title} className={template.class}>
+                            {template.content}
+                        </GuideTemplate>
+                    ))}
                 </div>
-                <div className={styles['label']}>전체예산</div>
-                <div className={styles['modal-input-box']}>
-                    <input
-                        className={styles['value-input']}
-                        value={props.budget}
-                        onChange={props.onChangeBudget}
-                    />
-                    <span>원 부터</span>
-                    <input
-                        className={styles['value-input']}
-                        value={props.budget}
-                        onChange={props.onChangeBudget}
-                    />
-                    <span>원 까지</span>
+                <div className={styles['confirm']}>
+                    <ButtonBase
+                        className={styles['btn']}
+                        onClick={props.onClickCustomOrder}
+                    >
+                        신청하기
+                    </ButtonBase>
                 </div>
-
-                <div className={styles['box']}>
-                    <div className={styles['label']}>희망 수량</div>
-                    <div className={styles['counter']}>
-                        <div className={styles['count-box']}>
-                            <IconButton
-                                onClick={setMinus}
-                                className={styles['decrement']}
-                            >
-                                -
-                            </IconButton>
-                            <div className={styles['value']}>{value}</div>
-                            <IconButton
-                                onClick={setPlus}
-                                className={styles['increment']}
-                            >
-                                +
-                            </IconButton>
-                        </div>
-                    </div>
-                </div>
-                <ButtonBase
-                    className={styles['btn']}
-                    onClick={props.onClickCustomOrder}
-                >
-                    설정
-                </ButtonBase>
             </div>
         </Dialog>
     );
 };
 
-export default ReserveModal;
+export default StickerModal;

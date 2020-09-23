@@ -16,6 +16,7 @@ import {
     FindPassword,
     Mypage,
     Support,
+    Breakfast,
     Event
 } from 'pages';
 import { Home, Address, Reserve, DetailMenu } from 'pages';
@@ -52,7 +53,7 @@ function App() {
                         <Route path={Paths.ajoonamu.product}  component={DetailMenu}></Route>
                         <Route path={Paths.ajoonamu.shop} component={Reserve}></Route>
                         <Route exact path={Paths.ajoonamu.cart} component={Cart}></Route>
-
+                        <Route exact path={Paths.ajoonamu.breakfast} component={Breakfast}></Route>
                         <Route path={Paths.ajoonamu.support} component={Support}></Route>
                         <Route path={`${Paths.ajoonamu.event}/:id?`} component={Event}></Route>
                         <Route path={Paths.ajoonamu.order} component={Order}></Route>
