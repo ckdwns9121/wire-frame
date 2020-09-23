@@ -30,8 +30,6 @@ const BreakfastContainer = () => {
                 <div className={styles['container']}>
 
 
-
-
                     <div className={styles['bottom-banner']} style={{ backgroundImage: 'url(' + bottomBanner + ')'}}>
                         <div className={styles['content']} data-aos='fade-up'>
                             <p className={styles['title']}>기업조식 정기배송 서비스</p>
