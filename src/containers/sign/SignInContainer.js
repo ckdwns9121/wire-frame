@@ -34,7 +34,7 @@ const SignInContainer = () => {
     const onChangeChecked = useCallback(e => {
         setChecked(e.target.checked);
     }, []);
-    
+
     const onClickSignUp = useCallback(() => {
         history.push(Paths.ajoonamu.signup);
     }, [history]);
@@ -59,7 +59,7 @@ const SignInContainer = () => {
             else if (res.data.access_token) {
                 sessionStorage.setItem('access_token', res.data.access_token);
                 dispatch(get_user_info(res.data.access_token));
-                history.redirect(Paths.index);
+                history.replace(Paths.index);
             }
         } else {
             alert('이메일 혹은 패스워드를 확인해주세요');
