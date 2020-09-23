@@ -10,7 +10,11 @@ export default function CheckBox({ id, text, check, onChange, url }) {
     return (
         <div className={cx('check', 'item')}>
             <div className={cx('sub-text')}>
-                <input type="checkbox" id={id} checked={check} onChange={onChange} />
+                <input 
+                type="checkbox" 
+                id={id} 
+                checked={check} 
+                onChange={onChange} />
                 <label className={styles['label']} htmlFor={id}>
                     <Check on={check} />{text}
                 </label>

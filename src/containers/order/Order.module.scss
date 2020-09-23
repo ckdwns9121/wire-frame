@@ -179,7 +179,7 @@ $pd: 20px;
 
                     .user-point {
                         margin-top: 10px;
-                        padding-left: 160px;
+                        padding-left: 180px;
                         font-size: 18px;
                         color: #222;
                         span {
@@ -224,6 +224,11 @@ $pd: 20px;
                         font-size: 24px;
                         font-weight: bold;
                         text-align: right;
+
+                        span{
+                            font-size: 20px;
+                            font-weight: normal;
+                        }
                     }
                 }
             }
@@ -236,6 +241,7 @@ $pd: 20px;
             padding-right: $pd;
             display: flex;
             align-items: center;
+            
             .text {
                 text-align: left;
                 font-size: 28px;
@@ -248,11 +254,13 @@ $pd: 20px;
                 font-weight: bold;
                 font-size: 32px;
                 width: 100%;
+                span {
+                    color: $main-color;
+                    font-size: 26px;
+                    font-weight: normal;
+                }
             }
-            span {
-                color: $main-color;
-                font-size: 26px;
-            }
+       
         }
     }
 }

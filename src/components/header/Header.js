@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link ,useHistory} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 import { Paths } from 'paths';
-import { useHistory } from 'react-router-dom';
 import styles from './Header.module.scss';
 import { logo, storeIcon, locationIcon, searchIcon } from '../svg/header';
 
@@ -27,12 +27,14 @@ const HeadLink = styled(Link)`
 
 const Header = () => {
     const history = useHistory();
+    const { user } = useSelector((state) => state.auth);
+
+
     const [logon, setLogon] = useState(false);
 
     useEffect(() => {
-        const token = sessionStorage.getItem('access_token');
-        setLogon(token !== null);
-    }, []);
+        setLogon(user);
+    }, [user]);
 
     const onClickHome = () => history.push(Paths.index);
     const onClickAddr = () => history.push(Paths.ajoonamu.address);

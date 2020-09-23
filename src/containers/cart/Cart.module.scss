@@ -1,11 +1,8 @@
 @import '../../styles/Root.scss';
 .load {
-    @include wireframe;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 500px;
+    min-height: 100vh;
 }
+
 .container {
     @include wireframe;
     .title {

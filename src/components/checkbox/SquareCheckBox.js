@@ -23,10 +23,10 @@ export default function SquareCheckBox({ id, text, check, onChange }) {
     );
 }
 
-function SquareBox() {
+function SquareBox({on}) {
     return (
         <svg width="20" height="20" viewBox="0 0 20 20">
-            <g fill="#fff" stroke="#ccc" strokeWidth="1">
+            <g fill="#fff" stroke="#ccc" strokeWidth={on ? "5" : "1"}>
                 <rect width="20" height="20" stroke="none" />
                 <rect x="0.5" y="0.5" width="19" height="19" fill="none" />
             </g>

@@ -6,6 +6,10 @@ import {
     Menu6,
 } from '../../components/svg/prefer';
 
+import axios from 'axios';
+import { Paths } from '../../paths';
+
+
 const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
 
 const initMenu = [
@@ -253,7 +257,56 @@ export const getOtherUserMenu = async () => {
     return initMenu2; // list 배열
 };
 
-export const getMenuList = async () => {
-    await sleep(1000); // 0.5초 쉬고
-    return initMenu3; // list 배열
-};
+
+
+
+export const getPreferMenuList = async (token)=>{
+    const req = Paths.api + `user/item/prefer?item_type=1&general_offset&general_limit&prefer_offset&prefer_limit&budget=15000&desire_quan=1000&addr1=부산`;
+  
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const result = await axios.get(req, config);
+    console.log(result);
+    return result.data.query.items_prefer;
+}
+
+
+export const getMenuList =async (token, id)=>{
+    const req = Paths.api + `user/item/list?offset&limit&ca_id=${id}`;
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const result = await axios.get(req, config);
+    return result.data.query.items;
+}
+
+export const getMainMenuList = async (token) =>{
+    const req = Paths.api + 'user/item/main?offset&limit&';
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const result = await axios.get(req, config);
+    return result.data.query.items;
+}
+
+export const getMenuInfo = async (token,item_id) =>{
+    const req = Paths.api + `user/item/view?offset&limit&item_id=${item_id}`;
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const result = await axios.get(req, config);
+    return result.data.query;
+}

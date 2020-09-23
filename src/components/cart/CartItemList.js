@@ -10,7 +10,11 @@ const CartItemList = (props) => {
             id={index} 
             key={index} 
             {...cart} 
+            isChecked= { cart.isChecked}
             handleCheckChild={props.handleCheckChild}
+            handleIncrement={props.handleIncrement}
+            handleDecrement={props.handleDecrement}
+            handleDelete={props.handleDelete}
             />
 
     ));

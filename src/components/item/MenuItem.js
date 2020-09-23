@@ -2,13 +2,15 @@ import React, { useEffect } from 'react';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import IMG from '../svg/menu/menu1.png';
 
 import styles from './Menu.module.scss';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
+import { numberFormat } from "../../lib/formatter";
 
 //홈 메뉴 아이템 컴포넌트
-const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src, index }) => {
+const MenuItem = (props) => {
     useEffect(() => {
         AOS.init({ duration: 1000 });
     }, []);
@@ -18,14 +20,14 @@ const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src, index }) => {
     return (
         // item_id 로 경로 줘야함
         <div className={styles['menu-item']}
-            data-aos='fade-up' data-aos-delay={200 * index}
-            onClick={() => history.push(Paths.ajoonamu.product)}>
-            <MenuImg src={src} />
+            data-aos='fade-up' data-aos-delay={200 * props.index}
+            onClick={props.onClick}>
+            <MenuImg src={IMG} />
             <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>
-                    <MenuTitle menuTitle={menuTitle} />
-                    <MenuText menuText={menuText} />
-                    <MenuPrice menuPrice={menuPrice} />
+                    <MenuTitle menuTitle={props.item_name} />
+                    <MenuText menuText={"아주나무의 여러가지 과일로 알찬 구성 도시락 입니다!"} />
+                    <MenuPrice menuPrice={props.item_price} />
                 </div>
             </div>
         </div>
@@ -36,7 +38,7 @@ const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src, index }) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles['img']} src={src} alt={"메뉴 이미지"} />
+            <img className={styles['img']} src={IMG} alt={"메뉴 이미지"} />
         </div>
     );
 }
@@ -52,7 +54,7 @@ function MenuText({ menuText }) {
 
 //홈 메뉴 가격 컴포넌트
 function MenuPrice({ menuPrice }) {
-    return <div className={styles['menu-price']}>{menuPrice}</div>;
+    return <div className={styles['menu-price']}>{numberFormat(menuPrice)}원~</div>;
 }
 
 export default MenuItem;

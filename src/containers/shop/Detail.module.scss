@@ -1,5 +1,7 @@
 @import '../../styles/Root.scss';
-
+.min-height{
+    min-height: 100vh;
+}
 .container {
     @include wireframe;
     font-size: 24px;
@@ -43,9 +45,9 @@
                 padding-bottom: 20px;
             }
             .item-additional-list {
-                height: 150px;
-                max-height: 200px;
+                height: auto;
                 font-size: 14px;
+                padding-bottom:80px;
             }
             .item-space {
                 display: flex;

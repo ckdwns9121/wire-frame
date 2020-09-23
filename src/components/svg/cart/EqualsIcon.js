@@ -13,16 +13,16 @@ export default () => (
                 transform="translate(1135.5 1134.5) rotate(90)"
                 fill="none"
                 stroke="#222"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
             />
             <line
                 y2="16"
                 transform="translate(1135.5 1128.5) rotate(90)"
                 fill="none"
                 stroke="#222"
-                stroke-linecap="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeWidth="2"
             />
         </g>
     </svg>

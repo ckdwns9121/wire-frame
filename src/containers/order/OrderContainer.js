@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useReducer,useCallback } from 'react';
 import { Paths } from 'paths';
 import styles from './Order.module.scss';
 import classNames from 'classnames/bind';
@@ -7,23 +7,294 @@ import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
 import Button from '../../components/button/Button';
 import CheckBox from '../../components/checkbox/CheckBox';
 import { ButtonBase } from '@material-ui/core';
+import {getCartList} from '../../api/cart/cart';
+import { numberFormat } from '../../lib/formatter';
+import {getOrderCoupons} from '../../api/coupon/coupon';
+import {useStore} from '../../hooks/useStore';
+import $script from 'scriptjs';
+import {user_order} from '../../api/order/order';
+
 const cx = classNames.bind(styles);
 
+const initCheck = {
+    allCheck: false,
+    check1: false,
+    check2: false,
+};
+
+
+
+const checkReducer = (state, action) => {
+    // console.log(action);
+    switch (action.type) {
+        case 'ALL_CHECK':
+            return {
+                ...state,
+                allCheck: action.check,
+            };
+        case 'CHECK1':
+            return {
+                ...state,
+                check1: action.check,
+            };
+        case 'CHECK2':
+            return {
+                ...state,
+                check2: action.check,
+            };
+        default:
+            return state;
+    }
+};
+
 const OrderContainer = () => {
-    //모달창 상태
-    const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState('sm');
-    const [open, setOpen] = React.useState(false);
+    const user_token = useStore();
+    const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
+    const { check1, check2 } = check;
+    const [toggle, setToggle] = useState(false);
+    const [payment, setPayment] = useState('만나서 직접 결제');
+    const [couponList, setCouponList] = useState([]);
+    const [totalPrice,setTotalPrice]  = useState(0);
+    const [delivery_cost, setDeliveryCost] = useState(0); // 배달비
+    const [delivery_memo ,setDeliveryMemo] =useState('');
+    const  [order_memo, setOrderMemo] = useState('');
 
-    //맞춤 주문 설정하기 버튼 클릭
-    const onClickCustomOrder = () => {
-        setOpen(true);
+    const onChangeDeleveryMemo =(e)=>{
+        setDeliveryMemo(e.target.value);
+    }
+    const onChangeOrderMemo =(e)=>{
+        setOrderMemo(e.target.value);
+    }
+
+
+    const updateAllCheck = (e) => {
+        dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
+        dispatchCheck({ type: 'CHECK1', check: e.target.checked });
+        dispatchCheck({ type: 'CHECK2', check: e.target.checked });
+    };
+    const onChangeCheck1 = (e) => {
+        dispatchCheck({ type: 'CHECK1', check: e.target.checked });
+    };
+    const onChangeCheck2 = (e) => {
+        dispatchCheck({ type: 'CHECK2', check: e.target.checked });
     };
 
-    // 모달창 닫기
-    const handleClose = () => {
-        setOpen(false);
+
+    //모두 체크인지 확인 함수
+    const isAllCheck = useCallback(() => {
+        if (check1 && check2 ) {
+            dispatchCheck({ type: 'ALL_CHECK', check: true });
+            setToggle(true);
+        } else if (!check1 || !check2 ) {
+            dispatchCheck({ type: 'ALL_CHECK', check: false });
+            setToggle(false);
+        }
+    }, [check1, check2]);
+
+
+    
+
+    // 결제방식 변경
+    const onClickPayment = (payment) => {
+        setPayment(payment);
+        sessionStorage.setItem('payment',payment);
     };
+
+    //결제 방법 스토리지에 있다면 들고오기
+    const getPayment = ()=>{
+        const payment_item = sessionStorage.getItem('payment');
+        if(payment_item){
+            setPayment(payment_item);
+        }
+        
+    }
+
+    //총 주문금액 구하기
+    const getTotalPrice = async ()=>{
+      
+        if (user_token) {
+            const res = await getCartList(user_token);
+            console.log(res);
+            let price = 0;
+            let len = Object.keys(res).length;
+       
+            for (let i = 0; i < len - 1; i++) {
+                const {item_price,item_quanity} = res[i].item;
+                console.log(res[i]);
+                price+=item_price * item_quanity;
+            }
+            setTotalPrice(price);
+            setDeliveryCost(res.delivery_cost);
+
+        }
+    }
+
+
+    // 유저의 쿠폰 가져오기
+    const getUserCoupons =async()=>{
+
+        if(user_token){
+            const res = await getOrderCoupons(user_token);
+            console.log(res);
+            setCouponList(res);
+        }
+    }
+
+
+    //쿠폰이 있을시 옵션 렌더
+    const renderCpList =()=>{
+        const list = couponList.map((item) => 
+            <option  key={item.cp_id} value={item.cp_id}>{item.cp_id}</option>
+        )
+        return(
+            <>
+            {list}
+            </>
+        )
+    }
+
+    const onClickOrder =async ()=> {
+    
+        const res = await user_order(user_token);
+        console.log(res);
+             
+    const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
+
+    $script(payple_url , ()=>{
+        /*global PaypleCpayAuthCheck*/
+
+        const getResult = function (res) {
+            alert("callback : " + res.PCD_PAY_MSG);
+          };
+          
+        console.log("결제 시작");
+
+        const pay_type = "";  //결제 수단
+        const pay_work = "PAY"; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
+        const payple_payer_id = "";
+        const buyer_no = ""; //고객 고유번호
+        const buyer_name = ""; //고객 이름
+        const buyer_hp = ""; //고객 번호
+        const buyer_email = ""; //고객 이메일
+        const buy_goods = "테스트"; //구매하는 물건 이름
+        // const buy_total = Number(parseInt(totalPrice)+ parseInt(delivery_cost));
+        const buy_total = Number(parseInt(totalPrice));
+        const buy_taxtotal = 0;
+        const buy_istax = "";//과세설정 DEFAULT :Y  비과세 N
+        const order_num = ""; //주문 번호
+        const is_reguler = "";
+        const pay_year = "";
+        const pay_month = "";
+        const is_taxsave = "";
+        const simple_flag = "";
+        const card_ver = "";
+        const auth_type = "";
+        const is_direct = "";
+        const pcd_rst_ur = "";
+        const server_name = "";
+        
+         let obj = new Object();
+    
+        //#########################################################################################################################################################################
+        /*
+         * DEFAULT SET 1
+         */
+        obj.PCD_CPAY_VER = "1.0.1";								// (필수) 결제창 버전 (Default : 1.0.0)
+        obj.PCD_PAY_TYPE = pay_type;								// (필수) 결제 방법 (transfer | card)
+        obj.PCD_PAY_WORK = pay_work;								// (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
+    
+        // 카드결제 시 필수
+        obj.PCD_CARD_VER = card_ver;								// DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
+        
+        //#########################################################################################################################################################################
+        /*
+         * 1. 결제자 인증 
+         * PCD_PAY_WORK : AUTH
+         */
+         	if (pay_work == 'AUTH') {
+        		obj.PCD_PAYER_NO = buyer_no;						// (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
+        		obj.PCD_PAYER_NAME = buyer_name;					// (선택) 결제자 이름
+        		obj.PCD_PAYER_HP = buyer_hp;						// (선택) 결제자 휴대폰 번호
+        		obj.PCD_PAYER_EMAIL = buyer_email;					// (선택) 결제자 Email
+        		obj.PCD_TAXSAVE_FLAG = is_taxsave;					// (선택) 현금영수증 발행여부
+        		obj.PCD_REGULER_FLAG = is_reguler;					// (선택) 정기결제 여부 (Y|N)
+        		obj.PCD_SIMPLE_FLAG = simple_flag;					// (선택) 간편결제 여부 (Y|N)
+         	}
+        
+        // /*
+        //  * 2. 결제자 인증 후 결제
+        //  * PCD_PAY_WORK : CERT | PAY
+        //  */
+    
+        // 	//## 2.1 최초결제 및 단건(일반,비회원)결제
+        	if (pay_work != 'AUTH') {
+          
+        		if (simple_flag != 'Y' || payple_payer_id == '') {
+      
+        			obj.PCD_PAYER_NO = buyer_no;						// (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
+        			obj.PCD_PAYER_NAME = buyer_name;					// (선택) 결제자 이름
+        			obj.PCD_PAYER_HP = buyer_hp;						// (선택) 결제자 휴대폰 번호
+        			obj.PCD_PAYER_EMAIL = buyer_email;					// (선택) 결제자 Email
+        			obj.PCD_PAY_GOODS = buy_goods;						// (필수) 결제 상품
+        			obj.PCD_PAY_TOTAL = buy_total;						// (필수) 결제 금액
+        			obj.PCD_PAY_TAXTOTAL = buy_taxtotal;					// (선택) 부가세 (복합과세인 경우 필수)
+        			obj.PCD_PAY_ISTAX = buy_istax;						// (선택) 과세여부 (과세: Y | 비과세(면세): N)
+        			obj.PCD_PAY_OID = order_num;						// 주문번호 (미입력 시 임의 생성)
+        			obj.PCD_REGULER_FLAG = is_reguler;					// (선택) 정기결제 여부 (Y|N)
+        			obj.PCD_PAY_YEAR = pay_year;						// (PCD_REGULER_FLAG = Y 일때 필수) [정기결제] 결제 구분 년도 (PCD_REGULER_FLAG : 'Y' 일때 필수)
+        			obj.PCD_PAY_MONTH = pay_month;						// (PCD_REGULER_FLAG = Y 일때 필수) [정기결제] 결제 구분 월 (PCD_REGULER_FLAG : 'Y' 일때 필수)
+        			obj.PCD_TAXSAVE_FLAG = is_taxsave;					// (선택) 현금영수증 발행 여부 (Y|N)
+            
+        		}
+          
+        		//## 2.2 간편결제 (재결제)
+          
+        		if (simple_flag == 'Y' && payple_payer_id != '') {
+      
+        			obj.PCD_SIMPLE_FLAG = 'Y';						// 간편결제 여부 (Y|N)
+        			//-- PCD_PAYER_ID 는 소스상에 표시하지 마시고 반드시 Server Side Script 를 이용하여 불러오시기 바랍니다. --//		
+        			obj.PCD_PAYER_ID = payple_payer_id;					// 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
+        			obj.PCD_PAYER_NO = buyer_no;						// (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
+        			obj.PCD_PAY_GOODS = buy_goods;						// (필수) 결제 상품
+        			obj.PCD_PAY_TOTAL = buy_total;						// (필수) 결제 금액
+        			obj.PCD_PAY_TAXTOTAL = buy_taxtotal;					// (선택) 부가세(복합과세인 경우 필수)
+        			obj.PCD_PAY_ISTAX = buy_istax;						// (선택) 과세여부 (과세: Y | 비과세(면세): N)
+        			obj.PCD_PAY_OID = order_num;						// 주문번호 (미입력 시 임의 생성)
+        			obj.PCD_REGULER_FLAG = is_reguler;					// (선택) 정기결제 여부 (Y|N)
+        			obj.PCD_PAY_YEAR = pay_year;						// (PCD_REGULER_FLAG = Y 일때 필수) [정기결제] 결제 구분 년도 (PCD_REGULER_FLAG : 'Y' 일때 필수)
+        			obj.PCD_PAY_MONTH = pay_month;						// (PCD_REGULER_FLAG = Y 일때 필수) [정기결제] 결제 구분 월 (PCD_REGULER_FLAG : 'Y' 일때 필수)
+        			obj.PCD_TAXSAVE_FLAG = is_taxsave;					// (선택) 현금영수증 발행 여부 (Y|N)
+            
+        		}
+    
+        	}
+    
+        /*
+         * DEFAULT SET 2
+         */
+        obj.PCD_PAYER_AUTHTYPE = 'pwd';                  // (선택) [간편결제/정기결제] 본인인증 방식
+        obj.PCD_RST_URL = 'http://devapi.ajoonamu.com/api/user/payple/order_mobile';          // (필수) 결제(요청)결과 RETURN URL
+        obj.payple_auth_file = 'http://devapi.ajoonamu.com/api/user/payple/auth';	// (필수) 가맹점이 직접 생성한 인증파일
+        obj.callbackFunction = getResult;
+        console.log(obj);
+        console.log(obj.payple_auth_file);
+    
+        console.log('dd');
+       PaypleCpayAuthCheck(obj);
+        
+    })
+    }
+
+    
+    useEffect(()=>{
+        getPayment();
+        getUserCoupons();
+        getTotalPrice();
+    },[])
+
+    useEffect(() => {
+        isAllCheck();
+    }, [isAllCheck]);
 
     return (
         <>
@@ -92,9 +363,15 @@ const OrderContainer = () => {
                                     <div className={styles['second']}>
                                         <select name="hours">
                                             <option value="9">오전 9시</option>
-                                            <option value="10">오전 10시</option>
-                                            <option value="11">오전 11시</option>
-                                            <option value="12">오전 12시</option>
+                                            <option value="10">
+                                                오전 10시
+                                            </option>
+                                            <option value="11">
+                                                오전 11시
+                                            </option>
+                                            <option value="12">
+                                                오전 12시
+                                            </option>
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
@@ -130,7 +407,7 @@ const OrderContainer = () => {
                                         </div>
                                         <div className={styles['memo-input']}>
                                             <input
-                                                className={styles['input']}
+                                                className={styles['input']} value={delivery_memo} onChange={onChangeDeleveryMemo}
                                             ></input>
                                         </div>
                                     </div>
@@ -150,6 +427,7 @@ const OrderContainer = () => {
                                         <div className={styles['memo-input']}>
                                             <input
                                                 className={styles['input']}
+                                                value={order_memo} onChange={onChangeOrderMemo}
                                             ></input>
                                         </div>
                                     </div>
@@ -164,18 +442,32 @@ const OrderContainer = () => {
                                     <Payment
                                         text={'신용/체크카드 결제'}
                                         check={true}
+                                        onClick={onClickPayment}
+                                        payment={payment}
                                     />
                                     <Payment
                                         text={'가상계좌 결제'}
                                         check={false}
+                                        onClick={onClickPayment}
+                                        payment={payment}
+
+
                                     />
                                     <Payment
                                         text={'휴대폰 결제'}
                                         check={false}
+                                        onClick={onClickPayment}
+                                        payment={payment}
+
+
                                     />
                                     <Payment
                                         text={'만나서 직접 결제'}
                                         check={false}
+                                        onClick={onClickPayment}
+                                        payment={payment}
+
+
                                     />
                                 </div>
                             </div>
@@ -191,15 +483,7 @@ const OrderContainer = () => {
                                         <option value="cp1">
                                             적용할 쿠폰을 선택해주세요.
                                         </option>
-                                        <option value="cp2">
-                                            ABCD-EFGE-ABCD-EFGE
-                                        </option>
-                                        <option value="cp3">
-                                            ABCD-EFGE-ABCD-EFGE
-                                        </option>
-                                        <option value="cp4">
-                                            ABCD-EFGE-ABCD-EFGE
-                                        </option>
+                                        {renderCpList()}
                                     </select>
                                 </div>
                             </div>
@@ -234,7 +518,7 @@ const OrderContainer = () => {
                                         주문금액
                                     </div>
                                     <div className={styles['price']}>
-                                        10,000원
+                                    {numberFormat(totalPrice)}<span>원</span>
                                     </div>
                                 </div>
                                 <div className={styles['text-price']}>
@@ -242,7 +526,7 @@ const OrderContainer = () => {
                                         배달비용
                                     </div>
                                     <div className={styles['price']}>
-                                        4,000원
+                                    {numberFormat(delivery_cost)}<span>원</span>
                                     </div>
                                 </div>
                                 <div className={styles['text-price']}>
@@ -250,7 +534,7 @@ const OrderContainer = () => {
                                         쿠폰할인
                                     </div>
                                     <div className={styles['price']}>
-                                        -3,000원
+                                        0<span>원</span>
                                     </div>
                                 </div>
                                 <div className={styles['text-price']}>
@@ -258,25 +542,34 @@ const OrderContainer = () => {
                                         포인트사용
                                     </div>
                                     <div className={styles['price']}>
-                                        -1,000원
+                                        0<span>원</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className={styles['total-price']}>
                             <div className={styles['text']}>합계</div>
-                            <div className={styles['price']}>100,000</div>
+                            <div className={styles['price']}>
+                            {numberFormat( parseInt(totalPrice)+ parseInt(delivery_cost))}
                             <span>원</span>
+                            </div>
+                       
                         </div>
                         <div className={styles['order-btn']}>
                             <Button
                                 title={'결제하기'}
                                 disable={true}
-                                toggle={true}
+                                toggle={toggle}
+                                onClick={toggle && onClickOrder}
                             ></Button>
                         </div>
                         <div className={styles['agree-order']}>
-                            <AcceptContainer />
+                            <AcceptContainer
+                                {...check}
+                                updateAllCheck={updateAllCheck}
+                                onChangeCheck1={onChangeCheck1}
+                                onChangeCheck2={onChangeCheck2}
+                            />
                         </div>
                     </div>
                 </div>
@@ -285,9 +578,12 @@ const OrderContainer = () => {
     );
 };
 
-function Payment({ text, onClick, check }) {
+function Payment({ text, onClick, check,payment }) {
     return (
-        <ButtonBase className={cx('payment-item', { check: check })} onClick={onClick}>
+        <ButtonBase
+            className={cx('payment-item', { check: payment===text })}
+            onClick={()=>onClick(text)}
+        >
             {text}
         </ButtonBase>
     );

@@ -3,12 +3,14 @@ import { useSelector } from 'react-redux';
 import styles from './Account.module.scss';
 import classNames from 'classnames/bind';
 import Select from 'components/svg/select/Select';
+import {useStore} from '../../hooks/useStore';
+import { stringToTel } from '../../lib/formatter';
 
 const cx = classNames.bind(styles);
 
 const AccountContainer = () => {
     const { user } = useSelector((state) => state.auth);
-
+    const user_token = useStore();
     console.log(user);
     useEffect(() => {}, [user]);
 
@@ -18,11 +20,11 @@ const AccountContainer = () => {
                 <div className={styles['table']}>
                     <div className={styles['cell']}>
                         <div className={styles['label']}>이름</div>
-                        <input className={styles['user-input']}></input>
+                        <input className={styles['user-input']} value={user  && user.name}></input>
                     </div>
                     <div className={styles['cell']}>
                         <div className={styles['label']}>이메일</div>
-                        <div className={styles['user-value']}>dfd1123@naver.com</div>
+                        <div className={styles['user-value']}>{user && user.email}</div>
                     </div>
                     <div className={cx('cell','pd-bottom')}>
                         <div className={styles['label']}>비밀번호</div>
@@ -30,7 +32,8 @@ const AccountContainer = () => {
                     </div>
                     <div className={styles['cell']}>
                         <div className={styles['label']}>휴대폰 번호</div>
-                        <div className={styles['user-value']}>010-8885-7406</div>
+                        <div className={styles['user-value']}>{user && user.hp &&stringToTel(user.hp)}
+                        </div>
                     </div>
                     <div className={cx('cell','pd-bottom')}>
                         <div className={styles['label']}></div>

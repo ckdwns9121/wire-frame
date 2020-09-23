@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
-import TabMenu from 'components/tab/TabMenu';
-import MenuItemList from 'components/item/MenuItemList';
+import TabMenu from '../../components/tab/TabMenu';
+import MenuItemList from '../../components/item/MenuItemList';
 import Message from 'components/message/Message';
-import Counter from 'components/counter/Counter';
 import CustomItemList from 'components/item/CustomItemList';
-import { getCustomMenuList, getMenuList } from '../../api/menu/menu';
-
 import PreferModal from '../../components/modal/PreferModal';
 import { useHistory } from 'react-router';
-
 import ShopBanner from '../../components/svg/shop/shop_banner.png';
+import { useStore } from '../../hooks/useStore';
+import Loading from '../../components/assets/Loading';
+
+import {
+    getPreferMenuList,
+    getCustomMenuList,
+    getMenuList,
+} from '../../api/menu/menu';
+import { getCategory } from '../../api/category/category';
+import { get_catergory, get_menulist } from '../../store/product/product';
 
 const tabInit = [
     {
@@ -51,6 +59,10 @@ function TabPanel(props) {
 }
 
 const ReserveContainer = ({ menu = '0' }) => {
+    const user_token = useStore();
+    const { categorys, items } = useSelector((state) => state.product);
+    const dispatch = useDispatch();
+
     const history = useHistory();
     const [open, setOpen] = useState(false);
     const [budget, setBudget] = useState(0); // 맞춤 가격
@@ -61,15 +73,10 @@ const ReserveContainer = ({ menu = '0' }) => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-    const [customMenuList, setCustomMenuList] = useState([]);
+    const [preferMenuList, setPreferMenuList] = useState([]);
     const [menuList, setMenuList] = useState([]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const getMenuListApi = async () => {
-        const res = await getMenuList();
-        setMenuList(res);
-    };
 
     const onChangeIndex = (e, index) => {
         setTab(index);
@@ -88,9 +95,10 @@ const ReserveContainer = ({ menu = '0' }) => {
     const getCustomList = async () => {
         setLoading(true);
         const res = await getCustomMenuList();
-        setCustomMenuList(res);
+        setPreferMenuList(res);
         setLoading(false);
     };
+
     //전체 예산 입력
     const onChangeBudget = (e) => {
         const re = /^[0-9\b]+$/;
@@ -105,23 +113,40 @@ const ReserveContainer = ({ menu = '0' }) => {
         setOpen(false);
     };
 
-    useEffect(() => {
-        // getCustomList();
-        getMenuListApi();
-    }, []);
+    const getProductList = useCallback(async () => {
+        setLoading(true);
 
-    const renderContent = () => {
-        const list = tabInit.map((tab, index) => (
+        if (user_token && categorys.length === 1) {
+            const res = await getCategory(user_token);
+            res.sort((a, b) => a.ca_id - b.ca_id);
+            console.log(res);
+            // 카테고리를 분류 순서로 정렬.
+            dispatch(get_catergory(res));
+            let arr = [];
+            for (let i = 0; i < res.length; i++) {
+                const result = await getMenuList(user_token, res[i].ca_id);
+                const temp = { ca_id: res[i].ca_id, items: result };
+                arr.push(temp);
+            }
+            arr.sort((a, b) => a.ca_id - b.ca_id);
+            dispatch(get_menulist(arr));
+        }
+
+        setLoading(false);
+    }, [categorys, dispatch, user_token]);
+
+    const renderContent = useCallback(() => {
+        const list = categorys.map((category, index) => (
             <TabPanel
-                key={index}
+                key={category.ca_id}
                 value={tab_index}
                 index={index}
                 children={
                     <span>
-                        {tab.name === '추천메뉴' ? (
+                        {category.ca_id === 0 ? (
                             <>
-                                {customMenuList.length !== 0 ? (
-                                    <CustomItemList menuList={customMenuList} />
+                                {preferMenuList.length !== 0 ? (
+                                    <CustomItemList menuList={preferMenuList} />
                                 ) : (
                                     <Message
                                         msg="전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."
@@ -132,21 +157,53 @@ const ReserveContainer = ({ menu = '0' }) => {
                                 )}
                             </>
                         ) : (
-                            <>
-                                {menuList.length !== 0 && (
-                                    <MenuItemList menu_list={menuList} />
-                                )}
-                            </>
+                            <>{renderMenuList(category.ca_id)}</>
                         )}
                     </span>
                 }
             />
         ));
+
         return <>{list}</>;
-    };
+    }, [categorys, preferMenuList, tab_index, renderMenuList, items]);
+
+    const renderMenuList = useCallback(
+        (ca_id) => {
+            const index = items.findIndex((item) => item.ca_id === ca_id);
+            console.log(items);
+            return (
+                <>
+                    {index !== -1 ? (
+                        <MenuItemList
+                            menuList={items[index].items}
+                            onClick={onClickMenuItem}
+                        />
+                    ) : (
+                        <Message
+                            msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
+                            src={true}
+                            isButton={false}
+                        />
+                    )}
+                </>
+            );
+        },
+        [items,onClickMenuItem],
+    );
+
+    const onClickMenuItem = useCallback((item_id) =>{
+        console.log(item_id);
+        history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
+    },[history]);
+
+    useEffect(() => {
+        getProductList();
+    }, []);
+
 
     return (
         <>
+            {loading && <Loading open={loading} />}
             <div className={styles['banner']}>
                 <img
                     className={styles['shop-banner']}
@@ -157,12 +214,17 @@ const ReserveContainer = ({ menu = '0' }) => {
             <div className={styles['container']}>
                 <div className={styles['content']}>
                     <div className={styles['title']}>예약주문 메뉴리스트</div>
-                    <TabMenu
-                        tabs={tabInit}
-                        index={tab_index}
-                        onChange={onChangeIndex}
-                    />
-                    <div className={styles['shop']}>{renderContent()}</div>
+                    {categorys.length !== 1 && (
+                        <TabMenu
+                            tabs={categorys}
+                            index={tab_index}
+                            onChange={onChangeIndex}
+                        />
+                    )}
+
+                    <div className={styles['shop']}>
+                        {items && renderContent()}
+                    </div>
                 </div>
             </div>
             <PreferModal

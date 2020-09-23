@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import useInputs from '../../hooks/useInputs';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
@@ -6,7 +7,6 @@ import styles from './Sign.module.scss';
 import Button from 'components/button/Button';
 import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
-import { useDispatch } from 'react-redux';
 import cn from 'classnames/bind';
 import {
     KakaoLogo,
@@ -26,8 +26,8 @@ const SignInContainer = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const [user_state, onChangeUserInput] = useInputs(initialUserState);
-    const { email, password } = user_state;
+    const [user, onChangeUserInput] = useInputs(initialUserState);
+    const { email, password } = user;
 
     const [checked, setChecked] = useState(false);
 
@@ -43,16 +43,29 @@ const SignInContainer = () => {
     };
 
     const onClickLogin = useCallback(async () => {
+        const { email, password } = user;
         const res = await localLogin(email, password);
         if (res.status === 200) {
-            sessionStorage.setItem('access_token', res.data.access_token);
-            dispatch(get_user_info(res.data.access_token));
-            history.push(Paths.index);
+            //회원가입 안되있는 이메일
+            if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
+                alert('회원가입 되어있지 않은 이메일입니다.');
+            }
+            //비밀번호가 틀렸을 때
+            else if (res.data.msg === '비밀번호가 틀렸습니다.') {
+                alert('비밀번호가 틀렸습니다.');
+            }
+            //로그인 성공 했을 때.
+            else if (res.data.access_token) {
+                sessionStorage.setItem('access_token', res.data.access_token);
+                dispatch(get_user_info(res.data.access_token));
+                history.push(Paths.index);
+            }
         } else {
             alert('이메일 혹은 패스워드를 확인해주세요');
         }
-    }, [dispatch, email, history, password]);
+    }, [user, history, dispatch]);
 
+    
     return (
         <div className={styles['container']}>
             <div className={cx('content', 'sign-in')}>

@@ -22,9 +22,17 @@ const TabMenu = ({ tabs, index, onChange }) => {
         history.push(url);
     };
 
+    const settings = {
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 5,
+    };
+
+
     const tabList = tabs.map((tab) => (
         <Tab
-            label={tab.name}
+            label={tab.name ? tab.name : tab.ca_name}
             key={tab.name}
             className={styles['tab-item']}
             onClick={() => onClickTab(tab.url)}
