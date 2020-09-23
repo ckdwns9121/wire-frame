@@ -25,12 +25,12 @@ export default ({ match, location }) => {
 
     const getNoticeList = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
-        if (token) {
+        try {
             const res = await requestQNAList(token);
             setList(res.qnas);
-        } else {
-            alert('로그인 후 이용해 주시기 바랍니다.');
-            history.push(Paths.ajoonamu.signin);
+        } catch (e) {
+            alert('잘못된 접근입니다.');
+            history.replace(Paths.index);
         }
     }, [history]);
 

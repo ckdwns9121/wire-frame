@@ -3,6 +3,7 @@ export const Paths = {
     ajoonamu: {
         signin: '/login',
         signup: '/register',
+        logout: '/logout',
         recovery: '/recovery',
         recovery_id: '/recovery_id',
         recovery_pw: '/recovery_pw',

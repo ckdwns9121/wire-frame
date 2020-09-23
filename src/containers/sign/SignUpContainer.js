@@ -8,7 +8,12 @@ import SignAuthInput from 'components/sign/SignAuthInput';
 import Button from 'components/button/Button';
 import CheckBox from 'components/checkbox/CheckBox';
 import classNames from 'classnames/bind';
-import { localLogin, localRegister } from '../../api/auth/auth';
+import {
+    localLogin,
+    localRegister,
+    requestPostMobileAuth,
+    requestPostMobileAuthCheck,
+} from '../../api/auth/auth';
 
 const cx = classNames.bind(styles);
 
@@ -73,10 +78,31 @@ const SignUpContainer = () => {
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const { check1, check2, check3 } = check;
 
+    const getMobileAuthNumber = useCallback(async () => {
+        const res = await requestPostMobileAuth(phoneNumber);
+        console.log(res);
+        if (res.data.msg === '실패!') {
+            alert('인증번호 전송에 실패했습니다.');
+        } else {
+            alert('인증번호가 성공적으로 발송되었습니다!');
+        }
+    }, [phoneNumber]);
+
+    const sendMobileAuthNumber = useCallback(async () => {
+        const res = await requestPostMobileAuthCheck(phoneNumber, authNumber);
+        if (res.data.msg === '성공!') {
+            alert('성공적으로 인증되었습니다!');
+            setPhoneAuth(true);
+        } else {
+            alert('인증번호를 다시 한 번 확인해 주세요!');
+        }
+    }, [phoneNumber, authNumber]);
+
     const updateToggle = useCallback(() => {
         let checkbox = check1 && check2 ? true : false;
         let userinfo = email.length !== 0 && compare ? true : false;
-        let result = checkbox && userinfo && overlap && phoneAuth ? true : false;
+        let result =
+            checkbox && userinfo && overlap && phoneAuth ? true : false;
         setToggle(result);
     }, [check1, check2, email, compare, overlap, phoneAuth]);
 
@@ -125,7 +151,7 @@ const SignUpContainer = () => {
 
     useEffect(() => {
         setOverlap(false);
-    }, [email])
+    }, [email]);
 
     useEffect(() => {
         updateToggle();
@@ -144,7 +170,12 @@ const SignUpContainer = () => {
     }, [onToggleCheck]);
 
     const onClickSignUp = useCallback(async () => {
-        const res = await localRegister(email, password, password_confirm, check3);
+        const res = await localRegister(
+            email,
+            password,
+            password_confirm,
+            check3,
+        );
         console.log(res);
 
         history.push(`${Paths.ajoonamu.complete}/${email}`);
@@ -213,6 +244,7 @@ const SignUpContainer = () => {
                     name={'phoneNumber'}
                     initValue={phoneNumber}
                     onChange={onChange}
+                    onClick={getMobileAuthNumber}
                     placeholder={'숫자만 입력해 주세요.'}
                     buttonTitle={'인증번호 발송'}
                 />
@@ -220,6 +252,7 @@ const SignUpContainer = () => {
                     inputType={'text'}
                     initValue={authNumber}
                     name={'authNumber'}
+                    onClick={sendMobileAuthNumber}
                     onChange={onChange}
                     buttonTitle={'인증하기'}
                 />
@@ -233,8 +266,11 @@ const SignUpContainer = () => {
                 <div className={cx('btn', 'pd-box')}>
                     <Button
                         title={'가입하기'}
-                        onClick={toggle ? onClickSignUp
-                        : () => alert('정보를 모두 입력해 주세요.')}
+                        onClick={
+                            toggle
+                                ? onClickSignUp
+                                : () => alert('정보를 모두 입력해 주세요.')
+                        }
                         toggle={toggle}
                         disable={true}
                     ></Button>

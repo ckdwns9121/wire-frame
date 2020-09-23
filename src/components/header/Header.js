@@ -72,6 +72,9 @@ const Header = () => {
                                 <TabLink className={styles['box']} to={Paths.ajoonamu.cart}>
                                     장바구니
                                 </TabLink>
+                                <TabLink className={styles['box']} to={Paths.ajoonamu.logout}>
+                                    로그아웃
+                                </TabLink>
                             </> :<>
                                 <TabLink className={styles['box']} to={Paths.ajoonamu.signin}>
                                     로그인

@@ -46,8 +46,9 @@ $header-height: 120px;
                     justify-content: flex-end;
                     .box {
                         cursor: pointer;
-                        &:first-child {
-                            padding-right: 34px;
+                        padding-right: 34px;
+                        &:last-child {
+                            padding: 0;
                         }
                     }
                 }

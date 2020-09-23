@@ -17,5 +17,6 @@ export { default as Mypage } from './mypage/Mypage';
 export { default as Support } from './support/Support';
 export { default as Breakfast } from './breakfast/Breakfast';
 export { default as Event } from './event/Event';
+export { default as Logout } from './logout/Logout';
 
 export { default as Error } from './error/Error';

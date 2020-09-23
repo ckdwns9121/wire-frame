@@ -8,6 +8,7 @@ import {Paths} from 'paths';
 import {
     Signin,
     SignUp,
+    Logout,
     SignupComplete,
     Recovery,
     RecoveryId,
@@ -37,7 +38,7 @@ function App() {
     }, []);
     return (
             <div className="App">
-                <Header/>
+                <Header />
                     <Switch>
                         <Route exact={true} path={Paths.index} component={Home}></Route>
                         <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
@@ -54,14 +55,14 @@ function App() {
                         <Route exact path={Paths.ajoonamu.cart} component={Cart}></Route>
                         <Route path={Paths.ajoonamu.order_complete} component={OrderComplete}></Route>
                         <Route path={Paths.ajoonamu.order} component={Order}></Route>
-
+                        <Route path={Paths.ajoonamu.logout} component={Logout} />
                         <Route exact path={Paths.ajoonamu.breakfast} component={Breakfast}></Route>
                         <Route path={Paths.ajoonamu.support} component={Support}></Route>
                         <Route path={`${Paths.ajoonamu.event}/:id?`} component={Event}></Route>
                         <Route path={Paths.ajoonamu.order} component={Order}></Route>
                         <Route path ={`${Paths.ajoonamu.mypage}/:tab?`} component={Mypage}></Route>
                     </Switch>
-                <Footer/>
+                <Footer />
             </div>
     );
 }

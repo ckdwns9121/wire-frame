@@ -37,11 +37,11 @@ export default () => {
 
     const getFAQList = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
-        if (token) {
+        try {
             const res = await requestFAQList(token, quesCategory);
             setList(res);
-        } else {
-            alert('로그인 후 이용해 주시기 바랍니다.');
+        } catch (e) {
+            alert('잘못된 접근입니다.');
             history.push(Paths.ajoonamu.signin);
         }
     }, [quesCategory, history]);
@@ -93,6 +93,7 @@ export default () => {
                     ))
                 ) : (
                     <Message
+                        src={false}
                         msg={'등록된 자주 묻는 질문이 없습니다.'}
                         size={260}
                     />

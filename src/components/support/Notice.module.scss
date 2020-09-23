@@ -4,6 +4,23 @@
         border-top: solid 2px #222;
         border-bottom: solid 1px #dbdbdb;
         margin-bottom: 50px;
+
+        .row {
+            display: table;
+            text-align: center;
+            .id, .title, .created {
+                display: table-cell;
+            }
+            .id {
+                width: 150px;
+            }
+            .title {
+                width: 100%;
+            }
+            .created {
+                width: 200px;
+            }
+        }
     }
 }
 

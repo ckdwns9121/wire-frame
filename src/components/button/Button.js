@@ -8,7 +8,7 @@ const Button = ({ title, disable, onClick, toggle }) => {
 
     const temp =()=>{}
     return (
-        <ButtonBase className={cx('btn', { toggle, disable })} onClick={toggle ? onClick: temp }>
+        <ButtonBase className={cx('btn', { toggle, disable })} onClick={!disable ? onClick: temp }>
             {title}
         </ButtonBase>
     );

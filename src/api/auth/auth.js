@@ -59,6 +59,7 @@ export const updatePassword = async (token, pw_o, pw, pw_c) => {
     const res = await axios.put(req, form_data);
     return res;
 };
+
 export const localLogin = async (email, password) => {
     const req = Paths.api + 'user/login';
 
@@ -107,3 +108,23 @@ export const findId = async (name, hp) => {
     const res = await axios.post(req, form_data);
     return res;
 };
+
+
+export const requestPostMobileAuth = async (pv_hp) => {
+    const req = Paths.api + 'mobile/auth';
+
+    const form_data = {
+        pv_hp
+    };
+    const res = await axios.post(req, form_data);
+    return res;
+}
+export const requestPostMobileAuthCheck = async (pv_hp, pv_vnumm) => {
+    const req = Paths.api + 'mobile/confirm';
+
+    const form_data = {
+        pv_hp, pv_vnumm
+    };
+    const res = await axios.post(req, form_data);
+    return res;
+}
