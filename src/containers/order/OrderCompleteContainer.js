@@ -122,7 +122,7 @@ const OrderCompleteContainer = () => {
                     </div>
 
                     <div className={styles['order-cancle']}>
-                        <ButtonBase className={styles['btn']}>주문 취소</ButtonBase>
+                        <ButtonBase className={styles['btn']}>주문취소하기</ButtonBase>
                     </div>
                 </div>
             </div>

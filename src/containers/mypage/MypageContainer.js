@@ -2,7 +2,7 @@ import React,{useCallback} from 'react';
 import styles from './Mypage.module.scss';
 import { Paths } from '../../paths';
 import Sidebar from '../../components/sidebar/Sidebar';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import CouponConatainer from '../coupon/CouponContainer';
 import AccountContainer from '../account/AccountContainer';
@@ -17,22 +17,18 @@ const LinkList = [
     { name: "회원탈퇴", url: `${Paths.ajoonamu.mypage}/hello` },
 ];
 const MypageContainer = ({ pathname }) => {
-    console.log(pathname);
 
     const getTitle = useCallback((path) => {
-        console.log(path);
         if (path.indexOf('/order_list') !== -1) {
             return "주문내역";
         } else if (path.indexOf('/coupon') !== -1) {
             return "쿠폰함";
-        } 
-        else if(path.indexOf('/order_detail') !==-1){
+        }  else if(path.indexOf('/order_detail') !==-1){
             return "주문내역";
-        }
-        else {
+        } else {
             return "내 정보 관리";
         }
-    }, [])
+    }, []);
 
     return (
         <div className={styles['container']}>
@@ -44,6 +40,7 @@ const MypageContainer = ({ pathname }) => {
                     <Route path={`${Paths.ajoonamu.mypage}/coupon/:id?`} component={CouponConatainer} />
                     <Route path={`${Paths.ajoonamu.mypage}/account`} component={AccountContainer} />
                     <Route path={`${Paths.ajoonamu.mypage}/order_detail`} component={OrderDetailContainer} />
+                    <Route render={() => <Redirect to={`${Paths.ajoonamu.mypage}/order_list`}/>} />
                 </Switch>
             </div>
         </div>

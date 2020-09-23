@@ -4,7 +4,7 @@ import DownCoupon from '../svg/coupon/down.svg';
 // import { numberFormat } from "../../lib/formatter";
 
 const CouponItem = (props) => {
-    const { 
+    const {
         cp_datetime,
         // cp_end,
         cp_id,
@@ -19,13 +19,12 @@ const CouponItem = (props) => {
         // user_id,
     } = props.item;
     return (
-        
         <div className={styles['coupon-item']}>
             <div className={styles['info']}>
-                    <CouponEventName event_name={cp_id} />
-                    <CouponSale sale={cp_price} />
-                    <CouponEventSub sub_name={cp_subject} />
-                    <CouponDate date={cp_datetime} />
+                <CouponEventName event_name={cp_id} />
+                <CouponSale sale={cp_price} />
+                <CouponEventSub sub_name={cp_subject} />
+                <CouponDate date={cp_datetime} />
             </div>
         </div>
     );
@@ -34,7 +33,7 @@ function CouponEventName({ event_name }) {
     return <div className={styles['event-name']}>{event_name}</div>;
 }
 function CouponSale({ sale }) {
-    return <div className={styles['sale']}>{(sale)}</div>;
+    return <div className={styles['sale']}>{sale}</div>;
 }
 function CouponEventSub({ sub_name }) {
     return <div className={styles['sub-name']}>{sub_name}</div>;
@@ -42,8 +41,4 @@ function CouponEventSub({ sub_name }) {
 function CouponDate({ date }) {
     return <div className={styles['date']}>{date}</div>;
 }
-function CouponDown({ check }) {
-    return <>{check && <img src={DownCoupon} alt="다운" />}</>;
-}
-
 export default CouponItem;

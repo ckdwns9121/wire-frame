@@ -24,7 +24,7 @@ const tabInit = [
     {
         id: 2,
         url: `${Paths.ajoonamu.mypage}/coupon?tab=2`,
-        name: '쿠폰사용내역',
+        name: '쿠폰 사용 내역',
     },
 ];
 

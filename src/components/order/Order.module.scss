@@ -1,9 +1,9 @@
 @import '../../styles/Root.scss';
 .order-item {
     // border:1px solid red;
-    &.space{
+    &.space {
         margin-top: 20px;
-        border-top:1px solid #ccc;
+        border-top: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
     }
     width: 100%;
@@ -42,7 +42,6 @@
             right: 40px;
             bottom: 0px;
             @include default_font(24px);
-
         }
     }
     & + & {
@@ -50,15 +49,14 @@
     }
     .center-price {
         position: absolute;
-        top:50%;
+        top: 50%;
         right: 80px;
         height: 144px;
         text-align: center;
-        padding-left:80px;
+        padding-left: 80px;
         line-height: 144px;
-        border-left:1px solid #EBEBEB;
+        border-left: 1px solid #ebebeb;
         transform: translateY(-50%);
         @include default_font(24px);
-
     }
 }

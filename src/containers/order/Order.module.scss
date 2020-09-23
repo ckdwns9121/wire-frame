@@ -95,7 +95,7 @@ $pd: 20px;
                             select {
                                 width: 320px;
                                 background: url('../../components/svg/date/date.png')
-                                    no-repeat 98% 50% #fff;
+                                    no-repeat 90% 50% #fff;
 
                                 background-size: 24px 24px;
                             }
@@ -158,13 +158,13 @@ $pd: 20px;
                         .text {
                             font-size: 22px;
                             color: #555;
-                            padding-right: $pd;
+                            padding-right: $pd * 2;
                         }
                         .point-input {
                             width: 280px;
                         }
                         .btn {
-                            margin-left: $pd;
+                            margin-left: $pd / 2;
                             width: 160px;
                             height: 56px;
                             border: 1px solid #dbdbdb;
@@ -201,6 +201,7 @@ $pd: 20px;
 
             .order-box-item {
                 padding: 20px;
+                padding-top: 25px;
                 padding-bottom: 62px;
                 .title {
                     text-align: left;

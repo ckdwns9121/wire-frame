@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
@@ -27,6 +27,12 @@ const HeadLink = styled(Link)`
 
 const Header = () => {
     const history = useHistory();
+    const [logon, setLogon] = useState(false);
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('access_token');
+        setLogon(token !== null);
+    }, []);
 
     const onClickHome = () => history.push(Paths.index);
     const onClickAddr = () => history.push(Paths.ajoonamu.address);
@@ -57,18 +63,21 @@ const Header = () => {
                             </div>
                         </div>
                         <div className={styles['auth']}>
-                            <TabLink
-                                className={styles['box']}
-                                to={Paths.ajoonamu.signin}
-                            >
-                                로그인
-                            </TabLink>
-                            <TabLink
-                                className={styles['box']}
-                                to={Paths.ajoonamu.signup}
-                            >
-                                회원가입
-                            </TabLink>
+                            {logon ? <>
+                                <TabLink className={styles['box']} to={Paths.ajoonamu.mypage}>
+                                    내정보
+                                </TabLink>
+                                <TabLink className={styles['box']} to={Paths.ajoonamu.cart}>
+                                    장바구니
+                                </TabLink>
+                            </> :<>
+                                <TabLink className={styles['box']} to={Paths.ajoonamu.signin}>
+                                    로그인
+                                </TabLink>
+                                <TabLink className={styles['box']} to={Paths.ajoonamu.signup}>
+                                    회원가입
+                                </TabLink>
+                            </>}
                         </div>
                     </div>
                 </div>

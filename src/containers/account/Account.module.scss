@@ -1,77 +1,75 @@
 @import '../../styles/Root.scss';
-.container{
-    color:#222;
-    .content{
-        padding-top:80px;
-        .table{
-            border-top:2px solid #222;
-            padding-top:60px;
-            .cell{
+.container {
+    color: #222;
+    .content {
+        padding-top: 80px;
+        .table {
+            border-top: 2px solid #222;
+            padding-top: 60px;
+            .cell {
                 display: flex;
                 align-items: center;
-                padding :25px 0;
-                &:first-child{
-                    padding-top:0;
+                padding: 15px 0;
+                &:first-child {
+                    padding-top: 0;
                 }
-                &.line{
-                    padding-bottom :60px;
-                    border-bottom:  1px solid #dbdbdb;
+                &.line {
+                    padding-bottom: 60px;
+                    border-bottom: 1px solid #dbdbdb;
                 }
-                .label{
+                .label {
                     @include default_font(20px);
                     min-width: 150px;
                 }
-                .user-input{
+                .user-input {
                     width: 280px;
                     height: 48px;
                     outline: none;
                     box-sizing: border-box;
-                    border:1px solid #DBDBDB;
+                    border: 1px solid #dbdbdb;
                 }
-                .user-value{
+                .user-value {
                     display: flex;
                     align-items: center;
-                    font-size:20px;
-                    span{
-                        padding-left:14px;
+                    font-size: 20px;
+                    span {
+                        padding-left: 14px;
                     }
                 }
-                .user-change{
+                .user-change {
                     cursor: pointer;
                     box-sizing: border-box;
                     width: 280px;
                     height: 48px;
                     text-align: center;
-                    border:1px solid #ccc;
-                    background-color: #F9F9F9;
+                    border: 1px solid #ccc;
+                    background-color: #f9f9f9;
                     font-size: 20px;
                     line-height: 48px;
                     border-radius: 10px;
-                    &:hover{
+                    &:hover {
                         background-color: #e4e4e4;
                     }
                 }
-        
             }
         }
-        .btn{
-            padding:80px 350px;
-            .update{
+        .btn {
+            padding: 80px 350px;
+            .update {
                 cursor: pointer;
                 width: 240px;
                 height: 64px;
                 border: 1px solid $main-color;
                 border-radius: 36px;
-                text-align:  center;
-                color:$main-color;
+                text-align: center;
+                color: $main-color;
                 font-size: 20px;
                 line-height: 64px;
                 font-weight: bold;
             }
         }
-    }    
-    
+    }
 }
-.pd-bottom{
-    padding-bottom:75px !important;
+.pd-bottom {
+    padding-bottom: 80px !important;
 }

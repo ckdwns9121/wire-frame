@@ -1,9 +1,9 @@
 @import '../../styles/Root.scss';
 
-$value1 : -20px;
-$value2 : 22px;
+$value1: -20px;
+$value2: 22px;
 .pd-box {
-    padding: 24px;
+    padding: 40px;
     // border: 1px solid red;
 }
 .pd-side {
@@ -12,47 +12,42 @@ $value2 : 22px;
 
 .downcoupon-list {
     margin: $value1 0 0 $value1;
-    margin-top:40px;
+    margin-top: 40px;
     display: flex;
     flex-wrap: wrap;
     .coupon-item {
         cursor: pointer;
         margin: $value2 0 0 $value2;
         width: 460px;
+        box-sizing: border-box;
         height: 200px;
         position: relative;
         display: flex;
-        border:1px solid #dbdbdb;
+        border: 1px solid #dbdbdb;
         border-radius: 10px;
         margin-top: 24px;
         background-color: #fff;
         .down {
-            width: 100px;
+            min-width: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-right: 1px dashed #999999;
+            box-sizing: border-box;
+            border-right: 1px dashed #DBDBDB;
         }
-
         .info {
             width: 100%;
             font-size: 16px;
-            color: #999999;
+            box-sizing: border-box;
+            color: #777;
             .event-name {
                 font-weight: bold;
                 font-size: 24px;
                 color: #222;
-                margin-bottom :29px;
+                margin-bottom: 29px;
             }
-            .date {
-                color: #999999;
-                margin: 5px 0;
-            }
-            .sale {
-                margin: 5px 0;
-            }
-            .sub-name {
-                margin: 5px 0;
+            .date, .sale , .sub-name {
+                margin-top: 8px;
             }
         }
     }

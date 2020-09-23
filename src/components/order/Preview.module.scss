@@ -1,100 +1,86 @@
 @import '../../styles/Root.scss';
 
-
-
-.preview-item{
+.preview-item {
     position: relative;
-    color:#222;
+    color: #222;
     width: 100%;
     height: 450px;
-    border-top: 1px solid #707070;
-    border-bottom:1px solid #707070;
-    padding:25px 0;
+    padding: 25px 0;
     box-sizing: border-box;
-    
-    
-    .preview-title-bar{
-        .order-info{
-            .top{
+
+    .preview-title-bar {
+        .order-info {
+            .top {
                 display: flex;
                 align-items: center;
-                .order-date{
-                   @include default_font(24px);
-                   padding-right:5px;
+                .order-date {
+                    @include default_font(24px);
+                    margin-right: 20px;
                 }
-                .order-id{
-                    font-size:18px;
-                    color:#777;
-                    padding-right:5px;
+                .order-id {
+                    font-size: 18px;
+                    font-weight: 500;
+                    color: #777;
+                    margin-right: 20px;
                 }
-                .order-type{
-                    // cursor: pointer;
-                    width: 120px;
-                    height: 40px;
+                .order-type {
+                    width: 120px; height: 40px;
                     text-align: center;
                     line-height: 40px;
-                    border:1px solid #dbdbdb;
+                    border: 1px solid #dbdbdb;
                     border-radius: 24px;
                     @include default_font(20px);
                 }
-                
-            }   
-            .bottom{
-                .req-date{
+            }
+            .bottom {
+                .req-date {
                     font-size: 18px;
                     padding: 20px 0;
                 }
             }
         }
-
-
     }
 
-
-
-    .menu-list{
-        padding-top:20px;
+    .menu-list {
+        padding-top: 20px;
         display: flex;
-        .menu-item{
-            margin-right:20px;
-            .menu-img{
-                img{
+        .menu-item {
+            margin-right: 20px;
+            .menu-img {
+                img {
                     width: 160px;
                     height: 160px;
                 }
             }
-            .menu-name{
+            .menu-name {
                 font-size: 18px;
                 padding-bottom: 10px;
             }
-            .menu-price{
+            .menu-price {
                 @include default_font(20px);
             }
-            .menu-options{
+            .menu-options {
                 font-size: 14px;
-                color:#999 ;
+                margin-top: 8px;
+                color: #999;
             }
         }
     }
-    .href-detail{
+    .href-detail {
         cursor: pointer;
         position: absolute;
-        top:40px;
+        top: 40px;
         transform: translateY(-50%);
-        right:0;
+        right: 0;
         display: flex;
         align-items: center;
-        .text{
+        .text {
             font-size: 20px;
             font-weight: bold;
-            color:#555;
-        }
-        .icon{
+            color: #555;
         }
     }
-
-    // & + & {
-    //     border-top: 1px solid red;
-    // }
+    & + & {
+        border-top: 1px solid #707070;
+    }
 }
-

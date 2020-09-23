@@ -1,70 +1,68 @@
 @import '../../styles/Root.scss';
-.container{
-    .content{
-        padding-top:40px;
- 
-        .detail-box{
-            padding-bottom:100px;
+.container {
+    .content {
+        padding-top: 40px;
+
+        .detail-box {
+            padding-bottom: 100px;
             overflow: hidden;
-            .title{
-                border-bottom:2px solid #222;
+            .title {
+                border-bottom: 2px solid #222;
                 font-size: 24px;
                 font-weight: bold;
-                color:#222;
-                padding:20px 0;
+                color: #222;
+                padding: 20px 0;
             }
 
-
-            .preview-title-bar{
-                padding-top:30px;
-                .order-info{
-                width: 100%;
-                    .top{
+            .preview-title-bar {
+                padding-top: 30px;
+                .order-info {
+                    width: 100%;
+                    .top {
                         display: flex;
                         align-items: center;
-                        .order-date{
-                           @include default_font(24px);
-                           padding-right:5px;
+                        .order-date {
+                            @include default_font(24px);
+                            padding-right: 20px;
                         }
-                        .order-id{
-                            font-size:18px;
-                            color:#777;
-                            padding-right:5px;
+                        .order-id {
+                            font-size: 18px;
+                            color: #777;
+                            padding-right: 20px;
                         }
-                        .order-type{
-                            // cursor: pointer;
+                        .order-type {
                             width: 120px;
                             height: 40px;
                             text-align: center;
                             line-height: 40px;
-                            border:1px solid #dbdbdb;
+                            border: 1px solid #dbdbdb;
                             border-radius: 24px;
                             @include default_font(20px);
                         }
-                        
-                    }   
-                    .bottom{
-                        .req-date{
+                    }
+                    .bottom {
+                        .req-date {
                             font-size: 18px;
-                            padding: 20px 0;
+                            padding: 24px 0;
                         }
                     }
                 }
             }
-            .order-detail-view{
-                .order-box{
-                    padding:32px 0;
+            .order-detail-view {
+                .order-box {
+                    padding: 32px 0;
                 }
-                .order-item{
-                    &:first-child{
-                        padding-top:0;
+                .order-item {
+                    &:first-child {
+                        padding-top: 0;
                     }
-                    padding:12px 0;
+                    padding: 12px 0;
                     width: 100%;
                     display: flex;
                     align-items: center;
                     .text {
                         font-size: 18px;
+                        font-weight: 500;
                         text-align: left;
                         width: 100%;
                     }
@@ -73,76 +71,72 @@
                         font-size: 24px;
                         font-weight: bold;
                         text-align: right;
-                        span{
+                        span {
                             font-size: 20px;
                             font-weight: normal;
                         }
                     }
                 }
-            
             }
-            .store-info{
+            .store-info {
                 width: 440px;
                 float: left;
             }
-            .order-info{
+            .order-info {
                 float: right;
                 width: 460px;
-                .total{
-                    .box{
-                        padding-top:40px;
-                        border-top:1px solid #999999;
+                .total {
+                    .box {
+                        padding-top: 40px;
+                        border-top: 1px solid #999999;
                         display: flex;
                         align-items: center;
-                        .text{
+                        .text {
                             width: 100%;
                             @include default_font(28px);
                         }
-                        .value{
+                        .value {
                             width: 100%;
                             text-align: right;
 
                             @include default_font(32px);
-                            span{
+                            span {
                                 font-weight: normal;
                                 font-size: 26px;
                             }
                         }
-                        &.card{
-                            border:none;
-                            .text{
+                        &.card {
+                            border: none;
+                            .text {
                                 font-size: 18px;
-                                font-weight: normal;
+                                font-weight: 500;
                             }
-                            .value{
+                            .value {
                                 font-size: 18px;
-                                font-weight: normal;
-                        
+                                font-weight: 500;
                             }
                         }
 
-                        &.card-type{
-                            border:none;
-                            padding-top:10px;
-                        
-                            .text{
+                        &.card-type {
+                            border: none;
+                            padding-top: 10px;
+
+                            .text {
                                 font-size: 18px;
                                 font-weight: normal;
                             }
-                            .value{
+                            .value {
                                 font-size: 18px;
                                 font-weight: normal;
-                        
+                                color: #555;
                             }
                         }
-                      }
+                    }
                 }
             }
         }
     }
-   
 }
-
 
 .context {
     padding: 40px 0;
@@ -151,6 +145,7 @@
         padding-bottom: 20px;
         .text {
             font-size: 20px;
+            font-weight: 500;
             color: #444;
             min-width: 140px;
             padding-right: 20px;
@@ -161,5 +156,4 @@
             color: #555;
         }
     }
-
 }

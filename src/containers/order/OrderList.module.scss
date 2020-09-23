@@ -1,76 +1,72 @@
 @import '../../styles/Root.scss';
-.container{
-    .content{
-        padding-top:40px;
-        .title{
-            border-bottom:2px solid #222;
+.container {
+    .content {
+        padding-top: 40px;
+        .title {
+            border-bottom: 2px solid #222;
             font-size: 24px;
             font-weight: bold;
-            color:#222;
-            padding:20px 0;
+            color: #222;
+            padding: 20px 0;
         }
+    }
+    .order-list {
+        border-top: 1px solid #707070;
+        border-bottom: 1px solid #707070;
     }
 }
 
-
-.select-date{
+.select-date {
     display: flex;
-    padding-top:20px;
-    padding-bottom:80px;
-    .date{
+    padding-top: 20px;
+    padding-bottom: 80px;
+    .date {
         width: 300px;
-        padding-right:76px;
+        padding-right: 76px;
         display: flex;
-        .date-box{
-            font-size:16px;
-            width: 80px;
-            height: 40px;
-            border:1px solid #EBEBEB;
+        .date-box {
+            font-size: 16px;
+            width: 80px;height: 40px;
+            border: 1px solid #ebebeb;
             text-align: center;
-            line-height: 40px;
-            cursor: pointer;
-            &:hover{
+            &:hover {
                 background-color: #dbdbdb;
             }
         }
     }
-    .date-input-box{
+    .date-input-box {
         width: 100%;
         display: flex;
         align-items: center;
-        .text{
+        .text {
             font-size: 18px;
-            padding-right:10px;
+            padding-right: 20px;
         }
-        .input{
-            input{
+        .input {
+            input {
                 width: 144px;
                 height: 40px;
-                border:1px solid #EBEBEB;
+                border: 1px solid #ebebeb;
                 outline: none;
                 box-sizing: border-box;
             }
-     
         }
-        .btn{
-            cursor: pointer;
-            margin-left:20px;
-            color:#fff;
+        .btn {
+            margin-left: 20px;
+            color: #fff;
             background-color: $main-color;
             width: 156px;
             height: 40px;
             text-align: center;
             font-size: 18px;
             font-weight: 500;
-            line-height: 40px;
         }
-        .line{
+        .line {
             width: 8px;
             height: 1px;
-            margin:0 8px;
-            border:1px solid #dbdbdb;
+            margin: 0 8px;
+            border: 1px solid #dbdbdb;
             box-sizing: border-box;
         }
-
     }
 }

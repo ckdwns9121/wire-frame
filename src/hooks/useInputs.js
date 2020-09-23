@@ -1,17 +1,16 @@
-import {useReducer} from 'react';
+import { useReducer } from 'react';
 
-function reducer(state,action){
-    console.log(state);
-    return{
+function reducer(state, action) {
+    return {
         ...state,
-        [action.name] : action.value
+        [action.name]: action.value,
     };
 }
 
-export default function useInputs(initState){
-    const[state,dispatch] = useReducer(reducer,initState);
-    const onChange = e =>{
+export default function useInputs(initState) {
+    const [state, dispatch] = useReducer(reducer, initState);
+    const onChange = (e) => {
         dispatch(e.target);
-    }
-    return[state,onChange];
+    };
+    return [state, onChange];
 }
