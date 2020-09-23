@@ -2,32 +2,61 @@ import React from 'react';
 import styles from './Coupon.module.scss';
 import UseCouponItem from './UseCouponItem';
 
+const initMenu = [
+    {
+        id: 1,
+        cp_id: '첫 주문 3,000원 할인 쿠폰',
+        cp_datetime: '2020-09-03 07:52',
+        cp_price: 12345678900,
+        cp_subject: '첫 주문시 사용가능',
+    },
+    {
+        id: 2,
+        cp_id: '첫 주문 3,000원 할인 쿠폰',
+        cp_datetime: '2020-09-03 07:52',
+        cp_price: 12345678900,
+        cp_subject: '첫 주문시 사용가능',
+    },
+    {
+        id: 3,
+        cp_id: '첫 주문 3,000원 할인 쿠폰',
+        cp_datetime: '2020-09-03 07:52',
+        cp_price: 12345678900,
+        cp_subject: '첫 주문시 사용가능',
+    },
+    {
+        id: 4,
+        cp_id: '첫 주문 3,000원 할인 쿠폰',
+        cp_datetime: '2020-09-03 07:52',
+        cp_price: 12345678900,
+        cp_subject: '첫 주문시 사용가능',
+    },
+];
 
-const UseCouponItemList=()=>{
+const UseCouponItemList = ({ cp_list, check }) => {
+    const list = initMenu.map((cp) => (
+        <UseCouponItem key={cp.id} item={cp} check={check} />
+    ));
+
     return(
+     <div className={styles['coupon-list']}>
+         <div className={styles['tr']}>
+            <TD text={"쿠폰명"}/>
+            <TD text={"할인금액"}/>
+            <TD text={"사용조건"}/>
+            <TD text={"기간"}/>
+         </div>
+        {list}
+     </div>
+    );
+};
 
-
-        <div className={styles['use-coupon-table']}>
-            <div className={styles['tr']}>
-                <div className={styles['event-name']}>
-                     쿠폰이름
-                </div>
-                <div className={styles['order-number']}>
-                        주문번호
-                </div>  
-                <div className={styles['sale']}>
-                    할인가격
-                </div>
-                <div className={styles['use-date']}>
-                사용날짜
-                </div>
-            </div>
-            <UseCouponItem/>
-            <UseCouponItem/>
-            <UseCouponItem/>
-            <UseCouponItem/>
-    
+function TD({text}){
+    return(
+        <div className={styles['td']}>
+                {text}
         </div>
     )
 }
+
 export default UseCouponItemList;

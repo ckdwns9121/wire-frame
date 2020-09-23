@@ -1,13 +1,110 @@
 @import '../../styles/Root.scss';
 .container{
-    @include wireframe;
-    .title-input{
-
-        width: 100%;
-        margin: 20px 10px;
-        .title{
-            font-size: 20px;
-            margin-bottom: 20px;
+    .content{
+        padding-top:40px;
+        .tab-title{
+        border-bottom:2px solid #222;
+            font-size: 24px;
+            font-weight: bold;
+            color:#222;
+            padding:20px;
         }
+    }
+    .input-coupon{
+        display: flex;
+        align-items: center;
+        height: 64px;
+        padding-top: 75px;
+        padding-bottom: 75px;
+        position: relative;
+        .text{
+            width: 220px;
+            font-size: 24px;
+            font-weight: bold;
+            color:#222;
+            padding-right: 40px;
+
+        }
+        .code{
+            width: 100%;
+            height: 64px;
+            border:1px solid black;
+            box-sizing: border-box;
+            padding-left:40px;
+            font-size: 16px;
+
+        }
+        .btn{
+            cursor: pointer;
+            position: absolute;
+            right:40px;
+            font-size: 18px;
+            color:#222;
+            font-weight: bold;
+        }
+
+        
+    }
+}
+
+.use-coupon{
+    display: flex;
+    padding-top:20px;
+    padding-bottom:80px;
+    .date{
+        width: 300px;
+        padding-right:76px;
+        display: flex;
+        .date-box{
+            font-size:16px;
+            width: 80px;
+            height: 40px;
+            border:1px solid #EBEBEB;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            &:hover{
+                background-color: #dbdbdb;
+            }
+        }
+    }
+    .date-input-box{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        .text{
+            font-size: 18px;
+            padding-right:10px;
+        }
+        .input{
+            input{
+                width: 144px;
+                height: 40px;
+                border:1px solid #EBEBEB;
+                outline: none;
+                box-sizing: border-box;
+            }
+     
+        }
+        .btn{
+            cursor: pointer;
+            margin-left:20px;
+            color:#fff;
+            background-color: $main-color;
+            width: 156px;
+            height: 40px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 40px;
+        }
+        .line{
+            width: 8px;
+            height: 1px;
+            margin:0 8px;
+            border:1px solid #dbdbdb;
+            box-sizing: border-box;
+        }
+
     }
 }

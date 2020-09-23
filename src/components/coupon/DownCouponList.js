@@ -1,6 +1,7 @@
 import React from 'react';
-import styles from './Coupon.module.scss';
-import CouponItem from './CouponItem';
+import styles from './DownCoupon.module.scss';
+import DownCouponItem from './DownCouponItem';
+
 
 const initMenu = [
     {
@@ -33,30 +34,13 @@ const initMenu = [
     },
 ];
 
-const CouponItemList = ({ cp_list, check }) => {
+
+const DownCouponItemList = ({cp_list, check }) => {
     const list = initMenu.map((cp) => (
-        <CouponItem key={cp.id} item={cp} check={check} />
+        <DownCouponItem key={cp.id} item={cp} check={check} />
     ));
 
-    return(
-     <div className={styles['coupon-list']}>
-         <div className={styles['tr']}>
-            <TD text={"쿠폰명"}/>
-            <TD text={"할인금액"}/>
-            <TD text={"사용조건"}/>
-            <TD text={"기간"}/>
-         </div>
-        {list}
-     </div>
-    );
+    return <div className={styles['downcoupon-list']}>{list}</div>;
 };
 
-function TD({text}){
-    return(
-        <div className={styles['td']}>
-                {text}
-        </div>
-    )
-}
-
-export default CouponItemList;
+export default DownCouponItemList;

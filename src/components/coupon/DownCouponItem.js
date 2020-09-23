@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './Coupon.module.scss';
-import DownCoupon from '../svg/coupon/down.svg';
-// import { numberFormat } from "../../lib/formatter";
+import styles from './DownCoupon.module.scss';
+import DownCoupon from 'components/svg/coupon/down.svg';
+import { numberFormat } from "../../lib/formatter";
 
-const CouponItem = (props) => {
+const DownCouponItem = (props) => {
     const { 
         cp_datetime,
         // cp_end,
@@ -21,11 +21,16 @@ const CouponItem = (props) => {
     return (
         
         <div className={styles['coupon-item']}>
+            <div className={styles['down']}>
+                <CouponDown check={true} />
+            </div>
             <div className={styles['info']}>
+                <div className={styles['pd-box']}>
                     <CouponEventName event_name={cp_id} />
                     <CouponSale sale={cp_price} />
                     <CouponEventSub sub_name={cp_subject} />
                     <CouponDate date={cp_datetime} />
+                </div>
             </div>
         </div>
     );
@@ -34,7 +39,7 @@ function CouponEventName({ event_name }) {
     return <div className={styles['event-name']}>{event_name}</div>;
 }
 function CouponSale({ sale }) {
-    return <div className={styles['sale']}>{(sale)}</div>;
+    return <div className={styles['sale']}>{numberFormat(sale)}원 할인</div>;
 }
 function CouponEventSub({ sub_name }) {
     return <div className={styles['sub-name']}>{sub_name}</div>;
@@ -46,4 +51,4 @@ function CouponDown({ check }) {
     return <>{check && <img src={DownCoupon} alt="다운" />}</>;
 }
 
-export default CouponItem;
+export default DownCouponItem;
