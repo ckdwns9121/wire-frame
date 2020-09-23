@@ -8,13 +8,13 @@ import CouponConatainer from '../coupon/CouponContainer';
 import AccountContainer from '../account/AccountContainer';
 import OrderListContainer from '../order/OrderListContainer';
 import OrderDetailContainer from '../order/OrderDetailContainer';
-
+import SecessionContainer from '../secession/SecessionContainer';
 
 const LinkList = [
     { name: "주문내역", url: `${Paths.ajoonamu.mypage}/order_list` },
     { name: "쿠폰함", url: `${Paths.ajoonamu.mypage}/coupon` },
     { name: "내 정보 관리", url: `${Paths.ajoonamu.mypage}/account` },
-    { name: "회원탈퇴", url: `${Paths.ajoonamu.mypage}/hello` },
+    { name: "회원탈퇴", url: `${Paths.ajoonamu.mypage}/secession` },
 ];
 const MypageContainer = ({ pathname }) => {
 
@@ -25,7 +25,10 @@ const MypageContainer = ({ pathname }) => {
             return "쿠폰함";
         }  else if(path.indexOf('/order_detail') !==-1){
             return "주문내역";
-        } else {
+        }else if(path.indexOf('/secession') !==-1){
+            return "회원탈퇴"
+        } 
+        else {
             return "내 정보 관리";
         }
     }, []);
@@ -40,6 +43,7 @@ const MypageContainer = ({ pathname }) => {
                     <Route path={`${Paths.ajoonamu.mypage}/coupon/:id?`} component={CouponConatainer} />
                     <Route path={`${Paths.ajoonamu.mypage}/account`} component={AccountContainer} />
                     <Route path={`${Paths.ajoonamu.mypage}/order_detail`} component={OrderDetailContainer} />
+                    <Route path={`${Paths.ajoonamu.mypage}/secession`} component={SecessionContainer} />
                     <Route render={() => <Redirect to={`${Paths.ajoonamu.mypage}/order_list`}/>} />
                 </Switch>
             </div>

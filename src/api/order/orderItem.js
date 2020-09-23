@@ -10,6 +10,7 @@ export const getOrderList = async (token) => {
         },
     };
     const res = await axios.get(req, config);
+    console.log(res);
     return res.data.query;
 };
 

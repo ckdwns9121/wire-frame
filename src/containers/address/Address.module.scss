@@ -54,9 +54,6 @@
     .addr-list{
         width: 100%;
         height: 500px;
-        margin-top: 40px;
-        border-top: 1px solid #dbdbdb;
-        border-bottom: 1px solid #dbdbdb;
         overflow-y: scroll;
 
         &::-webkit-scrollbar {

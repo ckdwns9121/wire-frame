@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import useInputs from '../../hooks/useInputs';
 import { Paths } from 'paths';
@@ -17,17 +17,22 @@ import CheckBox from 'components/checkbox/CheckBox';
 
 const cx = cn.bind(styles);
 
-const initialUserState = {
-    email: '',
-    password: '',
-};
 
 const SignInContainer = () => {
+
+
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const [user, onChangeUserInput] = useInputs(initialUserState);
-    const { email, password } = user;
+    const [email, setEmail] = useState('');
+    const [password ,setPassword] = useState('');
+
+    const onChangeEmail =(e)=>{
+        setEmail(e.target.value);
+    }
+    const onChangePassword =(e)=>{
+        setPassword(e.target.value);
+    }
 
     const [checked, setChecked] = useState(false);
 
@@ -43,28 +48,54 @@ const SignInContainer = () => {
         history.push(Paths.ajoonamu.recovery);
     }, [history]);
 
-    const onClickLogin = useCallback(async () => {
-        const { email, password } = user;
-        const res = await localLogin(email, password);
-        if (res.status === 200) {
-            //회원가입 안되있는 이메일
-            if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
-                alert('회원가입 되어있지 않은 이메일입니다.');
-            }
-            //비밀번호가 틀렸을 때
-            else if (res.data.msg === '비밀번호가 틀렸습니다.') {
-                alert('비밀번호가 틀렸습니다.');
-            }
-            //로그인 성공 했을 때.
-            else if (res.data.access_token) {
-                sessionStorage.setItem('access_token', res.data.access_token);
-                dispatch(get_user_info(res.data.access_token));
-                history.replace(Paths.index);
-            }
-        } else {
-            alert('이메일 혹은 패스워드를 확인해주세요');
+    useEffect(()=>{
+        const data = localStorage.getItem('user');
+        console.log(data);
+        if(data!==null){
+            const temp = JSON.parse(data);
+            console.log(temp);
+            setEmail(temp.email);
+            setPassword(temp.password);
+            setChecked(temp.checked);
         }
-    }, [user, history, dispatch]);
+    },[])
+
+    const onClickLogin = useCallback(async () => {
+        try {
+            const res = await localLogin(email, password);
+            if (res.status === 200) {
+                //회원가입 안되있는 이메일
+                if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
+                    alert('회원가입 되어있지 않은 이메일입니다.');
+                }
+                //비밀번호가 틀렸을 때
+                else if (res.data.msg === '비밀번호가 틀렸습니다.') {
+                    alert('비밀번호가 틀렸습니다.');
+                }
+                //로그인 성공 했을 때.
+                else if (res.data.access_token) {
+                    sessionStorage.setItem(
+                        'access_token',
+                        res.data.access_token,
+                    );
+                    if(checked){
+                        const newObj = {email:email, password:password ,checked:checked};
+                        localStorage.setItem('user', JSON.stringify(newObj));
+                    }
+                    else{
+                        localStorage.removeItem('user');
+                    }
+                    dispatch(get_user_info(res.data.access_token));
+                    history.replace(Paths.index);
+                }
+            } else {
+                alert('이메일 혹은 패스워드를 확인해주세요');
+            }
+        } catch (e) {
+            alert('잘못된 접근입니다.');
+            history.replace(Paths.index);
+        }
+    }, [history, checked,dispatch ,email ,password]);
 
     return (
         <div className={styles['container']}>
@@ -75,14 +106,14 @@ const SignInContainer = () => {
                         type="text"
                         name={'email'}
                         value={email}
-                        onChange={onChangeUserInput}
+                        onChange={onChangeEmail}
                         placeholder="이메일"
                     />
                     <input
                         type="password"
                         name={'password'}
                         value={password}
-                        onChange={onChangeUserInput}
+                        onChange={onChangePassword}
                         placeholder="비밀번호"
                     />
                 </div>

@@ -18,6 +18,7 @@ const AddressModal = (props) => {
         // onInsertAddr,
         onChangeDetail,
         onClickAddrItem,
+        onClick
     } = props;
     return (
         <Dialog
@@ -82,7 +83,7 @@ const AddressModal = (props) => {
                         ></input>
                     </div>
                     <div className={styles['btn-box']}>
-                        <ButtonBase className={styles['btn']}>
+                        <ButtonBase className={styles['btn']} onClick={onClick}>
                             이 주소로 배달지 설정
                         </ButtonBase>
                     </div>

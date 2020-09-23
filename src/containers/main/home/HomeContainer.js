@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
 import HomeSlick from './HomeSlick';
-import MenuListView from 'components/item/MenuListView';
+import MenuListView from '../../../components/item/MenuListView';
 import {
     bannerImg,
     backImg,
@@ -16,6 +16,10 @@ import { ButtonBase } from '@material-ui/core';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import KakaoMap from '../../../components/map/KakaoMap';
+import {useStore} from '../../../hooks/useStore';
+import {getMainMenuList} from '../../../api/menu/menu';
+import Loading from 'components/assets/Loading';
+
 
 const cx = cn.bind(styles);
 
@@ -23,12 +27,38 @@ const HomeContainer = () => {
     const history = useHistory();
     const [category, setCategory] = useState(0);
 
-    const goToReverve = () => {
+
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error , setError] = useState(false);
+    const [menuList, setMenuList] = useState([]);
+    const user_token = useStore();
+
+    const getMainMenu = async()=>{
+        setLoading(true);
+        if(user_token){  
+            const res = await getMainMenuList(user_token);
+            console.log(res);
+            setMenuList(res);
+            setSuccess(true);
+        }
+        else{
+            setError(true);
+        }
+        setLoading(false);
+    }
+
+    const onClickBreakFast = () => {
         history.push(`${Paths.ajoonamu.breakfast}`);
     };
+    const onClickDetailItem = useCallback((item_id)=>{
+        history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
+
+    },[history]);
 
     useEffect(() => {
         AOS.init({ duration: 1500 });
+        getMainMenu();
     }, []);
 
     return (
@@ -49,7 +79,12 @@ const HomeContainer = () => {
                         <li onClick={() => setCategory(3)} className={cx('item', { active: category === 3})}>베이커리</li>
                         <li onClick={() => setCategory(4)} className={cx('item', { active: category === 4})}>기타</li>
                     </ul>
-                    <MenuListView />
+                    {loading ? <Loading open={true}/> :   
+                    <>
+                    <MenuListView  menuList={menuList} onClick={onClickDetailItem}/>
+                    </>
+                    }
+                
                 </div>
                 <div className={styles['banner-img']}>
                     <img src={bannerImg} alt="배너" />
@@ -69,7 +104,7 @@ const HomeContainer = () => {
                                     샌달과 하루를 효율적으로 시작해보세요
                                 </div>
                                 <ButtonBase
-                                    onClick={goToReverve}
+                                    onClick={onClickBreakFast}
                                     className={styles['order-btn']}
                                 >
                                     자세히보기
