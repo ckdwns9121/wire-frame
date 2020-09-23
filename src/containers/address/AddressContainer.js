@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './Address.module.scss';
 import DeliveryItemList from 'components/address/DeliveryItemList';
-import { getDeliveryList } from '../../api/address/address';
 import { searchIcon } from 'components/svg/header';
 import AddressModal from 'components/modal/AddrModal';
+import { insertAddress, searchAddress,getDeliveryList } from '../../api/address/address';
 
-const key = 'devU01TX0FVVEgyMDIwMDcyMzE4MTUzMzEwOTk4NzE';
 
 const AddressContainer = () => {
     const [searchAddr, serSearch] = useState(''); //검색
@@ -26,24 +25,21 @@ const AddressContainer = () => {
         calltest();
     }, [calltest]);
 
-    const callApi = useCallback(() => {
-        return fetch(
-            `http://www.juso.go.kr/addrlink/addrLinkApi.do?currrentPage=1&countPerPage=100&keyword=${searchAddr}&confmKey=${key}=&resultType=json`,
-        )
-            .then((res) => res.json())
-            .then((json) => json.results.juso)
-            .catch((err) => console.log(err));
-    }, [searchAddr]); //search가 바뀌었을때 함수생성
-
     const onSearchClick = useCallback(async () => {
         if (searchAddr === '') {
             alert('검색어를 입력해주세요.~');
             return;
         } else {
-            const result = await callApi();
+            const result = await callSearchApi();
             setAddrs(result);
         }
-    }, [searchAddr, callApi]); //search 혹은 addrs 가 바뀌었을때만 함수생성
+    }, [searchAddr]); //search 혹은 addrs 가 바뀌었을때만 함수생성
+
+    //검색 api 호출
+    const callSearchApi = async () => {
+        const res = await searchAddress(searchAddr);
+        return res;
+    };
 
     const handleOpen = useCallback(() => {
         if (searchAddr === '') {

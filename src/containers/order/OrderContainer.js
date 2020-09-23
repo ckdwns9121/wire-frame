@@ -178,7 +178,7 @@ const OrderContainer = () => {
             let buyer_hp = ''; //고객 번호
             let buyer_email = ''; //고객 이메일
             let buy_goods = '테스트'; //구매하는 물건 이름
-            let buy_total = Number(totalPrice); //가격
+            let buy_total = Number( parseInt(totalPrice) + parseInt(delivery_cost)); //가격
             let buy_taxtotal = 0;
             let buy_istax = ''; //과세설정 DEFAULT :Y  비과세 N
             let order_num = order_id.current; //주문 번호

@@ -4,7 +4,6 @@ import styles from './OrderComplete.module.scss';
 import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 import StickerModal from '../../components/modal/StickerModal';
-
 const cx = cn.bind(styles);
 const str = (
     <>
@@ -16,7 +15,9 @@ const str = (
     </>
 );
 
-const OrderCompleteContainer = () => {
+const OrderCompleteContainer = ({order_number}) => {
+
+ 
 
     const [modalOpen, setModalOpen] = useState(false);
     
@@ -33,7 +34,7 @@ const OrderCompleteContainer = () => {
                         </div>
                         <div className={styles['msg']}>{str}</div>
                         <div className={styles['order-number']}>
-                            주문번호 : 12345678900
+                            주문번호 : {order_number}
                         </div>
                         <div className={styles['btn']}>
                             <ButtonBase onClick={handleOpen} className={styles['item']}>문구서비스 신청</ButtonBase>
@@ -44,8 +45,8 @@ const OrderCompleteContainer = () => {
                     <div className={styles['order-view']}>
                         <div className={styles['title']}>주문 상세 내역</div>
                         <div className={styles['order-list']}>
-                            <OrderItem />
-                            <OrderItem />
+                            {/* <OrderItem />
+                            <OrderItem /> */}
                         </div>
                     </div>
                     <div className={styles['payment-view']}>

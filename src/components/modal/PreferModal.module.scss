@@ -1,5 +1,6 @@
 @import '../../styles/Modal.scss';
 
+
 .dialog > div > div {
     max-width: 540px !important;
     min-width: 540px !important;
@@ -45,11 +46,12 @@
 }
 
 .modal-input-box {
+
     color: #222;
     margin-bottom: 40px;
     span {
         padding: 0 8px;
-        font-size: 1.5rem;
+        font-size: 1.333rem;
         font-weight: normal;
     }
     select {

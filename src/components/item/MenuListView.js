@@ -117,20 +117,21 @@ function SamplePrevArrow(props) {
 }
 
 // 슬릭추가
-const MeunListView = () => {
-    const menuList = initMenu.map((menu) => (
+const MeunListView = ({menuList,onClick}) => {
+    const list = menuList.map((menu) => (
         <MainMenuItem
             key={menu.item_id}
-            menuTitle={menu.title}
-            menuText={menu.text}
-            menuPrice={menu.price}
-            src={menu.img}
+            item_name={menu.item_name}
+            item_price={menu.item_price}
+            ca_id={menu.ca_id}
+            src={menu.item_img}
+            onClick={()=>onClick(menu.item_id)}
         />
     ));
     const settings = {
         infinite: true,
         autoplay: true,
-        speed: 500,
+        speed: 2000,
         slidesToShow: 4,
         slidesToScroll: 4,
         nextArrow: <SampleNextArrow />,
@@ -139,7 +140,7 @@ const MeunListView = () => {
 
     return (
         <div className={styles['container']}>
-            <Slider {...settings}>{menuList}</Slider>
+            <Slider {...settings}>{list}</Slider>
         </div>
     );
 };
