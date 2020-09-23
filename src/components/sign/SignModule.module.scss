@@ -56,5 +56,9 @@
         &:hover {
             background-color: #f9f9f9;
         }
+        &.disabled {
+            color: #999;
+            border-color: #ccc;
+        }
     }
 }

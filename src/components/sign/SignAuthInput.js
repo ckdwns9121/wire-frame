@@ -1,8 +1,11 @@
 import { ButtonBase } from '@material-ui/core';
 import React from 'react';
+import classNames from 'classnames/bind';
 import styles from './SignModule.module.scss';
 
 //인증 버튼을 포함한 input box
+
+const cx = classNames.bind(styles);
 
 const SignAuthInput = ({
     inputType,
@@ -12,6 +15,8 @@ const SignAuthInput = ({
     buttonTitle,
     placeholder,
     name,
+    disabled,
+    onClick = () => {}
 }) => {
     return (
         <div className={styles['sign-input']}>
@@ -24,7 +29,7 @@ const SignAuthInput = ({
                 placeholder={placeholder}
                 onChange={onChange}
             ></input>
-            <ButtonBase className={styles['auth-btn']}>{buttonTitle}</ButtonBase>
+            <ButtonBase onClick={onClick} className={cx('auth-btn', { disabled })}>{buttonTitle}</ButtonBase>
         </div>
     );
 };
