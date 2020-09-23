@@ -30,15 +30,15 @@ const CouponItem = (props) => {
     );
 };
 function CouponEventName({ event_name }) {
-    return <div className={styles['event-name']}>{event_name}</div>;
+    return (<div className={styles['event-name']}>{event_name}</div>);
 }
 function CouponSale({ sale }) {
-    return <div className={styles['sale']}>{sale}</div>;
+    return (<div className={styles['sale']}>{sale}</div>);
 }
 function CouponEventSub({ sub_name }) {
-    return <div className={styles['sub-name']}>{sub_name}</div>;
+    return (<div className={styles['sub-name']}>{sub_name}</div>);
 }
 function CouponDate({ date }) {
-    return <div className={styles['date']}>{date}</div>;
+    return (<div className={styles['date']}>{date}</div>);
 }
 export default CouponItem;

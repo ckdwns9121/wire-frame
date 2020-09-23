@@ -6,11 +6,9 @@ export default ({ color, angle }) => (
         width="13"
         height="13"
         viewBox="0 0 13 13"
-        style={{ transform: 'rotate(' + angle + 'deg)'}}
+        style={{ transform: 'rotate(' + angle + 'deg)' }}
     >
-        <g
-            transform="translate(-250 -442)"
-            stroke={color}>
+        <g transform="translate(-250 -442)" stroke={color}>
             <line
                 x2="12"
                 transform="translate(250.5 448.5)"

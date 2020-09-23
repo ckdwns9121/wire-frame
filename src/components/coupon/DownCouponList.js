@@ -40,7 +40,7 @@ const DownCouponItemList = ({cp_list, check }) => {
         <DownCouponItem key={cp.id} item={cp} check={check} />
     ));
 
-    return <div className={styles['downcoupon-list']}>{list}</div>;
+    return (<div className={styles['downcoupon-list']}>{list}</div>);
 };
 
 export default DownCouponItemList;

@@ -8,8 +8,8 @@ const MenuItem = ({ item_id, menuTitle, menuText, menuPrice, src }) => {
 
     const history = useHistory();
 
-    return (
         // item_id 로 경로 줘야함
+    return (
         <div className={styles['menu-item']}
             onClick={() => history.push(Paths.ajoonamu.product)}>
             <MenuImg src={src} />
@@ -34,17 +34,17 @@ function MenuImg({ src }) {
 }
 //홈 메뉴 제목 컴포넌트
 function MenuTitle({ menuTitle }) {
-    return <div className={styles['menu-title']}>{menuTitle}</div>;
+    return (<div className={styles['menu-title']}>{menuTitle}</div>);
 }
 
 //홈 메뉴 텍스트 컴포넌트
 function MenuText({ menuText }) {
-    return <div className={styles['menu-text']}>{menuText}</div>;
+    return (<div className={styles['menu-text']}>{menuText}</div>);
 }
 
 //홈 메뉴 가격 컴포넌트
 function MenuPrice({ menuPrice }) {
-    return <div className={styles['menu-price']}>{menuPrice}</div>;
+    return (<div className={styles['menu-price']}>{menuPrice}</div>);
 }
 
 export default MenuItem;

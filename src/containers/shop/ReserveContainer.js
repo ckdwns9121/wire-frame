@@ -165,6 +165,7 @@ const ReserveContainer = ({ menu = '0' }) => {
         ));
 
         return <>{list}</>;
+        
     }, [categorys, preferMenuList, tab_index, renderMenuList, items]);
 
     const renderMenuList = useCallback(

@@ -21,7 +21,6 @@ const CartItemList = (props) => {
     return (
         <div>
             {list}
-            {/* <CartItem {...props.carts}/> */}
         </div>
     )
 }

@@ -1,9 +1,8 @@
 import React from 'react';
 import OrderCompleteContainer from '../../containers/order/OrderCompleteContainer';
 
-
-const OrderComplete =()=>{
-    return(
+const OrderComplete = () => {
+    return (
         <OrderCompleteContainer/>
     )
 }

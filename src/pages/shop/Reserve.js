@@ -5,11 +5,10 @@ function Reserve({ location }) {
     const query = qs.parse(location.search, {
         ignoreQueryPrefix: true,
     });
-    console.log(query.menu);
     let menu = query.menu;
     if (menu === undefined) {
         menu = '0';
     }
-    return <ReserveContainer menu={parseInt(menu)} />;
+    return (<ReserveContainer menu={parseInt(menu)} />);
 }
 export default Reserve;

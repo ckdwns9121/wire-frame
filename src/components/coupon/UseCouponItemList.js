@@ -52,7 +52,7 @@ const UseCouponItemList = ({ cp_list, check }) => {
 };
 
 function TD({ text }) {
-    return <div className={styles['td']}>{text}</div>;
+    return (<div className={styles['td']}>{text}</div>);
 }
 
 export default UseCouponItemList;

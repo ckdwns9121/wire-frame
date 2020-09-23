@@ -42,10 +42,10 @@ const OrderCouponItem = (props) => {
         </ButtonBase>
     );
 };
-const OrderCouponEventName = ({ event_name }) => <div className={styles['event-name']}>{event_name}</div>;
-const OrderCouponSale = ({ sale }) => <div className={cx('text', 'sale')}>{numberFormat(sale)}원 할인</div>;
-const OrderCouponEventSub = ({ sub_name }) => <div className={cx('text', 'sub-name')}>{sub_name}</div>;
-const OrderCouponDate = ({ date }) => <div className={cx('text', 'date')}>{date}</div>;
-const OrderCouponCheck = ({ select }) => <Check select={select} />
+const OrderCouponEventName = ({ event_name }) => (<div className={styles['event-name']}>{event_name}</div>);
+const OrderCouponSale = ({ sale }) => (<div className={cx('text', 'sale')}>{numberFormat(sale)}원 할인</div>);
+const OrderCouponEventSub = ({ sub_name }) => (<div className={cx('text', 'sub-name')}>{sub_name}</div>);
+const OrderCouponDate = ({ date }) => (<div className={cx('text', 'date')}>{date}</div>);
+const OrderCouponCheck = ({ select }) => (<Check select={select} />)
 
 export default OrderCouponItem;

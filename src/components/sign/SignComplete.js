@@ -21,13 +21,13 @@ function CompleteBox({ mainTitle, subTitle, text }) {
 }
 
 function MainTitle({ mainTitle }) {
-    return <div className={styles['main-title']}>{mainTitle}</div>;
+    return (<div className={styles['main-title']}>{mainTitle}</div>);
 }
 function SubTitle({ subTitle }) {
-    return <div className={styles['sub-title']}>{subTitle}</div>;
+    return (<div className={styles['sub-title']}>{subTitle}</div>);
 }
 function Text({ text }) {
-    return <div className={styles['text']}>{text}</div>;
+    return (<div className={styles['text']}>{text}</div>);
 }
 
 export default SignComplete;

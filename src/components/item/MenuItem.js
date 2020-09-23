@@ -16,9 +16,9 @@ const MenuItem = (props) => {
     }, []);
 
     const history = useHistory();
+    // item_id 로 경로 줘야함
 
     return (
-        // item_id 로 경로 줘야함
         <div className={styles['menu-item']}
             data-aos='fade-up' data-aos-delay={200 * props.index}
             onClick={props.onClick}>
@@ -44,12 +44,12 @@ function MenuImg({ src }) {
 }
 //홈 메뉴 제목 컴포넌트
 function MenuTitle({ menuTitle }) {
-    return <div className={styles['menu-title']}>{menuTitle}</div>;
+    return (<div className={styles['menu-title']}>{menuTitle}</div>);
 }
 
 //홈 메뉴 텍스트 컴포넌트
 function MenuText({ menuText }) {
-    return <div className={styles['menu-text']}>{menuText}</div>;
+    return (<div className={styles['menu-text']}>{menuText}</div>);
 }
 
 //홈 메뉴 가격 컴포넌트

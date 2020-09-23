@@ -10,8 +10,6 @@ const cx = classNames.bind(styles);
 
 const AccountContainer = () => {
     const { user } = useSelector((state) => state.auth);
-    const user_token = useStore();
-    console.log(user);
     useEffect(() => {}, [user]);
 
     return (
@@ -26,7 +24,7 @@ const AccountContainer = () => {
                         <div className={styles['label']}>이메일</div>
                         <div className={styles['user-value']}>{user && user.email}</div>
                     </div>
-                    <div className={cx('cell','pd-bottom')}>
+                    <div className={cx('cell', 'pd-bottom')}>
                         <div className={styles['label']}>비밀번호</div>
                         <div className={styles['user-change']}>변경하기</div>
                     </div>
@@ -35,23 +33,22 @@ const AccountContainer = () => {
                         <div className={styles['user-value']}>{user && user.hp &&stringToTel(user.hp)}
                         </div>
                     </div>
-                    <div className={cx('cell','pd-bottom')}>
+                    <div className={cx('cell', 'pd-bottom')}>
                         <div className={styles['label']}></div>
                         <div className={styles['user-change']}>변경하기</div>
                     </div>
-                    <div className={cx('cell','line')}>
+                    <div className={cx('cell', 'line')}>
                         <div className={styles['label']}>알림설정</div>
                         <div className={styles['user-value']}>
-                            <Select check={true}/>
+                            <Select check={true} />
                             <span>
-                             SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를 받아보실 수 있습니다.
+                                SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를
+                                받아보실 수 있습니다.
                             </span>
-                         </div>
+                        </div>
                     </div>
                     <div className={styles['btn']}>
-                            <div className={styles['update']}>
-                                내 정보 수정
-                            </div>
+                        <div className={styles['update']}>내 정보 수정</div>
                     </div>
                 </div>
             </div>

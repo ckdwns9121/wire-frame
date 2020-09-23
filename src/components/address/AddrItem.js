@@ -2,9 +2,6 @@ import React from 'react';
 import styles from './Addr.module.scss';
 
 const AddrItem = ({ jibunAddr, roadAddr, onClick }) => {
-    /*
-        주소를 검색했을 시 보여줄 컴포넌트.
-    */
     const handleClick = () => {
         const data = jibunAddr;
         onClick(data);
@@ -18,28 +15,18 @@ const AddrItem = ({ jibunAddr, roadAddr, onClick }) => {
     );
 };
 const JibunAddrBox = ({ jibunAddr }) => {
-    /*
-        주소 컴포넌트 내에 지번을 보여줄 컴포넌트
-    */
-
-    return <div className={styles['jibun-box']}>{jibunAddr}</div>;
+    return (<div className={styles['jibun-box']}>{jibunAddr}</div>);
 };
 const RoadAddrBox = ({ roadAddr }) => {
-    /*
-    주소 컴포넌트 내에 도로명을 보여줄 컴포넌트
-    */
-
     return (
         <div className={styles['roadAddr-box']}>
-            <AddrBtn />{roadAddr}
+            <AddrBtn />
+            {roadAddr}
         </div>
     );
 };
 const AddrBtn = () => {
-    /*
-    주소 컴포넌트 내에 도로명박스 컴포넌트
-    */
-    return <div className={styles['btn']}>지번</div>;
+    return (<div className={styles['btn']}>지번</div>);
 };
 
 export default AddrItem;
