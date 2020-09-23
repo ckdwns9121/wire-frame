@@ -83,7 +83,9 @@ const OrderListContainer = () => {
                            <Message 
                             msg={"주문 내역이 존재하지 않습니다."}
                             isButton={true}
-                            buttonName={"주문하러 가기"}/>
+                            buttonName={"주문하러 가기"}
+                            onClick={()=>history.push(`${Paths.ajoonamu.shop}?tab=0`)}
+                            />
                          }
                     </div>
                 </>

@@ -52,8 +52,8 @@ const ReserveModal = (props) => {
                     <span>원 부터</span>
                     <input
                         className={styles['value-input']}
-                        value={props.budget}
-                        onChange={props.onChangeBudget}
+                        value={props.endBudget}
+                        onChange={props.onChangeEndBudget}
                     />
                     <span>원 까지</span>
                 </div>
