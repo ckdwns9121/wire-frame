@@ -2,11 +2,15 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Paths } from 'paths';
 import styles from './Coupon.module.scss';
 import SubTabMenu from '../../components/tab/SubTabMenu';
-import CouponItemList from 'components/coupon/CouponItemList';
-import UseCouponItemList from 'components/coupon/UseCouponItemList';
+import CouponItemList from '../../components/coupon/CouponItemList';
+import UseCouponItemList from '../../components/coupon/UseCouponItemList';
 import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 import DownCouponItemList from '../../components/coupon/DownCouponList';
+import { useStore } from '../../hooks/useStore';
+import { getMyCoupons, getDownloadCp } from '../../api/coupon/coupon';
+import Loading from '../../components/assets/Loading';
+import Message from '../../components/message/Message';
 
 const tabInit = [
     {
@@ -31,18 +35,17 @@ const CouponConatiner = (props) => {
         ignoreQueryPrefix: true,
     });
 
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
     const [index, setIndex] = useState(0);
+    const [cp_list, setCpList] = useState([]);
+    const [down_cp_list, setDownCpList] = useState([]);
+    const user_token = useStore();
 
     const onChangeIndex = (idx) => {
         setIndex(idx);
     };
-
-    useEffect(() => {
-        console.log(query.tab);
-        if (query.tab !== undefined) {
-            setIndex(parseInt(query.tab));
-        }
-    }, [query]);
 
     const getTitle = useCallback(() => {
         if (index === 0) {
@@ -53,6 +56,43 @@ const CouponConatiner = (props) => {
             return '쿠폰사용내역';
         }
     }, [index]);
+
+    //현재 보유한 쿠폰 리스트
+    const getMyCouponList = async () => {
+        setLoading(true);
+        if (user_token) {
+            const res = await getMyCoupons(user_token);
+            console.log(res);
+            setCpList(res);
+            setSuccess(true);
+        } else setError(true);
+        setLoading(false);
+    };
+
+    // 다운로드 가능한 쿠폰 리스트
+    const getDownCouponList = async () => {
+        setLoading(true);
+
+        if (user_token) {
+            const res = await getDownloadCp(user_token);
+            console.log(res);
+            setDownCpList(res);
+            setSuccess(true);
+        } else setError(true);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        getMyCouponList();
+        getDownCouponList();
+    }, []);
+
+    useEffect(() => {
+        if (query.tab !== undefined) {
+            setIndex(parseInt(query.tab));
+        }
+    }, [query]);
+
     return (
         <div className={styles['container']}>
             <SubTabMenu tabs={tabInit} onChange={onChangeIndex} index={index} />
@@ -93,9 +133,29 @@ const CouponConatiner = (props) => {
                 )}
 
                 <div className={styles['coupon-list']}>
-                    {index === 0 && (<CouponItemList />)}
-                    {index === 1 && (<DownCouponItemList />)}
-                    {index === 2 && (<UseCouponItemList />)}
+                    {index === 0 && (
+                        <>
+                            {cp_list.length !== 0 ? (
+                                <CouponItemList cp_list={cp_list} />
+                            ) : (
+                                <Message
+                                    msg={'보유하고 있는 쿠폰이 없습니다.'}
+                                />
+                            )}
+                        </>
+                    )}
+                    {index === 1 && (
+                        <>
+                            {down_cp_list.length !== 0 ? (
+                                <DownCouponItemList cp_list={down_cp_list} />
+                            ) : (
+                                <Message
+                                    msg={'발급 받을 수 있는 쿠폰이 없습니다.'}
+                                />
+                            )}
+                        </>
+                    )}
+                    {index === 2 && <UseCouponItemList />}
                 </div>
             </div>
         </div>

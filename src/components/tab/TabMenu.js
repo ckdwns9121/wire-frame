@@ -18,10 +18,6 @@ const TabMenu = ({ tabs, index, onChange }) => {
     const classes = useStyles();
     const history = useHistory();
 
-    const onClickTab = (url) => {
-        history.push(url);
-    };
-
     const settings = {
         infinite: true,
         speed: 500,
@@ -29,13 +25,11 @@ const TabMenu = ({ tabs, index, onChange }) => {
         slidesToScroll: 5,
     };
 
-
     const tabList = tabs.map((tab) => (
         <Tab
             label={tab.name ? tab.name : tab.ca_name}
             key={tab.name}
             className={styles['tab-item']}
-            onClick={() => onClickTab(tab.url)}
         />
     ));
     return (
@@ -62,7 +56,7 @@ const TabMenu = ({ tabs, index, onChange }) => {
 TabMenu.defaultProps = {
     tabs: null,
     index: 0,
-    isPush: false,
+    href: false,
     onChange: () => console.warn(null),
 };
 

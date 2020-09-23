@@ -14,35 +14,13 @@ import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
 
 import {
-    getPreferMenuList,
     getCustomMenuList,
     getMenuList,
 } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
 import { get_catergory, get_menulist } from '../../store/product/product';
 
-const tabInit = [
-    {
-        url: `${Paths.ajoonamu.shop}?menu=0`,
-        name: '추천메뉴',
-    },
-    {
-        url: `${Paths.ajoonamu.shop}?menu=1`,
-        name: '분류1',
-    },
-    {
-        url: `${Paths.ajoonamu.shop}?menu=2`,
-        name: '분류2',
-    },
-    {
-        url: `${Paths.ajoonamu.shop}?menu=3`,
-        name: '분류3',
-    },
-    {
-        url: `${Paths.ajoonamu.shop}?menu=4`,
-        name: '분류4',
-    },
-];
+
 
 function TabPanel(props) {
     const { children, value, index } = props;
@@ -119,7 +97,6 @@ const ReserveContainer = ({ menu = '0' }) => {
         if (user_token && categorys.length === 1) {
             const res = await getCategory(user_token);
             res.sort((a, b) => a.ca_id - b.ca_id);
-            console.log(res);
             // 카테고리를 분류 순서로 정렬.
             dispatch(get_catergory(res));
             let arr = [];
@@ -153,6 +130,7 @@ const ReserveContainer = ({ menu = '0' }) => {
                                         isButton={true}
                                         buttonName={'맞춤주문 설정하기'}
                                         onClick={handleOpen}
+                                        src={false}
                                     />
                                 )}
                             </>
@@ -171,7 +149,6 @@ const ReserveContainer = ({ menu = '0' }) => {
     const renderMenuList = useCallback(
         (ca_id) => {
             const index = items.findIndex((item) => item.ca_id === ca_id);
-            console.log(items);
             return (
                 <>
                     {index !== -1 ? (
@@ -200,6 +177,10 @@ const ReserveContainer = ({ menu = '0' }) => {
     useEffect(() => {
         getProductList();
     }, []);
+
+    useEffect(()=>{
+        history.replace(`${Paths.ajoonamu.shop}?tab=${tab_index}`);
+    },[tab_index,history])
 
 
     return (
