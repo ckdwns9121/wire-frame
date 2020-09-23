@@ -1,4 +1,76 @@
 @import '../../styles/Root.scss';
 .container{
-    @include wireframe
+    .content{
+        padding-top:40px;
+        .title{
+            border-bottom:2px solid #222;
+            font-size: 24px;
+            font-weight: bold;
+            color:#222;
+            padding:20px;
+        }
+    }
+}
+
+
+.select-date{
+    display: flex;
+    padding-top:20px;
+    padding-bottom:80px;
+    .date{
+        width: 300px;
+        padding-right:76px;
+        display: flex;
+        .date-box{
+            font-size:16px;
+            width: 80px;
+            height: 40px;
+            border:1px solid #EBEBEB;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+            &:hover{
+                background-color: #dbdbdb;
+            }
+        }
+    }
+    .date-input-box{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        .text{
+            font-size: 18px;
+            padding-right:10px;
+        }
+        .input{
+            input{
+                width: 144px;
+                height: 40px;
+                border:1px solid #EBEBEB;
+                outline: none;
+                box-sizing: border-box;
+            }
+     
+        }
+        .btn{
+            cursor: pointer;
+            margin-left:20px;
+            color:#fff;
+            background-color: $main-color;
+            width: 156px;
+            height: 40px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 40px;
+        }
+        .line{
+            width: 8px;
+            height: 1px;
+            margin:0 8px;
+            border:1px solid #dbdbdb;
+            box-sizing: border-box;
+        }
+
+    }
 }
