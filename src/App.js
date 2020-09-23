@@ -18,11 +18,13 @@ import {
     Mypage,
     Support,
     Breakfast,
-    Event
+    Event,
+    Agree
 } from 'pages';
 import { Home, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order ,OrderComplete} from 'pages';
 import { Route, Switch } from 'react-router-dom';
+import ModalContainer from './containers/assets/ModalContainer';
 
 function App() {
     const dispatch = useDispatch();
@@ -60,9 +62,11 @@ function App() {
                         <Route path={Paths.ajoonamu.support} component={Support}></Route>
                         <Route path={`${Paths.ajoonamu.event}/:id?`} component={Event}></Route>
                         <Route path={Paths.ajoonamu.order} component={Order}></Route>
+                        <Route path={Paths.ajoonamu.agree} component={Agree}></Route>
                         <Route path ={`${Paths.ajoonamu.mypage}/:tab?`} component={Mypage}></Route>
                     </Switch>
                 <Footer />
+                <ModalContainer />
             </div>
     );
 }

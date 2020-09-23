@@ -18,5 +18,6 @@ export { default as Support } from './support/Support';
 export { default as Breakfast } from './breakfast/Breakfast';
 export { default as Event } from './event/Event';
 export { default as Logout } from './logout/Logout';
+export { default as Agree } from './agree/Agree';
 
 export { default as Error } from './error/Error';

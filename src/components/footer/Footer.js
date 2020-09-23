@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './Footer.module.scss';
 import { Fb_Icon, Insta_Icon, Blog_Icon } from '../svg/footer';
+import { NavLink } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 const Footer = () => (
     <div className={styles['footer']}>
@@ -8,8 +10,8 @@ const Footer = () => (
             <div className={styles['title']}>
                 <div className={styles['tos']}>
                     <div className={styles['text1']}>
-                        <span>개인정보처리방침</span>
-                        <span>이용약관</span>
+                        <NavLink activeStyle={{ color: '#222', fontWeight: 'bold' }} to={Paths.ajoonamu.policy}>개인정보처리방침</NavLink>
+                        <NavLink activeStyle={{ color: '#222', fontWeight: 'bold' }} to={Paths.ajoonamu.term_use}>이용약관</NavLink>
                     </div>
                 </div>
                 <div className={styles['sns']}>
