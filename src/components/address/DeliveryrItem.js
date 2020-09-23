@@ -30,7 +30,7 @@ const DeliveryrItem = (props) => {
     );
 };
 const JibunAddrBox = ({ jibunAddr }) => {
-    return <div className={styles['jibun-box']}>{jibunAddr}</div>;
+    return (<div className={styles['jibun-box']}>{jibunAddr}</div>);
 };
 const RoadAddrBox = ({ roadAddr }) => {
     return (
@@ -40,7 +40,7 @@ const RoadAddrBox = ({ roadAddr }) => {
     );
 };
 const AddrBtn = () => {
-    return <div className={styles['btn']}>지번</div>;
+    return (<div className={styles['btn']}>지번</div>);
 };
 
 export default DeliveryrItem;

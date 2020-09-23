@@ -15,7 +15,7 @@ const AddrItemList = ({ addrs, onClick }) => {
             onClick={onClick}
         />
     ));
-    return <div className={styles['addr-list']}>{addrsList}</div>;
+    return (<div className={styles['addr-list']}>{addrsList}</div>);
 };
 
 export default AddrItemList;

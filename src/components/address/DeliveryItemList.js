@@ -10,7 +10,7 @@ const DeliveryItemList = (props) => {
         <DeliveryrItem {...addr} key={addr.delivery_id} />
     ));
 
-    return <div className={styles['delivery-list']}>{list}</div>;
+    return (<div className={styles['delivery-list']}>{list}</div>);
 };
 
 export default DeliveryItemList;

@@ -64,7 +64,7 @@ function CustomMenuItemList({ datas }) {
             menu_price={item.price}
         />
     ));
-    return <div className={styles['menu-list']}>{list}</div>;
+    return (<div className={styles['menu-list']}>{list}</div>);
 }
 
 export default CustomItem;

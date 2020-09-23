@@ -12,7 +12,9 @@ export default ({ title, linkList, active }) => (
             {linkList.map((item) => (
                 <li key={item.url} className={styles['item']}>
                     <Link
-                        className={cn('link', { active: active.indexOf(item.url) !== -1 })}
+                        className={cn('link', {
+                            active: active.indexOf(item.url) !== -1,
+                        })}
                         to={item.url}
                     >
                         {item.name}

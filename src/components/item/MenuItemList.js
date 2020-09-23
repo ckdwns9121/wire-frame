@@ -13,7 +13,7 @@ const MenuItemList = ({ menu_list }) => {
             index={index}
         />
     ));
-    return <div className={styles['menu-list']}>{menuList}</div>;
+    return (<div className={styles['menu-list']}>{menuList}</div>);
 };
 
 export default MenuItemList;

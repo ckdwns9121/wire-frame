@@ -13,7 +13,7 @@ const AdditionalList = ({ itemList, onClickAddItem }) => {
             onClickAddItem={(e) => onClickAddItem(item.option_id)}
         />
     ));
-    return <div>{list}</div>;
+    return (<div>{list}</div>);
 };
 
 export default AdditionalList;

@@ -2,7 +2,7 @@ import React from 'react';
 import AddressContainer from 'containers/address/AddressContainer';
 
 function Address() {
-    return <AddressContainer />;
+    return (<AddressContainer />);
 }
 
 export default Address;

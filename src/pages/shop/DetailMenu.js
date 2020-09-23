@@ -7,9 +7,7 @@ function DetailMenu({ location }) {
         ignoreQueryPrefix: true,
     });
     return (
-        <>
-            <DetailContainer item_id={query.item_id} />
-        </>
+        <DetailContainer item_id={query.item_id} />
     );
 }
 export default DetailMenu;

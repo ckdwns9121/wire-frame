@@ -8,7 +8,7 @@ const OrderCouponItemList = (props) => {
         <OrderCouponItem key={cp.cp_id} item={cp} onClick={props.onClick} id={cp.cp_id} />
     ));
 
-    return <div className={styles['coupon-list']}>{list}</div>;
+    return (<div className={styles['coupon-list']}>{list}</div>);
 };
 
 export default OrderCouponItemList;

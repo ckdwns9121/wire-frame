@@ -7,7 +7,7 @@ const FindEmail = ({ location }) => {
         ignoreQueryPrefix: true,
     });
     const email = query.email;
-    return <FindEmailContainer email={email} />;
+    return (<FindEmailContainer email={email} />);
 };
 
 export default FindEmail;

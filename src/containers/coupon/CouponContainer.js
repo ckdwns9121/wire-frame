@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Paths } from 'paths';
 import styles from './Coupon.module.scss';
-import Header from 'components/header/Header';
-import Title from 'components/titlebar/Title';
 import SubTabMenu from '../../components/tab/SubTabMenu';
 import CouponItemList from 'components/coupon/CouponItemList';
 import UseCouponItemList from 'components/coupon/UseCouponItemList';
@@ -69,7 +67,6 @@ const CouponConatiner = (props) => {
                         <div className={styles['btn']}>쿠폰등록</div>
                     </div>
                 )}
-
                 <div className={styles['tab-title']}>{getTitle()}</div>
 
                 {index === 2 && (
@@ -96,9 +93,9 @@ const CouponConatiner = (props) => {
                 )}
 
                 <div className={styles['coupon-list']}>
-                    {index === 0 && <CouponItemList />}
-                    {index === 1 && <DownCouponItemList />}
-                    {index === 2 && <UseCouponItemList />}
+                    {index === 0 && (<CouponItemList />)}
+                    {index === 1 && (<DownCouponItemList />)}
+                    {index === 2 && (<UseCouponItemList />)}
                 </div>
             </div>
         </div>

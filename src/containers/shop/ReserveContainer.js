@@ -142,7 +142,7 @@ const ReserveContainer = ({ menu = '0' }) => {
                 }
             />
         ));
-        return <>{list}</>;
+        return (<>{list}</>);
     };
 
     return (

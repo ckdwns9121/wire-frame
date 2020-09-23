@@ -7,7 +7,7 @@ const FindPassword = ({ location }) => {
         ignoreQueryPrefix: true,
     });
     const email = query.email;
-    return <FindPasswordContainer email={email} />;
+    return (<FindPasswordContainer email={email} />);
 };
 
 export default FindPassword;

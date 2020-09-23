@@ -3,15 +3,27 @@ import styles from './SignModule.module.scss';
 
 //인증 버튼을 포함하지 않을 input
 
-const SignNormalInput = ({ inputType,label ,onChange, initValue, placeholder ,name}) => {
+const SignNormalInput = ({
+    inputType,
+    label,
+    onChange,
+    initValue,
+    placeholder,
+    name,
+}) => {
     return (
         <div className={styles['sign-input']}>
-                 <div className={styles['label']}>
-                  {label}
-            </div>
-            <input className={styles['normal']}name={name} placeholder={placeholder} type={inputType} value={initValue} onChange={onChange} ></input>
+            <div className={styles['label']}>{label}</div>
+            <input
+                className={styles['normal']}
+                name={name}
+                placeholder={placeholder}
+                type={inputType}
+                value={initValue}
+                onChange={onChange}
+            ></input>
         </div>
-    )
-}
+    );
+};
 
 export default SignNormalInput;

@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 
 export default function Map() {
+    
     useEffect(() => {
         mapScript();
     }, []);
@@ -52,5 +53,5 @@ export default function Map() {
         // marker.setMap(map);
     };
 
-    return <div id="map" style={{ width: '100%', height: '560px' }}></div>;
+    return (<div id="map" style={{ width: '100%', height: '560px' }}></div>);
 }

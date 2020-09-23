@@ -9,6 +9,6 @@ function Reserve({ location }) {
     if (menu === undefined) {
         menu = '0';
     }
-    return <ReserveContainer menu={parseInt(menu)} />;
+    return (<ReserveContainer menu={parseInt(menu)} />);
 }
 export default Reserve;
