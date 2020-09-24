@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { Paths } from 'paths';
 import styles from './BreakfastMenu.module.scss';
@@ -15,6 +14,7 @@ import { ButtonBase } from '@material-ui/core';
 import { getMenuList } from '../../api/menu/menu';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+
 import CategoryMenu from '../../components/tab/CategoryMenu';
 
 function TabPanel(props) {
@@ -62,48 +62,19 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         setTitleIndex(index);
     };
 
-    //임의로 설정한 ca_id (메뉴분류 값) 을 가지고 실제 메뉴 불러오기
-    const getProductList = useCallback(async () => {
-        setLoading(true);
 
-        if (user_token) {
-            let arr = [];
-            for (let i = 0; i < new_category.length; i++) {
-                const result = await getMenuList(
-                    user_token,
-                    new_category[i].ca_id,
-                );
-                console.log(result);
-                const temp = { ca_id: new_category[i].ca_id, items: result };
-                arr.push(temp);
-            }
-            setMenuList(arr);
-        }
-
-        setLoading(false);
-    }, [user_token, new_category]);
-
-    // 아이템 카테고리가 존재하면 그 갯수만큼 패널 생성
-    const renderContent = useCallback(() => {
-        const list = new_category.map((category, index) => (
-            <TabPanel
-                key={category.ca_id}
-                value={tab_index}
-                index={index}
-                children={<span>{renderMenuList(category.ca_id)}</span>}
-            />
-        ));
-
-        return <>{list}</>;
-    }, [new_category, tab_index, renderMenuList, menu_list]);
-
+    //메뉴 아이템을 클릭했을 시 상세보기 페이지로 푸쉬
+    const onClickMenuItem = useCallback(
+        (item_id) => {
+            history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
+        },
+        [history],
+    );
 
     //메뉴 리스트가 있으면 렌더 없으면 메시지 렌더
     const renderMenuList = useCallback(
         (ca_id) => {
             const index = menu_list.findIndex((item) => item.ca_id === ca_id);
-            console.log(index);
-            console.log(menu_list);
             return (
                 <>
                     {index !== -1 ? (
@@ -123,23 +94,45 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         },
         [menu_list, onClickMenuItem],
     );
+    //임의로 설정한 ca_id (메뉴분류 값) 을 가지고 실제 메뉴 불러오기
+    const getProductList = useCallback(async () => {
+        setLoading(true);
+        if (user_token) {
+            let arr = [];
+            try {
+                for (let i = 0; i < new_category.length; i++) {
+                    const result = await getMenuList(
+                        user_token,
+                        new_category[i].ca_id,
+                    );
+                    const temp = { ca_id: new_category[i].ca_id, items: result };
+                    arr.push(temp);
+                }
+                setMenuList(arr);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        setLoading(false);
+    }, [user_token, new_category]);
 
-
-    //메뉴 아이템을 클릭했을 시 상세보기 페이지로 푸쉬
-    const onClickMenuItem = useCallback(
-        (item_id) => {
-            console.log(item_id);
-            history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
-        },
-        [history],
-    );
-
+    // 아이템 카테고리가 존재하면 그 갯수만큼 패널 생성
+    const renderContent = useCallback(() => {
+        const list = new_category.map((category, index) => (
+            <TabPanel
+                key={category.ca_id}
+                value={tab_index}
+                index={index}
+                children={<span>{renderMenuList(category.ca_id)}</span>}
+            />
+        ));
+        return <>{list}</>;
+    }, [new_category, tab_index, renderMenuList]);
 
     //마운트 되었을 시 메뉴 리스트 받아오기
     useEffect(() => {
         getProductList();
     }, []);
-
 
     //탭이 바뀌면 url 변경
     useEffect(() => {
@@ -164,7 +157,7 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                     alt="banner"
                 />
             </div>
-            <div className={styles['title']}>기업조식 메뉴</div>
+            <h1 className={styles['top-title']}>기업조식 메뉴</h1>
             <CategoryMenu
                 tabs={titleTab}
                 index={titleIndex}
@@ -183,44 +176,35 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                                 {renderContent()}
                             </div>
 
-                            <div className={styles['area']}>
-                                <div className={styles['container']}>
-                                    <div
-                                        className={styles['bottom-banner']}
-                                        style={{
-                                            backgroundImage:
-                                                'url(' + bottomBanner + ')',
-                                        }}
-                                    >
-                                        <div
-                                            className={styles['content']}
-                                            data-aos="fade-up"
+                            <div
+                                className={styles['bottom-banner']}
+                                style={{
+                                    backgroundImage:
+                                        'url(' + bottomBanner + ')',
+                                }}
+                            >
+                                <div
+                                    className={styles['content']}
+                                    data-aos="fade-up"
+                                >
+                                    <p className={styles['title']}>
+                                        기업조식 정기배송 서비스
+                                    </p>
+                                    <p className={styles['text']}>
+                                        하루의 시작은 샌달이 책임져드립니다
+                                    </p>
+                                    <div className={styles['button-area']}>
+                                        <ButtonBase
+                                            className={styles['button']}
                                         >
-                                            <p className={styles['title']}>
-                                                기업조식 정기배송 서비스
-                                            </p>
-                                            <p className={styles['text']}>
-                                                하루의 시작은 샌달이
-                                                책임져드립니다
-                                            </p>
-                                            <div
-                                                className={
-                                                    styles['button-area']
-                                                }
-                                            >
-                                                <ButtonBase
-                                                    className={styles['button']}
-                                                >
-                                                    상담문의
-                                                </ButtonBase>
-                                            </div>
-                                        </div>
+                                            상담문의
+                                        </ButtonBase>
                                     </div>
                                 </div>
                             </div>
                         </>
                     ) : (
-                        <h1> gd</h1>
+                        <h1></h1>
                     )}
                 </div>
             </div>
