@@ -1,12 +1,15 @@
 @import '../../styles/Root.scss';
+.title{
+    @include title;
+    padding-top:100px;
+  }
 .container{
         @include wireframe;
         .content{
          @include content;
          padding-bottom:0;
-                .title{
-                  @include title;
-                }
+         padding-top:60px;
+    
                 .shop{
                  min-height: 500px;
                 }

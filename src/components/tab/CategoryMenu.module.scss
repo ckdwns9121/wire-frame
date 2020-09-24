@@ -1,21 +1,15 @@
 
 @import '../../styles/Root.scss';
 
-
+.tabs{
+    border-top :1px solid #DBDBDB !important;
+    border-bottom :1px solid #DBDBDB !important;
+}
 .tab-item{
-    min-height: 40px !important; //필수
-    padding: 0 !important;
+    min-height: 70px !important; //필수
+    margin: 0 24px !important;
     display: flex !important;
     flex : 1 1 0;
+    font-size:24px !important;
+    max-width: 120px !important;
 }
-// :global .MuiTabs-flexContainer{
-
-//     // border : 1px  solid blue;
-//     display: flex !important; /* 핵심! */
-//     width: 100% !important;
-//    height: 40px !important;
-//    margin:auto !important;
-//    justify-content: center;
-//    align-items: center;
-// }
-
