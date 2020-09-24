@@ -14,7 +14,8 @@ import {
     FacebookLogo,
 } from '../../components/svg/sign/social';
 import CheckBox from 'components/checkbox/CheckBox';
-
+import {get_address} from '../../store/address/address';
+import {getActiveAddr} from '../../api/address/address';
 const cx = cn.bind(styles);
 
 
@@ -74,6 +75,7 @@ const SignInContainer = () => {
                 }
                 //로그인 성공 했을 때.
                 else if (res.data.access_token) {
+                    const response = await getActiveAddr(res.data.access_token);
                     sessionStorage.setItem(
                         'access_token',
                         res.data.access_token,
@@ -86,6 +88,8 @@ const SignInContainer = () => {
                         localStorage.removeItem('user');
                     }
                     dispatch(get_user_info(res.data.access_token));
+                    dispatch(get_address(response));
+                    
                     history.replace(Paths.index);
                 }
             } else {

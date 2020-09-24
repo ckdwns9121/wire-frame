@@ -8,7 +8,7 @@ const DeliveryItemList = (props) => {
     */
     const list = props.addrs.map((addr) => (
         <DeliveryrItem {...addr} key={addr.delivery_id} id={addr.delivery_id} 
-        onClick={()=>props.onClick(addr.delivery_id)} 
+        onClick={()=>props.onClick(addr.delivery_id , addr.addr1)} 
         onRemove={props.onRemove}
         
         />

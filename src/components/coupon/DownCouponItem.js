@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './DownCoupon.module.scss';
 import DownCoupon from 'components/svg/coupon/down.svg';
 import { numberFormat } from '../../lib/formatter';
+import CouponCheck from '../svg/coupon/Check';
 
 const DownCouponItem = (props) => {
     const {
@@ -19,9 +20,9 @@ const DownCouponItem = (props) => {
         cz_target,
     } = props.item;
     return (
-        <div className={styles['coupon-item']}>
+        <div className={styles['coupon-item']} onClick={props.onClick}>
             <div className={styles['down']}>
-                <CouponDown check={true} />
+                <CouponDown check={props.check} />
             </div>
             <div className={styles['info']}>
                 <div className={styles['pd-box']}>
@@ -47,7 +48,15 @@ function CouponDate({ date }) {
     return (<div className={styles['date']}>{date}</div>);
 }
 function CouponDown({ check }) {
-    return (<>{check && <img src={DownCoupon} alt="다운" />}</>);
+    return (
+    <>
+    {!check ?
+    <img src={DownCoupon} alt="다운" /> :
+        <CouponCheck/>
+    }
+    
+    </>
+    );
 }
 
 export default DownCouponItem;

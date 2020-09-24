@@ -24,6 +24,8 @@ import {
 import { Home, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order ,OrderComplete} from 'pages';
 import { Route, Switch } from 'react-router-dom';
+import {get_address} from './store/address/address';
+import {getActiveAddr} from './api/address/address';
 import ModalContainer from './containers/assets/ModalContainer';
 
 function App() {
@@ -32,11 +34,13 @@ function App() {
         const token = sessionStorage.getItem('access_token');
         if (token !== null || token !== undefined) {
             dispatch(get_user_info(token));
+            const res = await getActiveAddr(token);
+            console.log(res);
+            dispatch(get_address(res));
         }
     };
     useEffect(() => {
         getInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
             <div className="App">

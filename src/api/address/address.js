@@ -4,17 +4,10 @@ const key= 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU';
 
 export const getDeliveryList = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
-    const params = {
-        params: {
-            lat: 37.182183,
-            lng: 129.227344
-        }
-    }
 
     axios.defaults.baseURL = req;
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.get['Context-Type'] = 'application/json';
-    axios.defaults.params = params;
     const res = await axios.get();
     return res;
 }
@@ -77,3 +70,30 @@ export const deleteAddr = async (token, delivery_id) => {
     });
     return res;
 }
+
+
+export const getActiveAddr = async (token) => {
+    const req = `${Paths.api}user/delivery/list`;
+
+
+    axios.defaults.baseURL = req;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.get['Context-Type'] = 'application/json';
+    const res = await axios.get();
+    console.log(res.data.query);
+
+    const {query} = res.data;
+    let len = Object.keys(query).length;
+    let addr ='';
+
+    for(let i=0 ;i<len;i++){
+        console.log(query[i].active);
+        if(query[i].active===1){
+                addr = query[i].addr1;
+                return addr;
+        }
+    }
+
+    return null;
+}
+

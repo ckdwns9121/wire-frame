@@ -79,3 +79,20 @@
 .big-divider {
     padding: 25px;
 }
+    //휴대폰 인증 버튼
+    .auth-btn{
+        overflow: hidden;
+        transition:opacity .3s ease-in-out;
+        position: relative;
+        opacity: 1;
+        &.not_view {
+        opacity: 0;
+            // height: 0px;
+        }
+        .timer{
+            position: absolute;
+            right:200px;
+            top:45%;
+            transform: translateY(-65%);
+        }
+    }

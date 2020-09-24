@@ -15,5 +15,5 @@ export default function CouponCheck(props) {
 }
 
 CouponCheck.defaultProps = {
-    select: false,
+    select: true,
 };

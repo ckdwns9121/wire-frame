@@ -1,8 +1,12 @@
 @import '../../styles/Root.scss';
+
 .sign-input {
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
+    transition: all 0.15s ease-in-out;
+    overflow: hidden;
+
     .label {
         max-width: 130px;
         min-width: 130px; height: 56px;
@@ -62,3 +66,5 @@
         }
     }
 }
+
+
