@@ -15,7 +15,6 @@ import Loading from '../../components/assets/Loading';
 
 import {
     getCustomMenuList,
-    getPreferMenuList,
     getMenuList,
 } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';

@@ -28,7 +28,14 @@ import {get_address} from './store/address/address';
 import {getActiveAddr} from './api/address/address';
 import ModalContainer from './containers/assets/ModalContainer';
 
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 function App() {
+    useEffect(() => {
+        AOS.init({ duration: 1500 });
+    }, []);
+    
     const dispatch = useDispatch();
     const getInfo = async () => {
         const token = sessionStorage.getItem('access_token');

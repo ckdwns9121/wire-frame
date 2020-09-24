@@ -12,10 +12,15 @@ import Loading from '../../components/assets/Loading';
 import bottomBanner from '../../components/svg/breakfast/bottomBanner.png';
 import { ButtonBase } from '@material-ui/core';
 import { getMenuList } from '../../api/menu/menu';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+
+import basicBanner from '../../components/svg/breakfast/basic.png';
+import plusBanner from '../../components/svg/breakfast/plus.png';
+import premiumBanner from '../../components/svg/breakfast/premium.png';
+
+import SampleMenu from '../../components/svg/breakfast/sandal_menu.png';
 
 import CategoryMenu from '../../components/tab/CategoryMenu';
+import Configure from '../../components/breakfast/Configure';
 
 function TabPanel(props) {
     const { children, value, index } = props;
@@ -62,7 +67,6 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         setTitleIndex(index);
     };
 
-
     //메뉴 아이템을 클릭했을 시 상세보기 페이지로 푸쉬
     const onClickMenuItem = useCallback(
         (item_id) => {
@@ -105,7 +109,10 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                         user_token,
                         new_category[i].ca_id,
                     );
-                    const temp = { ca_id: new_category[i].ca_id, items: result };
+                    const temp = {
+                        ca_id: new_category[i].ca_id,
+                        items: result,
+                    };
                     arr.push(temp);
                 }
                 setMenuList(arr);
@@ -137,15 +144,9 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
     //탭이 바뀌면 url 변경
     useEffect(() => {
         if (user_token) {
-            history.replace(
-                `${Paths.ajoonamu.breakfast}/menu?tab=${tab_index}`,
-            );
+            history.replace(`${Paths.ajoonamu.breakfast}/menu?tab=${tab_index}`);
         }
     }, [tab_index, history, user_token]);
-
-    useEffect(() => {
-        AOS.init({ duration: 1500 });
-    }, []);
 
     return (
         <>
@@ -163,51 +164,70 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                 index={titleIndex}
                 onChange={onChangeIndex}
             />
-            <div className={styles['container']}>
-                <div className={styles['content']}>
-                    {titleIndex === 0 ? (
-                        <>
-                            <TabMenu
-                                tabs={new_category}
-                                index={tab_index}
-                                onChange={onChangeTabIndex}
-                            />
-                            <div className={styles['shop']}>
-                                {renderContent()}
-                            </div>
+            {titleIndex === 0 ? (
+                <div className={styles['container']}>
+                    <div className={styles['content']}>
+                        <TabMenu
+                            tabs={new_category}
+                            index={tab_index}
+                            onChange={onChangeTabIndex}
+                        />
+                        <div className={styles['shop']}>{renderContent()}</div>
 
+                        <div
+                            className={styles['bottom-banner']}
+                            style={{
+                                backgroundImage: 'url(' + bottomBanner + ')',
+                            }}
+                        >
                             <div
-                                className={styles['bottom-banner']}
-                                style={{
-                                    backgroundImage:
-                                        'url(' + bottomBanner + ')',
-                                }}
+                                className={styles['content']}
+                                data-aos="fade-up"
                             >
-                                <div
-                                    className={styles['content']}
-                                    data-aos="fade-up"
-                                >
-                                    <p className={styles['title']}>
-                                        기업조식 정기배송 서비스
-                                    </p>
-                                    <p className={styles['text']}>
-                                        하루의 시작은 샌달이 책임져드립니다
-                                    </p>
-                                    <div className={styles['button-area']}>
-                                        <ButtonBase
-                                            className={styles['button']}
-                                        >
-                                            상담문의
-                                        </ButtonBase>
-                                    </div>
+                                <p className={styles['title']}>
+                                    기업조식 정기배송 서비스
+                                </p>
+                                <p className={styles['text']}>
+                                    하루의 시작은 샌달이 책임져드립니다
+                                </p>
+                                <div className={styles['button-area']}>
+                                    <ButtonBase className={styles['button']}>
+                                        상담문의
+                                    </ButtonBase>
                                 </div>
                             </div>
-                        </>
-                    ) : (
-                        <h1></h1>
-                    )}
+                        </div>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <div className={styles['configure']}>
+                    <div className={styles['contain']}>
+                        <Configure src={basicBanner} level={{ name: 'BASIC', value: '3,000', color: '#FDD800' }}
+                            content={{ title: '가성비 최고! 간편 식단', one: '메인메뉴 1개로 구성된 간편식단입니다.', two: '매일 다르게 또는 요일별로 메뉴를 지정할 수 있습니다.', three: '메인메뉴 : 샌드위치, 유부초밥, 주먹밥, 샐러드', four: '구성에 따라 가격변동이 있을 수 있습니다.'}}/>
+                        <Configure src={plusBanner} level={{ name: 'PLUS', value: '4,000', color: '#008762' }}
+                            content={{ title: '샌달 BEST! 기본 식단', one: '메인메뉴와 서브메뉴로 구성된 기본식단입니다.', two: '구성에 따라 가격변동이 있을 수 있습니다. (구성변경가능)', three: '메인메뉴 : 샌드위치, 유부초밥, 주먹밥, 샐러드 ', four: '서브메뉴 : 컵과일, 음료, 계란 등'}}/>
+                        <Configure src={premiumBanner} level={{ name: 'PREMIUM', value: '5,000', color: '#EA5A2A' }}
+                            content={{ title: '최고의 구성! 프리미엄 식단', one: '팀 또는 기업단위로 다양한 메뉴를 즐길 수 있는 프리미엄 식단입니다.', two: '메인메뉴 2~3가지와 서브메뉴로 구성되어 있습니다.', three: '월 단위로 구성되는 패키지 입니다.', four: '구성에 따라 가격변동이 있을 수 있습니다.'}}/>
+                    </div>
+                    <div className={styles['divider']} />
+                    <div className={styles['contain']}>
+                        <h2 className={styles['menu-title']}>샌달 식단표</h2>
+                        <p className={styles['sub-title']}>Sample Menu</p>
+                        <div data-aos='fade-up'>
+                            <img className={styles['menu-image']} src={SampleMenu} alt="식단표" />
+                        </div>
+                        <div className={styles['sub-area']}>
+                            <p>모든 메뉴와 구성은 고객의 입맛에 따라 원하시는 메뉴로 재구성이 가능합니다.</p>
+                            <p>재료 수급에 따라 식단표와 상이할 수 있습니다.</p>
+                        </div>
+                        <div className={styles['button-area']}>
+                            <ButtonBase className={styles['button']} onClick={() => history.push(Paths.ajoonamu.support + '/qna/write')}>
+                                상담문의
+                            </ButtonBase>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

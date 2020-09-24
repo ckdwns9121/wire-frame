@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import classnames from 'classnames/bind'
 
 import styles from './BreakfastContainer.module.scss';
@@ -20,18 +20,14 @@ import { useHistory } from 'react-router-dom';
 
 import { ButtonBase } from '@material-ui/core';
 
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import { Paths } from '../../paths';
+import Column from '../../components/breakfast/Column';
 
 
 const cn = classnames.bind(styles);
 
 const BreakfastContainer = () => {
     const history = useHistory();
-    useEffect(() => {
-        AOS.init({ duration: 1500 });
-    }, []);
 
     return (
         <div className={styles['breakfast']}>
@@ -170,26 +166,10 @@ const BreakfastContainer = () => {
                 <div className={cn('container', 'happiness')}>
                     <div className={styles['content']}>
                         <div className={styles['table']}>
-                            <div className={styles['column']}>
-                                <div className={styles['row']}>패키지 구분</div>
-                                <div className={styles['row']}>배송비</div>
-                                <div className={styles['row']}>지역별 하루 최소예산</div>
-                            </div>
-                            <div className={styles['column']}>
-                                <div className={styles['row']}>베이직</div>
-                                <div className={styles['row']}>무료</div>
-                                <div className={styles['row']}>서울 경기 <b>50,000원/일</b></div>
-                            </div>
-                            <div className={styles['column']}>
-                                <div className={styles['row']}>베이직</div>
-                                <div className={styles['row']}>무료</div>
-                                <div className={styles['row']}>서울 경기 <b>50,000원/일</b></div>
-                            </div>
-                            <div className={styles['column']}>
-                                <div className={styles['row']}>베이직</div>
-                                <div className={styles['row']}>무료</div>
-                                <div className={styles['row']}>서울 경기 <b>50,000원/일</b></div>
-                            </div>
+                            <Column header type="패키지 구분" fee="배송비" location="지역별 하루 최소예산" />
+                            <Column type="베이직" fee="무료" location="서울/경기" cost="50,000원/일" />
+                            <Column type="플러스" fee="무료" location="서울/경기" cost="50,000원/일" />
+                            <Column type="프리미엄" fee="무료" location="서울/경기" cost="50,000원/일" />
                         </div>
                         <div className={styles['side-button-area']} data-aos='fade-right'>
                             <p className={styles['text']}>합리적인 가격으로</p>

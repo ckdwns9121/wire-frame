@@ -13,8 +13,6 @@ import {
 import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import KakaoMap from '../../../components/map/KakaoMap';
 import {useStore} from '../../../hooks/useStore';
 import {getMainMenuList} from '../../../api/menu/menu';
@@ -57,7 +55,6 @@ const HomeContainer = () => {
     },[history]);
 
     useEffect(() => {
-        AOS.init({ duration: 1500 });
         getMainMenu();
     }, []);
 
