@@ -62,7 +62,7 @@ function App() {
                         <Route path={Paths.ajoonamu.order_complete} component={OrderComplete}></Route>
                         <Route path={Paths.ajoonamu.order} component={Order}></Route>
                         <Route path={Paths.ajoonamu.logout} component={Logout} />
-                        <Route exact path={Paths.ajoonamu.breakfast} component={Breakfast}></Route>
+                        <Route exact path={`${Paths.ajoonamu.breakfast}/:name?`} component={Breakfast}></Route>
                         <Route path={Paths.ajoonamu.support} component={Support}></Route>
                         <Route path={`${Paths.ajoonamu.event}/:id?`} component={Event}></Route>
                         <Route path={Paths.ajoonamu.order} component={Order}></Route>
