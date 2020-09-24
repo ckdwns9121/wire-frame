@@ -15,7 +15,7 @@ import styles from './Modal.module.scss';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
+        zIndex: 2500
     },
 }));
 

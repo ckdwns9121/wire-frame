@@ -515,7 +515,7 @@ const OrderContainer = () => {
                             <Button
                                 title={'결제하기'}
                                 toggle={toggle}
-                                onClick={toggle && onClickOrder}
+                                onClick={toggle ? onClickOrder : () => {}}
                             ></Button>
                         </div>
                         <div className={styles['agree-order']}>
