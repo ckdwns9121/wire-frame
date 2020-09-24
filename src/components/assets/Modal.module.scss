@@ -12,7 +12,7 @@
     z-index: -1;
     visibility: hidden;
     &.open {
-        z-index: 2000;
+        z-index: 3000;
         visibility: visible;
     }
     .area {
