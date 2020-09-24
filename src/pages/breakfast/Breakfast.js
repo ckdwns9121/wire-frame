@@ -6,9 +6,13 @@ const Breakfast = ({match}) => {
     console.log(match.params);
     const {name} = match.params;
      console.log(name);
+    let check = true;
+    if( name !=='menu' || name !=='configure'){
+        check = false;
+    }
     return (
             <>
-                {name!=='menu' ? 
+                {check? 
                 <BreakfastContainer/> :
                 <BreakfastMenuContainer/>
                 }

@@ -8,17 +8,13 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     tabs: {
         width: '100%',
-        maxWidth: '768px',
-        minHeight: '40px',
+        minHeight: '70px',
         margin: '0 auto',
-        top: '40px',
-        left: 0,
-        right: 0,
         backgroundColor: '#fff',
-        position: 'fixed',
-        zIndex: 99,
         paddingLeft:"24px",
         paddingRight:"24px",
+        marginBottom:"60px",
+        border :"1px soild red",
     },
 }));
 
@@ -27,7 +23,7 @@ const CategoryMenu = ({ tabs, index, onChange,isPush }) => {
     const history = useHistory();
 
     const onClickTab = (url) => {
-        if (url !== undefined) {
+        if (url !== undefined || url!==null) {
             isPush ? history.push(url) : history.replace(url);
         }
     };
@@ -52,7 +48,9 @@ const CategoryMenu = ({ tabs, index, onChange,isPush }) => {
                     borderRadius:'100px'
                 },
             }}
-            className={classes.tabs}
+            // className={classes.tabs}
+            className={styles['tabs']}
+            centered={true}
         >
             {tabList}
         </Tabs>
