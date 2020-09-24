@@ -49,7 +49,7 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
 
     const titleTab = [
         { name: '메뉴소개', url: `${Paths.ajoonamu.breakfast}/menu?tab=0` },
-        { name: '조직구성', url: `${Paths.ajoonamu.breakfast}/configure` },
+        { name: '조식구성', url: `${Paths.ajoonamu.breakfast}/configure` },
     ];
     const history = useHistory();
     const [titleIndex, setTitleIndex] = useState(0);
