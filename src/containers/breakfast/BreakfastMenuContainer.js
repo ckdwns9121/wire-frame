@@ -12,7 +12,7 @@ import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
 import bottomBanner from '../../components/svg/breakfast/bottomBanner.png';
 import { ButtonBase } from '@material-ui/core';
-import {getMenuList,} from '../../api/menu/menu';
+import { getMenuList } from '../../api/menu/menu';
 import { get_menulist } from '../../store/product/product';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -35,19 +35,18 @@ function TabPanel(props) {
 const BreakfastMenuContainer = ({ menu = '0' }) => {
     const user_token = useStore();
 
-    const [menu_list ,setMenuList] =useState([]);
+    const [menu_list, setMenuList] = useState([]);
 
     const new_category = [
-        {ca_id:1 , ca_name:"샐러드" ,ca_order:0,ca_use:1},
-        {ca_id:2 , ca_name:"샌드위치" ,ca_order:0,ca_use:1},
-        {ca_id:3 , ca_name:"주먹밥" ,ca_order:0,ca_use:1},
-    ]
+        { ca_id: 1, ca_name: '샐러드', ca_order: 0, ca_use: 1 },
+        { ca_id: 2, ca_name: '샌드위치', ca_order: 0, ca_use: 1 },
+        { ca_id: 3, ca_name: '주먹밥', ca_order: 0, ca_use: 1 },
+    ];
 
     const history = useHistory();
 
     const [tab_index, setTab] = useState(parseInt(menu));
     const [loading, setLoading] = useState(false);
-
 
     const onChangeIndex = (e, index) => {
         setTab(index);
@@ -59,7 +58,10 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         if (user_token) {
             let arr = [];
             for (let i = 0; i < new_category.length; i++) {
-                const result = await getMenuList(user_token, new_category[i].ca_id);
+                const result = await getMenuList(
+                    user_token,
+                    new_category[i].ca_id,
+                );
                 console.log(result);
                 const temp = { ca_id: new_category[i].ca_id, items: result };
                 arr.push(temp);
@@ -68,7 +70,7 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         }
 
         setLoading(false);
-    }, [user_token,new_category]);
+    }, [user_token, new_category]);
 
     const renderContent = useCallback(() => {
         const list = new_category.map((category, index) => (
@@ -76,11 +78,7 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                 key={category.ca_id}
                 value={tab_index}
                 index={index}
-                children={
-                    <span>
-                        {renderMenuList(category.ca_id)}
-                    </span>
-                }
+                children={<span>{renderMenuList(category.ca_id)}</span>}
             />
         ));
 
@@ -91,7 +89,7 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         (ca_id) => {
             const index = menu_list.findIndex((item) => item.ca_id === ca_id);
             console.log(index);
-            console.log(menu_list)
+            console.log(menu_list);
             return (
                 <>
                     {index !== -1 ? (
@@ -131,7 +129,6 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
             );
         }
     }, [tab_index, history, user_token]);
-
 
     useEffect(() => {
         AOS.init({ duration: 1500 });
@@ -191,7 +188,6 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                     </div>
                 </div>
             </div>
-
         </>
     );
 };

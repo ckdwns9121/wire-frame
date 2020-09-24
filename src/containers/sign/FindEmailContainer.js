@@ -3,8 +3,8 @@ import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Find.module.scss';
 import Button from 'components/button/Button';
-
 const FindEmailContainer = ({ email }) => {
+    
     const history = useHistory();
 
     const onClickLogin = () => {

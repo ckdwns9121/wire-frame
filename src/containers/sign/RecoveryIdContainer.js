@@ -7,13 +7,21 @@ import AuthTimer from 'components/sign/AuthTimer';
 import Check from 'components/svg/coupon/Check';
 import {requestPostMobileAuth, requestPostMobileAuthCheck} from '../../api/auth/auth';
 import classNames from 'classnames/bind';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../../store/modal';
 
 const cx = classNames.bind(styles);
 
 const RecoveryIdContainer = () => {
+    const modalDispatch = useDispatch();
+    const openAlert = useCallback((title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(false, title, text, handleClick));
+    }, [modalDispatch]);
+    
     const [auth_start, setAuth] = useState(false);
     const [start_timer, setStartTimer] = useState(false);
     const [phoneAuth, setPhoneAuth] = useState(false); //인증번호 성공
+    const [phoneNumber, setPhoneNumber] = useState('');
 
     const [userName, setUserName] = useState('');
     const [userPhone, setUserPhone] = useState('');
@@ -31,15 +39,14 @@ const RecoveryIdContainer = () => {
 
     //인증번호 발송
     const getMobileAuthNumber = async () => {
-        setAuth(!auth_start);
-        setStartTimer(true);
-        // const res = await requestPostMobileAuth(phoneNumber);
-        // console.log(res);
-        // if (res.data.msg === '실패!') {
-        //     alert('인증번호 전송에 실패했습니다.');
-        // } else {
-        //     alert('인증번호가 성공적으로 발송되었습니다!');
-        // }
+        const res = await requestPostMobileAuth(phoneNumber);
+        if (res.data.msg === '실패!') {
+            openAlert('인증번호 발송에 실패했습니다.', '잠시 후 다시 시도해 주세요!');
+        } else {
+            setStartTimer(true);
+            setAuth(!auth_start);
+            openAlert('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
+        }
     };
 
     
@@ -52,16 +59,13 @@ const RecoveryIdContainer = () => {
     const sendMobileAuthNumber = useCallback(async () => {
         const res = await requestPostMobileAuthCheck(userPhone, userAuth);
         if (res.data.msg === '성공!') {
-            alert('성공적으로 인증되었습니다!');
+            openAlert('성공적으로 인증되었습니다!', '회원가입 버튼을 누르세요!');
             setPhoneAuth(true);
         } else {
-            alert('인증번호를 다시 한 번 확인해 주세요!');
+            openAlert('인증번호가 틀렸습니다!', '인증번호를 다시 한 번 확인해 주세요!');
         }
-    }, [userPhone, userAuth]);
+    }, [userPhone, userAuth, openAlert]);
 
-    const test=()=>{
-        console.log("gd");
-    }
     return (
         <div className={styles['container']}>
             <div className={styles['content']}>

@@ -16,6 +16,7 @@ import {
 import CheckBox from 'components/checkbox/CheckBox';
 import {get_address} from '../../store/address/address';
 import {getActiveAddr} from '../../api/address/address';
+import { modalOpen } from '../../store/modal';
 const cx = cn.bind(styles);
 
 
@@ -24,6 +25,12 @@ const SignInContainer = () => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+
+
+    const modalDispatch = useDispatch();
+    const openAlert = useCallback((title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(false, title, text, handleClick));
+    }, [modalDispatch]);
 
     const [email, setEmail] = useState('');
     const [password ,setPassword] = useState('');
@@ -67,11 +74,11 @@ const SignInContainer = () => {
             if (res.status === 200) {
                 //회원가입 안되있는 이메일
                 if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
-                    alert('회원가입 되어있지 않은 이메일입니다.');
+                    openAlert(res.data.msg, "아이디를 다시 한 번 확인해 주세요.");
                 }
                 //비밀번호가 틀렸을 때
                 else if (res.data.msg === '비밀번호가 틀렸습니다.') {
-                    alert('비밀번호가 틀렸습니다.');
+                    openAlert(res.data.msg, "비밀번호를 다시 한 번 확인해 주세요.");
                 }
                 //로그인 성공 했을 때.
                 else if (res.data.access_token) {
@@ -93,13 +100,13 @@ const SignInContainer = () => {
                     history.replace(Paths.index);
                 }
             } else {
-                alert('이메일 혹은 패스워드를 확인해주세요');
+                openAlert("로그인에 실패하였습니다.", '이메일 혹은 패스워드를 확인해주세요.');
             }
         } catch (e) {
-            alert('잘못된 접근입니다.');
+            openAlert("잘못된 접근입니다.", '잠시 후 재시도 해주세요.');
             history.replace(Paths.index);
         }
-    }, [history, checked,dispatch ,email ,password]);
+    }, [history, checked,dispatch ,email ,password, openAlert]);
 
     return (
         <div className={styles['container']}>

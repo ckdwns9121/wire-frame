@@ -12,7 +12,7 @@
         position: absolute;
         top: 0; left: 0;
         width: 100%; height: 100%;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
     }
 
     .content {
@@ -31,28 +31,6 @@
         }
         .button-area {
             margin-top: 60px;
-            .button {
-                width: 240px; height: 56px;
-                border-radius: 36px;
-                font-size: 1.833rem;
-                font-weight: bold;
-                color: #222;
-                background-color: #fff;
-                box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-                &:hover {
-                    background-color: #DBDBDB;
-                }
-                &.green {
-                    color: #fff;
-                    background-color: #008762;
-                    &:hover {
-                        background-color: #007240;
-                    }
-                }
-                &.grid {
-                    margin-left: 40px;
-                }
-            }
         }
     }
 }
@@ -60,45 +38,12 @@
     width: 100%; height: 20px;
     background-color: #f9f9f9;
 }
-.area {
-    padding-top: 120px;
-    padding-bottom: 160px;
 
+.area {
+    position: relative;
     .container {
         @include wireframe;
-        .bottom-banner {
-            width: 100%; height: 400px;
-            position: relative;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            .content {
-                padding: 96px 120px;
-                .title {
-                    font-size: 24px;
-                    font-weight: normal;
-                }
-                .text {
-                    margin-top: 10px;
-                    font-size: 38px;
-                    font-weight: bold;
-                }
-                .button-area {
-                    margin-top: 70px;
-                    .button {
-                        width: 320px; height: 72px;
-                        border-radius: 36px;
-                        font-size: 2rem;
-                        font-weight: bold;
-                        color: #222;
-                        background-color: #FDD800;
-                        &:hover {
-                            background-color: #FEE911;
-                        }
-                    }
-                }
-            }
-        }
+        position: relative;
 
         &.welfare {
             padding-top: 130px;
@@ -140,8 +85,8 @@
             }
         }
         &.diet {
-            padding-top: 90px;
-            padding-bottom: 40px;
+            padding-top: 210px;
+            padding-bottom: 200px;
             .title {
                 text-align: center;
                 color: #222;
@@ -171,6 +116,97 @@
                 }
             }
         }
+        &.varies {
+            padding: 160px 0;
+            position: static;
+            .content {
+                height: 400px;
+                .slider {
+                    position: absolute;
+                    top: 50%; right: 0;
+                    transform: translateY(-50%);
+
+                }
+            }
+        }
+        &.special {
+            padding: 100px 0;
+        }
+        &.happiness {
+            padding: 160px 0;
+
+            .content {
+                .table {
+                    margin-left: auto;
+                    margin-right: 0;
+                    width: 680px;
+                    font-size: 1.5rem;
+                    .column {
+                        width: 100%;
+                        display: table;
+                        padding: 24px 40px;
+                        border-radius: 10px;
+                        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.05);
+                        .row {
+                            display: table-cell;
+                            width: 150px;
+                            b {
+                                margin-left: 20px
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .side-button-area {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            color: #222;
+            .text {
+                margin-bottom: 12px;
+            }
+            .key-text {
+                font-weight: bold;
+                color: #222;
+                margin-bottom: 40px;
+            }
+            &.right {
+                right: 0;
+                text-align: right;
+            }
+        }
     }
 }
 
+.breakfast {
+    .button {
+        width: 240px; height: 56px;
+        border-radius: 36px;
+        font-size: 1.833rem;
+        font-weight: bold;
+        color: #222;
+        background-color: #fff;
+        &:hover {
+            background-color: #DBDBDB;
+        }
+        &.green {
+            color: #fff;
+            background-color: #008762;
+            &:hover {
+                background-color: #007240;
+            }
+        }
+        &.grid {
+            margin-left: 40px;
+        }
+    }
+}
+
+.column {
+    & + & {
+        margin-top: 8px;
+    }
+}

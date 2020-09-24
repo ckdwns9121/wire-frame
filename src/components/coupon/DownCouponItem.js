@@ -6,18 +6,18 @@ import CouponCheck from '../svg/coupon/Check';
 
 const DownCouponItem = (props) => {
     const {
-        cp_id,
+        // cp_id,
         cz_datetime,
-        cz_download,
-        cz_end,
-        cz_id,
-        cz_limit,
-        cz_minimum,
-        cz_period,
+        // cz_download,
+        // cz_end,
+        // cz_id,
+        // cz_limit,
+        // cz_minimum,
+        // cz_period,
         cz_price,
-        cz_start,
+        // cz_start,
         cz_subject,
-        cz_target,
+        // cz_target,
     } = props.item;
     return (
         <div className={styles['coupon-item']} onClick={props.onClick}>

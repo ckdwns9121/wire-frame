@@ -2,8 +2,6 @@ import React from 'react';
 import styles from './Recovery.module.scss';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
-import TitleBar from 'components/titlebar/TitleBar';
-import SignComplete from 'components/sign/SignComplete';
 import FindIdIcon from 'components/svg/sign/find_id.svg';
 import FindPwIcon from 'components/svg/sign/find_pw.svg';
 import { ButtonBase } from '@material-ui/core';

@@ -19,7 +19,6 @@ import { getOrderCoupons } from '../../api/coupon/coupon';
 import { useStore } from '../../hooks/useStore';
 import $script from 'scriptjs';
 import { user_order } from '../../api/order/order';
-
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -64,6 +63,8 @@ const OrderContainer = () => {
     const [order_memo, setOrderMemo] = useState('');
     const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null);
     const order_id = useRef(null);
+
+
 
     const onChangeDeleveryMemo = (e) => {
         setDeliveryMemo(e.target.value);

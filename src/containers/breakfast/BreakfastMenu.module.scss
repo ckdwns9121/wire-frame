@@ -1,81 +1,78 @@
 @import '../../styles/Root.scss';
-.container{
-        @include wireframe;
-        .content{
-         @include content;
-         padding-bottom:0;
-                .title{
-                  @include title;
-                }
-                .shop{
-                 min-height: 500px;
-                }
+.container {
+    @include wireframe;
+    .content {
+        @include content;
+        padding-bottom: 0;
+        .title {
+            @include title;
         }
-}
-.banner{
-        min-width: $min-width;
-        .shop-banner{
-                  @include animation(0.5s,fadeIn);
-                width: 100%;
-                height: 100%;
-        }
-}
-
-
-@include keyframe(fadeIn){
-        from{
-            filter: blur(100px);
-        }
-        to{
-            filter: blur(0);
+        .shop {
+            min-height: 500px;
         }
     }
+}
+.banner {
+    min-width: $min-width;
+    .shop-banner {
+        @include animation(0.5s, fadeIn);
+        width: 100%;
+        height: 100%;
+    }
+}
 
+@include keyframe(fadeIn) {
+    from {
+        filter: blur(100px);
+    }
+    to {
+        filter: blur(0);
+    }
+}
 
+.area {
+    padding-top: 120px;
+    padding-bottom: 160px;
 
-    .area {
-        padding-top: 120px;
-        padding-bottom: 160px;
-    
-        .container {
-            @include wireframe;
-    
-    
-    
-            .bottom-banner {
-                width: 100%; height: 400px;
-                position: relative;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-                .content {
-                    padding: 96px 120px;
-                    .title {
-                        font-size: 24px;
-                        font-weight: normal;
-                    }
-                    .text {
-                        margin-top: 10px;
-                        font-size: 38px;
+    .container {
+        @include wireframe;
+
+        .bottom-banner {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            .content {
+                padding: 96px 120px;
+                .title {
+                    font-size: 24px;
+                    font-weight: normal;
+                    padding: 0;
+                    text-align: left;
+                }
+                .text {
+                    margin-top: 10px;
+                    font-size: 38px;
+                    font-weight: bold;
+                }
+                .button-area {
+                    margin-top: 70px;
+                    .button {
+                        width: 320px;
+                        height: 72px;
+                        border-radius: 36px;
+                        font-size: 2rem;
                         font-weight: bold;
-                    }
-                    .button-area {
-                        margin-top: 70px;
-                        .button {
-                            width: 320px; height: 72px;
-                            border-radius: 36px;
-                            font-size: 2rem;
-                            font-weight: bold;
-                            color: #222;
-                            background-color: #FDD800;
-                            &:hover {
-                                background-color: #FEE911;
-                            }
+                        color: #222;
+                        background-color: #fdd800;
+                        &:hover {
+                            background-color: #fee911;
                         }
                     }
                 }
             }
         }
     }
-    
-    
+}

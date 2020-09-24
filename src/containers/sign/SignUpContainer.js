@@ -16,6 +16,8 @@ import {
 } from '../../api/auth/auth';
 import AuthTimer from 'components/sign/AuthTimer';
 import Check from 'components/svg/coupon/Check';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../../store/modal';
 
 const cx = classNames.bind(styles);
 
@@ -63,6 +65,12 @@ const checkReducer = (state, action) => {
 };
 
 const SignUpContainer = () => {
+
+    const modalDispatch = useDispatch();
+    const openAlert = useCallback((title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(false, title, text, handleClick));
+    }, [modalDispatch]);
+
     const [user_state, onChange] = useInputs(initialUserState);
     const {
         email,
@@ -84,16 +92,16 @@ const SignUpContainer = () => {
     const [start_timer, setStartTimer] = useState(false);
 
     const getMobileAuthNumber = useCallback(async () => {
-        setAuth(!auth_start);
-        setStartTimer(true);
-        // const res = await requestPostMobileAuth(phoneNumber);
-        // console.log(res);
-        // if (res.data.msg === '실패!') {
-        //     alert('인증번호 전송에 실패했습니다.');
-        // } else {
-        //     alert('인증번호가 성공적으로 발송되었습니다!');
-        // }
-    }, [phoneNumber]);
+        const res = await requestPostMobileAuth(phoneNumber);
+        
+        if (res.data.msg === '실패!') {
+            openAlert('인증번호 발송에 실패했습니다.', '잠시 후 다시 시도해 주세요!');
+        } else {
+            setStartTimer(true);
+            setAuth(!auth_start);
+            openAlert('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
+        }
+    }, [auth_start, phoneNumber, openAlert]);
 
     //인증번호 재발송
     const onClickReSendAuth =()=>{
@@ -104,12 +112,12 @@ const SignUpContainer = () => {
     const sendMobileAuthNumber = useCallback(async () => {
         const res = await requestPostMobileAuthCheck(phoneNumber, authNumber);
         if (res.data.msg === '성공!') {
-            alert('성공적으로 인증되었습니다!');
+            openAlert('성공적으로 인증되었습니다!', '회원가입 버튼을 누르세요!');
             setPhoneAuth(true);
         } else {
-            alert('인증번호를 다시 한 번 확인해 주세요!');
+            openAlert('인증번호가 틀렸습니다!', '인증번호를 다시 한 번 확인해 주세요!');
         }
-    }, [phoneNumber, authNumber]);
+    }, [phoneNumber, authNumber, openAlert]);
 
     const updateToggle = useCallback(() => {
         let checkbox = check1 && check2 ? true : false;
@@ -197,12 +205,12 @@ const SignUpContainer = () => {
     const onClickOverlapCheck = useCallback(async () => {
         const res = await localLogin(email);
         if (res.data.msg === '비밀번호가 틀렸습니다.') {
-            alert('중복된 이메일입니다.');
+            openAlert('중복된 이메일입니다.', '다른 이메일로 시도해 주세요.');
         } else {
-            alert('사용 가능한 아이디입니다!');
+            openAlert('중복된 이메일입니다.', '다음 절차를 계속하세요.');
             setOverlap(true);
         }
-    }, [email]);
+    }, [email, openAlert]);
 
     const confirm = () => {
         if (password.length !== 0 || password_confirm.length !== 0) {
@@ -292,13 +300,9 @@ const SignUpContainer = () => {
                 <div className={cx('btn', 'pd-box')}>
                     <Button
                         title={'가입하기'}
-                        onClick={
-                            toggle
-                                ? onClickSignUp
-                                : () => alert('정보를 모두 입력해 주세요.')
-                        }
+                        onClick={onClickSignUp}
                         toggle={toggle}
-                        disable={true}
+                        disable={!toggle}
                     ></Button>
                 </div>
             </div>

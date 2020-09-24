@@ -14,6 +14,8 @@ import Message from '../../components/message/Message';
 import produce from 'immer';
 import { ButtonBase } from '@material-ui/core';
 import { dateToYYYYMMDD } from '../../lib/formatter';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../../store/modal';
 
 const tabInit = [
     {
@@ -34,13 +36,16 @@ const tabInit = [
 ];
 
 const CouponConatiner = (props) => {
+    const modalDispatch = useDispatch();
+    const openAlert = useCallback((title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(false, title, text, handleClick));
+    }, [modalDispatch]);
+
     const query = qs.parse(props.location.search, {
         ignoreQueryPrefix: true,
     });
 
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
     const [index, setIndex] = useState(0);
     const [cp_list, setCpList] = useState([]);
     const [down_cp_list, setDownCpList] = useState([]);
@@ -65,44 +70,48 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             const res = await getMyCoupons(user_token);
-            console.log(res);
             setCpList(res);
-            setSuccess(true);
-        } else setError(true);
+        }
         setLoading(false);
     };
 
     // 다운로드 가능한 쿠폰 리스트
     const getDownCouponList = async () => {
         setLoading(true);
-
         if (user_token) {
             const res = await getDownloadCpList(user_token);
-            console.log(res);
             setDownCpList(res);
-            setSuccess(true);
-        } else setError(true);
+        }
         setLoading(false);
     };
 
 
-    const callCouponDownload = useCallback(async(cz_id)=>{
-        try{
-        const res= await downloadCoupon(user_token,cz_id);
-        console.log(res);
-        console.log(cz_id);
-
-        const idx = down_cp_list.findIndex(item => item.cz_id ===cz_id);
-        setDownCpList(
-            produce(down_cp_list, draft =>{
-                draft[idx].check=true;
-            })  
-        );
-        }
-        catch(e){
-            console.error(e);
-        }
-    },[user_token,down_cp_list])
+    const callCouponDownload = useCallback(
+        async (cz_id) => {
+            setLoading(true);
+            try {
+                const res = await downloadCoupon(user_token, cz_id);
+                console.log(res);
+                if (res.data.msg === "이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.") {
+                    openAlert("이미 다운로드 한 쿠폰입니다.", res.data.msg);
+                } else {
+                    openAlert("다운로드 성공했습니다.", res.data.msg);
+                }
+                const idx = down_cp_list.findIndex(
+                    (item) => item.cz_id === cz_id,
+                );
+                setDownCpList(
+                    produce(down_cp_list, (draft) => {
+                        draft[idx].check = true;
+                    }),
+                );
+            } catch (e) {
+                console.error(e);
+            }
+            setLoading(false);
+        },
+        [user_token, down_cp_list],
+    );
 
     useEffect(() => {
         getMyCouponList();
@@ -186,6 +195,7 @@ const CouponConatiner = (props) => {
                     {index === 2 && <UseCouponItemList />}
                 </div>
             </div>
+            <Loading open={loading} />
         </div>
     );
 };
