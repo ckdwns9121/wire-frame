@@ -16,6 +16,9 @@ import { ButtonBase } from '@material-ui/core';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import { useDispatch } from 'react-redux';
 import { modalOpen } from '../../store/modal';
+import cn from 'classnames/bind';
+
+const cx = cn.bind(styles);
 
 const tabInit = [
     {
@@ -143,7 +146,7 @@ const CouponConatiner = (props) => {
                         <div className={styles['btn']}>쿠폰등록</div>
                     </div>
                 )}
-                <div className={styles['tab-title']}>{getTitle()}</div>
+                <div className={cx('tab-title',{border_none : index===0})}>{getTitle()}</div>
 
                 {index === 2 && (
                     <div className={styles['use-coupon']}>
