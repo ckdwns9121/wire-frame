@@ -20,7 +20,8 @@
                 margin-top: 0zpx;
             }
             .link-box {
-                width: 100%; height: 160px;
+                width: 100%;
+                height: 160px;
                 border: 1px solid #dbdbdb;
                 border-radius: 10px;
                 box-sizing: border-box;
@@ -28,7 +29,8 @@
                 display: block;
                 .icon {
                     display: inline-block;
-                    width: 180px; height: 100%;
+                    width: 180px;
+                    height: 100%;
                     float: left;
                     text-align: center;
                     line-height: 160px;
@@ -44,13 +46,13 @@
                         display: table-cell;
                         vertical-align: middle;
                         .main {
-                            font-size: 26px;
+                            font-size: 2.167rem;
                             font-weight: bold;
                             color: #222;
                             margin-bottom: 18px;
                         }
                         .coment {
-                            font-size: 16px;
+                            font-size: 1.333rem;
                             color: #555;
                         }
                     }
@@ -79,20 +81,20 @@
 .big-divider {
     padding: 25px;
 }
-    //휴대폰 인증 버튼
-    .auth-btn{
-        overflow: hidden;
-        transition:opacity .3s ease-in-out;
-        position: relative;
-        opacity: 1;
-        &.not_view {
+//휴대폰 인증 버튼
+.auth-btn {
+    overflow: hidden;
+    transition: opacity 0.3s ease-in-out;
+    position: relative;
+    opacity: 1;
+    &.not_view {
         opacity: 0;
-            // height: 0px;
-        }
-        .timer{
-            position: absolute;
-            right:200px;
-            top:45%;
-            transform: translateY(-65%);
-        }
+        // height: 0px;
     }
+    .timer {
+        position: absolute;
+        right: 200px;
+        top: 45%;
+        transform: translateY(-65%);
+    }
+}

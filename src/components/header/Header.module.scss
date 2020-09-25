@@ -11,7 +11,8 @@ $header-height: 120px;
         border-bottom: 1px solid #f0f0f0;
         height: 55px;
         .content {
-            padding: 16px 24px;
+            // padding: 16px 24px;
+            padding: 16px 0;
             max-width: $max-width;
             min-width: $min-width;
             margin: 0 auto;

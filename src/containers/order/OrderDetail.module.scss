@@ -8,7 +8,7 @@
             overflow: hidden;
             .title {
                 border-bottom: 2px solid #222;
-                font-size: 24px;
+                font-size: 2rem;
                 font-weight: bold;
                 color: #222;
                 padding: 20px 0;
@@ -26,7 +26,7 @@
                             padding-right: 20px;
                         }
                         .order-id {
-                            font-size: 18px;
+                            font-size: 1.667rem;
                             color: #777;
                             padding-right: 20px;
                         }
@@ -42,7 +42,7 @@
                     }
                     .bottom {
                         .req-date {
-                            font-size: 18px;
+                            font-size: 1.5rem;
                             padding: 24px 0;
                         }
                     }
@@ -61,18 +61,18 @@
                     display: flex;
                     align-items: center;
                     .text {
-                        font-size: 18px;
+                        font-size: 1.5rem;
                         font-weight: 500;
                         text-align: left;
                         width: 100%;
                     }
                     .value {
                         width: 100%;
-                        font-size: 24px;
+                        font-size: 2rem;
                         font-weight: bold;
                         text-align: right;
                         span {
-                            font-size: 20px;
+                            font-size: 1.667rem;
                             font-weight: normal;
                         }
                     }
@@ -102,17 +102,17 @@
                             @include default_font(32px);
                             span {
                                 font-weight: normal;
-                                font-size: 26px;
+                                font-size: 2.167rem;
                             }
                         }
                         &.card {
                             border: none;
                             .text {
-                                font-size: 18px;
+                                font-size: 1.5rem;
                                 font-weight: 500;
                             }
                             .value {
-                                font-size: 18px;
+                                font-size: 1.5rem;
                                 font-weight: 500;
                             }
                         }
@@ -122,11 +122,11 @@
                             padding-top: 10px;
 
                             .text {
-                                font-size: 18px;
+                                font-size: 1.5rem;
                                 font-weight: normal;
                             }
                             .value {
-                                font-size: 18px;
+                                font-size: 1.5rem;
                                 font-weight: normal;
                                 color: #555;
                             }
@@ -144,14 +144,14 @@
         display: flex;
         padding-bottom: 20px;
         .text {
-            font-size: 20px;
+            font-size: 1.667rem;
             font-weight: 500;
             color: #444;
             min-width: 140px;
             padding-right: 20px;
         }
         .value {
-            font-size: 18px;
+            font-size: 1.5rem;
             font-weight: normal;
             color: #555;
         }

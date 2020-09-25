@@ -18,7 +18,7 @@
                     margin-right: 20px;
                 }
                 .order-id {
-                    font-size: 18px;
+                    font-size: 1.5rem;
                     font-weight: 500;
                     color: #777;
                     margin-right: 20px;
@@ -34,7 +34,7 @@
             }
             .bottom {
                 .req-date {
-                    font-size: 18px;
+                    font-size: 1.5rem;
                     padding: 20px 0;
                 }
             }
@@ -53,14 +53,14 @@
                 }
             }
             .menu-name {
-                font-size: 18px;
+                font-size: 1.5rem;
                 padding-bottom: 10px;
             }
             .menu-price {
                 @include default_font(20px);
             }
             .menu-options {
-                font-size: 14px;
+                font-size: 1.167rem;
                 margin-top: 8px;
                 color: #999;
             }
@@ -75,7 +75,7 @@
         display: flex;
         align-items: center;
         .text {
-            font-size: 20px;
+            font-size: 1.667rem;
             font-weight: bold;
             color: #555;
         }

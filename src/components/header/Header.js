@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, Link ,useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import { NavLink, Link, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Header.module.scss';
 import { logo, storeIcon, locationIcon, searchIcon } from '../svg/header';
@@ -19,7 +19,7 @@ const TabLink = styled(NavLink)`
 `;
 
 const HeadLink = styled(Link)`
-    font-size: 22px;
+    font-size: 1.833rem;
     font-weight: bold;
     color: #222;
     text-decoration: none;
@@ -29,7 +29,6 @@ const Header = () => {
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
     const { address } = useSelector((state) => state.address);
-
 
     const [logon, setLogon] = useState(false);
 
@@ -56,7 +55,9 @@ const Header = () => {
                                 className={styles['text']}
                                 onClick={onClickAddr}
                             >
-                               {address ? address :'배달받으실 주소를 입력해주세요.'} 
+                                {address
+                                    ? address
+                                    : '배달받으실 주소를 입력해주세요.'}
                             </div>
                             <img src={storeIcon} alt="배달"></img>
                             <div
@@ -67,24 +68,43 @@ const Header = () => {
                             </div>
                         </div>
                         <div className={styles['auth']}>
-                            {logon ? <>
-                                <TabLink className={styles['box']} to={Paths.ajoonamu.mypage}>
-                                    내정보
-                                </TabLink>
-                                <TabLink className={styles['box']} to={Paths.ajoonamu.cart}>
-                                    장바구니
-                                </TabLink>
-                                <TabLink className={styles['box']} to={Paths.ajoonamu.logout}>
-                                    로그아웃
-                                </TabLink>
-                            </> :<>
-                                <TabLink className={styles['box']} to={Paths.ajoonamu.signin}>
-                                    로그인
-                                </TabLink>
-                                <TabLink className={styles['box']} to={Paths.ajoonamu.signup}>
-                                    회원가입
-                                </TabLink>
-                            </>}
+                            {logon ? (
+                                <>
+                                    <TabLink
+                                        className={styles['box']}
+                                        to={Paths.ajoonamu.mypage}
+                                    >
+                                        내정보
+                                    </TabLink>
+                                    <TabLink
+                                        className={styles['box']}
+                                        to={Paths.ajoonamu.cart}
+                                    >
+                                        장바구니
+                                    </TabLink>
+                                    <TabLink
+                                        className={styles['box']}
+                                        to={Paths.ajoonamu.logout}
+                                    >
+                                        로그아웃
+                                    </TabLink>
+                                </>
+                            ) : (
+                                <>
+                                    <TabLink
+                                        className={styles['box']}
+                                        to={Paths.ajoonamu.signin}
+                                    >
+                                        로그인
+                                    </TabLink>
+                                    <TabLink
+                                        className={styles['box']}
+                                        to={Paths.ajoonamu.signup}
+                                    >
+                                        회원가입
+                                    </TabLink>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -99,16 +119,24 @@ const Header = () => {
                             <HeadLink to={Paths.index}>브랜드홈</HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={Paths.ajoonamu.shop}>예약주문</HeadLink>
+                            <HeadLink to={Paths.ajoonamu.shop}>
+                                예약주문
+                            </HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={Paths.ajoonamu.breakfast}>기업조식</HeadLink>
+                            <HeadLink to={Paths.ajoonamu.breakfast}>
+                                기업조식
+                            </HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={Paths.ajoonamu.event}>이벤트</HeadLink>
+                            <HeadLink to={Paths.ajoonamu.event}>
+                                이벤트
+                            </HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={Paths.ajoonamu.support}>고객센터</HeadLink>
+                            <HeadLink to={Paths.ajoonamu.support}>
+                                고객센터
+                            </HeadLink>
                         </li>
                     </ul>
                 </div>

@@ -15,7 +15,7 @@ $pd: 20px;
             width: 850px;
             .info-box {
                 .sub-title {
-                    font-size: 24px;
+                    font-size: 2rem;
                     font-weight: bold;
                     border-bottom: 2px solid #222;
                     padding: $pd;
@@ -44,12 +44,12 @@ $pd: 20px;
                     }
 
                     .name {
-                        font-size: 26px;
+                        font-size: 2.167rem;
                         font-weight: bold;
                         padding-bottom: $pd;
                     }
                     .addr {
-                        font-size: 20px;
+                        font-size: 1.667rem;
                         padding-bottom: $pd;
                     }
                     .hp {
@@ -61,7 +61,7 @@ $pd: 20px;
                             height: 48px;
                             outline: none;
                             box-sizing: border-box;
-                            font-size: 20px;
+                            font-size: 1.667rem;
                             padding: 0;
                             padding-left: 20px;
                             padding-right: 20px;
@@ -72,7 +72,7 @@ $pd: 20px;
                                 border: 1px solid #dbdbdb;
                                 box-sizing: border-box;
                                 outline: none;
-                                font-size: 16px;
+                                font-size: 1.333rem;
                                 width: 160px;
                                 height: 48px;
                                 padding-left: 20px;
@@ -81,14 +81,14 @@ $pd: 20px;
                     }
                     .coupon {
                         select {
-                            font-size: 16px;
+                            font-size: 1.333rem;
                             color: #999999;
                         }
                     }
                     .date {
                         display: flex;
                         select {
-                            font-size: 20px;
+                            font-size: 1.667rem;
                             border: 1px solid #dbdbdb;
                         }
                         .first {
@@ -114,7 +114,7 @@ $pd: 20px;
                             width: 100%;
                             .text {
                                 font-weight: bold;
-                                font-size: 22px;
+                                font-size: 1.833rem;
                                 color: #222;
                             }
                             .check-box {
@@ -142,12 +142,12 @@ $pd: 20px;
                             width: 200px;
                             height: 64px;
                             color: #222;
-                            font-size: 18px;
+                            font-size: 1.5rem;
 
                             &.check {
                                 border: 2px solid $main-color;
                                 color: $main-color;
-                                font-size: 20px;
+                                font-size: 1.667rem;
                                 font-weight: bold;
                             }
                         }
@@ -156,7 +156,7 @@ $pd: 20px;
                         display: flex;
                         align-items: center;
                         .text {
-                            font-size: 22px;
+                            font-size: 1.833rem;
                             color: #555;
                             padding-right: $pd * 2;
                         }
@@ -170,7 +170,7 @@ $pd: 20px;
                             border: 1px solid #dbdbdb;
                             box-sizing: border-box;
                             text-align: center;
-                            font-size: 18px;
+                            font-size: 1.5rem;
                             color: #222;
                             line-height: 56px;
                             cursor: pointer;
@@ -180,10 +180,10 @@ $pd: 20px;
                     .user-point {
                         margin-top: 10px;
                         padding-left: 180px;
-                        font-size: 18px;
+                        font-size: 1.5rem;
                         color: #222;
                         span {
-                            font-size: 20px;
+                            font-size: 1.667rem;
                             font-weight: bold;
                         }
                     }
@@ -205,7 +205,7 @@ $pd: 20px;
                 padding-bottom: 62px;
                 .title {
                     text-align: left;
-                    font-size: 28px;
+                    font-size: 2.333rem;
                     color: #222;
                     font-weight: bold;
                 }
@@ -215,18 +215,18 @@ $pd: 20px;
                     display: flex;
                     align-items: center;
                     .text {
-                        font-size: 18px;
+                        font-size: 1.5rem;
                         text-align: left;
                         width: 100%;
                     }
                     .price {
                         width: 100%;
-                        font-size: 24px;
+                        font-size: 2rem;
                         font-weight: bold;
                         text-align: right;
 
                         span{
-                            font-size: 20px;
+                            font-size: 1.667rem;
                             font-weight: normal;
                         }
                     }
@@ -244,7 +244,7 @@ $pd: 20px;
             
             .text {
                 text-align: left;
-                font-size: 28px;
+                font-size: 2.333rem;
                 color: #222;
                 font-weight: bold;
                 width: 100%;
@@ -252,11 +252,11 @@ $pd: 20px;
             .price {
                 color: $main-color;
                 font-weight: bold;
-                font-size: 32px;
+                font-size: 2.667rem;
                 width: 100%;
                 span {
                     color: $main-color;
-                    font-size: 26px;
+                    font-size: 2.167rem;
                     font-weight: normal;
                 }
             }
@@ -271,7 +271,7 @@ $pd: 20px;
     .const {
         max-width: 130px;
         min-width: 130px;
-        font-size: 20px;
+        font-size: 1.667rem;
         font-weight: 500;
         padding-left: 13px;
         color: #222222;
