@@ -18,9 +18,11 @@ import { modalOpen } from '../../store/modal';
 const AddressContainer = () => {
 
     const modalDispatch = useDispatch();
-    const openConfirm = useCallback((title, text, handleClick = () => {}) => {
-        modalDispatch(modalOpen(true, title, text, handleClick));
+
+    const openMessage = useCallback((isConfirm,title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(isConfirm, title, text, handleClick));
     }, [modalDispatch]);
+
 
 
     const dispatch = useDispatch();
@@ -38,7 +40,7 @@ const AddressContainer = () => {
         try {
             const res = await getDeliveryList(user_token);
             console.log(res);
-            setDeliveryAddrs(res.data.query);
+            setDeliveryAddrs(res.data.query.reverse());
         } catch (e) {
             console.log(e);
         }
@@ -109,7 +111,7 @@ const AddressContainer = () => {
 
     //선택한 주소지로 설정
     const onClickDeliveyAddr = useCallback((delivery_id, addr1) => {
-        openConfirm('선택한 주소지로 설정하시겠습니까?', '', async () => {
+        openMessage(true,'선택한 주소지로 설정하시겠습니까?', '', async () => {
             try {
                 const res = await selectAddress(user_token, delivery_id);
                 console.log(res);
@@ -124,15 +126,20 @@ const AddressContainer = () => {
     //주소지 삭제
     const onRemoveAddr = useCallback(
         async (delivery_id) => {
-            try {
-                const res = await deleteAddr(user_token, delivery_id);
-                console.log(res);
-                setDeliveryAddrs((list) =>
-                    list.filter((item) => item.delivery_id !== delivery_id),
-                );
-            } catch (e) {
-                console.log(e);
-            }
+
+            openMessage(true,'해당 주소를 삭제하시겠습니까?', '', async () => {
+                try {
+                    const res = await deleteAddr(user_token, delivery_id);
+                    console.log(res);
+                    setDeliveryAddrs((list) =>
+                        list.filter((item) => item.delivery_id !== delivery_id),
+                    );
+                } catch (e) {
+                    console.log(e);
+                }
+            });
+
+
         },
         [user_token],
     );
@@ -144,22 +151,32 @@ const AddressContainer = () => {
 
     //최근 주소지에 추가
     const onClickDeliveryAddrInsert = async () => {
-        setOpen(false);
-        try {
-            const res = await insertAddress(
-                user_token,
-                13252,
-                selectAddr,
-                detailAddr,
-                0,
-                37.182184,
-                129.227345,
-            );
-            callDeliveryList();
-            dispatch(get_address(selectAddr));
-        } catch (e) {
-            console.error(e);
+
+        if(detailAddr===''){
+            openMessage(false,'상세 주소를 입력해주세요','상세주소가 입력되지 않았습니다.');
         }
+        else{
+        openMessage(true,'이 주소로 배달지를 설정하시겠습니까?', '', async () => {
+            setOpen(false);
+            try {
+                const res = await insertAddress(
+                    user_token,
+                    13252,
+                    selectAddr,
+                    detailAddr,
+                    0,
+                    37.182184,
+                    129.227345,
+                );
+                callDeliveryList();
+                dispatch(get_address(selectAddr));
+            } catch (e) {
+                console.error(e);
+            }
+        });
+    }
+
+
     };
 
     return (
