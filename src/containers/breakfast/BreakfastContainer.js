@@ -1,7 +1,9 @@
 import React from 'react';
 import classnames from 'classnames/bind'
-
 import styles from './BreakfastContainer.module.scss';
+
+import MenuSlick from '../../components/breakfast/MenuSlick';
+
 import backgroundBanner from '../../components/svg/breakfast/banner.png';
 import welfare1 from '../../components/svg/breakfast/welfare_1.png';
 import welfare2 from '../../components/svg/breakfast/welfare_2.png';
@@ -22,6 +24,7 @@ import { ButtonBase } from '@material-ui/core';
 
 import { Paths } from '../../paths';
 import Column from '../../components/breakfast/Column';
+import CardNews from '../../components/breakfast/CardNews';
 
 
 const cn = classnames.bind(styles);
@@ -132,7 +135,7 @@ const BreakfastContainer = () => {
                 <div className={cn('container', 'varies')}>
                     <div className={styles['content']}>
                         <div className={styles['slider']}>
-
+                            <MenuSlick />
                         </div>
                         <div className={styles['side-button-area']} data-aos='fade-right'>
                             <p className={styles['text']}>매달 업데이트 되는</p>
@@ -149,10 +152,20 @@ const BreakfastContainer = () => {
             <div className={styles['area']} style={{ backgroundColor: '#FEDE22'}}>
                 <div className={cn('container', 'special')}>
                     <div className={styles['content']}>
-                        
+                        <div className={styles['card-news']}>
+                            <div className={cn('card', 'left')}>
+                                <CardNews delay={200}/>
+                            </div>
+                            <div className={cn('card', 'center')}>
+                                <CardNews delay={600}/>
+                            </div>
+                            <div className={cn('card', 'right')}>
+                                <CardNews delay={400}/>
+                            </div>
+                        </div>
                         <div className={cn('side-button-area', 'right')} data-aos='fade-up'>
                             <p className={styles['text']}>00명의 고객들이 말하는</p>
-                            <p className={styles['key-text']}>다양한 메뉴</p>
+                            <p className={styles['key-text']}>샌달 조식의 특별함</p>
                             <ButtonBase style={{ width: '300px', height: '64px', fontWeight: 500 }}
                                 className={cn('button')}
                                 onClick={() => history.push(Paths.ajoonamu.support + '/qna/write')}>

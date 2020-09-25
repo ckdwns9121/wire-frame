@@ -18,17 +18,13 @@ import {useStore} from '../../../hooks/useStore';
 import {getMainMenuList} from '../../../api/menu/menu';
 import Loading from 'components/assets/Loading';
 
-
 const cx = cn.bind(styles);
 
 const HomeContainer = () => {
     const history = useHistory();
     const [category, setCategory] = useState(0);
 
-
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error , setError] = useState(false);
     const [menuList, setMenuList] = useState([]);
     const user_token = useStore();
 
@@ -36,12 +32,7 @@ const HomeContainer = () => {
         setLoading(true);
         if(user_token){  
             const res = await getMainMenuList(user_token);
-            console.log(res);
             setMenuList(res);
-            setSuccess(true);
-        }
-        else{
-            setError(true);
         }
         setLoading(false);
     }

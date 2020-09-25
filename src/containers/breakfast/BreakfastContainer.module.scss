@@ -43,6 +43,7 @@
 
 .area {
     position: relative;
+    overflow: hidden;
     .container {
         @include wireframe;
         position: relative;
@@ -120,14 +121,15 @@
         }
         &.varies {
             padding: 160px 0;
-            position: static;
             .content {
                 height: 400px;
                 .slider {
+                    max-width: 1500px;
+                    overflow: hidden;
                     position: absolute;
-                    top: 50%; right: 0;
+                    top: 50%; left: 480px;
                     transform: translateY(-50%);
-
+                    white-space: nowrap;
                 }
             }
         }
@@ -135,6 +137,33 @@
             padding: 100px 0;
             .content {
                 height: 640px;
+                position: relative;
+                .card-news {
+                    width: 640px; height: 400px;
+                    position: absolute;
+                    top: 50%; left: 0;
+                    transform: translateY(-50%);
+                    .card {
+                        position: absolute;
+                        top: 50%;
+                        &.center {
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            z-index: 100;
+                        }
+                        &.left {
+                            left: -3.5%;
+                            transform: scale(0.9) translateY(-55%);
+                        }
+                        &.right {
+                            right: -3.5%;
+                            transform: scale(0.9) translateY(-55%);
+                        }
+                        &.left, &.right {
+                            opacity: 0.4;
+                        }
+                    }
+                }
             }
         }
         &.happiness {
