@@ -14,6 +14,8 @@ import {
 import { useStore } from '../../hooks/useStore';
 import { get_address } from '../../store/address/address';
 import { modalOpen } from '../../store/modal';
+import Message from '../../components/message/Message';
+import produce from 'immer';
 
 const AddressContainer = () => {
 
@@ -23,24 +25,22 @@ const AddressContainer = () => {
         modalDispatch(modalOpen(isConfirm, title, text, handleClick));
     }, [modalDispatch]);
 
-
-
     const dispatch = useDispatch();
     const user_token = useStore();
     const [searchAddr, serSearch] = useState(''); //검색
     const [selectAddr, setSelectAddr] = useState(''); //선택
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
-    const [addrs, setAddrs] = useState(''); // 검색 리스트
+    const [search_list, setSearchList] = useState(''); // 검색 리스트
+    const [delivery_list, setDeliveryList] = useState([]);
 
     const [open, setOpen] = React.useState(false);
-    const [delivery_addrs, setDeliveryAddrs] = useState([]);
 
     //최근 선택한 주소지 들고오기
     const callDeliveryList = useCallback(async () => {
         try {
             const res = await getDeliveryList(user_token);
             console.log(res);
-            setDeliveryAddrs(res.data.query.reverse());
+            setDeliveryList(res.data.query);
         } catch (e) {
             console.log(e);
         }
@@ -57,7 +57,7 @@ const AddressContainer = () => {
             return;
         } else {
             const result = await callSearchApi();
-            setAddrs(result);
+            setSearchList(result);
         }
     }, [searchAddr]); //search 혹은 addrs 가 바뀌었을때만 함수생성
 
@@ -121,17 +121,20 @@ const AddressContainer = () => {
                 console.error(e);
             }
         });
-    }, []);
+    }, [callDeliveryList,user_token]);
 
     //주소지 삭제
     const onRemoveAddr = useCallback(
-        async (delivery_id) => {
+         (delivery_id) => {
 
             openMessage(true,'해당 주소를 삭제하시겠습니까?', '', async () => {
                 try {
-                    const res = await deleteAddr(user_token, delivery_id);
-                    console.log(res);
-                    setDeliveryAddrs((list) =>
+                    await deleteAddr(user_token, delivery_id);
+                    const index = delivery_list.findIndex((item)=> item.delivery_id ===delivery_id);
+                    if(delivery_list[index].active ===1){
+                        dispatch(get_address(null));
+                    }
+                    setDeliveryList((list) =>
                         list.filter((item) => item.delivery_id !== delivery_id),
                     );
                 } catch (e) {
@@ -141,13 +144,22 @@ const AddressContainer = () => {
 
 
         },
-        [user_token],
+        [user_token,delivery_list],
     );
 
-    // 검색시 나오는 주소를 클릭했을때
-    const onClickAddrItem = useCallback((data) => {
+    // 검색리스트에 나오는 주소를 클릭했을때 
+    const onClickAddrItem = useCallback((data ,index) => {
         setSelectAddr(data);
-    }, []);
+        const new_list = search_list.map((item) => (
+            {...item , active : false}
+        ));
+        setSearchList(
+            produce(new_list, (draft) => {
+                draft[index].active = true;
+            }),
+        );
+        console.log(search_list);
+    }, [search_list]);
 
     //최근 주소지에 추가
     const onClickDeliveryAddrInsert = async () => {
@@ -157,7 +169,6 @@ const AddressContainer = () => {
         }
         else{
         openMessage(true,'이 주소로 배달지를 설정하시겠습니까?', '', async () => {
-            setOpen(false);
             try {
                 const res = await insertAddress(
                     user_token,
@@ -168,8 +179,14 @@ const AddressContainer = () => {
                     37.182184,
                     129.227345,
                 );
+                if(res.data.msg ==='성공'){
                 callDeliveryList();
                 dispatch(get_address(selectAddr));
+                setOpen(false);
+                }
+                else{
+                    openMessage(false,res.data.msg,'주변 매장정보를 확인해 주세요.');
+                }
             } catch (e) {
                 console.error(e);
             }
@@ -202,11 +219,16 @@ const AddressContainer = () => {
                 <div className={styles['content']}>
                     <div className={styles['addr-title']}>최근 배달 주소</div>
                     <div className={styles['addr-list']}>
-                        <DeliveryItemList
-                            addrs={delivery_addrs}
+                        {delivery_list.length===0 ?
+                            <Message msg={"최근 배달 주소가 없습니다."} size={350}/>
+                            :
+                            <DeliveryItemList
+                            addrs={delivery_list}
                             onRemove={onRemoveAddr}
                             onClick={onClickDeliveyAddr}
                         />
+                        }
+  
                     </div>
                 </div>
             </div>
@@ -218,7 +240,7 @@ const AddressContainer = () => {
                 searchAddr={searchAddr}
                 onChangeAddr={onChangeSearchAddr}
                 handleKeyPress={handleKeyPress}
-                addrs={addrs}
+                addrs={search_list}
                 onClickAddrItem={onClickAddrItem}
                 selectAddr={selectAddr}
                 detailAddr={detailAddr}

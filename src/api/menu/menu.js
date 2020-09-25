@@ -271,7 +271,7 @@ export const getPreferMenuList = async (token)=>{
     };
     const result = await axios.get(req, config);
     console.log(result);
-    return result.data.query.items_prefer;
+    return result.data.query;
 }
 
 
