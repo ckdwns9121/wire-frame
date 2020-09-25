@@ -51,9 +51,11 @@ const HomeContainer = () => {
     };
     const onClickDetailItem = useCallback((item_id)=>{
         history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
-
     },[history]);
+    const onClickShop = ()=>{
+        history.push(`${Paths.ajoonamu.shop}?tab=${0}`);
 
+    }
     useEffect(() => {
         getMainMenu();
     }, []);
@@ -83,7 +85,7 @@ const HomeContainer = () => {
                     }
                 
                 </div>
-                <div className={styles['banner-img']}>
+                <div className={styles['banner-img']} onClick ={onClickShop}>
                     <img src={bannerImg} alt="배너" />
                 </div>
                 <div className={styles['order']}>

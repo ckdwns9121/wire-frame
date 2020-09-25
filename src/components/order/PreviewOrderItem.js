@@ -4,6 +4,8 @@ import menu1 from '../svg/menu/menu1.png';
 import menu2 from '../svg/menu/menu2.png';
 import menu3 from '../svg/menu/menu3.png';
 import Arrow from '../svg/arrow/Arrow';
+import { numberFormat } from "../../lib/formatter";
+
 const PreviewOrderItem = (props) => {
 
 
@@ -74,7 +76,7 @@ function MenuItem({ src, item_name, item_option, item_price }) {
             </div>
             <div className={styles['menu-name']}>{item_name}</div>
             <div className={styles['menu-price']}>
-                {1}개 {item_price}
+                {1}개 ({numberFormat(item_price)}원)
             </div>
             <div className={styles['menu-options']}>(추가선택: {item_option ? item_option : '없음'})</div>
         </div>

@@ -45,8 +45,7 @@ const OrderCompleteContainer = ({order_number}) => {
                     <div className={styles['order-view']}>
                         <div className={styles['title']}>주문 상세 내역</div>
                         <div className={styles['order-list']}>
-                            {/* <OrderItem />
-                            <OrderItem /> */}
+                            <OrderItem center ={false} item_name={""} item_price={"5000"}/>
                         </div>
                     </div>
                     <div className={styles['payment-view']}>

@@ -35,7 +35,7 @@ const initMenu = [
 
 const CouponItemList = ({ cp_list, check }) => {
     const list = cp_list.map((cp) => (
-        <CouponItem key={cp.id} item={cp} check={check} />
+        <CouponItem key={cp.cp_id} item={cp} check={check} />
     ));
 
     return (

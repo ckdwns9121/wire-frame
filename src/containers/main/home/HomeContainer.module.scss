@@ -3,6 +3,7 @@
     // @include wireframe;
     min-width: $min-width;
     .banner-img {
+        cursor: pointer;
         @include wireframe;
         padding: 0;
         margin-top: 160px;

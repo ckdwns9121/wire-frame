@@ -1,10 +1,12 @@
 @import '../../styles/Root.scss';
 .order-item {
     // border:1px solid red;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     &.space {
         margin-top: 20px;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
+        // border-top: 1px solid #ccc;
+        // border-bottom: 1px solid #ccc;
     }
     width: 100%;
     height: 144px;

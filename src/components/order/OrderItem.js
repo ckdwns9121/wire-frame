@@ -29,9 +29,9 @@ const OrderItem = (props) => {
                 <div className={styles['quanity']}>
                     수량: <span>1</span>
                 </div>
-                {!props.center && <div className={cx('price')}>{numberFormat(item_price)}원</div>}
+                {!center && <div className={cx('price')}>{numberFormat(item_price)}원</div>}
             </div>
-            {props.center && <div className={cx('center-price')}>{numberFormat(item_price)}원</div>}
+            {center && <div className={cx('center-price')}>{numberFormat(item_price)}원</div>}
         </div>
     );
 };

@@ -14,6 +14,7 @@ import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
 
 import {
+    getPreferMenuList,
     getCustomMenuList,
     getMenuList,
 } from '../../api/menu/menu';
@@ -36,7 +37,7 @@ function TabPanel(props) {
     );
 }
 
-const ReserveContainer = ({ menu = '0' }) => {
+const ReserveContainer = ({ tab = '0' }) => {
 
     const user_token = useStore();
     const { categorys, items } = useSelector((state) => state.product);
@@ -48,7 +49,7 @@ const ReserveContainer = ({ menu = '0' }) => {
     const [endBudget, setEndBudget] = useState(0); // 맞춤 가격 끝
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
-    const [tab_index, setTab] = useState(parseInt(menu));
+    const [tab_index, setTab] = useState(parseInt(tab));
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -74,7 +75,10 @@ const ReserveContainer = ({ menu = '0' }) => {
         setLoading(true);
         if(user_token){
         const res = await getCustomMenuList();
-        console.log(res);
+        const test = await getPreferMenuList(user_token);
+        console.log("추천메뉴");
+        console.log(test);
+        // console.log(res);
         setPreferMenuList(res);
         }
         setLoading(false);
