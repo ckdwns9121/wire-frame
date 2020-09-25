@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useHistory,Link } from 'react-router-dom';
 import { getCartList,deleteCartItem } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
@@ -35,7 +35,9 @@ const CartContainer = () => {
     const [error, setError] = React.useState(false);
 
 
-
+    const onChangeAllCheck = (e)=>{
+        setAllChecked(e.target.checked);
+    }
     const handleIncrement = useCallback(index => {
         console.log(index);
         setCartList(
@@ -75,7 +77,7 @@ const CartContainer = () => {
             let list = [];
             for (let i = 0; i < len - 2; i++) {
                 list[i] = res[i];
-                list[i].isChecked = false;
+                list[i].isChecked = true;
             }
             setCost(res.delivery_cost);
             setCartList(list);
@@ -85,10 +87,23 @@ const CartContainer = () => {
     }, [user_token]);
 
     const onChangeTotalPrice = useCallback(() => {
-        const total = cartList.reduce((prev, { item }) => {
+
+        let total = cartList.reduce((prev, { item }) => {
             const { item_price, item_quanity } = item;
             return prev + (item_price * item_quanity);
         }, 0);
+
+        for(let i=0 ;i<cartList.length;i++){
+            const {options , item} = cartList[i];
+            console.log(options);
+            console.log(item);
+            for(let j=0 ;j <options.length;j++){
+                const {option_price} = options[j];
+                total += option_price * item.item_quanity;
+                console.log(total);
+            }
+        }
+        
         setTotal(total);
     }, [cartList]);
 
@@ -104,15 +119,13 @@ const CartContainer = () => {
         setOpen(false);
     };
 
-    const onClickAllCheck = useCallback(
-        (e) => {
-            const newState = cartList.map((cart) => {
-                return { ...cart, isChecked: e.target.checked };
-            });
-            setCartList(newState);
-        },
-        [cartList],
-    );
+    const onClickAllCheck = useCallback((e) => {
+        setAllChecked(e.target.checked);
+        const newState = cartList.map((cart) => {
+            return { ...cart, isChecked:e.target.checked };
+        });
+        setCartList(newState);
+    }, [cartList]);
 
     const onClickCheckChild = useCallback(
         (id) => {
@@ -129,8 +142,8 @@ const CartContainer = () => {
 
     //전체 선택인지 아닌지 여부 판단
     const onCompareAllChecked = useCallback(() => {
+
         for (let i = 0; i < cartList.length; i++) {
-            console.log(cartList[i]);
             if (cartList[i].isChecked === false) {
                 setAllChecked(false);
                 return;
@@ -144,13 +157,16 @@ const CartContainer = () => {
 
     useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
 
-
- 
-
     useEffect(() => {
         getCartListApi();
     }, [getCartListApi]);
 
+
+    useEffect(()=>{
+        onCompareAllChecked();
+    },[cartList]);
+
+  
     const render = () => {
         return (
             <div className={styles['container']}>
@@ -160,7 +176,7 @@ const CartContainer = () => {
             
             <div className={styles['bar']}>
                     <div className={styles['check']}>
-                        <SquareCheckBox id={'allCheck'} text={'전체삭제'} />
+                        <SquareCheckBox id={'allCheck'} text={'전체삭제'}  check={allChecked} onChange ={onClickAllCheck}/>
                     </div>
                     <ButtonBase className={styles['select']}>선택삭제</ButtonBase>
                 </div>

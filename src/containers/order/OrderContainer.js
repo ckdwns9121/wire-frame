@@ -119,10 +119,17 @@ const OrderContainer = () => {
             let len = Object.keys(res).length;
 
             for (let i = 0; i < len - 2; i++) {
-                const { item_price, item_quanity } = res[i].item;
+                const {item ,options } = res[i];
                 console.log(res[i]);
-                price += item_price * item_quanity;
+                price += parseInt(item.item_price) * parseInt(item.item_quanity);
+
+                for(let j=0 ;j <options.length;j++){
+                    const {option_price} = options[j];
+                    price += parseInt(option_price) * parseInt(item.item_quanity);
+                }
             }
+
+
             if (res.PCD_PAYER_ID === null) {
                 console.log(res.PCD_PAYER_ID);
                 SET_PCD_PAYER_ID(res.PCD_PAYER_ID);

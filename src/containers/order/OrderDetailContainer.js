@@ -158,8 +158,8 @@ const OrderDetailContainer = (props) => {
                     <div className={styles['title']}>결제 금액</div>
                     <div className={styles['order-detail-view']}>
                         <div className={styles['order-box']}>
-                        <OrderInfoBox text={'주문금액'} value={item && numberFormat(item.orders.receipt_price)} />
-                        <OrderInfoBox text={'배달비용'} value={item && `-${numberFormat(item.orders.send_cost)}`} />
+                        <OrderInfoBox text={'주문금액'} value={item && numberFormat(item.orders.total_price)} />
+                        <OrderInfoBox text={'배달비용'} value={item && `${numberFormat(item.orders.send_cost)}`} />
                         <OrderInfoBox text={'쿠폰할인'} value={item && `-${numberFormat(item.orders.cp_price)}`} />
                         <OrderInfoBox
                             text={'포인트사용'}
@@ -171,7 +171,7 @@ const OrderDetailContainer = (props) => {
                             <div className={styles['box']}>
                             <div className={styles['text']}>합계</div>
                             <div className={styles['value']}>
-                            {item && numberFormat(item.orders.total_price)} <span>원</span>
+                            {item && numberFormat(item.orders.receipt_price)} <span>원</span>
                             </div>
                             </div>
                             <div className={cx('box','card')}>

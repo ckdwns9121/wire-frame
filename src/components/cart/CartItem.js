@@ -17,6 +17,16 @@ const CartItem = (props) => {
     const { item_name, item_price, item_quanity ,cart_id} = props.item;
     const options = props.options;
 
+    console.log(options);
+
+    const total_price =()=>{
+        let total= parseInt(item_price) * parseInt(item_quanity);
+        for(let i=0 ; i<options.length;i++){
+            total += parseInt(options[i].option_price) * parseInt(item_quanity);
+        }
+        return total;
+    }
+
 
     return (
         <div className={styles['cart-item']}>
@@ -35,7 +45,7 @@ const CartItem = (props) => {
                 </div>
                 <div className={styles['menu-value']}>
                     <div className={styles['menu-name-price']}>
-                        {item_name} <span>{numberFormat(item_price * item_quanity)}</span>원
+                        {item_name} <span>{numberFormat(total_price())}</span>원
                     </div>
                     <div className={styles['menu-option']}>
                         추가선택:
@@ -58,7 +68,7 @@ const CartItem = (props) => {
                 </div>
             </div>
             <div className={styles['menu-price']}>
-            {numberFormat(item_price * item_quanity)} 원
+            {numberFormat(total_price())} 원
 
             </div>
             <div className={styles['close-box']}  onClick={() => props.handleDelete([cart_id])}>

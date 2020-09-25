@@ -164,7 +164,7 @@ const DetailContainer = ({ item_id }) => {
                                         </div>
                                         <div className={styles['btn']}>
                                             <ButtonBase onClick={onClickCart}>
-                                                {`${quanity}개 담기(${numberFormat( menu.item.item_price *quanity +option_total,)}원)`}
+                                                {`${quanity}개 담기(${numberFormat( (menu.item.item_price+option_total) *quanity )}원)`}
                                             </ButtonBase>
                                         </div>
                                     </div>
