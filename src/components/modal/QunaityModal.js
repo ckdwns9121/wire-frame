@@ -32,7 +32,7 @@ const QunaityModal = (props) => {
                 </div>
                 <ButtonBase
                     className={styles['btn']}
-                    onClick={props.onChangeCount}
+                    onClick={props.onSetting}
                 >
                     수량 변경
                 </ButtonBase>

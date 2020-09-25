@@ -60,7 +60,7 @@ const CartItem = (props) => {
                                 <Count plus={true} />
                             </IconButton>
                         </div>
-                        <ButtonBase className={styles['box-item']} onClick={()=>{props.handleOpen(item_quanity)}}>수량 변경</ButtonBase>
+                        <ButtonBase className={styles['box-item']} onClick={()=>{props.handleOpen(item_quanity, cart_id)}}>수량 변경</ButtonBase>
                     </div>
                 </div>
             </div>
