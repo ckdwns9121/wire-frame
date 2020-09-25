@@ -1,31 +1,30 @@
 @import '../../styles/Root.scss';
-.container{
-        @include wireframe;
-        .content{
-         @include content;
-                .title{
-                  @include title;
-                }
-                .shop{
-                 min-height: 500px;
-                }
+.container {
+    @include wireframe;
+    .content {
+        @include content;
+        .title {
+            @include title;
         }
-}
-.banner{
-        min-width: $min-width;
-        .shop-banner{
-                  @include animation(0.5s,fadeIn);
-                width: 100%;
-                height: 100%;
-        }
-}
-
-
-@include keyframe(fadeIn){
-        from{
-            filter: blur(100px);
-        }
-        to{
-            filter: blur(0);
+        .shop {
+            min-height: 500px;
         }
     }
+}
+.banner {
+    min-width: $min-width;
+    .shop-banner {
+        @include animation(0.5s, fadeIn);
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@include keyframe(fadeIn) {
+    from {
+        filter: blur(100px);
+    }
+    to {
+        filter: blur(0);
+    }
+}

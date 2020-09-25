@@ -14,19 +14,19 @@ $pd: 40px;
             align-items: center;
             flex-direction: column;
             .title {
-                font-size: 36px;
+                font-size: 3rem;
             }
             .msg {
                 padding-top: 60px;
                 padding-bottom: 48px;
-                font-size: 18px;
+                font-size: 1.5rem;
                 line-height: 2;
                 font-weight: normal;
                 color: #777;
                 word-break: keep-all;
             }
             .order-number {
-                font-size: 20px;
+                font-size: 1.667rem;
             }
             .btn {
                 padding-top: 80px;
@@ -37,7 +37,7 @@ $pd: 40px;
                     height: 64px;
                     color: $main-color;
                     border: 1px solid $main-color;
-                    font-size: 22px;
+                    font-size: 1.833rem;
                     font-weight: bold;
                     border-radius: 10px;
                     line-height: 64px;
@@ -57,7 +57,7 @@ $pd: 40px;
             clear: both;
         }
         .title {
-            font-size: 24px;
+            font-size: 2rem;
             font-weight: bold;
             color: #222;
             padding: 20px;
@@ -81,7 +81,7 @@ $pd: 40px;
                 padding: 40px 20px;
             }
             .title {
-                font-size: 24px;
+                font-size: 2rem;
                 font-weight: bold;
                 color: #222;
                 padding: 20px;
@@ -92,7 +92,7 @@ $pd: 40px;
                 display: flex;
                 .text {
                     width: 100%;
-                    font-size: 20px;
+                    font-size: 1.667rem;
                     font-weight: bold;
                     color: #444;
                     &.auto {
@@ -102,7 +102,7 @@ $pd: 40px;
                 .price {
                     text-align: right;
                     width: 100%;
-                    font-size: 18px;
+                    font-size: 1.5rem;
                     color: #555;
                 }
             }
@@ -112,7 +112,7 @@ $pd: 40px;
         .user-info {
             padding-bottom: 90px;
             .title {
-                font-size: 24px;
+                font-size: 2rem;
                 font-weight: bold;
                 color: #222;
                 padding: 20px;
@@ -124,14 +124,14 @@ $pd: 40px;
                     display: flex;
                     padding-bottom: 20px;
                     .text {
-                        font-size: 20px;
+                        font-size: 1.667rem;
                         font-weight: bold;
                         color: #444;
                         min-width: 140px;
                         padding-right: 20px;
                     }
                     .value {
-                        font-size: 18px;
+                        font-size: 1.5rem;
                         font-weight: normal;
                         color: #555;
                     }
@@ -146,7 +146,7 @@ $pd: 40px;
                 width: 400px; height: 64px;
                 border: 1px solid #dbdbdb;
                 text-align: center;
-                font-size: 20px;
+                font-size: 1.667rem;
                 border-radius: 20px;
                 color: #555;
                 font-weight: 500;

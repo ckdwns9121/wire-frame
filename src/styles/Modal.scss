@@ -2,7 +2,7 @@
 
 @mixin modal-title {
     background-color: $main-color;
-    font-size: 24px;
+    font-size: 2rem;
     font-weight: bold;
     padding: 24px 40px;
     color: #fff;
@@ -12,7 +12,7 @@
 }
 
 @mixin modal-label {
-    font-size: 18px;
+    font-size: 1.5rem;
     margin-bottom: 12px;
     color: #555;
     font-weight: bold;

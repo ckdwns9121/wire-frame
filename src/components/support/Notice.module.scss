@@ -26,7 +26,7 @@
         .content {
             padding: 40px 60px;
             min-height: 250px;
-            font-size: 16px;
+            font-size: 1.333rem;
             color: #555;
         }
         .id, .title, .created {
@@ -35,17 +35,17 @@
         }
         .id {
             width: 150px;
-            font-size: 18px;
+            font-size: 1.5rem;
             font-weight: 500;
         }
         .title {
             width: 550px;
-            font-size: 18px;
+            font-size: 1.5rem;
             font-weight: 500;
         }
         .created {
             width: 200px;
-            font-size: 16px;
+            font-size: 1.333rem;
             color: #555;
         }
     }
