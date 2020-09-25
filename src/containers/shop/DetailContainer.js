@@ -10,7 +10,6 @@ import Count from '../../components/svg/counter/Count';
 import CartMenuImg from '../../components/svg/cart/cart_menu.png';
 import DetailImg from '../../components/svg/cart/detail_img.png';
 import { ButtonBase } from '@material-ui/core';
-import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
 import { numberFormat } from '../../lib/formatter';
 import { addCartItem } from '../../api/cart/cart';
@@ -19,7 +18,6 @@ import { getMenuInfo } from '../../api/menu/menu';
 
 const DetailContainer = ({ item_id }) => {
     const history = useHistory();
-    const user_token = useStore();
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -39,19 +37,20 @@ const DetailContainer = ({ item_id }) => {
     const onClickCart = useCallback(async () => {
         setLoading(true);
         setSuccess(false);
-        if (user_token) {
+        try {
             const res = await addCartItem(
-                user_token,
                 item_id,
                 options,
                 quanity,
             );
             console.log(res);
             setSuccess(true);
+        } catch (e) {
+            alert('Error!');
         }
         setLoading(false);
         history.push(Paths.ajoonamu.cart);
-    }, [history, item_id, options, quanity, user_token]);
+    }, [history, item_id, options, quanity]);
 
     const setOptionItem = useCallback(() => {
         const add_option = menu.options
@@ -70,14 +69,16 @@ const DetailContainer = ({ item_id }) => {
 
     const getMenu = useCallback(async () => {
         setLoading(true);
-
-        if (user_token) {
-            const res = await getMenuInfo(user_token, item_id);
+        try {
+            const res = await getMenuInfo(item_id);
             setMenu(res);
             setSuccess(true);
-        } else setError(true);
+        } catch (e) {
+            setError(true);
+            alert('Error!');
+        }
         setLoading(false);
-    }, [item_id, user_token]);
+    }, [item_id]);
 
     const onClickOptionItem = (id) => {
         const newOptionItem = menu.options.map((item) => {
@@ -164,7 +165,11 @@ const DetailContainer = ({ item_id }) => {
                                         </div>
                                         <div className={styles['btn']}>
                                             <ButtonBase onClick={onClickCart}>
-                                                {`${quanity}개 담기(${numberFormat( (menu.item.item_price+option_total) *quanity )}원)`}
+                                                {`${quanity}개 담기(${numberFormat(
+                                                    (menu.item.item_price +
+                                                        option_total) *
+                                                        quanity,
+                                                )}원)`}
                                             </ButtonBase>
                                         </div>
                                     </div>

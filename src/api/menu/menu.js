@@ -289,12 +289,11 @@ export const getMainMenuList = async (token) => {
     return result.data.query.items;
 };
 
-export const getMenuInfo = async (token, item_id) => {
+export const getMenuInfo = async (item_id) => {
     const req = Paths.api + `user/item/view?offset&limit&item_id=${item_id}`;
     const config = {
         headers: {
             'content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
         },
     };
     const result = await axios.get(req, config);
