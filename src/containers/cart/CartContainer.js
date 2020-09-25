@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { getCartList, deleteCartItem } from '../../api/cart/cart';
@@ -37,34 +37,54 @@ const CartContainer = () => {
     const [delivery_cost, setCost] = useState(0); // 배달비
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    const [cntOpen ,setCntOpen] = useState(false);
+    const [cntOpen, setCntOpen] = useState(false);
 
-    
-    const [count,setCount] = useState(0); //모달 수량
+    const [count, setCount] = useState(0); //모달 수량
+    const [tempCartId, setCartId] = useState(-1);
 
-    const onChangeCount =(e)=>{
+    const onChangeCount = (e) => {
         const re = /^[0-9\b]+$/;
         // if value is not blank, then test the regex
         if (e.target.value === '' || re.test(e.target.value)) {
             setCount(e.target.value);
         }
-    } 
+    };
 
     //견적서 발송 여부
     const onChangeEstm = useCallback((e) => setEstm(true), []);
     const onChangeNotEstm = useCallback((e) => setEstm(false), []);
 
-    const onClickEstmOpen = () =>  setEstmOpen(true);
+    const onClickEstmOpen = () => setEstmOpen(true);
     const handleClose = () => setEstmOpen(false);
 
     //수량 변경 모달 띄우기
-    const onClickCntChange =(item_quanity)=>{
-              setCount(item_quanity);
-            setCntOpen(true);
-    }
-    const onClickCtnSetting =(cart_id)=>{
+    const onClickCntChange = (item_quanity, cart_id) => {
+        setCount(item_quanity);
+        setCartId(cart_id);
+        setCntOpen(true);
+    };
+
+    // 수량 변경 모달 닫기
+    const onClickCloseCntModal = () => {
         setCntOpen(false);
-    }
+    };
+
+    //모달로 수량변경 하기
+    const onSettingCount = useCallback(() => {
+        const index = cartList.findIndex(
+            ({ item }) => item.cart_id === tempCartId,
+        );
+        if (count !== '0') {
+            setCartList(
+                produce(cartList, (draft) => {
+                    draft[index].item.item_quanity = parseInt(count);
+                }),
+            );
+            setCntOpen(false);
+            setCount(0);
+            setCartId(-1);
+        }
+    }, [count, cartList]);
 
     //수량 추가
     const handleIncrement = useCallback(
@@ -123,7 +143,6 @@ const CartContainer = () => {
         setLoading(false);
     }, [user_token]);
 
-
     //장바구니 메뉴 삭제
     const handleDelete = useCallback(
         (cart_id) => {
@@ -170,7 +189,7 @@ const CartContainer = () => {
                                 list.filter((item) => item.checked === false),
                             );
                         },
-                        true
+                        true,
                     );
                 }
             } catch (e) {
@@ -179,7 +198,6 @@ const CartContainer = () => {
         }
         setLoading(false);
     };
-
 
     //총 주문금액 변경
     const onChangeTotalPrice = useCallback(() => {
@@ -281,7 +299,7 @@ const CartContainer = () => {
                                     handleIncrement={handleIncrement}
                                     handleDecrement={handleDecrement}
                                     handleDelete={handleDelete}
-                                    handleOpen ={onClickCntChange}
+                                    handleOpen={onClickCntChange}
                                 />
                             </div>
                             <div className={styles['finally']}>
@@ -364,7 +382,13 @@ const CartContainer = () => {
                         />
                     )}
                 </div>
-                <CntModal count={count} onChange={onChangeCount} open ={cntOpen} handleClose={onClickCtnSetting}/>
+                <CntModal
+                    count={count}
+                    onChange={onChangeCount}
+                    open={cntOpen}
+                    handleClose={onClickCloseCntModal}
+                    onSetting={onSettingCount}
+                />
             </ScrollTop>
         );
     };
