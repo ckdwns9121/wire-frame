@@ -2,10 +2,20 @@ import React, { useState, useCallback, useEffect } from 'react';
 import styles from './Find.module.scss';
 import classNames from 'classnames/bind';
 import Button from 'components/button/Button';
+import { isPasswordForm } from '../../lib/formatChecker';
+import { useHistory } from 'react-router-dom';
+import { useModal } from '../../hooks/useModal';
+import { Paths } from '../../paths';
+import { changePw } from '../../api/auth/auth';
 
 const cx = classNames.bind(styles);
 
 const FindPasswordContainer = () => {
+    const history = useHistory();
+    const openModal = useModal();
+    const [state, setState] = useState({
+        email: '', name: '', hp: ''
+    });
     const [password, setPassword] = useState('');
     const [password_confirm, setPasswordConfirm] = useState('');
     const [compare, setCompare] = useState(false);
@@ -35,13 +45,48 @@ const FindPasswordContainer = () => {
             }
         }
     };
-    const onClickChangePassword = () => {
-        console.log('비번 변경');
-    };
+    const onClickChangePassword = useCallback(async () => {
+        if (isPasswordForm(password)) {
+            try {
+                const { email, hp, name } = state;
+                const res = await changePw(email, name, hp, password, password_confirm);
+                if (res.data.msg) {
+                    openModal('정상적으로 변경되었습니다!', '로그인 후 이용해주세요!');
+                    history.push(Paths.ajoonamu.signin);
+                } else {
+                    openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+            }
+        } else {
+            openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.')
+        }
+    }, [state, password, password_confirm, history, openModal]);
 
     useEffect(() => {
         matchPassword();
     }, [matchPassword]);
+
+
+    useEffect(() => {
+        const sd = sessionStorage.getItem('find_item');
+        if (sd !== null && sd !== undefined) {
+            const { email, name, hp } = JSON.parse(sd);
+            if (email && name && hp) {
+                setState({ email, name, hp });
+            } else {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+                history.push(Paths.ajoonamu.recovery_pw);
+            }
+        } else {
+            openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+            history.push(Paths.ajoonamu.recovery_pw);
+        }
+        return () => {
+            sessionStorage.removeItem('find_item');
+        }
+    }, [openModal, history]);
 
     return (
         <>
@@ -57,17 +102,19 @@ const FindPasswordContainer = () => {
                     </div>
                     <div className={styles['input']}>
                         <input
+                            type="password"
                             className={styles['change-input']}
                             placeholder="새로운 비밀번호"
                             value={password}
                             onChange={onChangePassword}
-                        ></input>
+                        />
                         <input
+                            type="password"
                             className={styles['change-input']}
                             placeholder="새로운 비밀번호 확인"
                             value={password_confirm}
                             onChange={onChangePasswordConfirm}
-                        ></input>
+                        />
                         <div
                             className={cx('compare', {
                                 on: compare,
@@ -80,7 +127,7 @@ const FindPasswordContainer = () => {
                         </div>
                     </div>
                     <Button
-                        title={'비밀번호 변경후 로그인'}
+                        title={'비밀번호 변경 후 로그인'}
                         onClick={onClickChangePassword}
                         toggle={compare}
                     ></Button>

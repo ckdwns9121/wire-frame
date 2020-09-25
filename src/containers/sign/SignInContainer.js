@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import useInputs from '../../hooks/useInputs';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Sign.module.scss';
@@ -14,37 +13,30 @@ import {
     FacebookLogo,
 } from '../../components/svg/sign/social';
 import CheckBox from 'components/checkbox/CheckBox';
-import {get_address} from '../../store/address/address';
-import {getActiveAddr} from '../../api/address/address';
-import { modalOpen } from '../../store/modal';
+import { get_address } from '../../store/address/address';
+import { getActiveAddr } from '../../api/address/address';
+import { useModal } from '../../hooks/useModal';
+import { isEmailForm } from '../../lib/formatChecker';
 const cx = cn.bind(styles);
 
-
 const SignInContainer = () => {
-
-
     const history = useHistory();
     const dispatch = useDispatch();
-
-
-    const modalDispatch = useDispatch();
-    const openAlert = useCallback((title, text, handleClick = () => {}) => {
-        modalDispatch(modalOpen(false, title, text, handleClick));
-    }, [modalDispatch]);
+    const openModal = useModal();
 
     const [email, setEmail] = useState('');
-    const [password ,setPassword] = useState('');
+    const [password, setPassword] = useState('');
 
-    const onChangeEmail =(e)=>{
+    const onChangeEmail = (e) => {
         setEmail(e.target.value);
-    }
-    const onChangePassword =(e)=>{
+    };
+    const onChangePassword = (e) => {
         setPassword(e.target.value);
-    }
+    };
 
     const [checked, setChecked] = useState(false);
 
-    const onChangeChecked = useCallback(e => {
+    const onChangeChecked = useCallback((e) => {
         setChecked(e.target.checked);
     }, []);
 
@@ -56,57 +48,62 @@ const SignInContainer = () => {
         history.push(Paths.ajoonamu.recovery);
     }, [history]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const data = localStorage.getItem('user');
-        console.log(data);
-        if(data!==null){
+        if (data !== null) {
             const temp = JSON.parse(data);
-            console.log(temp);
             setEmail(temp.email);
             setPassword(temp.password);
             setChecked(temp.checked);
         }
-    },[])
+    }, []);
 
     const onClickLogin = useCallback(async () => {
-        try {
-            const res = await localLogin(email, password);
-            if (res.status === 200) {
-                //회원가입 안되있는 이메일
-                if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
-                    openAlert(res.data.msg, "아이디를 다시 한 번 확인해 주세요.");
-                }
-                //비밀번호가 틀렸을 때
-                else if (res.data.msg === '비밀번호가 틀렸습니다.') {
-                    openAlert(res.data.msg, "비밀번호를 다시 한 번 확인해 주세요.");
-                }
-                //로그인 성공 했을 때.
-                else if (res.data.access_token) {
-                    const response = await getActiveAddr(res.data.access_token);
-                    sessionStorage.setItem(
-                        'access_token',
-                        res.data.access_token,
-                    );
-                    if(checked){
-                        const newObj = {email:email, password:password ,checked:checked};
-                        localStorage.setItem('user', JSON.stringify(newObj));
+        if (!isEmailForm(email)) {
+            openModal('이메일이 형식에 맞지 않습니다!', '확인 후 다시 작성해 주세요.');
+        } else {
+            try {
+                const res = await localLogin(email, password);
+                if (res.status === 200) {
+                    // 회원가입 안되있는 이메일
+                    if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
                     }
-                    else{
-                        localStorage.removeItem('user');
+                    // 비밀번호가 틀렸을 때
+                    else if (res.data.msg === '비밀번호가 틀렸습니다.') {
+                        openModal(res.data.msg, '비밀번호를 다시 한 번 확인해 주세요.');
                     }
-                    dispatch(get_user_info(res.data.access_token));
-                    dispatch(get_address(response));
-                    
-                    history.replace(Paths.index);
+                    // 탈퇴한 이메일일 때.
+                    else if (res.data.msg === '탈퇴한 이메일입니다.') {
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
+                    }
+                    // 로그인 성공 했을 때.
+                    else if (res.data.access_token) {
+                        const response = await getActiveAddr(res.data.access_token);
+                        sessionStorage.setItem('access_token', res.data.access_token);
+                        if (checked) {
+                            const newObj = {
+                                email: email,
+                                password: password,
+                                checked: checked,
+                            };
+                            localStorage.setItem('user', JSON.stringify(newObj));
+                        } else {
+                            localStorage.removeItem('user');
+                        }
+                        dispatch(get_user_info(res.data.access_token));
+                        dispatch(get_address(response));
+                        history.replace(Paths.index);
+                    }
+                } else {
+                    openModal('로그인에 실패하였습니다.', '이메일 혹은 패스워드를 확인해주세요.');
                 }
-            } else {
-                openAlert("로그인에 실패하였습니다.", '이메일 혹은 패스워드를 확인해주세요.');
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+                history.replace(Paths.index);
             }
-        } catch (e) {
-            openAlert("잘못된 접근입니다.", '잠시 후 재시도 해주세요.');
-            history.replace(Paths.index);
         }
-    }, [history, checked,dispatch ,email ,password, openAlert]);
+    }, [history, checked, dispatch, email, password, openModal]);
 
     return (
         <div className={styles['container']}>

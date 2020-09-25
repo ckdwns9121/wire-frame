@@ -7,6 +7,7 @@ const SignNormalInput = ({
     inputType,
     label,
     onChange,
+    onKeyDown,
     initValue,
     placeholder,
     name,
@@ -21,7 +22,8 @@ const SignNormalInput = ({
                 type={inputType}
                 value={initValue}
                 onChange={onChange}
-            ></input>
+                onKeyDown={onKeyDown}
+            />
         </div>
     );
 };

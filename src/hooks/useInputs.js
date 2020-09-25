@@ -1,11 +1,9 @@
 import { useReducer } from 'react';
 
-function reducer(state, action) {
-    return {
-        ...state,
-        [action.name]: action.value,
-    };
-}
+const reducer = (state, action) => ({
+    ...state,
+    [action.name]: action.value,
+});
 
 export default function useInputs(initState) {
     const [state, dispatch] = useReducer(reducer, initState);

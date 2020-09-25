@@ -11,13 +11,10 @@ import classNames from 'classnames/bind';
 import {
     localLogin,
     localRegister,
-    requestPostMobileAuth,
-    requestPostMobileAuthCheck,
 } from '../../api/auth/auth';
-import AuthTimer from 'components/sign/AuthTimer';
-import Check from 'components/svg/coupon/Check';
-import { useDispatch } from 'react-redux';
-import { modalOpen } from '../../store/modal';
+import { useModal } from '../../hooks/useModal';
+import { isEmailForm, isPasswordForm } from '../../lib/formatChecker';
+import AuthPhone from '../../components/assets/AuthPhone';
 
 const cx = classNames.bind(styles);
 
@@ -25,8 +22,6 @@ const initialUserState = {
     email: '',
     password: '',
     password_confirm: '',
-    phoneNumber: '',
-    authNumber: '',
     agree_marketing: 0,
 };
 
@@ -65,65 +60,29 @@ const checkReducer = (state, action) => {
 };
 
 const SignUpContainer = () => {
-
-    const modalDispatch = useDispatch();
-    const openAlert = useCallback((title, text, handleClick = () => {}) => {
-        modalDispatch(modalOpen(false, title, text, handleClick));
-    }, [modalDispatch]);
-
+    const openModal = useModal(); 
     const [user_state, onChange] = useInputs(initialUserState);
     const {
         email,
         password,
         password_confirm,
-        phoneNumber,
-        authNumber,
     } = user_state;
 
     const history = useHistory();
-    const [success, setSuccess] = useState(false);
     const [compare, setCompare] = useState(false);
     const [toggle, setToggle] = useState(false);
     const [overlap, setOverlap] = useState(false);
+
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneAuth, setPhoneAuth] = useState(false);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const { check1, check2, check3 } = check;
-    const [auth_start, setAuth] = useState(false);
-    const [start_timer, setStartTimer] = useState(false);
 
-    const getMobileAuthNumber = useCallback(async () => {
-        const res = await requestPostMobileAuth(phoneNumber);
-        
-        if (res.data.msg === '실패!') {
-            openAlert('인증번호 발송에 실패했습니다.', '잠시 후 다시 시도해 주세요!');
-        } else {
-            setStartTimer(true);
-            setAuth(!auth_start);
-            openAlert('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
-        }
-    }, [auth_start, phoneNumber, openAlert]);
-
-    //인증번호 재발송
-    const onClickReSendAuth =()=>{
-        setStartTimer(false);
-        setTimeout(()=>setStartTimer(true),0);
-    }
-
-    const sendMobileAuthNumber = useCallback(async () => {
-        const res = await requestPostMobileAuthCheck(phoneNumber, authNumber);
-        if (res.data.msg === '성공!') {
-            openAlert('성공적으로 인증되었습니다!', '회원가입 버튼을 누르세요!');
-            setPhoneAuth(true);
-        } else {
-            openAlert('인증번호가 틀렸습니다!', '인증번호를 다시 한 번 확인해 주세요!');
-        }
-    }, [phoneNumber, authNumber, openAlert]);
 
     const updateToggle = useCallback(() => {
-        let checkbox = check1 && check2 ? true : false;
-        let userinfo = email.length !== 0 && compare ? true : false;
-        let result =
-            checkbox && userinfo && overlap && phoneAuth ? true : false;
+        const checkbox = check1 && check2 ? true : false;
+        const userinfo = email.length !== 0 && compare ? true : false;
+        let result = checkbox && userinfo && overlap && phoneAuth ? true : false;
         setToggle(result);
     }, [check1, check2, email, compare, overlap, phoneAuth]);
 
@@ -191,26 +150,39 @@ const SignUpContainer = () => {
     }, [onToggleCheck]);
 
     const onClickSignUp = useCallback(async () => {
-        const res = await localRegister(
-            email,
-            password,
-            password_confirm,
-            check3,
-        );
-        console.log(res);
-
-        history.push(`${Paths.ajoonamu.complete}/${email}`);
-    }, [history, email, password, password_confirm, check3]);
+        if (isPasswordForm(password)) {
+            try {
+                const res = await localRegister(email, password, password_confirm, check3);
+                console.log(res);
+                history.push(`${Paths.ajoonamu.complete}/${email}`);
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+            }
+        } else {
+            openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.')
+        }
+    }, [history, email, password, password_confirm, check3, openModal]);
 
     const onClickOverlapCheck = useCallback(async () => {
-        const res = await localLogin(email);
-        if (res.data.msg === '비밀번호가 틀렸습니다.') {
-            openAlert('중복된 이메일입니다.', '다른 이메일로 시도해 주세요.');
+        if (isEmailForm(email)) {
+            try {
+                const res = await localLogin(email);
+                console.log(res);
+                if (res.data.msg === '비밀번호가 틀렸습니다.') {
+                    openModal('중복된 이메일입니다.', '다른 이메일로 시도해 주세요.');
+                } else if(res.data.msg === '탈퇴한 이메일입니다.') {
+                    openModal(res.data.msg, '다른 이메일로 시도해 주세요.');
+                } else {
+                    openModal('사용 가능한 이메일입니다.', '다음 절차를 계속하세요.');
+                    setOverlap(true);
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+            }
         } else {
-            openAlert('중복된 이메일입니다.', '다음 절차를 계속하세요.');
-            setOverlap(true);
+            openModal('잘못된 이메일 형식입니다.', '이메일 형식을 확인해 주세요.');
         }
-    }, [email, openAlert]);
+    }, [email, openModal]);
 
     const confirm = () => {
         if (password.length !== 0 || password_confirm.length !== 0) {
@@ -232,7 +204,7 @@ const SignUpContainer = () => {
                     initValue={email}
                     onChange={onChange}
                     onClick={onClickOverlapCheck}
-                    disabled={overlap}
+                    button_disabled={overlap}
                     buttonTitle={'중복검사'}
                 />
                 <div className={styles['divider']} />
@@ -259,37 +231,12 @@ const SignUpContainer = () => {
                 >
                     <label>{confirm()}</label>
                 </div>
-                <SignAuthInput
-                    label={'휴대폰'}
-                    inputType={'text'}
-                    name={'phoneNumber'}
-                    disabled={auth_start}
-                    initValue={phoneNumber}
-                    onChange={onChange}
-                    onClick={auth_start ?onClickReSendAuth :getMobileAuthNumber}
-                    placeholder={'숫자만 입력해 주세요.'}
-                    buttonTitle={auth_start ? '인증번호 재발송' : '인증번호 발송'}
+                <AuthPhone
+                    phoneNumber={phoneNumber}
+                    setPhoneNumber={setPhoneNumber}
+                    phoneAuth={phoneAuth}
+                    setPhoneAuth={setPhoneAuth}
                 />
-
-
-                <div className={cx('auth-btn', { not_view: !auth_start })}>
-                    <SignAuthInput
-                          inputType={'text'}
-                          initValue={authNumber}
-                          name={'authNumber'}
-                          onClick={sendMobileAuthNumber}
-                          onChange={onChange}
-                          buttonTitle={'인증하기'}
-                    />
-                    <div className={styles['timer']}>
-                        {success ? (
-                            <Check on={true} />
-                        ) : (
-                            <AuthTimer start={start_timer}></AuthTimer>
-                        )}
-                    </div>
-                </div>
-
                 <AcceptContainer
                     {...check}
                     updateAllCheck={updateAllCheck}

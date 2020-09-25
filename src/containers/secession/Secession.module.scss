@@ -1,5 +1,5 @@
 @import '../../styles/Root.scss';
-@import '../../styles/Root.scss';
+
 .container {
     color: #222;
     .content {
@@ -18,6 +18,7 @@
                 font-size: 1.5rem;
                 color: #777;
                 padding-bottom: 80px;
+                line-height: 1.7;
             }
             .box {
                 width: 100%;
@@ -37,8 +38,10 @@
                 .check {
                     display: flex;
                     align-items: center;
+                    cursor: pointer;
                     span {
                         padding-left: 10px;
+                        line-height: 24px;
                         font-size: 2.167rem;
                         color: #222;
                     }

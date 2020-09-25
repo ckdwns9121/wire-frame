@@ -21,6 +21,7 @@ import { useStore } from '../../hooks/useStore';
 import $script from 'scriptjs';
 import { user_order } from '../../api/order/order';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
+import { onlyNumber } from '../../lib/formatChecker';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -30,7 +31,6 @@ const initCheck = {
 };
 
 const checkReducer = (state, action) => {
-    // console.log(action);
     switch (action.type) {
         case 'ALL_CHECK':
             return {
@@ -74,6 +74,25 @@ const OrderContainer = () => {
     const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
     const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
     const onChangeOrderMemo = (e) => setOrderMemo(e.target.value);
+
+    const secondPhone = useRef(null);
+    const thirdPhone = useRef(null);
+    
+    const onChangePhoneFirst = useCallback(() => {  
+        secondPhone.current.focus();
+    }, []);
+    const onChangePhoneNext = useCallback(e => {
+        if (e.target.value.length >= 4) {
+            thirdPhone.current.focus();
+        }
+        e.target.value = e.target.value.substr(0, 4);
+    }, []);
+    const onChangePhonePrev = useCallback(e => {
+        if (e.target.value.length === 0) {
+            secondPhone.current.focus();
+        }
+        e.target.value = e.target.value.substr(0, 4);
+    }, []);
 
     const updateAllCheck = (e) => {
         dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
@@ -188,10 +207,7 @@ const OrderContainer = () => {
     const onClickOrder = async () => {
         const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
         const res = await user_order(user_token);
-        console.log(res);
         order_id.current = res.data.query;
-        console.log('넘어 오는지 체크');
-        console.log(order_id.current);
 
         $script(payple_url, () => {
             /*global PaypleCpayAuthCheck*/
@@ -325,7 +341,7 @@ const OrderContainer = () => {
                                 </div>
                                 <div className={styles['hp']}>
                                     <div className={styles['first']}>
-                                        <select name="phone">
+                                        <select name="phone" onChange={onChangePhoneFirst}>
                                             <option value="010">010</option>
                                             <option value="011">011</option>
                                             <option value="016">016</option>
@@ -334,15 +350,22 @@ const OrderContainer = () => {
                                     </div>
                                     <div className={styles['second']}>
                                         <input
+                                            ref={secondPhone}
+                                            onChange={onChangePhoneNext}
+                                            // onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
+                                            onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
                                             className={styles['sub-number']}
                                             placeholder="핸드폰 앞자리"
-                                        ></input>
+                                        />
                                     </div>
                                     <div className={styles['second']}>
                                         <input
+                                            ref={thirdPhone}
+                                            onChange={onChangePhonePrev}
+                                            onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
                                             className={styles['sub-number']}
                                             placeholder="핸드폰 뒷자리"
-                                        ></input>
+                                        />
                                     </div>
                                 </div>
                                 <div className={styles['input-hp']}>
