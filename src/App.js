@@ -32,9 +32,6 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 function App() {
-    useEffect(() => {
-        AOS.init({ duration: 1500 });
-    }, []);
 
     const dispatch = useDispatch();
     const getInfo = async () => {
@@ -45,9 +42,13 @@ function App() {
             dispatch(get_address(res));
         }
     };
+
     useEffect(() => {
         getInfo();
+        AOS.init({ duration: 1500 });
     }, []);
+
+
     return (
         <div className="App">
             <Header />

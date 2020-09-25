@@ -11,10 +11,11 @@ export const getCartList = async (token) => {
     };
     const res = await axios.get(req, config);
     console.log(res);
-    return res.data.query;
-};
+    return res;
+}
 
 export const addCartItem = async (
+    token,
     item_id,
     item_options,
     item_quanity,
@@ -25,6 +26,7 @@ export const addCartItem = async (
         item_option_id: item_options,
         item_quanity: item_quanity,
     };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
     const res = await axios.post(req, form_data);

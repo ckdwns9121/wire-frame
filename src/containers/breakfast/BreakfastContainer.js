@@ -19,7 +19,6 @@ import menuArrow from '../../components/svg/breakfast/arrow.svg';
 
 
 import { useHistory } from 'react-router-dom';
-
 import { ButtonBase } from '@material-ui/core';
 
 import { Paths } from '../../paths';
@@ -142,7 +141,7 @@ const BreakfastContainer = () => {
                             <p className={styles['key-text']}>다양한 메뉴</p>
                             <ButtonBase style={{ width: '300px', height: '64px', fontWeight: 500 }}
                                 className={cn('button', 'green')}
-                                onClick={() => history.push(Paths.ajoonamu.shop)}>
+                                onClick={() => { history.push(Paths.ajoonamu.shop) ; window.scrollTo(0,0)}} >
                                 더 많은 메뉴 보기
                             </ButtonBase>
                         </div>

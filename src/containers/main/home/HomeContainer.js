@@ -16,9 +16,7 @@ import { ButtonBase } from '@material-ui/core';
 import KakaoMap from '../../../components/map/KakaoMap';
 import {getMainMenuList} from '../../../api/menu/menu';
 import Loading from 'components/assets/Loading';
-
 const cx = cn.bind(styles);
-
 const HomeContainer = () => {
     const history = useHistory();
     const [category, setCategory] = useState(0);
@@ -37,16 +35,10 @@ const HomeContainer = () => {
         setLoading(false);
     }
 
-    const onClickBreakFast = () => {
-        history.push(`${Paths.ajoonamu.breakfast}`);
-    };
     const onClickDetailItem = useCallback((item_id)=>{
         history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
     },[history]);
-    const onClickShop = ()=>{
-        history.push(`${Paths.ajoonamu.shop}?tab=${0}`);
 
-    }
     useEffect(() => {
         getMainMenu();
     }, []);
@@ -76,7 +68,7 @@ const HomeContainer = () => {
                     }
                 
                 </div>
-                <div className={styles['banner-img']} onClick ={onClickShop}>
+                <div className={styles['banner-img']} onClick ={()=>{   history.push(`${Paths.ajoonamu.shop}?tab=${0}`) ; window.scrollTo(0,0)}}>
                     <img src={bannerImg} alt="배너" />
                 </div>
                 <div className={styles['order']}>
@@ -94,7 +86,7 @@ const HomeContainer = () => {
                                     샌달과 하루를 효율적으로 시작해보세요
                                 </div>
                                 <ButtonBase
-                                    onClick={onClickBreakFast}
+                                    onClick={()=>{ history.push(`${Paths.ajoonamu.breakfast}`); window.scrollTo(0,0)}}
                                     className={styles['order-btn']}
                                 >
                                     자세히보기

@@ -1,20 +1,20 @@
 import React from 'react';
-import CartItem from 'components/cart/CartItem';
+import CartItem from './CartItem';
 
 
 const CartItemList = (props) => {
-    console.log(props);
 
     const list = props.carts.map((cart,index) =>(
             <CartItem 
             id={index} 
             key={index} 
             {...cart} 
-            isChecked= { cart.isChecked}
+            checked= { cart.checked}
             handleCheckChild={props.handleCheckChild}
             handleIncrement={props.handleIncrement}
             handleDecrement={props.handleDecrement}
             handleDelete={props.handleDelete}
+            handleOpen ={props.handleOpen}
             />
 
     ));

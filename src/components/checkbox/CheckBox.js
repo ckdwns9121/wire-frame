@@ -20,7 +20,7 @@ export default function CheckBox({ id, text, check, onChange, url }) {
                 </label>
             </div>
             {url !== null &&
-            <Link className={styles['link']} to={url}>보기</Link>}
+            <Link to={'/'} className={styles['link']} >보기</Link>}
         </div>
     );
 };

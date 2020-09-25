@@ -8,7 +8,12 @@ import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 import DownCouponItemList from '../../components/coupon/DownCouponList';
 import { useStore } from '../../hooks/useStore';
-import { getMyCoupons,  getDownloadCpList ,downloadCoupon } from '../../api/coupon/coupon';
+import {
+    getMyCoupons,
+    getDownloadCpList,
+    downloadCoupon,
+    couponInput,
+} from '../../api/coupon/coupon';
 import Loading from '../../components/assets/Loading';
 import Message from '../../components/message/Message';
 import produce from 'immer';
@@ -40,9 +45,12 @@ const tabInit = [
 
 const CouponConatiner = (props) => {
     const modalDispatch = useDispatch();
-    const openAlert = useCallback((title, text, handleClick = () => {}) => {
-        modalDispatch(modalOpen(false, title, text, handleClick));
-    }, [modalDispatch]);
+    const openAlert = useCallback(
+        (title, text, handleClick = () => {}) => {
+            modalDispatch(modalOpen(false, title, text, handleClick));
+        },
+        [modalDispatch],
+    );
 
     const query = qs.parse(props.location.search, {
         ignoreQueryPrefix: true,
@@ -51,12 +59,12 @@ const CouponConatiner = (props) => {
     const [loading, setLoading] = useState(false);
     const [index, setIndex] = useState(0);
     const [cp_list, setCpList] = useState([]);
+    const [user_input_cp, setUserInputCp] = useState('');
     const [down_cp_list, setDownCpList] = useState([]);
     const user_token = useStore();
 
-    const onChangeIndex = (idx) => {
-        setIndex(idx);
-    };
+    const onChangeIndex = (idx) => setIndex(idx);
+    const onChangeUserInputCp = (e) => setUserInputCp(e.target.value);
 
     const getTitle = useCallback(() => {
         if (index === 0) {
@@ -84,21 +92,24 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             const res = await getDownloadCpList(user_token);
+            console.log(res);
             setDownCpList(res);
         }
         setLoading(false);
     };
-
 
     const callCouponDownload = useCallback(
         async (cz_id) => {
             setLoading(true);
             try {
                 const res = await downloadCoupon(user_token, cz_id);
-                if (res.data.msg === "이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.") {
-                    openAlert("이미 다운로드 한 쿠폰입니다.", res.data.msg);
+                if (
+                    res.data.msg ===
+                    '이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.'
+                ) {
+                    openAlert('이미 다운로드 한 쿠폰입니다.', res.data.msg);
                 } else {
-                    openAlert("다운로드 성공했습니다.", res.data.msg);
+                    openAlert('다운로드 성공했습니다.', res.data.msg);
                 }
                 const idx = down_cp_list.findIndex(
                     (item) => item.cz_id === cz_id,
@@ -116,6 +127,23 @@ const CouponConatiner = (props) => {
         [user_token, down_cp_list],
     );
 
+    const inputCoupon = useCallback(async () => {
+        if (user_input_cp === '') {
+            return;
+        }
+        setLoading(true);
+        try {
+            const res = await couponInput(user_token, user_input_cp);
+            console.log(res);
+            if (res.data.msg === '성공') {
+                openAlert('쿠폰등록이 완료되었습니다.');
+            }
+        } catch (e) {
+            console.error(e);
+        }
+
+        setLoading(false);
+    }, [user_token, user_input_cp]);
     useEffect(() => {
         getMyCouponList();
         getDownCouponList();
@@ -136,32 +164,52 @@ const CouponConatiner = (props) => {
                         <div className={styles['text']}>쿠폰 코드 입력</div>
                         <input
                             className={styles['code']}
+                            value={user_input_cp}
+                            onChange={onChangeUserInputCp}
                             placeholder="등록할 쿠폰번호를 입력해 주세요."
                         ></input>
-                        <div className={styles['btn']}>쿠폰등록</div>
+                        <div className={styles['btn']} onClick={inputCoupon}>
+                            쿠폰등록
+                        </div>
                     </div>
                 )}
-                <div className={cx('tab-title',{border_none : index===0})}>{getTitle()}</div>
+                <div className={cx('tab-title', { border_none: index === 0 })}>
+                    {getTitle()}
+                </div>
 
                 {index === 2 && (
                     <div className={styles['use-coupon']}>
                         <div className={styles['date']}>
-                            <ButtonBase className={styles['date-box']}>1주일</ButtonBase>
-                            <ButtonBase className={styles['date-box']}>1개월</ButtonBase>
-                            <ButtonBase className={styles['date-box']}>3개월</ButtonBase>
-                            <ButtonBase className={styles['date-box']}>6개월</ButtonBase>
+                            <ButtonBase className={styles['date-box']}>
+                                1주일
+                            </ButtonBase>
+                            <ButtonBase className={styles['date-box']}>
+                                1개월
+                            </ButtonBase>
+                            <ButtonBase className={styles['date-box']}>
+                                3개월
+                            </ButtonBase>
+                            <ButtonBase className={styles['date-box']}>
+                                6개월
+                            </ButtonBase>
                         </div>
                         <div className={styles['date-input-box']}>
                             <div className={styles['text']}>기간 입력</div>
                             <div className={styles['input']}>
-                                <input value={dateToYYYYMMDD(new Date(), '/')} />
+                                <input
+                                    value={dateToYYYYMMDD(new Date(), '/')}
+                                />
                             </div>
                             <div className={styles['line']}></div>
 
                             <div className={styles['input']}>
-                                <input value={dateToYYYYMMDD(new Date(), '/')} />
+                                <input
+                                    value={dateToYYYYMMDD(new Date(), '/')}
+                                />
                             </div>
-                            <ButtonBase className={styles['btn']}>조회</ButtonBase>
+                            <ButtonBase className={styles['btn']}>
+                                조회
+                            </ButtonBase>
                         </div>
                     </div>
                 )}
@@ -172,14 +220,20 @@ const CouponConatiner = (props) => {
                             {cp_list.length !== 0 ? (
                                 <CouponItemList cp_list={cp_list} />
                             ) : (
-                                <Message src={false} msg={'보유하고 있는 쿠폰이 없습니다.'} />
+                                <Message
+                                    src={false}
+                                    msg={'보유하고 있는 쿠폰이 없습니다.'}
+                                />
                             )}
                         </>
                     )}
                     {index === 1 && (
                         <>
                             {down_cp_list.length !== 0 ? (
-                                <DownCouponItemList cp_list={down_cp_list}  onClick={callCouponDownload}/>
+                                <DownCouponItemList
+                                    cp_list={down_cp_list}
+                                    onClick={callCouponDownload}
+                                />
                             ) : (
                                 <Message
                                     src={false}

@@ -50,3 +50,18 @@ export const downloadCoupon = async (token, cz_id) =>{
     const res = await axios.post(req, form_data);
     return res;
 };
+
+
+export const couponInput =async (token,cp_id) =>{
+
+    const req = Paths.api + 'user/coupon/input';
+    const form_data = {
+        cp_id: cp_id,
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.put(req, form_data);
+    console.log(res);
+    return res;
+}

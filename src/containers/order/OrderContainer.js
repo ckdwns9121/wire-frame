@@ -6,6 +6,7 @@ import React, {
     useRef,
 } from 'react';
 import { Paths } from 'paths';
+import { useSelector } from 'react-redux';
 import styles from './Order.module.scss';
 import classNames from 'classnames/bind';
 import CircleCheckBox from '../../components/checkbox/CircleCheckBox';
@@ -19,6 +20,7 @@ import { getOrderCoupons } from '../../api/coupon/coupon';
 import { useStore } from '../../hooks/useStore';
 import $script from 'scriptjs';
 import { user_order } from '../../api/order/order';
+import ScrollTop from '../../components/scrollTop/ScrollToTop';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -52,26 +54,26 @@ const checkReducer = (state, action) => {
 
 const OrderContainer = () => {
     const user_token = useStore();
+    const { user } = useSelector((state) => state.auth);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const { check1, check2 } = check;
-    const [toggle, setToggle] = useState(false);
-    const [payment, setPayment] = useState('만나서 직접 결제');
-    const [couponList, setCouponList] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [delivery_cost, setDeliveryCost] = useState(0); // 배달비
-    const [delivery_memo, setDeliveryMemo] = useState('');
-    const [order_memo, setOrderMemo] = useState('');
-    const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null);
+    const [toggle, setToggle] = useState(false); // 결제 동의
+    const [payment, setPayment] = useState('만나서 직접 결제'); //결제 방법
+    const [cp_list, setCouponList] = useState([]); //사용가능한 쿠폰
+    const [totalPrice, setTotalPrice] = useState(0); //총 결제금액
+    const [dlvCost, setDlvCost] = useState(0); // 배달비
+    const [dlvMemo, setDlvMemo] = useState(''); //배달메모
+    const [dlvMemoCheck, setDlvMemoCheck] = useState(false);
+    const [orderMemoCheck, setOrderMemoCheck] = useState(false);
+    const [orderMemo, setOrderMemo] = useState(''); //주문메모
+    const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
     const order_id = useRef(null);
+    const [cp_price, setCpPrice] = useState(0);
 
-
-
-    const onChangeDeleveryMemo = (e) => {
-        setDeliveryMemo(e.target.value);
-    };
-    const onChangeOrderMemo = (e) => {
-        setOrderMemo(e.target.value);
-    };
+    const onChangeDlvCheck = (e) => setDlvMemoCheck(e.target.checked);
+    const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
+    const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
+    const onChangeOrderMemo = (e) => setOrderMemo(e.target.value);
 
     const updateAllCheck = (e) => {
         dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
@@ -113,31 +115,41 @@ const OrderContainer = () => {
     //총 주문금액 구하기
     const getTotalPrice = async () => {
         if (user_token) {
-            const res = await getCartList(user_token);
-            console.log(res);
-            let price = 0;
-            let len = Object.keys(res).length;
+            try {
+                const res = await getCartList(user_token);
+                console.log(res);
+                if (res.data.msg === 'success') {
+                    let price = 0;
+                    const { query } = res.data;
+                    let len = Object.keys(query).length;
 
-            for (let i = 0; i < len - 2; i++) {
-                const {item ,options } = res[i];
-                console.log(res[i]);
-                price += parseInt(item.item_price) * parseInt(item.item_quanity);
+                    for (let i = 0; i < len - 2; i++) {
+                        const { item, options } = query[i];
+                        console.log(query[i]);
+                        price +=
+                            parseInt(item.item_price) *
+                            parseInt(item.item_quanity);
 
-                for(let j=0 ;j <options.length;j++){
-                    const {option_price} = options[j];
-                    price += parseInt(option_price) * parseInt(item.item_quanity);
+                        for (let j = 0; j < options.length; j++) {
+                            const { option_price } = options[j];
+                            price +=
+                                parseInt(option_price) *
+                                parseInt(item.item_quanity);
+                        }
+                    }
+
+                    if (query.PCD_PAYER_ID === null) {
+                        console.log(query.PCD_PAYER_ID);
+                        SET_PCD_PAYER_ID(query.PCD_PAYER_ID);
+                    } else {
+                        SET_PCD_PAYER_ID(query.PCD_PAYER_ID.pp_tno);
+                    }
+                    setTotalPrice(price);
+                    setDlvCost(query.delivery_cost);
                 }
+            } catch (e) {
+                console.log(e);
             }
-
-
-            if (res.PCD_PAYER_ID === null) {
-                console.log(res.PCD_PAYER_ID);
-                SET_PCD_PAYER_ID(res.PCD_PAYER_ID);
-            } else {
-                SET_PCD_PAYER_ID(res.PCD_PAYER_ID.pp_tno);
-            }
-            setTotalPrice(price);
-            setDeliveryCost(res.delivery_cost);
         }
     };
 
@@ -152,12 +164,25 @@ const OrderContainer = () => {
 
     //쿠폰이 있을시 옵션 렌더
     const renderCpList = () => {
-        const list = couponList.map((item) => (
+        const list = cp_list.map((item) => (
             <option key={item.cp_id} value={item.cp_id}>
-                {item.cp_id}
+                {item.cp_subject}
             </option>
         ));
         return <>{list}</>;
+    };
+
+    const onChangeCpPrice = (e) => {
+        console.log(e.target.value);
+        const cp_id = e.target.value;
+        if (cp_id !== 'default') {
+            const index = cp_list.findIndex((item) => item.cp_id === cp_id);
+            console.log(index);
+            setCpPrice(cp_list[index].cp_price);
+        }
+        else if(cp_id ==='default'){
+            setCpPrice(0);
+        }
     };
 
     const onClickOrder = async () => {
@@ -186,7 +211,7 @@ const OrderContainer = () => {
             let buyer_hp = ''; //고객 번호
             let buyer_email = ''; //고객 이메일
             let buy_goods = '테스트'; //구매하는 물건 이름
-            let buy_total = Number( parseInt(totalPrice) + parseInt(delivery_cost)); //가격
+            let buy_total = Number(parseInt(totalPrice) + parseInt(dlvCost)); //가격
             let buy_taxtotal = 0;
             let buy_istax = ''; //과세설정 DEFAULT :Y  비과세 N
             let order_num = order_id.current; //주문 번호
@@ -245,7 +270,7 @@ const OrderContainer = () => {
                 'http://devapi.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
 
-            PaypleCpayAuthCheck(obj);
+            // PaypleCpayAuthCheck(obj);
         });
     };
 
@@ -253,14 +278,37 @@ const OrderContainer = () => {
         getPayment();
         getUserCoupons();
         getTotalPrice();
+
+        const temp = JSON.parse(localStorage.getItem('requestMemo'));
+        console.log(temp);
+        if (temp.dlvMemo !== false) {
+            console.log(temp.dlvMemo);
+            setDlvMemoCheck(true);
+            setDlvMemo(temp.dlvMemo);
+        }
+        if (temp.orderMemo !== false) {
+            console.log(temp.orderMemo);
+            setOrderMemoCheck(true);
+            setOrderMemo(temp.orderMemo);
+        }
     }, []);
 
     useEffect(() => {
         isAllCheck();
     }, [isAllCheck]);
 
+    useEffect(() => {
+        localStorage.setItem(
+            'requestMemo',
+            JSON.stringify({
+                dlvMemo: dlvMemoCheck && dlvMemo,
+                orderMemo: orderMemoCheck && orderMemo,
+            }),
+        );
+    }, [dlvMemoCheck, orderMemoCheck, dlvMemo, orderMemo]);
+
     return (
-        <>
+        <ScrollTop>
             <div className={styles['container']}>
                 <div className={styles['content']}>
                     <div className={styles['title']}>주문하기</div>
@@ -268,7 +316,9 @@ const OrderContainer = () => {
                         <div className={styles['info-box']}>
                             <div className={styles['sub-title']}>배달정보</div>
                             <div className={styles['user-info']}>
-                                <div className={styles['name']}>김샌달</div>
+                                <div className={styles['name']}>
+                                    {user && user.name}
+                                </div>
                                 <div className={styles['addr']}>
                                     서울특별시 구로구 구로동 557, 101동
                                     101호(샌달아파트)
@@ -364,15 +414,20 @@ const OrderContainer = () => {
                                                 className={styles['check-box']}
                                             >
                                                 <SquareCheckBox
+                                                    id={'order'}
                                                     text={'자동저장'}
+                                                    check={orderMemoCheck}
+                                                    onChange={
+                                                        onChangeOrderCheck
+                                                    }
                                                 />
                                             </div>
                                         </div>
                                         <div className={styles['memo-input']}>
                                             <input
                                                 className={styles['input']}
-                                                value={delivery_memo}
-                                                onChange={onChangeDeleveryMemo}
+                                                value={orderMemo}
+                                                onChange={onChangeOrderMemo}
                                             />
                                         </div>
                                     </div>
@@ -381,15 +436,22 @@ const OrderContainer = () => {
                                             <div className={styles['text']}>
                                                 배달요청 사항
                                             </div>
-                                            <div className={styles['check-box']}>
-                                                <SquareCheckBox text={'자동저장'} />
+                                            <div
+                                                className={styles['check-box']}
+                                            >
+                                                <SquareCheckBox
+                                                    id={'dlv'}
+                                                    text={'자동저장'}
+                                                    check={dlvMemoCheck}
+                                                    onChange={onChangeDlvCheck}
+                                                />
                                             </div>
                                         </div>
                                         <div className={styles['memo-input']}>
                                             <input
                                                 className={styles['input']}
-                                                value={order_memo}
-                                                onChange={onChangeOrderMemo}
+                                                value={dlvMemo}
+                                                onChange={onChangeDeleveryMemo}
                                             />
                                         </div>
                                     </div>
@@ -435,8 +497,11 @@ const OrderContainer = () => {
                             </div>
                             <div className={styles['user-info']}>
                                 <div className={styles['coupon']}>
-                                    <select name="coupon">
-                                        <option value="cp1">
+                                    <select
+                                        name="coupon"
+                                        onChange={onChangeCpPrice}
+                                    >
+                                        <option value="default">
                                             적용할 쿠폰을 선택해주세요.
                                         </option>
                                         {renderCpList()}
@@ -456,11 +521,14 @@ const OrderContainer = () => {
                                     </div>
                                     <input className={styles['point-input']} />
                                     <ButtonBase className={styles['btn']}>
-                                        사용하기
+                                        전체사용
                                     </ButtonBase>
                                 </div>
                                 <div className={styles['user-point']}>
-                                    보유포인트 <span>5,000P</span>
+                                    보유포인트{' '}
+                                    <span>
+                                        {user && numberFormat(user.point)}P
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -483,7 +551,7 @@ const OrderContainer = () => {
                                         배달비용
                                     </div>
                                     <div className={styles['price']}>
-                                        {numberFormat(delivery_cost)}
+                                        {numberFormat(dlvCost)}
                                         <span>원</span>
                                     </div>
                                 </div>
@@ -492,7 +560,8 @@ const OrderContainer = () => {
                                         쿠폰할인
                                     </div>
                                     <div className={styles['price']}>
-                                        0<span>원</span>
+                                        -{numberFormat(cp_price)}
+                                        <span>원</span>
                                     </div>
                                 </div>
                                 <div className={styles['text-price']}>
@@ -500,7 +569,7 @@ const OrderContainer = () => {
                                         포인트사용
                                     </div>
                                     <div className={styles['price']}>
-                                        0<span>원</span>
+                                        -0<span>원</span>
                                     </div>
                                 </div>
                             </div>
@@ -510,7 +579,8 @@ const OrderContainer = () => {
                             <div className={styles['price']}>
                                 {numberFormat(
                                     parseInt(totalPrice) +
-                                        parseInt(delivery_cost),
+                                        parseInt(dlvCost) -
+                                        parseInt(cp_price),
                                 )}
                                 <span>원</span>
                             </div>
@@ -533,7 +603,7 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </ScrollTop>
     );
 };
 

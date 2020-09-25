@@ -17,8 +17,6 @@ const CartItem = (props) => {
     const { item_name, item_price, item_quanity ,cart_id} = props.item;
     const options = props.options;
 
-    console.log(options);
-
     const total_price =()=>{
         let total= parseInt(item_price) * parseInt(item_quanity);
         for(let i=0 ; i<options.length;i++){
@@ -27,13 +25,12 @@ const CartItem = (props) => {
         return total;
     }
 
-
     return (
         <div className={styles['cart-item']}>
             <div className={styles['check-box']}>
                 <div className={styles['check']}>
                     <SquareCheckBox 
-                    check={props.isChecked}
+                    check={props.checked}
                     onChange={()=>props.handleCheckChild(id)}
                     id={id}
                     />
@@ -63,7 +60,7 @@ const CartItem = (props) => {
                                 <Count plus={true} />
                             </IconButton>
                         </div>
-                        <div className={styles['box-item']}>수량 변경</div>
+                        <ButtonBase className={styles['box-item']} onClick={()=>{props.handleOpen(item_quanity)}}>수량 변경</ButtonBase>
                     </div>
                 </div>
             </div>
@@ -79,10 +76,10 @@ const CartItem = (props) => {
 };
 
 CartItem.PropsTypes = {
-    isChecked: PropsTypes.bool,
+    checked: PropsTypes.bool,
 };
 CartItem.defaultProps = {
-    isChecked: false,
+    checked: false,
 };
 
 export default React.memo(CartItem);

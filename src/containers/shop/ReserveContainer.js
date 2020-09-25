@@ -20,6 +20,7 @@ import {
 } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
 import { get_catergory, get_menulist } from '../../store/product/product';
+import ScrollTop from '../../components/scrollTop/ScrollToTop';
 
 function TabPanel(props) {
     const { children, value, index } = props;

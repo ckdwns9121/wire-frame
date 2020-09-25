@@ -1,4 +1,5 @@
 import React, { useCallback, useReducer, useState } from 'react';
+import {Paths} from 'paths';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import styles from './Asset.module.scss';
@@ -10,6 +11,7 @@ import Estimate from '../assets/Estimate';
 import { useDispatch } from 'react-redux';
 import { modalOpen } from '../../store/modal';
 import Loading from '../assets/Loading';
+import {useHistory} from 'react-router-dom';
 
 const reducer = (state, action) => ({
     ...state,
@@ -17,6 +19,7 @@ const reducer = (state, action) => ({
 });
 
 const EstmModal = (props) => {
+    const history = useHistory();
     const modalDispatch = useDispatch();
     const openAlert = useCallback((title, text, handleClick = () => {}) => {
         modalDispatch(modalOpen(false, title, text, handleClick));
@@ -46,7 +49,7 @@ const EstmModal = (props) => {
                 });
                 console.log(res);
                 if (res.data.msg === "성공") {
-                    openAlert('성공적으로 전송되었습니다!', '이메일을 확인해 주세요!');    
+                    openAlert('성공적으로 전송되었습니다!', '이메일을 확인해 주세요!',()=>history.push(Paths.ajoonamu.order));    
                 } else {
                     openAlert('전송이 실패했습니다.', '다시 시도해 주세요.');
                 }

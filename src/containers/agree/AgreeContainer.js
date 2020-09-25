@@ -5,6 +5,7 @@ import { Paths } from '../../paths';
 import Sidebar from '../../components/sidebar/Sidebar';
 import TermOfUse from '../../components/agree/TermOfUse';
 import Policy from '../../components/agree/Policy';
+import ScrollTop from '../../components/scrollTop/ScrollToTop';
 
 const LinkList = [
     { name: "개인정보처리방침", url: Paths.ajoonamu.policy },
@@ -23,7 +24,7 @@ export default ({ pathname }) => {
     }, []);
 
     return (
-        
+        <ScrollTop>
         <div className={styles['container']}>
             <Sidebar title={"약관 및 정책"} linkList={LinkList} active={pathname} />
             <div className={styles['content']}>
@@ -35,5 +36,6 @@ export default ({ pathname }) => {
                 </Switch>
             </div>
         </div>
+        </ScrollTop>
     );
 };

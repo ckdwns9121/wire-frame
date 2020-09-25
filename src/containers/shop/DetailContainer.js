@@ -13,10 +13,14 @@ import { ButtonBase } from '@material-ui/core';
 import Loading from '../../components/assets/Loading';
 import { numberFormat } from '../../lib/formatter';
 import { addCartItem } from '../../api/cart/cart';
-
+import {noAuthAddCart} from '../../api/noAuth/cart';
+import { useStore } from '../../hooks/useStore';
 import { getMenuInfo } from '../../api/menu/menu';
+import ScrollTop from '../../components/scrollTop/ScrollToTop';
 
 const DetailContainer = ({ item_id }) => {
+
+    const user_token = useStore(false);
     const history = useHistory();
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -34,24 +38,45 @@ const DetailContainer = ({ item_id }) => {
         console.log(res);
         setOtherMenuList(res);
     }, []);
+
+    //장바구니 담기
     const onClickCart = useCallback(async () => {
         setLoading(true);
         setSuccess(false);
-        try {
-            const res = await addCartItem(
-                item_id,
-                options,
-                quanity,
-            );
-            console.log(res);
-            setSuccess(true);
-        } catch (e) {
-            alert('Error!');
+        if (user_token) {
+            try {
+                const res = await addCartItem(
+                    user_token,
+                    item_id,
+                    options,
+                    quanity,
+                );
+                console.log(res);
+                setSuccess(true);
+            } catch (e) {
+                alert('Error!');
+            }
+        }
+        else {
+            try {
+                const res = await noAuthAddCart(
+                    item_id,
+                    options,
+                    quanity,
+                );
+                console.log('비회원 장바구니 담기');
+                console.log(res);
+                setSuccess(true);
+            } catch (e) {
+                alert('Error!');
+            }
         }
         setLoading(false);
         history.push(Paths.ajoonamu.cart);
-    }, [history, item_id, options, quanity]);
+    }, [history, item_id, options, quanity,user_token]);
 
+
+    //옵션아이템 클릭
     const setOptionItem = useCallback(() => {
         const add_option = menu.options
             .filter((option) => option.check)
@@ -59,6 +84,8 @@ const DetailContainer = ({ item_id }) => {
         setOptions(add_option);
     }, [menu]);
 
+
+    //수량 변경
     const onDecrement = useCallback(() => {
         if (quanity > 1) setQuanity(quanity - 1);
     }, [quanity]);
@@ -67,7 +94,9 @@ const DetailContainer = ({ item_id }) => {
         setQuanity(quanity + 1);
     }, [quanity]);
 
-    const getMenu = useCallback(async () => {
+
+    //메뉴 디테일 정보 가져오기
+    const getDetailMenu = useCallback(async () => {
         setLoading(true);
         try {
             const res = await getMenuInfo(item_id);
@@ -96,14 +125,15 @@ const DetailContainer = ({ item_id }) => {
 
     useEffect(() => {
         getOtherUserMenuApi();
-        getMenu();
-    }, [getMenu, getOtherUserMenuApi]);
+        getDetailMenu();
+    }, [getDetailMenu, getOtherUserMenuApi]);
 
     useEffect(() => {
         menu && setOptionItem();
     }, [menu, setOptionItem]);
 
     return (
+        <ScrollTop>
         <div className={styles['min-height']}>
             {loading ? (
                 <Loading open={true} />
@@ -248,6 +278,7 @@ const DetailContainer = ({ item_id }) => {
                 </>
             )}
         </div>
+        </ScrollTop>
     );
 };
 
