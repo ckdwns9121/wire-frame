@@ -8,6 +8,9 @@
             color: #222;
             padding-top: 80px;
             padding-bottom: 20px;
+            &.border_none{
+                border:none;
+            }
         }
     }
     .input-coupon {

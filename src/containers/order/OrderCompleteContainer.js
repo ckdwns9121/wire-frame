@@ -1,9 +1,18 @@
-import React, { useCallback, useState } from 'react';
-import OrderItem from '../../components/order/OrderItem';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import OrderItemList from '../../components/order/OrderItemList';
 import styles from './OrderComplete.module.scss';
 import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 import StickerModal from '../../components/modal/StickerModal';
+import { getDetailOrderView } from '../../api/order/orderItem';
+import { useStore } from '../../hooks/useStore';
+import Loading from '../../components/assets/Loading';
+import { numberFormat, stringToTel } from '../../lib/formatter';
+import { modalOpen } from '../../store/modal';
+
 const cx = cn.bind(styles);
 const str = (
     <>
@@ -15,121 +24,267 @@ const str = (
     </>
 );
 
-const OrderCompleteContainer = ({order_number}) => {
+const OrderCompleteContainer = ({ order_number }) => {
+    const user_token = useStore();
+    const history = useHistory();
+    const { user } = useSelector((state) => state.auth);
 
- 
+    const modalDispatch = useDispatch();
 
-    const [modalOpen, setModalOpen] = useState(false);
-    
-    const handleOpen = useCallback(() => setModalOpen(true), []);
-    const handleClose = useCallback(() => setModalOpen(false), []);
+    const openMessage = useCallback(
+        (isConfirm, title, text, handleClick = () => {}) => {
+            modalDispatch(modalOpen(isConfirm, title, text, handleClick));
+        },
+        [modalDispatch],
+    );
+
+    const [stickyOpen, setStickyOpen] = useState(false); //문구 서비스 모달
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [orders, setOrders] = useState(null);
+    const [payinfo, setPayInfo] = useState(null);
+    const [payple_info, setPaypleInfo] = useState(null);
+
+    const handleOpen = useCallback(() => setStickyOpen(true), []);
+    const handleClose = useCallback(() => setStickyOpen(false), []);
+
+    const getOrderInfo = useCallback(async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                const res = await getDetailOrderView(user_token, order_number);
+                console.log(res);
+                setOrders(res.orders);
+                setPayInfo(res.payinfo);
+                const temp = JSON.parse(res.payinfo.pp_result);
+                setPaypleInfo(temp);
+                console.log(temp);
+                setLoading(false);
+                setSuccess(true);
+            } catch (e) {
+                console.log(e);
+                setError(true);
+                openMessage(
+                    false,
+                    '주문번호가 존재하지 않습니다.',
+                    '주문번호를 확인해주세요',
+                    ()=>history.goBack()
+                );
+            }
+        }
+        setLoading(false);
+    }, [order_number, user_token]);
+
+    useEffect(() => {
+        if (!order_number) {
+            history.replace('/');
+        } else {
+            getOrderInfo();
+        }
+    }, [order_number, getOrderInfo, history]);
 
     return (
         <>
-            <div className={styles['container']}>
-                <div className={styles['content']}>
-                    <div className={styles['message']}>
-                        <div className={styles['title']}>
-                            주문이 완료되었습니다.
-                        </div>
-                        <div className={styles['msg']}>{str}</div>
-                        <div className={styles['order-number']}>
-                            주문번호 : {order_number}
-                        </div>
-                        <div className={styles['btn']}>
-                            <ButtonBase onClick={handleOpen} className={styles['item']}>문구서비스 신청</ButtonBase>
-                        </div>
-                    </div>
-                </div>
-                <div className={styles['view-content']}>
-                    <div className={styles['order-view']}>
-                        <div className={styles['title']}>주문 상세 내역</div>
-                        <div className={styles['order-list']}>
-                            <OrderItem center ={false} item_name={""} item_price={"5000"}/>
-                        </div>
-                    </div>
-                    <div className={styles['payment-view']}>
-                        <div className={styles['title']}>결제 내역</div>
-                        <div className={styles['box']}>
-                            <OrderInfoBox text={'주문번호'} value={'00054544547'} />
-                            <OrderInfoBox
-                                text={'주문일시'}
-                                value={'2019-11-12 16:44:22'}
-                            />
-                            <OrderInfoBox
-                                text={'결제방식'}
-                                value={'가상계좌 입금'}
-                            />
-                            <OrderInfoBox text={'결제금액'} value={'101,000원'} />
-                            <OrderInfoBox text={'입금자명'} value={'이창훈'} />
-                            <OrderInfoBox text={'입금계좌'} value={'국민은행'} paddingBottom={'10px'} />
-                            <OrderInfoBox text={''} value={'574845-23-568521 김종완'} />
-                            <OrderInfoBox
-                                text={'가상계좌 유효기간'}
-                                auto={true}
-                                value={'2020년 06월 09일 00시 00분 00초'}
-                            />
-                        </div>
-                    </div>
-                </div>
+            {loading ? (
+                <Loading open={true} />
+            ) : (
+                <>
+                    {success && (
+                        <>
+                            <div className={styles['container']}>
+                                <div className={styles['content']}>
+                                    <div className={styles['message']}>
+                                        <div className={styles['title']}>
+                                            주문이 완료되었습니다.
+                                        </div>
+                                        <div className={styles['msg']}>
+                                            {str}
+                                        </div>
+                                        <div className={styles['order-number']}>
+                                            주문번호 : {order_number}
+                                        </div>
+                                        <div className={styles['btn']}>
+                                            <ButtonBase
+                                                onClick={handleOpen}
+                                                className={styles['item']}
+                                            >
+                                                문구서비스 신청
+                                            </ButtonBase>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={styles['view-content']}>
+                                    <div className={styles['order-view']}>
+                                        <div className={styles['title']}>
+                                            주문 상세 내역
+                                        </div>
+                                        <div className={styles['order-list']}>
+                                            {orders && (
+                                                <OrderItemList
+                                                    items={orders.items}
+                                                    center={false}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className={styles['payment-view']}>
+                                        <div className={styles['title']}>
+                                            결제 내역
+                                        </div>
+                                        <div className={styles['box']}>
+                                            <OrderInfoBox
+                                                text={'주문번호'}
+                                                value={
+                                                    orders && orders.order_id
+                                                }
+                                            />
+                                            <OrderInfoBox
+                                                text={'주문일시'}
+                                                value={
+                                                    orders &&
+                                                    orders.receipt_time
+                                                }
+                                            />
+                                            <OrderInfoBox
+                                                text={'결제방식'}
+                                                value={payinfo && payinfo.pp_pg}
+                                            />
+                                            <OrderInfoBox
+                                                text={'결제금액'}
+                                                value={
+                                                    payinfo &&
+                                                    `${numberFormat(
+                                                        payinfo.pp_price,
+                                                    )}원`
+                                                }
+                                            />
+                                            <OrderInfoBox
+                                                text={'입금자명'}
+                                                value={user && user.name}
+                                            />
+                                            <OrderInfoBox
+                                                text={'입금계좌'}
+                                                value={'국민은행'}
+                                                paddingBottom={'10px'}
+                                            />
+                                            <OrderInfoBox
+                                                text={''}
+                                                value={
+                                                    '574845-23-568521 김종완'
+                                                }
+                                            />
+                                            <OrderInfoBox
+                                                text={'가상계좌 유효기간'}
+                                                auto={true}
+                                                value={
+                                                    '2020년 06월 09일 00시 00분 00초'
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div className={styles['user-content']}>
-                    <div className={styles['user-info']}>
-                        <div className={styles['title']}>배달정보</div>
-                        <div className={styles['context']}>
-                            <UserInfoBox text={'받는분'} value={'이창훈'} />
-                            <UserInfoBox text={'연락처'} value={'010-8885-7406'} />
-                            <UserInfoBox
-                                text={'배달 요청 시간'}
-                                value={'2020년 05월 17일 오전 9시 30분'}
-                            />
-                            <UserInfoBox
-                                text={'배달 주소'}
-                                value={'서울특별시 구로구 구로동 557, 2층'}
-                            />
-                            <UserInfoBox
-                                text={'요청 사항'}
-                                value={'빨리 배달 해주세요~~'}
-                            />
-                        </div>
-                    </div>
-                    <div className={styles['user-info']}>
-                        <div className={styles['title']}>주문정보</div>
-                        <div className={styles['context']}>
-                            <UserInfoBox text={'주문자'} value={'김종완'} />
-                            <UserInfoBox text={'연락처'} value={'010-8885-7406'} />
-                            <UserInfoBox text={'이메일'} value={'dfd1123@naver.com'} />
-                            <UserInfoBox text={'주문 종류'} value={'예약주문'} />
-                            <UserInfoBox
-                                text={'요청 사항'}
-                                value={'빨리 배달 해주세요~~'}
-                            />
-                        </div>
-                    </div>
-                    <div className={styles['user-info']}>
-                        <div className={styles['title']}>매장정보</div>
-                        <div className={styles['context']}>
-                            <UserInfoBox
-                                text={'매장명'}
-                                value={'아주나무 혜화점'}
-                            />
-                            <UserInfoBox
-                                text={'매장주소'}
-                                value={'서울특별시 구로구 구로동 557'}
-                            />
-                            <UserInfoBox text={'연락처'} value={'02-458-8888'} />
-                        </div>
-                    </div>
+                                <div className={styles['user-content']}>
+                                    <div className={styles['user-info']}>
+                                        <div className={styles['title']}>
+                                            배달정보
+                                        </div>
+                                        <div className={styles['context']}>
+                                            <UserInfoBox
+                                                text={'받는분'}
+                                                value={user && user.name}
+                                            />
+                                            <UserInfoBox
+                                                text={'연락처'}
+                                                value={
+                                                    user &&
+                                                    user.hp &&
+                                                    stringToTel(user.hp)
+                                                }
+                                            />
+                                            <UserInfoBox
+                                                text={'배달 요청 시간'}
+                                                value={
+                                                    '2020년 05월 17일 오전 9시 30분'
+                                                }
+                                            />
+                                            <UserInfoBox
+                                                text={'배달 주소'}
+                                                value={
+                                                    '서울특별시 구로구 구로동 557, 2층'
+                                                }
+                                            />
+                                            <UserInfoBox
+                                                text={'요청 사항'}
+                                                value={'빨리 배달 해주세요~~'}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className={styles['user-info']}>
+                                        <div className={styles['title']}>
+                                            주문정보
+                                        </div>
+                                        <div className={styles['context']}>
+                                            <UserInfoBox
+                                                text={'주문자'}
+                                                value={'김종완'}
+                                            />
+                                            <UserInfoBox
+                                                text={'연락처'}
+                                                value={'010-8885-7406'}
+                                            />
+                                            <UserInfoBox
+                                                text={'이메일'}
+                                                value={'dfd1123@naver.com'}
+                                            />
+                                            <UserInfoBox
+                                                text={'주문 종류'}
+                                                value={'예약주문'}
+                                            />
+                                            <UserInfoBox
+                                                text={'요청 사항'}
+                                                value={'빨리 배달 해주세요~~'}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className={styles['user-info']}>
+                                        <div className={styles['title']}>
+                                            매장정보
+                                        </div>
+                                        <div className={styles['context']}>
+                                            <UserInfoBox
+                                                text={'매장명'}
+                                                value={'아주나무 혜화점'}
+                                            />
+                                            <UserInfoBox
+                                                text={'매장주소'}
+                                                value={
+                                                    '서울특별시 구로구 구로동 557'
+                                                }
+                                            />
+                                            <UserInfoBox
+                                                text={'연락처'}
+                                                value={'02-458-8888'}
+                                            />
+                                        </div>
+                                    </div>
 
-                    <div className={styles['order-cancle']}>
-                        <ButtonBase className={styles['btn']}>주문취소하기</ButtonBase>
-                    </div>
-                </div>
-            </div>
-            <StickerModal
-                open={modalOpen}
-                handleClose={handleClose}
-            />
+                                    <div className={styles['order-cancle']}>
+                                        <ButtonBase className={styles['btn']}>
+                                            주문취소하기
+                                        </ButtonBase>
+                                    </div>
+                                </div>
+                            </div>
+                            <StickerModal
+                                open={stickyOpen}
+                                handleClose={handleClose}
+                            />
+                        </>
+                    )}
+                </>
+            )}
         </>
     );
 };

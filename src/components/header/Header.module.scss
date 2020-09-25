@@ -93,6 +93,7 @@ $header-height: 100px;
                 position: relative;
             }
             .search {
+
                 width: 320px;
                 box-sizing: border-box;
                 border: 2px solid #ebebeb;
@@ -102,6 +103,7 @@ $header-height: 100px;
                 padding-left: 24px;
             }
             .icon {
+                cursor: pointer;
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%);

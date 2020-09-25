@@ -1,15 +1,12 @@
 import React from 'react';
 import styles from './Addr.module.scss';
 import { ButtonBase } from '@material-ui/core';
-
-const AddrItem = ({ jibunAddr, roadAddr, onClick }) => {
-    const handleClick = () => {
-        const data = jibunAddr;
-        onClick(data);
-    };
+import cn from 'classnames/bind';
+const cx = cn.bind(styles);
+const AddrItem = ({ jibunAddr, roadAddr, onClick ,active }) => {
 
     return (
-        <div className={styles['address-item']} onClick={handleClick}>
+        <div className={cx('address-item',{active:active})} onClick={onClick}>
             <JibunAddrBox jibunAddr={jibunAddr}></JibunAddrBox>
             <RoadAddrBox roadAddr={roadAddr}></RoadAddrBox>
         </div>

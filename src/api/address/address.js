@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
-const key= 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU';
+
+const URL = "http://www.juso.go.kr/addrlink/addrLinkApi.do";
+const KEY= 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU=';
 
 export const getDeliveryList = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
-
     axios.defaults.baseURL = req;
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.get['Context-Type'] = 'application/json';
@@ -17,7 +18,6 @@ export function getCoordinates() {
       navigator.geolocation.getCurrentPosition(resolve, reject);
     });
 }
-
 
 export const insertAddress = async (token ,post_num, addr1,addr2,extra,lat,lng) => {
     const req = Paths.api + `user/delivery`;
@@ -37,14 +37,14 @@ export const insertAddress = async (token ,post_num, addr1,addr2,extra,lat,lng) 
 }
 
 
-export const searchAddress = (searchAddr) =>{
+export const searchAddress = (searchAddr) => {
     return fetch(
-        `http://www.juso.go.kr/addrlink/addrLinkApi.do?currrentPage=1&countPerPage=100&keyword=${searchAddr}&confmKey=${key}=&resultType=json`,
+        `${URL}?confmKey=${KEY}&currentPage=1&countPerPage=10&keyword=${searchAddr}&resultType=json`,
     )
         .then((res) => res.json())
         .then((json) => json.results.juso)
         .catch((err) => console.log(err));
-}
+};
 
 export const selectAddress =async (token,delivery_id) =>{
 
@@ -73,9 +73,8 @@ export const deleteAddr = async (token, delivery_id) => {
 
 
 export const getActiveAddr = async (token) => {
+    
     const req = `${Paths.api}user/delivery/list`;
-
-
     axios.defaults.baseURL = req;
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.get['Context-Type'] = 'application/json';

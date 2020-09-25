@@ -261,8 +261,10 @@ export const getPreferMenuList = async () => {
         },
     };
     const result = await axios.get(req, config);
-    return result.data.query.items_prefer;
-};
+    console.log(result);
+    return result.data.query;
+}
+
 
 export const getMenuList = async (id) => {
     const req = Paths.api + `user/item/list?offset&limit&ca_id=${id}`;
