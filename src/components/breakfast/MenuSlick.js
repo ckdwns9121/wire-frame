@@ -10,7 +10,7 @@ import item4 from '../svg/breakfast/item4.png';
 class MenuSlick extends Component {
     render() {
         const settings = {
-            speed: 2000,
+            speed: 1000,
             slidesToShow: 4,
             slidesToScroll: 4,
         };
@@ -21,9 +21,9 @@ class MenuSlick extends Component {
                 <VariesMenuItem src={item3} name={'앙버터'} />
                 <VariesMenuItem src={item4} name={'과일 도시락'} />
                 <VariesMenuItem src={item1} name={'불고기 샌드위치'} />
-                {/* <VariesMenuItem src={item2} name={'클럽 샌드위치'} />
-                    <VariesMenuItem src={item3} name={'앙버터'} />
-                    <VariesMenuItem src={item4} name={'과일 도시락'} /> */}
+                <VariesMenuItem src={item2} name={'클럽 샌드위치'} />
+                <VariesMenuItem src={item3} name={'앙버터'} />
+                <VariesMenuItem src={item4} name={'과일 도시락'} />
             </Slider>
         );
     }
