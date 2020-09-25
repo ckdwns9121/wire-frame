@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Find.module.scss';
 import Button from 'components/button/Button';
-const FindEmailContainer = ({ email }) => {
-    
+import { useModal } from '../../hooks/useModal';
+
+const FindEmailContainer = () => {
+    const openModal = useModal();    
     const history = useHistory();
+
+    const [email, setEmail] = useState('');
 
     const onClickLogin = () => {
         history.push(Paths.ajoonamu.signin);
@@ -13,6 +17,26 @@ const FindEmailContainer = ({ email }) => {
     const onClickFindPw = () => {
         history.push(Paths.ajoonamu.recovery_pw);
     };
+
+    useEffect(() => {
+        const sd = sessionStorage.getItem('find_item');
+        if (sd !== null && sd !== undefined) {
+            const { email: findEmail } = JSON.parse(sd);
+            if (findEmail) {
+                setEmail(findEmail);
+            } else {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+                history.push(Paths.ajoonamu.recovery_id);
+            }
+        } else {
+            openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+            history.push(Paths.ajoonamu.recovery_id);
+        }
+        return () => {
+            sessionStorage.removeItem('find_item');
+        }
+    }, [openModal, history]);
+
     return (
         <>
             <div className={styles['container']}>
@@ -23,7 +47,7 @@ const FindEmailContainer = ({ email }) => {
                             찾으시려는 이메일 주소는
                             <br />
                             <div className={styles['user']}>
-                                dfd11**@naver.com
+                                {email}
                             </div>
                             입니다.
                         </div>

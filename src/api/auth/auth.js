@@ -102,29 +102,50 @@ export const findId = async (name, hp) => {
     const req = Paths.api + 'user/find_id';
 
     const form_data = {
-        name: name,
-        hp: hp,
+        name,
+        hp,
     };
     const res = await axios.post(req, form_data);
     return res;
 };
+export const findPw = async (name, hp, email) => {
+    const req = Paths.api + 'user/find_pw';
 
+    const form_data = {
+        name,
+        hp,
+        email,
+    };
+    const res = await axios.post(req, form_data);
+    return res;
+};
+export const changePw = async (email, name, hp, pw, pw_c) => {
+    const req = Paths.api + 'user/change_pw';
+
+    const form_data = {
+        email, name, hp, pw, pw_c
+    };
+
+    const res = await axios.post(req, form_data);
+    return res;
+}
 
 export const requestPostMobileAuth = async (pv_hp) => {
     const req = Paths.api + 'mobile/auth';
 
     const form_data = {
-        pv_hp
+        pv_hp,
     };
     const res = await axios.post(req, form_data);
     return res;
-}
+};
 export const requestPostMobileAuthCheck = async (pv_hp, pv_vnumm) => {
     const req = Paths.api + 'mobile/confirm';
 
     const form_data = {
-        pv_hp, pv_vnumm
+        pv_hp,
+        pv_vnumm,
     };
     const res = await axios.post(req, form_data);
     return res;
-}
+};

@@ -15,7 +15,8 @@ const SignAuthInput = ({
     buttonTitle,
     placeholder,
     name,
-    disabled,
+    input_disabled = false,
+    button_disabled = false,
     onClick = () => {}
 }) => {
     return (
@@ -28,8 +29,9 @@ const SignAuthInput = ({
                 value={initValue}
                 placeholder={placeholder}
                 onChange={onChange}
-            ></input>
-            <ButtonBase onClick={onClick} className={cx('auth-btn', { disabled })}>{buttonTitle}</ButtonBase>
+                disabled={input_disabled}
+            />
+            <ButtonBase onClick={onClick} className={cx('auth-btn', { disabled: button_disabled })}>{buttonTitle}</ButtonBase>
         </div>
     );
 };
