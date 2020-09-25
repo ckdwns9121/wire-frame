@@ -4,7 +4,12 @@ import React from 'react';
 
 const Select = ({ check }) => {
     return (
-        <svg width="24" height="24" viewBox="0 0 24 24" style={{cursor:'pointer'}}>
+        <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            style={{ cursor: 'pointer' }}
+        >
             <g transform="translate(-753 -827)">
                 <g
                     transform="translate(753 827)"
@@ -15,15 +20,12 @@ const Select = ({ check }) => {
                     <circle cx="12" cy="12" r="12" stroke="none" />
                     <circle cx="12" cy="12" r="11.5" fill="none" />
                 </g>
-                {check && (
-                    <circle
-                        cx="8"
-                        cy="8"
-                        r="8"
-                        transform="translate(757 831)"
-                        fill="#007246"
-                    />
-                )}
+                <circle
+                    cx="8" cy="8" r="8"
+                    transform="translate(757 831)"
+                    fill={check ? "#007246" : "#fff"}
+                    style={{ transition: 'fill .2s ease-in-out' }}
+                />
             </g>
         </svg>
     );

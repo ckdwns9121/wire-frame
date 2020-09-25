@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import classnames from 'classnames/bind';
 import { requestPostMobileAuth, requestPostMobileAuthCheck } from '../../api/auth/auth';
 import { useModal } from '../../hooks/useModal';
-import { isCellPhoneForm } from '../../lib/formatChecker';
+import { isCellPhoneForm, onlyNumber } from '../../lib/formatChecker';
 import { Paths } from '../../paths';
 import Check from 'components/svg/coupon/Check';
 import SignAuthInput from '../sign/SignAuthInput';
@@ -13,7 +13,7 @@ import AuthTimer from './AuthTimer';
 
 const cn = classnames.bind(styles);
 
-export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth}) => {
+export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel = false }) => {
 
     const openModal = useModal();
     const [authNumber, setAuthNumber] = useState('');
@@ -80,11 +80,13 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth}) => {
                 inputType={'text'}
                 name={'phoneNumber'}
                 initValue={phoneNumber}
+                onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
                 onChange={e => setPhoneNumber(e.target.value)}
                 onClick={phoneAuth ? () => {} : auth_start ? onClickReSendAuth : getMobileAuthNumber}
                 placeholder={'숫자만 입력해 주세요.'}
                 buttonTitle={phoneAuth ? '인증 완료' : auth_start ? '인증번호 재발송' : '인증번호 발송'}
                 input_disabled={phoneAuth}
+                noLabel={noLabel}
                 button_disabled={auth_start || phoneAuth}
             />
             <div className={cn('auth-btn', { not_view: !auth_start })}>
@@ -93,8 +95,10 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth}) => {
                     initValue={authNumber}
                     name={'authNumber'}
                     onClick={sendMobileAuthNumber}
+                    onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
                     onChange={e => setAuthNumber(e.target.value)}
                     buttonTitle={'인증하기'}
+                    noLabel={noLabel}
                 />
                 <div className={styles['timer']}>
                     {phoneAuth ? (<Check on={true} />) : (<AuthTimer start={start_timer} />)}

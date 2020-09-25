@@ -62,7 +62,7 @@ export const updatePassword = async (token, pw_o, pw, pw_c) => {
 
 export const localLogin = async (email, password) => {
     const req = Paths.api + 'user/login';
-
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         email: email,
         password: password,
@@ -87,6 +87,7 @@ export const localRegister = async (
     agree_marketing,
 ) => {
     const req = Paths.api + 'user/register';
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         email,
         password,
@@ -100,7 +101,7 @@ export const localRegister = async (
 
 export const findId = async (name, hp) => {
     const req = Paths.api + 'user/find_id';
-
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         name,
         hp,
@@ -110,7 +111,7 @@ export const findId = async (name, hp) => {
 };
 export const findPw = async (name, hp, email) => {
     const req = Paths.api + 'user/find_pw';
-
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         name,
         hp,
@@ -121,7 +122,7 @@ export const findPw = async (name, hp, email) => {
 };
 export const changePw = async (email, name, hp, pw, pw_c) => {
     const req = Paths.api + 'user/change_pw';
-
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         email, name, hp, pw, pw_c
     };
@@ -132,7 +133,7 @@ export const changePw = async (email, name, hp, pw, pw_c) => {
 
 export const requestPostMobileAuth = async (pv_hp) => {
     const req = Paths.api + 'mobile/auth';
-
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         pv_hp,
     };
@@ -141,7 +142,7 @@ export const requestPostMobileAuth = async (pv_hp) => {
 };
 export const requestPostMobileAuthCheck = async (pv_hp, pv_vnumm) => {
     const req = Paths.api + 'mobile/confirm';
-
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         pv_hp,
         pv_vnumm,
@@ -149,3 +150,12 @@ export const requestPostMobileAuthCheck = async (pv_hp, pv_vnumm) => {
     const res = await axios.post(req, form_data);
     return res;
 };
+
+export const requestPutSecession = async (token, agree_secession) => {
+    const req = Paths.api + 'user/mypage/update_status';
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    
+    const res = await axios.put(req, { agree_secession });
+    return res;
+}

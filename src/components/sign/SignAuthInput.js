@@ -10,6 +10,7 @@ const cx = classNames.bind(styles);
 const SignAuthInput = ({
     inputType,
     onChange,
+    onKeyDown,
     label,
     initValue,
     buttonTitle,
@@ -17,11 +18,12 @@ const SignAuthInput = ({
     name,
     input_disabled = false,
     button_disabled = false,
+    noLabel = false,
     onClick = () => {}
 }) => {
     return (
         <div className={cx('sign-input')}>
-            <div className={styles['label']}>{label}</div>
+            {!noLabel && <div className={styles['label']}>{label}</div>}
             <input
                 className={styles['auth']}
                 name={name}
@@ -29,6 +31,7 @@ const SignAuthInput = ({
                 value={initValue}
                 placeholder={placeholder}
                 onChange={onChange}
+                onKeyDown={onKeyDown}
                 disabled={input_disabled}
             />
             <ButtonBase onClick={onClick} className={cx('auth-btn', { disabled: button_disabled })}>{buttonTitle}</ButtonBase>

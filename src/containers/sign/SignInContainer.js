@@ -67,11 +67,15 @@ const SignInContainer = () => {
                 if (res.status === 200) {
                     // 회원가입 안되있는 이메일
                     if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
-                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.',);
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
                     }
                     // 비밀번호가 틀렸을 때
                     else if (res.data.msg === '비밀번호가 틀렸습니다.') {
-                        openModal(res.data.msg, '비밀번호를 다시 한 번 확인해 주세요.',);
+                        openModal(res.data.msg, '비밀번호를 다시 한 번 확인해 주세요.');
+                    }
+                    // 탈퇴한 이메일일 때.
+                    else if (res.data.msg === '탈퇴한 이메일입니다.') {
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
                     }
                     // 로그인 성공 했을 때.
                     else if (res.data.access_token) {

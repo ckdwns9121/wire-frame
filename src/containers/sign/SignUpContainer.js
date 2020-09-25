@@ -14,7 +14,6 @@ import {
 } from '../../api/auth/auth';
 import { useModal } from '../../hooks/useModal';
 import { isEmailForm, isPasswordForm } from '../../lib/formatChecker';
-import { modalOpen } from '../../store/modal';
 import AuthPhone from '../../components/assets/AuthPhone';
 
 const cx = classNames.bind(styles);
@@ -154,6 +153,7 @@ const SignUpContainer = () => {
         if (isPasswordForm(password)) {
             try {
                 const res = await localRegister(email, password, password_confirm, check3);
+                console.log(res);
                 history.push(`${Paths.ajoonamu.complete}/${email}`);
             } catch (e) {
                 openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
@@ -167,8 +167,11 @@ const SignUpContainer = () => {
         if (isEmailForm(email)) {
             try {
                 const res = await localLogin(email);
+                console.log(res);
                 if (res.data.msg === '비밀번호가 틀렸습니다.') {
                     openModal('중복된 이메일입니다.', '다른 이메일로 시도해 주세요.');
+                } else if(res.data.msg === '탈퇴한 이메일입니다.') {
+                    openModal(res.data.msg, '다른 이메일로 시도해 주세요.');
                 } else {
                     openModal('사용 가능한 이메일입니다.', '다음 절차를 계속하세요.');
                     setOverlap(true);
