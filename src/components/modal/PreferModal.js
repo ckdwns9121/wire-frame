@@ -3,6 +3,8 @@ import styles from './PreferModal.module.scss';
 import Dialog from '@material-ui/core/Dialog';
 import CloseIcon from '../svg/modal/CloseIcon';
 import { ButtonBase, IconButton } from '@material-ui/core';
+import { numberFormat } from '../../lib/formatter';
+import { onlyNumber } from '../../lib/formatChecker';
 
 const ReserveModal = (props) => {
     const [value, setValue] = useState(1);
@@ -46,13 +48,15 @@ const ReserveModal = (props) => {
                 <div className={styles['modal-input-box']}>
                     <input
                         className={styles['value-input']}
-                        value={props.budget}
+                        onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
+                        value={numberFormat(props.budget)}
                         onChange={props.onChangeBudget}
                     />
                     <span>원 부터</span>
                     <input
                         className={styles['value-input']}
-                        value={props.endBudget}
+                        onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
+                        value={numberFormat(props.endBudget)}
                         onChange={props.onChangeEndBudget}
                     />
                     <span>원 까지</span>

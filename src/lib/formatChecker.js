@@ -15,6 +15,5 @@ export const isPasswordForm = (asValue) => {
 };
 
 export const onlyNumber = value => {
-
     return /[0-9]/.test(value) || value.length > 1;
 };

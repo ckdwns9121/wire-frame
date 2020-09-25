@@ -1,10 +1,17 @@
 export function stringNumberToInt(strNumber) {
     // 구분자가 들어간 수치 데이터를 숫자로 변경
-    return strNumber !== "" ? parseInt(strNumber.replace(/,/g, '')) : 0;
+    if (strNumber !== undefined && strNumber !== null) {
+        return strNumber !== "" ? parseInt(strNumber.replace(/,/g, '')) : 0;
+    }
+    return 0;
 }
 export function numberFormat(x) {
     // 수치 데이터에 구분자(,)를 넣음
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if (x !== undefined && x !== null ) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    } else {
+        return "0";
+    }
 }
 export function numberToKorean(number) {
     // 수치 데이터를 한글 표현으로 변경

@@ -15,13 +15,14 @@ import Button from '../../components/button/Button';
 import CheckBox from '../../components/checkbox/CheckBox';
 import { ButtonBase } from '@material-ui/core';
 import { getCartList } from '../../api/cart/cart';
-import { numberFormat } from '../../lib/formatter';
+import { numberFormat, stringNumberToInt } from '../../lib/formatter';
 import { getOrderCoupons } from '../../api/coupon/coupon';
 import { useStore } from '../../hooks/useStore';
 import $script from 'scriptjs';
 import { user_order } from '../../api/order/order';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import { onlyNumber } from '../../lib/formatChecker';
+import { useModal } from '../../hooks/useModal';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -54,6 +55,7 @@ const checkReducer = (state, action) => {
 
 const OrderContainer = () => {
     const user_token = useStore();
+    const openModal = useModal();
     const { user } = useSelector((state) => state.auth);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const { check1, check2 } = check;
@@ -67,6 +69,7 @@ const OrderContainer = () => {
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
     const [orderMemo, setOrderMemo] = useState(''); //주문메모
     const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
+    const [usePoint, setUsePoint] = useState(0);
     const order_id = useRef(null);
     const [cp_price, setCpPrice] = useState(0);
 
@@ -92,6 +95,10 @@ const OrderContainer = () => {
             secondPhone.current.focus();
         }
         e.target.value = e.target.value.substr(0, 4);
+    }, []);
+
+    const onChangeUsePoint = useCallback(e => {
+
     }, []);
 
     const updateAllCheck = (e) => {
@@ -296,16 +303,17 @@ const OrderContainer = () => {
         getTotalPrice();
 
         const temp = JSON.parse(localStorage.getItem('requestMemo'));
-        console.log(temp);
-        if (temp.dlvMemo !== false) {
-            console.log(temp.dlvMemo);
-            setDlvMemoCheck(true);
-            setDlvMemo(temp.dlvMemo);
-        }
-        if (temp.orderMemo !== false) {
-            console.log(temp.orderMemo);
-            setOrderMemoCheck(true);
-            setOrderMemo(temp.orderMemo);
+        if (temp) {
+            if (temp.dlvMemo !== false) {
+                console.log(temp.dlvMemo);
+                setDlvMemoCheck(true);
+                setDlvMemo(temp.dlvMemo);
+            }
+            if (temp.orderMemo !== false) {
+                console.log(temp.orderMemo);
+                setOrderMemoCheck(true);
+                setOrderMemo(temp.orderMemo);
+            }
         }
     }, []);
 
@@ -542,8 +550,20 @@ const OrderContainer = () => {
                                     <div className={styles['text']}>
                                         사용할 포인트
                                     </div>
-                                    <input className={styles['point-input']} />
-                                    <ButtonBase className={styles['btn']}>
+                                    <input className={styles['point-input']}
+                                        value={numberFormat(usePoint)}
+                                        onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
+                                        onChange={e => {
+                                            const value = stringNumberToInt(e.target.value);
+                                            if (user.point < value) {
+                                                openModal('보유하신 포인트가 부족합니다!', '보유하신 포인트보다 많게 사용할 수 없습니다.');
+                                                setUsePoint(parseInt(user.point));
+                                            } else {
+                                                setUsePoint(value);
+                                            }
+                                        }}
+                                    />
+                                    <ButtonBase className={styles['btn']} onClick={() => setUsePoint(parseInt(user.point))}>
                                         전체사용
                                     </ButtonBase>
                                 </div>
@@ -592,7 +612,7 @@ const OrderContainer = () => {
                                         포인트사용
                                     </div>
                                     <div className={styles['price']}>
-                                        -0<span>원</span>
+                                        -{numberFormat(usePoint)}<span>원</span>
                                     </div>
                                 </div>
                             </div>

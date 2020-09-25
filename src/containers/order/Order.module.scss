@@ -40,7 +40,7 @@ $pd: 20px;
                         outline: none;
                         height: 56px;
                         box-sizing: border-box;
-                        padding-left: $pd;
+                        padding: 0 $pd;
                     }
 
                     .name {
@@ -162,6 +162,8 @@ $pd: 20px;
                         }
                         .point-input {
                             width: 280px;
+                            text-align: right;
+                            font-size: 1.5rem;
                         }
                         .btn {
                             margin-left: $pd / 2;

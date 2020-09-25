@@ -21,6 +21,7 @@ import {
 import { getCategory } from '../../api/category/category';
 import { get_catergory, get_menulist } from '../../store/product/product';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
+import { stringNumberToInt } from '../../lib/formatter';
 
 function TabPanel(props) {
     const { children, value, index } = props;
@@ -85,16 +86,8 @@ const ReserveContainer = ({ tab = '0' }) => {
 
     //전체 예산 입력
     const onChangeBudget = (e) => {
-        const re = /^[0-9\b]+$/;
-        // if value is not blank, then test the regex
-        if (e.target.value === '' || re.test(e.target.value)) {
-            setBudget(e.target.value);
-        }
-    };
-
-    // 모달창 설정 버튼 클릭 => 맞춤 주문 설정.
-    const onCustomOrder = () => {
-        setOpen(false);
+        const value = stringNumberToInt(e.target.value);
+        setBudget(value);
     };
 
     const getProductList = useCallback(async () => {
