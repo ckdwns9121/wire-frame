@@ -26,9 +26,8 @@ export default ({ match }) => {
     const { params } = match;
 
     const getNoticeList = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
         try {
-            const res = await requestNoticeList(token);
+            const res = await requestNoticeList();
             setNoticeList(res.notices);
         } catch (e) {
             alert('잘못된 접근입니다.');
@@ -37,9 +36,8 @@ export default ({ match }) => {
     }, [history]);
 
     const getNoticeItem = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
         try {
-            const res = await requestNoticeItem(token, parseInt(params.id));
+            const res = await requestNoticeItem(parseInt(params.id));
             if (res.notice !== null && res.notice !== undefined) {
                 setNoticeItem(res.notice);
             }

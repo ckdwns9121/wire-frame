@@ -14,7 +14,6 @@ import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 
 import KakaoMap from '../../../components/map/KakaoMap';
-import {useStore} from '../../../hooks/useStore';
 import {getMainMenuList} from '../../../api/menu/menu';
 import Loading from 'components/assets/Loading';
 
@@ -26,13 +25,14 @@ const HomeContainer = () => {
 
     const [loading, setLoading] = useState(false);
     const [menuList, setMenuList] = useState([]);
-    const user_token = useStore();
 
     const getMainMenu = async()=>{
         setLoading(true);
-        if(user_token){  
-            const res = await getMainMenuList(user_token);
+        try {
+            const res = await getMainMenuList();
             setMenuList(res);
+        } catch (e) {
+            alert('error!');
         }
         setLoading(false);
     }
@@ -71,7 +71,7 @@ const HomeContainer = () => {
                     </ul>
                     {loading ? <Loading open={true}/> :   
                     <>
-                    <MenuListView  menuList={menuList} onClick={onClickDetailItem}/>
+                        <MenuListView  menuList={menuList} onClick={onClickDetailItem}/>
                     </>
                     }
                 

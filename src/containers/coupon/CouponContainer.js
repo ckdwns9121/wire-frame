@@ -92,7 +92,6 @@ const CouponConatiner = (props) => {
             setLoading(true);
             try {
                 const res = await downloadCoupon(user_token, cz_id);
-                console.log(res);
                 if (res.data.msg === "이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.") {
                     openAlert("이미 다운로드 한 쿠폰입니다.", res.data.msg);
                 } else {
@@ -124,10 +123,6 @@ const CouponConatiner = (props) => {
             setIndex(parseInt(query.tab));
         }
     }, [query]);
-
-    useEffect(()=>{
-        console.log(down_cp_list);
-    },[down_cp_list])
 
     return (
         <div className={styles['container']}>
@@ -174,10 +169,7 @@ const CouponConatiner = (props) => {
                             {cp_list.length !== 0 ? (
                                 <CouponItemList cp_list={cp_list} />
                             ) : (
-                                <Message
-                                    src={false}
-                                    msg={'보유하고 있는 쿠폰이 없습니다.'}
-                                />
+                                <Message src={false} msg={'보유하고 있는 쿠폰이 없습니다.'} />
                             )}
                         </>
                     )}

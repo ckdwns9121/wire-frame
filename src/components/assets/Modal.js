@@ -31,9 +31,13 @@ export default ({ confirm, title, text, handleClick = () => {}, open }) => {
         onClose();
     }, [handleClick, onClose]);
 
+    const onEnter = useCallback(e => {
+        console.log(e);
+    }, []);
+
     return (
         <>
-            <div className={cn('modal', { confirm,  open })}>
+            <div className={cn('modal', { confirm,  open })} onKeyPress={onEnter}>
                 <div className={styles['area']}>
                     <div className={cn('content')}>
                         <h3 className={styles['title']}>{title}</h3>

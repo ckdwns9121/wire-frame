@@ -21,8 +21,6 @@ import {
 import { getCategory } from '../../api/category/category';
 import { get_catergory, get_menulist } from '../../store/product/product';
 
-
-
 function TabPanel(props) {
     const { children, value, index } = props;
     return (
@@ -38,8 +36,6 @@ function TabPanel(props) {
 }
 
 const ReserveContainer = ({ tab = '0' }) => {
-
-    const user_token = useStore();
     const { categorys, items } = useSelector((state) => state.product);
     const dispatch = useDispatch();
 
@@ -73,13 +69,15 @@ const ReserveContainer = ({ tab = '0' }) => {
 
     const getCustomList = async () => {
         setLoading(true);
-        if(user_token){
-        const res = await getCustomMenuList();
-        const test = await getPreferMenuList(user_token);
-        console.log("추천메뉴");
-        console.log(test);
-        // console.log(res);
-        setPreferMenuList(res);
+        try {
+            const res = await getCustomMenuList();
+            const test = await getPreferMenuList();
+            console.log('추천메뉴');
+            console.log(test);
+            // console.log(res);
+            setPreferMenuList(res);
+        } catch {
+            alert('오류!');
         }
         setLoading(false);
     };
@@ -101,14 +99,14 @@ const ReserveContainer = ({ tab = '0' }) => {
     const getProductList = useCallback(async () => {
         setLoading(true);
 
-        if (user_token && categorys.length === 1) {
-            const res = await getCategory(user_token);
+        if (categorys.length === 1) {
+            const res = await getCategory();
             res.sort((a, b) => a.ca_id - b.ca_id);
             // 카테고리를 분류 순서로 정렬.
             dispatch(get_catergory(res));
             let arr = [];
             for (let i = 0; i < res.length; i++) {
-                const result = await getMenuList(user_token, res[i].ca_id);
+                const result = await getMenuList(res[i].ca_id);
                 const temp = { ca_id: res[i].ca_id, items: result };
                 arr.push(temp);
             }
@@ -117,7 +115,7 @@ const ReserveContainer = ({ tab = '0' }) => {
         }
 
         setLoading(false);
-    }, [categorys, dispatch, user_token]);
+    }, [categorys, dispatch]);
 
     const renderContent = useCallback(() => {
         const list = categorys.map((category, index) => (
@@ -150,7 +148,6 @@ const ReserveContainer = ({ tab = '0' }) => {
         ));
 
         return <>{list}</>;
-        
     }, [categorys, preferMenuList, tab_index, renderMenuList, items]);
 
     const renderMenuList = useCallback(
@@ -173,24 +170,24 @@ const ReserveContainer = ({ tab = '0' }) => {
                 </>
             );
         },
-        [items,onClickMenuItem],
+        [items, onClickMenuItem],
     );
 
-    const onClickMenuItem = useCallback((item_id) =>{
-        console.log(item_id);
-        history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
-    },[history]);
+    const onClickMenuItem = useCallback(
+        (item_id) => {
+            console.log(item_id);
+            history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
+        },
+        [history],
+    );
 
     useEffect(() => {
         getProductList();
     }, []);
 
-    useEffect(()=>{
-        if(user_token){
-         history.replace(`${Paths.ajoonamu.shop}?tab=${tab_index}`);
-        }
-    },[tab_index,history,user_token])
-
+    useEffect(() => {
+        history.replace(`${Paths.ajoonamu.shop}?tab=${tab_index}`);
+    }, [tab_index, history]);
 
     return (
         <>

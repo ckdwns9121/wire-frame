@@ -40,7 +40,7 @@ const AddressContainer = () => {
         try {
             const res = await getDeliveryList(user_token);
             console.log(res);
-            setDeliveryAddrs(res.data.query.reverse());
+            setDeliveryAddrs(res.data.query);
         } catch (e) {
             console.log(e);
         }
@@ -52,10 +52,7 @@ const AddressContainer = () => {
 
     //검색버튼 클릭
     const onClickSearch = useCallback(async () => {
-        if (searchAddr === '') {
-            alert('검색어를 입력해주세요.~');
-            return;
-        } else {
+        if (searchAddr !== '') {
             const result = await callSearchApi();
             setAddrs(result);
         }
@@ -70,7 +67,7 @@ const AddressContainer = () => {
     //검색 모달 오픈
     const handleOpen = useCallback(() => {
         if (searchAddr === '') {
-            alert('검색어를 입력해주세요!!.');
+            openMessage(false, '검색어가 없습니다!', '검색어를 입력해 주세요.');
             return;
         } else {
             setOpen(true);
@@ -84,20 +81,16 @@ const AddressContainer = () => {
     }, []);
 
     //엔터키 추가
-    const handleKeyPress = useCallback(
-        (e) => {
-            if (e.key === 'Enter') {
-                handleOpen();
-            }
-        },
-        [handleOpen],
-    );
+    const handleKeyPress = useCallback((e) => {
+        if (e.key === 'Enter') {
+            handleOpen();
+        }
+    },[handleOpen]);
 
     const onClickInsertAddr = useCallback(() => {
-        console.log(detailAddr);
         setOpen(false);
         setDetailAddr('');
-    }, [detailAddr]);
+    }, []);
 
     //검색어 변경
     const onChangeSearchAddr = useCallback((e) => {

@@ -23,17 +23,19 @@ $value2: 22px;
         height: 200px;
         position: relative;
         display: flex;
+        text-align: left;
         border: 1px solid #dbdbdb;
         border-radius: 10px;
         margin-top: 24px;
         background-color: #fff;
         .down {
             min-width: 100px;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             box-sizing: border-box;
-            border-right: 1px dashed #DBDBDB;
+            border-right: 1px dashed #dbdbdb;
         }
         .info {
             width: 100%;
@@ -46,7 +48,9 @@ $value2: 22px;
                 color: #222;
                 margin-bottom: 29px;
             }
-            .date, .sale , .sub-name {
+            .date,
+            .sale,
+            .sub-name {
                 margin-top: 8px;
             }
         }

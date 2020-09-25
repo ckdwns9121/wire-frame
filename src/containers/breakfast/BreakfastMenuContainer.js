@@ -37,8 +37,6 @@ function TabPanel(props) {
 }
 
 const BreakfastMenuContainer = ({ menu = '0' }) => {
-    const user_token = useStore();
-
     const [menu_list, setMenuList] = useState([]);
 
     const new_category = [
@@ -101,27 +99,22 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
     //임의로 설정한 ca_id (메뉴분류 값) 을 가지고 실제 메뉴 불러오기
     const getProductList = useCallback(async () => {
         setLoading(true);
-        if (user_token) {
-            let arr = [];
-            try {
-                for (let i = 0; i < new_category.length; i++) {
-                    const result = await getMenuList(
-                        user_token,
-                        new_category[i].ca_id,
-                    );
-                    const temp = {
-                        ca_id: new_category[i].ca_id,
-                        items: result,
-                    };
-                    arr.push(temp);
-                }
-                setMenuList(arr);
-            } catch (e) {
-                console.error(e);
+        let arr = [];
+        try {
+            for (let i = 0; i < new_category.length; i++) {
+                const result = await getMenuList(new_category[i].ca_id);
+                const temp = {
+                    ca_id: new_category[i].ca_id,
+                    items: result,
+                };
+                arr.push(temp);
             }
+            setMenuList(arr);
+        } catch (e) {
+            console.error(e);
         }
         setLoading(false);
-    }, [user_token, new_category]);
+    }, [new_category]);
 
     // 아이템 카테고리가 존재하면 그 갯수만큼 패널 생성
     const renderContent = useCallback(() => {
@@ -143,10 +136,8 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
 
     //탭이 바뀌면 url 변경
     useEffect(() => {
-        if (user_token) {
-            history.replace(`${Paths.ajoonamu.breakfast}/menu?tab=${tab_index}`);
-        }
-    }, [tab_index, history, user_token]);
+        history.replace(`${Paths.ajoonamu.breakfast}/menu?tab=${tab_index}`);
+    }, [tab_index, history]);
 
     return (
         <>
@@ -191,7 +182,15 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                                     하루의 시작은 샌달이 책임져드립니다
                                 </p>
                                 <div className={styles['button-area']}>
-                                    <ButtonBase className={styles['button']}>
+                                    <ButtonBase
+                                        className={styles['button']}
+                                        onClick={() =>
+                                            history.push(
+                                                Paths.ajoonamu.support +
+                                                    '/qna/write',
+                                            )
+                                        }
+                                    >
                                         상담문의
                                     </ButtonBase>
                                 </div>
@@ -202,26 +201,88 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
             ) : (
                 <div className={styles['configure']}>
                     <div className={styles['contain']}>
-                        <Configure src={basicBanner} level={{ name: 'BASIC', value: '3,000', color: '#FDD800' }}
-                            content={{ title: '가성비 최고! 간편 식단', one: '메인메뉴 1개로 구성된 간편식단입니다.', two: '매일 다르게 또는 요일별로 메뉴를 지정할 수 있습니다.', three: '메인메뉴 : 샌드위치, 유부초밥, 주먹밥, 샐러드', four: '구성에 따라 가격변동이 있을 수 있습니다.'}}/>
-                        <Configure src={plusBanner} level={{ name: 'PLUS', value: '4,000', color: '#008762' }}
-                            content={{ title: '샌달 BEST! 기본 식단', one: '메인메뉴와 서브메뉴로 구성된 기본식단입니다.', two: '구성에 따라 가격변동이 있을 수 있습니다. (구성변경가능)', three: '메인메뉴 : 샌드위치, 유부초밥, 주먹밥, 샐러드 ', four: '서브메뉴 : 컵과일, 음료, 계란 등'}}/>
-                        <Configure src={premiumBanner} level={{ name: 'PREMIUM', value: '5,000', color: '#EA5A2A' }}
-                            content={{ title: '최고의 구성! 프리미엄 식단', one: '팀 또는 기업단위로 다양한 메뉴를 즐길 수 있는 프리미엄 식단입니다.', two: '메인메뉴 2~3가지와 서브메뉴로 구성되어 있습니다.', three: '월 단위로 구성되는 패키지 입니다.', four: '구성에 따라 가격변동이 있을 수 있습니다.'}}/>
+                        <Configure
+                            src={basicBanner}
+                            level={{
+                                name: 'BASIC',
+                                value: '3,000',
+                                color: '#FDD800',
+                            }}
+                            content={{
+                                title: '가성비 최고! 간편 식단',
+                                one: '메인메뉴 1개로 구성된 간편식단입니다.',
+                                two:
+                                    '매일 다르게 또는 요일별로 메뉴를 지정할 수 있습니다.',
+                                three:
+                                    '메인메뉴 : 샌드위치, 유부초밥, 주먹밥, 샐러드',
+                                four:
+                                    '구성에 따라 가격변동이 있을 수 있습니다.',
+                            }}
+                        />
+                        <Configure
+                            src={plusBanner}
+                            level={{
+                                name: 'PLUS',
+                                value: '4,000',
+                                color: '#008762',
+                            }}
+                            content={{
+                                title: '샌달 BEST! 기본 식단',
+                                one:
+                                    '메인메뉴와 서브메뉴로 구성된 기본식단입니다.',
+                                two:
+                                    '구성에 따라 가격변동이 있을 수 있습니다. (구성변경가능)',
+                                three:
+                                    '메인메뉴 : 샌드위치, 유부초밥, 주먹밥, 샐러드 ',
+                                four: '서브메뉴 : 컵과일, 음료, 계란 등',
+                            }}
+                        />
+                        <Configure
+                            src={premiumBanner}
+                            level={{
+                                name: 'PREMIUM',
+                                value: '5,000',
+                                color: '#EA5A2A',
+                            }}
+                            content={{
+                                title: '최고의 구성! 프리미엄 식단',
+                                one:
+                                    '팀 또는 기업단위로 다양한 메뉴를 즐길 수 있는 프리미엄 식단입니다.',
+                                two:
+                                    '메인메뉴 2~3가지와 서브메뉴로 구성되어 있습니다.',
+                                three: '월 단위로 구성되는 패키지 입니다.',
+                                four:
+                                    '구성에 따라 가격변동이 있을 수 있습니다.',
+                            }}
+                        />
                     </div>
                     <div className={styles['divider']} />
                     <div className={styles['contain']}>
                         <h2 className={styles['menu-title']}>샌달 식단표</h2>
                         <p className={styles['sub-title']}>Sample Menu</p>
-                        <div data-aos='fade-up'>
-                            <img className={styles['menu-image']} src={SampleMenu} alt="식단표" />
+                        <div data-aos="fade-up">
+                            <img
+                                className={styles['menu-image']}
+                                src={SampleMenu}
+                                alt="식단표"
+                            />
                         </div>
                         <div className={styles['sub-area']}>
-                            <p>모든 메뉴와 구성은 고객의 입맛에 따라 원하시는 메뉴로 재구성이 가능합니다.</p>
+                            <p>
+                                모든 메뉴와 구성은 고객의 입맛에 따라 원하시는
+                                메뉴로 재구성이 가능합니다.
+                            </p>
                             <p>재료 수급에 따라 식단표와 상이할 수 있습니다.</p>
                         </div>
                         <div className={styles['button-area']}>
-                            <ButtonBase className={styles['button']} onClick={() => history.push(Paths.ajoonamu.support + '/qna/write')}>
+                            <ButtonBase
+                                className={styles['button']}
+                                onClick={() =>
+                                    history.push(
+                                        Paths.ajoonamu.support + '/qna/write',
+                                    )
+                                }
+                            >
                                 상담문의
                             </ButtonBase>
                         </div>

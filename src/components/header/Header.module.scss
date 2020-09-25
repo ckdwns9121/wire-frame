@@ -67,11 +67,13 @@ $header-height: 100px;
         @include wireframe;
 
         .header-logo {
+            display: table;
             height: $header-height;
             cursor: pointer;
             .logo {
+                display: table-cell;
+                vertical-align: middle;
                 width: 120px;
-                height: 100px;
             }
         }
 

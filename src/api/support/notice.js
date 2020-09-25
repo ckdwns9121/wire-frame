@@ -10,12 +10,11 @@ const list = [
     { id: 6, title: 'TEST 공지사항입니다.', created_at: new Date('2020-06-10'), content: '안녕하세요 아주나무입니다. 더욱 나누며 더욱 겸손히 믿을 수 있는 원재료로 건강하고 맛있게 찾아봡겠습니다 ^^' },
 ];
 
-export const requestNoticeList = async (token, offset, limit) => {
+export const requestNoticeList = async (offset, limit) => {
     const req = Paths.api + 'user/notice/list';
     const config = {
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
         },
         params: {
             offset, limit
@@ -27,12 +26,11 @@ export const requestNoticeList = async (token, offset, limit) => {
     return { notices: list };
 };
 
-export const requestNoticeItem = async (token, id) => {
+export const requestNoticeItem = async (id) => {
     const req = Paths.api + 'user/notice/show';
     const config = {
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
         },
         params: {
             id

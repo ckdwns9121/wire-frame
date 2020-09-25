@@ -373,7 +373,7 @@ const OrderContainer = () => {
                                                 className={styles['input']}
                                                 value={delivery_memo}
                                                 onChange={onChangeDeleveryMemo}
-                                            ></input>
+                                            />
                                         </div>
                                     </div>
                                     <div className={styles['item']}>
@@ -381,12 +381,8 @@ const OrderContainer = () => {
                                             <div className={styles['text']}>
                                                 배달요청 사항
                                             </div>
-                                            <div
-                                                className={styles['check-box']}
-                                            >
-                                                <SquareCheckBox
-                                                    text={'자동저장'}
-                                                />
+                                            <div className={styles['check-box']}>
+                                                <SquareCheckBox text={'자동저장'} />
                                             </div>
                                         </div>
                                         <div className={styles['memo-input']}>
@@ -394,7 +390,7 @@ const OrderContainer = () => {
                                                 className={styles['input']}
                                                 value={order_memo}
                                                 onChange={onChangeOrderMemo}
-                                            ></input>
+                                            />
                                         </div>
                                     </div>
                                 </div>

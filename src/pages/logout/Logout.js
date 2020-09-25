@@ -1,37 +1,43 @@
 import React, { useCallback, useEffect } from 'react';
 import { localLogout } from '../../api/auth/auth';
 import { Paths } from '../../paths';
-import {update_user_info,logout} from '../../store/auth/auth';
-import {get_address} from '../../store/address/address';
-import {  useDispatch } from 'react-redux';
+import { logout } from '../../store/auth/auth';
+import { get_address } from '../../store/address/address';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../../store/modal';
 
 export default ({ history }) => {
     const dispatch = useDispatch();
+    const modalDispatch = useDispatch();
+
+    const openMessage = useCallback((isConfirm,title, text, handleClick = () => {}) => {
+        modalDispatch(modalOpen(isConfirm, title, text, handleClick));
+    }, [modalDispatch]);
 
     const onLogoutListener = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
         if (token) {
             try {
                 const res = await localLogout(token);
-                if (res.status === "success") {
+                if (res.status === 'success') {
                     dispatch(logout());
                     dispatch(get_address(null));
-                    alert('성공적으로 로그아웃 되셨습니다.');
+                    openMessage(false, '로그아웃 성공!', '성공적으로 로그아웃 되었습니다.');
                     sessionStorage.removeItem('access_token');
                 } else {
-                    alert('치명적인 에러!');
+                    openMessage(false, '치명적인 에러!');
                 }
             } catch (e) {
-                alert('유효하지 않은 토큰입니다!');
+                openMessage(false, '유효하지 않은 토큰입니다!', '잠시 후 다시 시도해 주세요!');
             }
         } else {
-            alert('잘못된 접근입니다.');
+            openMessage(false, '잘못된 접근입니다.', '잠시 후 다시 시도해 주세요!');
         }
         history.replace(Paths.index);
-    }, [history]);
+    }, [dispatch, history, openMessage]);
 
     useEffect(() => {
         onLogoutListener();
     }, [onLogoutListener]);
     return <></>;
-}
+};

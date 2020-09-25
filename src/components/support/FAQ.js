@@ -47,9 +47,8 @@ export default () => {
     }, [openIndex]);
 
     const getFAQList = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
         try {
-            const res = await requestFAQList(token, quesCategory);
+            const res = await requestFAQList(quesCategory);
             setList(res);
         } catch (e) {
             alert('잘못된 접근입니다.');
