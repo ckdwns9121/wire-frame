@@ -9,13 +9,13 @@ const DownCouponItem = (props) => {
         // cp_id,
         cz_datetime,
         // cz_download,
-        // cz_end,
+        cz_end,
         // cz_id,
         // cz_limit,
         // cz_minimum,
         // cz_period,
         cz_price,
-        // cz_start,
+        cz_start,
         cz_subject,
         // cz_target,
     } = props.item;
@@ -26,10 +26,10 @@ const DownCouponItem = (props) => {
             </div>
             <div className={styles['info']}>
                 <div className={styles['pd-box']}>
-                    <CouponEventName event_name={`첫 주문 ${numberFormat(cz_price)} 원 할인 쿠폰`} />
+                    <CouponEventName event_name={cz_subject} />
                     <CouponSale sale={cz_price} />
                     <CouponEventSub sub_name={cz_subject} />
-                    <CouponDate date={cz_datetime} />
+                    <CouponDate start={cz_start}  end={cz_end}/>
                 </div>
             </div>
         </div>
@@ -44,8 +44,8 @@ function CouponSale({ sale }) {
 function CouponEventSub({ sub_name }) {
     return (<div className={styles['sub-name']}>{sub_name}</div>);
 }
-function CouponDate({ date }) {
-    return (<div className={styles['date']}>{date}</div>);
+function CouponDate({ start,end }) {
+    return (<div className={styles['date']}>{start} ~ {end}</div>);
 }
 function CouponDown({ check }) {
     return (
@@ -54,7 +54,6 @@ function CouponDown({ check }) {
     <img src={DownCoupon} alt="다운" /> :
         <CouponCheck/>
     }
-    
     </>
     );
 }

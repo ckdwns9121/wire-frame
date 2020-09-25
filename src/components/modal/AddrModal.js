@@ -14,7 +14,7 @@ const AddressModal = (props) => {
     const {
         handleClose,
         onChangeAddr,
-        onSearchClick,
+        onClickSearch,
         // onInsertAddr,
         onChangeDetail,
         onClickAddrItem,
@@ -47,7 +47,7 @@ const AddressModal = (props) => {
                     ></input>
                     <img
                         className={styles['icon']}
-                        onClick={onSearchClick}
+                        onClick={onClickSearch}
                         src={searchIcon}
                         alt="search"
                     />

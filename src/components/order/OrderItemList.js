@@ -1,10 +1,10 @@
 import React from 'react';
 import OrderItem from './OrderItem';
 
-const OrderItemList =({items})=>{
+const OrderItemList =({items ,center})=>{
     console.log(items);
     const list  = items.map((item,index)=>(
-        <OrderItem {...item} key={index}/>
+        <OrderItem {...item} key={index} center={center}/>
     ))
     return(
         <>{list}</>

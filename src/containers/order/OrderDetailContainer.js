@@ -83,13 +83,13 @@ const OrderDetailContainer = (props) => {
                 <div className={styles['order-detail-view']}>
                     <div className={styles['order-item-list']}>
                         {item && 
-                            <OrderItemList items ={item.orders.items}/>
+                            <OrderItemList items ={item.orders.items} center={true}/>
                         }
                     </div>
                 </div>
             </div>
             <div className={styles['detail-box']}>
-                <div className={styles['title']}>배달 정보</div>
+                <div className={styles['title']}>배달정보</div>
                 <div className={styles['order-detail-view']}>
                     <div className={styles['context']}>
                         <UserInfoBox text={'받는분'} value={user && user.name} />
@@ -113,7 +113,7 @@ const OrderDetailContainer = (props) => {
                 </div>
             </div>
             <div className={styles['detail-box']}>
-                <div className={styles['title']}>주문 정보</div>
+                <div className={styles['title']}>주문정보</div>
                 <div className={styles['order-detail-view']}>
                     <div className={styles['context']}>
                         <UserInfoBox text={'주문자'} value={user && user.name} />
@@ -155,7 +155,7 @@ const OrderDetailContainer = (props) => {
                     </div>
                 </div>
                 <div className={styles['order-info']}>
-                    <div className={styles['title']}>결제 금액</div>
+                    <div className={styles['title']}>결제금액</div>
                     <div className={styles['order-detail-view']}>
                         <div className={styles['order-box']}>
                         <OrderInfoBox text={'주문금액'} value={item && numberFormat(item.orders.total_price)} />

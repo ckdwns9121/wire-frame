@@ -70,6 +70,7 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             const res = await getMyCoupons(user_token);
+            console.log(res);
             setCpList(res);
         }
         setLoading(false);
