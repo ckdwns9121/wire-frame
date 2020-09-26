@@ -217,6 +217,8 @@ const OrderContainer = () => {
         const res = await user_order(user_token);
         order_id.current = res.data.query;
 
+        console.log("주문 1단계");
+        console.log(res);
         $script(payple_url, () => {
             /*global PaypleCpayAuthCheck*/
 
@@ -294,7 +296,7 @@ const OrderContainer = () => {
                 'http://devapi.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
 
-            PaypleCpayAuthCheck(obj);
+           PaypleCpayAuthCheck(obj);
         });
     };
 

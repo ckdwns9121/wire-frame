@@ -28,8 +28,8 @@ const OrderDetailContainer = (props) => {
     const [payinfo, setPayInfo] = useState(null);
     const [payple_info , setPaypleInfo] = useState(null);
 
-
     const getOrderInfo = useCallback(async () => {
+
         if (user_token) {
             setLoading(true);
             const res = await getDetailOrderView(user_token, order_id);
@@ -110,7 +110,7 @@ const OrderDetailContainer = (props) => {
                         />
                         <UserInfoBox
                             text={'배달 주소'}
-                            value={orders && orders.s_addr1}
+                            value={orders && `${orders.s_addr1} ${orders.s_addr2}`}
                         />
                         <UserInfoBox
                             text={'요청 사항'}
@@ -152,7 +152,7 @@ const OrderDetailContainer = (props) => {
                             <UserInfoBox text={'매장명'} value={orders && orders.shop_name} />
                             <UserInfoBox
                                 text={'매장주소'}
-                                value={orders && orders.shop_addr1}
+                                value={orders && `${orders.shop_addr1} ${orders.shop_addr2}`}
                             />
                             <UserInfoBox
                                 text={'연락처'}

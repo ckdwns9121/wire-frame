@@ -23,6 +23,7 @@ const OrderListContainer = () => {
         setLoading(true);
         if (user_token) {
             const res = await getOrderList(user_token);
+            console.log(res);
             setOrderList(res);
         }
         setLoading(false);

@@ -12,6 +12,7 @@ import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
 import { numberFormat, stringToTel } from '../../lib/formatter';
 import { modalOpen } from '../../store/modal';
+import {order_cancle} from '../../api/order/order';
 
 const cx = cn.bind(styles);
 const str = (
@@ -29,6 +30,9 @@ const OrderCompleteContainer = ({ order_number }) => {
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
 
+
+
+    
     const modalDispatch = useDispatch();
 
     const openMessage = useCallback(
@@ -75,6 +79,28 @@ const OrderCompleteContainer = ({ order_number }) => {
         }
         setLoading(false);
     }, [order_number, user_token]);
+
+
+    const userOrderCancle = async ()=>{
+        if(user_token){
+            openMessage(true,'해당 상품을 취소하시겠습니까?','취소를 원하시면 예를 눌러주세요', async() =>{
+
+                try{
+                    const res = await order_cancle(user_token,order_number);
+                    console.log(res);   
+                    if(res.data.msg.indexOf('이미 취소 된 거래건 입니다.')){
+                        openMessage(false,'이미 취소된 거래건 입니다.');
+                    }
+                    else{
+                        openMessage(false,'정삭적으로 취소되었습니다.');
+                    }
+                }
+                catch(e){
+                    console.error(e);
+                }
+            })
+        }
+    }
 
     useEffect(() => {
         if (!order_number) {
@@ -211,9 +237,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             />
                                             <UserInfoBox
                                                 text={'배달 주소'}
-                                                value={
-                                                    '서울특별시 구로구 구로동 557, 2층'
-                                                }
+                                                value={orders && `${orders.s_addr1} ${orders.s_addr2}`} 
                                             />
                                             <UserInfoBox
                                                 text={'요청 사항'}
@@ -228,15 +252,15 @@ const OrderCompleteContainer = ({ order_number }) => {
                                         <div className={styles['context']}>
                                             <UserInfoBox
                                                 text={'주문자'}
-                                                value={'김종완'}
+                                                value={user && user.name}
                                             />
                                             <UserInfoBox
                                                 text={'연락처'}
-                                                value={'010-8885-7406'}
+                                                value={user && stringToTel(user.hp)}
                                             />
                                             <UserInfoBox
                                                 text={'이메일'}
-                                                value={'dfd1123@naver.com'}
+                                                value={user && user.email}
                                             />
                                             <UserInfoBox
                                                 text={'주문 종류'}
@@ -255,23 +279,23 @@ const OrderCompleteContainer = ({ order_number }) => {
                                         <div className={styles['context']}>
                                             <UserInfoBox
                                                 text={'매장명'}
-                                                value={'아주나무 혜화점'}
+                                                value={orders && orders.shop_name}
                                             />
                                             <UserInfoBox
                                                 text={'매장주소'}
                                                 value={
-                                                    '서울특별시 구로구 구로동 557'
+                                                    orders && `${orders.shop_addr1} ${orders.shop_addr2}`
                                                 }
                                             />
                                             <UserInfoBox
                                                 text={'연락처'}
-                                                value={'02-458-8888'}
+                                                value={orders && stringToTel(orders.shop_hp)}
                                             />
                                         </div>
                                     </div>
 
                                     <div className={styles['order-cancle']}>
-                                        <ButtonBase className={styles['btn']}>
+                                        <ButtonBase className={styles['btn']} onClick={userOrderCancle}>
                                             주문취소하기
                                         </ButtonBase>
                                     </div>
