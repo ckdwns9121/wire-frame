@@ -56,7 +56,8 @@ const checkReducer = (state, action) => {
 const OrderContainer = () => {
     const user_token = useStore();
     const openModal = useModal();
-    const { user } = useSelector((state) => state.auth);
+    const { user } = useSelector(state => state.auth);
+    const { address } = useSelector(state => state.address);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const { check1, check2 } = check;
     const [toggle, setToggle] = useState(false); // 결제 동의
@@ -344,8 +345,8 @@ const OrderContainer = () => {
                                     {user && user.name}
                                 </div>
                                 <div className={styles['addr']}>
-                                    서울특별시 구로구 구로동 557, 101동
-                                    101호(샌달아파트)
+                                    {address}, 
+                                    {/* 101호(샌달아파트) */}
                                 </div>
                                 <div className={styles['hp']}>
                                     <div className={styles['first']}>

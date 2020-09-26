@@ -14,7 +14,7 @@ import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 
 import KakaoMap from '../../../components/map/KakaoMap';
-import {getMainMenuList} from '../../../api/menu/menu';
+import { getMainMenuList } from '../../../api/menu/menu';
 import Loading from 'components/assets/Loading';
 const cx = cn.bind(styles);
 const HomeContainer = () => {
@@ -24,7 +24,7 @@ const HomeContainer = () => {
     const [loading, setLoading] = useState(false);
     const [menuList, setMenuList] = useState([]);
 
-    const getMainMenu = async()=>{
+    const getMainMenu = async () => {
         setLoading(true);
         try {
             const res = await getMainMenuList();
@@ -62,11 +62,7 @@ const HomeContainer = () => {
                         <li onClick={() => setCategory(4)} className={cx('item', { active: category === 4})}>기타</li>
                     </ul>
                     {loading ? <Loading open={true}/> :   
-                    <>
-                        <MenuListView  menuList={menuList} onClick={onClickDetailItem}/>
-                    </>
-                    }
-                
+                    <MenuListView  menuList={menuList} onClick={onClickDetailItem}/>}
                 </div>
                 <div className={styles['banner-img']} onClick ={()=>{   history.push(`${Paths.ajoonamu.shop}?tab=${0}`) ; window.scrollTo(0,0)}}>
                     <img src={bannerImg} alt="배너" />
@@ -95,10 +91,7 @@ const HomeContainer = () => {
                         </div>
                     </div>
                 </div>
-                <Banner
-                    title={'샌달의 서비스'}
-                    subtitle={'샌달은 고객님께 신선함까지 함께 배달해드려요'}
-                />
+                <Banner title={'샌달의 서비스'} subtitle={'샌달은 고객님께 신선함까지 함께 배달해드려요'} />
                 <div className={styles['service-box']}>
                     <div className={styles['service-type']}>
                         <div className={styles['box']} data-aos='fade-up'>

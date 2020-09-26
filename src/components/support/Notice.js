@@ -6,6 +6,7 @@ import { requestNoticeItem, requestNoticeList } from '../../api/support/notice';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
 import { dateToYYYYMMDD } from '../../lib/formatter';
+import Loading from '../assets/Loading';
 
 
 const numbering = (number) => {
@@ -19,6 +20,7 @@ const numbering = (number) => {
 }
 
 export default ({ match }) => {
+    const [loading, setLoading] = useState(false);
     const [noticeList, setNoticeList] = useState([]);
     const [noticeItem, setNoticeItem] = useState({});
     const history = useHistory();
@@ -26,6 +28,7 @@ export default ({ match }) => {
     const { params } = match;
 
     const getNoticeList = useCallback(async () => {
+        setLoading(true);
         try {
             const res = await requestNoticeList();
             setNoticeList(res.notices);
@@ -33,9 +36,11 @@ export default ({ match }) => {
             alert('잘못된 접근입니다.');
             history.replace(Paths.index);
         }
+        setLoading(false);
     }, [history]);
 
     const getNoticeItem = useCallback(async () => {
+        setLoading(true);
         try {
             const res = await requestNoticeItem(parseInt(params.id));
             if (res.notice !== null && res.notice !== undefined) {
@@ -45,6 +50,7 @@ export default ({ match }) => {
             alert('잘못된 접근입니다.');
             history.replace(Paths.index);
         }
+        setLoading(false);
     }, [history, params]);
 
     useEffect(() => {
@@ -59,13 +65,14 @@ export default ({ match }) => {
 
     return (
         <div className={styles['box']}>
-            <div className={styles['table']}>
+            {loading ? <Loading open={loading}/>
+            : <div className={styles['table']}>
                 { params.id !== null && params.id !== undefined ? 
                 <NoticeContent item={noticeItem} />
                 : noticeList.length > 0 ?
                 <NoticeList list={noticeList} />
                 : <Message src={false} msg={"등록된 공지사항이 없습니다."} size={260} />}
-            </div>
+            </div>}
         </div>
     );
 };

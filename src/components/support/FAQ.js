@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
+import Loading from '../assets/Loading';
 
 const cn = classnames.bind(styles);
 
@@ -25,6 +26,7 @@ const faq_list = [
 
 export default () => {
     const history = useHistory();
+    const [loading, setLoading] = useState(false);
     const [quesCategory, setQuesCategory] = useState('회원가입');
     const [selectOpen, setSelectOpen] = useState(false);
     const [list, setList] = useState([]);
@@ -47,6 +49,7 @@ export default () => {
     }, [openIndex]);
 
     const getFAQList = useCallback(async () => {
+        setLoading(true);
         try {
             const res = await requestFAQList(quesCategory);
             setList(res);
@@ -54,6 +57,7 @@ export default () => {
             alert('잘못된 접근입니다.');
             history.push(Paths.ajoonamu.signin);
         }
+        setLoading(false);
     }, [quesCategory, history]);
 
     useEffect(() => {
@@ -69,14 +73,17 @@ export default () => {
                     <div className={styles['current']}>{quesCategory}</div>
                     <div className={cn('embed', { open: selectOpen })}>
                         {faq_list.map((item) => item.value !== quesCategory
-                            &&(<div key={item.id} className={cn('selector')}
+                            &&(<div key={item.id} className={styles['s-area']}
                                     onClick={() => onChangeCategory(item.value)}>
-                                    {item.value}
+                                    <div className={cn('selector')}>
+                                        {item.value}
+                                    </div>
                                 </div>))}
                     </div>
                 </div>
             </div> 
-            <div className={styles['table']}>
+            {loading ? <Loading open={loading} />
+            : <div className={styles['table']}>
                 {list.length > 0 ? (
                     list.map((item, index) => (
                         <div key={item.id} className={cn('column', { open: openIndex === index })}>
@@ -91,7 +98,7 @@ export default () => {
                         </div>
                     )) 
                 ) : (<Message src={false} msg={'등록된 자주 묻는 질문이 없습니다.'} size={260} />)}
-            </div>
+            </div>}
         </div>
     );
 };

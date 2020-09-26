@@ -85,10 +85,20 @@ const ReserveContainer = ({ tab = '0' }) => {
     };
 
     //전체 예산 입력
-    const onChangeBudget = (e) => {
+    const onChangeBudget = useCallback(e => {
         const value = stringNumberToInt(e.target.value);
         setBudget(value);
-    };
+    }, []);
+    const onChangeEndBudget = useCallback(e => {
+        const value = stringNumberToInt(e.target.value);
+        setEndBudget(value);
+    }, []);
+
+    useEffect(() => {
+        if (budget > endBudget) {
+            setEndBudget(budget);
+        }
+    }, [budget, endBudget])
 
     const getProductList = useCallback(async () => {
         setLoading(true);
@@ -215,7 +225,9 @@ const ReserveContainer = ({ tab = '0' }) => {
                 itemType={orderType}
                 onChangeType={onChangeOrderType}
                 budget={budget}
+                endBudget={endBudget}
                 onChangeBudget={onChangeBudget}
+                onChangeEndBudget={onChangeEndBudget}
                 desireQuan={desireQuan}
                 onClickCustomOrder={onClickCustomOrder}
             />

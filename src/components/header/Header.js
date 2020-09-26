@@ -62,7 +62,7 @@ const Header = () => {
                             <img src={storeIcon} alt="배달"></img>
                             <div
                                 className={styles['text']}
-                                onClick={onClickAddr}
+                                onClick={() => alert('준비중입니다.')}
                             >
                                 아주나무 지점 미설정
                             </div>
@@ -145,6 +145,7 @@ const Header = () => {
                             className={styles['icon']}
                             src={searchIcon}
                             alt="검색"
+                            onClick={() => alert('준비중입니다.')}
                         />
                     </div>
                 </div>

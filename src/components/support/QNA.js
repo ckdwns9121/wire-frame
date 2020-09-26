@@ -15,12 +15,14 @@ import { useDispatch } from 'react-redux';
 import { modalOpen } from '../../store/modal';
 import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
+import Loading from '../assets/Loading';
 
 const cn = classnames.bind(styles);
 
 export default ({ match, location }) => {
     const token = useStore();
     const openModal = useModal();
+    const [loading, setLoading] = useState(false);
 
     const [list, setList] = useState([]);
     const history = useHistory();
@@ -32,6 +34,7 @@ export default ({ match, location }) => {
     const query = qs.parse(search);
 
     const getNoticeList = useCallback(async () => {
+        setLoading(true);
         if (token) {
             try {
                 const res = await requestQNAList(token);
@@ -41,6 +44,7 @@ export default ({ match, location }) => {
                 history.replace(Paths.index);
             }
         }
+        setLoading(false);
     }, [history, openModal, token]);
 
     const handleClickDetail = useCallback(id => {
@@ -52,6 +56,8 @@ export default ({ match, location }) => {
     }, [getNoticeList]);
 
     return (
+        <>
+        {loading ? <Loading open={loading} /> :
         <div className={styles['box']}>
             {!writeMode && !viewMode && <ButtonBase
                 className={styles['qna-button']}
@@ -63,7 +69,8 @@ export default ({ match, location }) => {
                 : viewMode ? <QNADetail id={query.id} />
                     : <QNATable list={list} handleClick={handleClickDetail} />}
             
-        </div>
+        </div>}
+        </>
     );
 };
 
@@ -90,10 +97,7 @@ const QNATable = ({ list, handleClick }) => (
 const QNAWrite = () => {
     const token = useStore();
 
-    const modalDispatch = useDispatch();
-    const openAlert = useCallback((title, text, handleClick = () => {}) => {
-        modalDispatch(modalOpen(false, title, text, handleClick));
-    }, [modalDispatch]);
+    const openModal = useModal();
     
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -122,17 +126,17 @@ const QNAWrite = () => {
                     files,
                 });
                 if (res.data.msg === "성공") {
-                    openAlert('성공적으로 작성하였습니다!', '답변이 올 때까지는 조금 시간이 소요됩니다.');
+                    openModal('성공적으로 작성하였습니다!', '답변이 올 때까지는 조금 시간이 소요됩니다.');
                     history.replace(`${Paths.ajoonamu.support}/qna`);
                 } else {
-                    openAlert('작성하는 도중 오류가 발생했습니다!', '다시 시도해 주세요.');
+                    openModal('작성하는 도중 오류가 발생했습니다!', '다시 시도해 주세요.');
                 }
             } catch (e) {
-                openAlert('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+                openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
                 history.replace(Paths.index);
             }
         }
-    }, [token, title, content, files, openAlert, history]);
+    }, [token, title, content, files, openModal, history]);
 
     return (
         <>
@@ -185,10 +189,7 @@ const QNAWrite = () => {
     )
 }
 const QNADetail = ({ id }) => {
-    const modalDispatch = useDispatch();
-    const openAlert = useCallback((title, text, handleClick = () => {}) => {
-        modalDispatch(modalOpen(false, title, text, handleClick));
-    }, [modalDispatch]);
+    const openModal = useModal();
     const history = useHistory();
 
     const [data, setData] = useState({
@@ -203,14 +204,14 @@ const QNADetail = ({ id }) => {
             if (res.data.query !== null) {
                 setData(res.data.query);
             } else {
-                openAlert('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+                openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
                 history.push(Paths.ajoonamu.signin);
             }
         } else {
-            openAlert('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+            openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.push(Paths.ajoonamu.signin);
         }
-    }, [history, id, openAlert])
+    }, [history, id, openModal])
 
     useEffect(() => {
         getQNADetail();

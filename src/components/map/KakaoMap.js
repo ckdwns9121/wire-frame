@@ -4,7 +4,6 @@ import Map from './Map';
 import styles from './Map.module.scss';
 import { searchIcon } from '../svg/header';
 
-
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -25,6 +24,7 @@ function KakaoMap() {
                             <input className={styles['search']} />
                             <img
                                 className={styles['icon']}
+                                onClick={() => alert('준비중입니다.')}
                                 src={searchIcon}
                                 alt="검색"
                             />

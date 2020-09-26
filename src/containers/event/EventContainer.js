@@ -9,15 +9,19 @@ import { Paths } from '../../paths';
 import { requestEventList, requestEventShow } from '../../api/event/event';
 import Message from '../../components/message/Message';
 import { dateToYYYYMMDD } from '../../lib/formatter';
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, StepLabel } from '@material-ui/core';
+import { useModal } from '../../hooks/useModal';
+import Loading from '../../components/assets/Loading';
 
 const cn = classnames.bind(styles);
 
 const offset = 0, limit = 30;
 
-export default ({ match, location }) => {
+export default ({ match }) => {
     const history = useHistory();
+    const openModal = useModal();
 
+    const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
     const [item, setItem] = useState({});
     const [mode] = useState(0);
@@ -25,20 +29,28 @@ export default ({ match, location }) => {
     const detail = match.params.id !== undefined;
 
     const getEventList = useCallback(async () => {
-        const res = await requestEventList(offset, limit);
-        setList(res.events);
-    }, []);
+        setLoading(true);
+        try {
+            const res = await requestEventList(offset, limit);
+            setList(res.events);
+        } catch (e) {
+            openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+        }
+        setLoading(false);
+    }, [openModal]);
     const getEventShow = useCallback(async () => {
-        const res = await requestEventShow(match.params.id);
-        setItem(res.event);
-    }, [match]);
+        setLoading(true);
+        try {
+            const res = await requestEventShow(match.params.id);
+            setItem(res.event);
+        } catch (e) {
+            openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+        }
+        setLoading(false);
+    }, [match, openModal]);
 
-    const onClickDetail = useCallback(
-        (id) => {
-            history.push(`${Paths.ajoonamu.event}/${id}`);
-        },
-        [history],
-    );
+    const onClickDetail = useCallback(id =>
+        history.push(`${Paths.ajoonamu.event}/${id}`), [history]);
 
     useEffect(() => {
         getEventList();
@@ -49,8 +61,6 @@ export default ({ match, location }) => {
             getEventShow();
         }
     }, [detail, getEventShow]);
-
-    console.log(match, location);
 
     return (
         <div className={styles['container']}>
@@ -63,12 +73,11 @@ export default ({ match, location }) => {
                     <span
                         onClick={() => alert('종료된 이벤트가 없습니다!')}
                         className={cn('mnav-item', { active: mode === 1 })}
-                    >
-                        종료된 이벤트
-                    </span>
+                    >종료된 이벤트</span>
                 </div>
             </div>
-            <div className={styles['content']}>
+            {loading ? <Loading open={loading} />
+            : <div className={styles['content']}>
                 {detail ? (
                     <>
                         <div className={styles['c-title-area']}>
@@ -111,7 +120,7 @@ export default ({ match, location }) => {
                 ) : (
                     <Message src={false} msg={'조회 결과가 없습니다 '} size={260} />
                 )}
-            </div>
+            </div>}
         </div>
     );
 };
