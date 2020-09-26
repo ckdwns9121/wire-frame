@@ -28,6 +28,7 @@ export const user_order = async (
 
 export const order_cancle =async( token, order_id)=>{
     console.log(order_id);
+    console.log("취소시작");
     const req = Paths.api + 'user/order/cancel';
 
     const form_data = {

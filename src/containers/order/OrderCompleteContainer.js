@@ -12,31 +12,19 @@ import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
 import { numberFormat, stringToTel } from '../../lib/formatter';
 import { modalOpen } from '../../store/modal';
-import {order_cancle} from '../../api/order/order';
+import { order_cancle } from '../../api/order/order';
 
 const cx = cn.bind(styles);
-const str = (
-    <>
-        이창훈 님 저희 아주나무 딜리버리 서비스를 이용해주셔서 감사합니다.
-        <br />
-        아래 주문상세내역서는 주문내역에서 다시 확인 가능합니다.
-        <br />
-        (비회원 주문시 주문내역을 확인이 어려울 수 있습니다.)
-    </>
-);
 
 const OrderCompleteContainer = ({ order_number }) => {
     const user_token = useStore();
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
 
-
-
-    
     const modalDispatch = useDispatch();
 
     const openMessage = useCallback(
-        (isConfirm, title, text, handleClick = () => {}) => {
+        (isConfirm, title, text, handleClick = () => { }) => {
             modalDispatch(modalOpen(isConfirm, title, text, handleClick));
         },
         [modalDispatch],
@@ -73,7 +61,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                     false,
                     '주문번호가 존재하지 않습니다.',
                     '주문번호를 확인해주세요',
-                    ()=>history.goBack()
+                    () => history.goBack()
                 );
             }
         }
@@ -81,21 +69,21 @@ const OrderCompleteContainer = ({ order_number }) => {
     }, [order_number, user_token]);
 
 
-    const userOrderCancle = async ()=>{
-        if(user_token){
-            openMessage(true,'해당 상품을 취소하시겠습니까?','취소를 원하시면 예를 눌러주세요', async() =>{
+    const userOrderCancle = async () => {
+        if (user_token) {
+            openMessage(true, '해당 상품을 취소하시겠습니까?', '취소를 원하시면 예를 눌러주세요', async () => {
 
-                try{
-                    const res = await order_cancle(user_token,order_number);
-                    console.log(res);   
-                    if(res.data.msg.indexOf('이미 취소 된 거래건 입니다.')){
-                        openMessage(false,'이미 취소된 거래건 입니다.');
+                try {
+                    const res = await order_cancle(user_token, order_number);
+                    console.log(res);
+                    if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.')) {
+                        openMessage(false, '이미 취소된 거래건 입니다.');
                     }
-                    else{
-                        openMessage(false,'정삭적으로 취소되었습니다.');
+                    else {
+                        openMessage(false, '정삭적으로 취소되었습니다.');
                     }
                 }
-                catch(e){
+                catch (e) {
                     console.error(e);
                 }
             })
@@ -115,200 +103,206 @@ const OrderCompleteContainer = ({ order_number }) => {
             {loading ? (
                 <Loading open={true} />
             ) : (
-                <>
-                    {success && (
-                        <>
-                            <div className={styles['container']}>
-                                <div className={styles['content']}>
-                                    <div className={styles['message']}>
-                                        <div className={styles['title']}>
-                                            주문이 완료되었습니다.
+                    <>
+                        {success && (
+                            <>
+                                <div className={styles['container']}>
+                                    <div className={styles['content']}>
+                                        <div className={styles['message']}>
+                                            <div className={styles['title']}>
+                                                주문이 완료되었습니다.
                                         </div>
-                                        <div className={styles['msg']}>
-                                            {str}
-                                        </div>
-                                        <div className={styles['order-number']}>
-                                            주문번호 : {order_number}
-                                        </div>
-                                        <div className={styles['btn']}>
-                                            <ButtonBase
-                                                onClick={handleOpen}
-                                                className={styles['item']}
-                                            >
-                                                문구서비스 신청
+                                            <div className={styles['msg']}>
+                                                <>
+                                                    {user && user.name} 님 저희 아주나무 딜리버리 서비스를 이용해주셔서 감사합니다.
+                                                     <br />
+                                                      아래 주문상세내역서는 주문내역에서 다시 확인 가능합니다.
+                                                    <br />
+                                                   (비회원 주문시 주문내역을 확인이 어려울 수 있습니다.)
+                                                  </>
+                                            </div>
+                                            <div className={styles['order-number']}>
+                                                주문번호 : {order_number}
+                                            </div>
+                                            <div className={styles['btn']}>
+                                                <ButtonBase
+                                                    onClick={handleOpen}
+                                                    className={styles['item']}
+                                                >
+                                                    문구서비스 신청
                                             </ButtonBase>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className={styles['view-content']}>
-                                    <div className={styles['order-view']}>
-                                        <div className={styles['title']}>
-                                            주문 상세 내역
+                                    <div className={styles['view-content']}>
+                                        <div className={styles['order-view']}>
+                                            <div className={styles['title']}>
+                                                주문 상세 내역
                                         </div>
-                                        <div className={styles['order-list']}>
-                                            {orders && (
-                                                <OrderItemList
-                                                    items={orders.items}
-                                                    center={false}
+                                            <div className={styles['order-list']}>
+                                                {orders && (
+                                                    <OrderItemList
+                                                        items={orders.items}
+                                                        center={false}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className={styles['payment-view']}>
+                                            <div className={styles['title']}>
+                                                결제 내역
+                                        </div>
+                                            <div className={styles['box']}>
+                                                <OrderInfoBox
+                                                    text={'주문번호'}
+                                                    value={
+                                                        orders && orders.order_id
+                                                    }
                                                 />
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className={styles['payment-view']}>
-                                        <div className={styles['title']}>
-                                            결제 내역
-                                        </div>
-                                        <div className={styles['box']}>
-                                            <OrderInfoBox
-                                                text={'주문번호'}
-                                                value={
-                                                    orders && orders.order_id
-                                                }
-                                            />
-                                            <OrderInfoBox
-                                                text={'주문일시'}
-                                                value={
-                                                    orders &&
-                                                    orders.receipt_time
-                                                }
-                                            />
-                                            <OrderInfoBox
-                                                text={'결제방식'}
-                                                value={payinfo && payinfo.pp_pg}
-                                            />
-                                            <OrderInfoBox
-                                                text={'결제금액'}
-                                                value={
-                                                    payinfo &&
-                                                    `${numberFormat(
-                                                        payinfo.pp_price,
-                                                    )}원`
-                                                }
-                                            />
-                                            <OrderInfoBox
-                                                text={'입금자명'}
-                                                value={user && user.name}
-                                            />
-                                            <OrderInfoBox
-                                                text={'입금계좌'}
-                                                value={'국민은행'}
-                                                paddingBottom={'10px'}
-                                            />
-                                            <OrderInfoBox
-                                                text={''}
-                                                value={
-                                                    '574845-23-568521 김종완'
-                                                }
-                                            />
-                                            <OrderInfoBox
-                                                text={'가상계좌 유효기간'}
-                                                auto={true}
-                                                value={
-                                                    '2020년 06월 09일 00시 00분 00초'
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className={styles['user-content']}>
-                                    <div className={styles['user-info']}>
-                                        <div className={styles['title']}>
-                                            배달정보
-                                        </div>
-                                        <div className={styles['context']}>
-                                            <UserInfoBox
-                                                text={'받는분'}
-                                                value={user && user.name}
-                                            />
-                                            <UserInfoBox
-                                                text={'연락처'}
-                                                value={
-                                                    user &&
-                                                    user.hp &&
-                                                    stringToTel(user.hp)
-                                                }
-                                            />
-                                            <UserInfoBox
-                                                text={'배달 요청 시간'}
-                                                value={
-                                                    '2020년 05월 17일 오전 9시 30분'
-                                                }
-                                            />
-                                            <UserInfoBox
-                                                text={'배달 주소'}
-                                                value={orders && `${orders.s_addr1} ${orders.s_addr2}`} 
-                                            />
-                                            <UserInfoBox
-                                                text={'요청 사항'}
-                                                value={'빨리 배달 해주세요~~'}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={styles['user-info']}>
-                                        <div className={styles['title']}>
-                                            주문정보
-                                        </div>
-                                        <div className={styles['context']}>
-                                            <UserInfoBox
-                                                text={'주문자'}
-                                                value={user && user.name}
-                                            />
-                                            <UserInfoBox
-                                                text={'연락처'}
-                                                value={user && stringToTel(user.hp)}
-                                            />
-                                            <UserInfoBox
-                                                text={'이메일'}
-                                                value={user && user.email}
-                                            />
-                                            <UserInfoBox
-                                                text={'주문 종류'}
-                                                value={'예약주문'}
-                                            />
-                                            <UserInfoBox
-                                                text={'요청 사항'}
-                                                value={'빨리 배달 해주세요~~'}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={styles['user-info']}>
-                                        <div className={styles['title']}>
-                                            매장정보
-                                        </div>
-                                        <div className={styles['context']}>
-                                            <UserInfoBox
-                                                text={'매장명'}
-                                                value={orders && orders.shop_name}
-                                            />
-                                            <UserInfoBox
-                                                text={'매장주소'}
-                                                value={
-                                                    orders && `${orders.shop_addr1} ${orders.shop_addr2}`
-                                                }
-                                            />
-                                            <UserInfoBox
-                                                text={'연락처'}
-                                                value={orders && stringToTel(orders.shop_hp)}
-                                            />
+                                                <OrderInfoBox
+                                                    text={'주문일시'}
+                                                    value={
+                                                        orders &&
+                                                        orders.receipt_time
+                                                    }
+                                                />
+                                                <OrderInfoBox
+                                                    text={'결제방식'}
+                                                    value={payinfo && payinfo.pp_pg}
+                                                />
+                                                <OrderInfoBox
+                                                    text={'결제금액'}
+                                                    value={
+                                                        payinfo &&
+                                                        `${numberFormat(
+                                                            payinfo.pp_price,
+                                                        )}원`
+                                                    }
+                                                />
+                                                <OrderInfoBox
+                                                    text={'입금자명'}
+                                                    value={user && user.name}
+                                                />
+                                                <OrderInfoBox
+                                                    text={'입금계좌'}
+                                                    value={'국민은행'}
+                                                    paddingBottom={'10px'}
+                                                />
+                                                <OrderInfoBox
+                                                    text={''}
+                                                    value={
+                                                        '574845-23-568521 김종완'
+                                                    }
+                                                />
+                                                <OrderInfoBox
+                                                    text={'가상계좌 유효기간'}
+                                                    auto={true}
+                                                    value={
+                                                        '2020년 06월 09일 00시 00분 00초'
+                                                    }
+                                                />
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className={styles['order-cancle']}>
-                                        <ButtonBase className={styles['btn']} onClick={userOrderCancle}>
-                                            주문취소하기
+                                    <div className={styles['user-content']}>
+                                        <div className={styles['user-info']}>
+                                            <div className={styles['title']}>
+                                                배달정보
+                                        </div>
+                                            <div className={styles['context']}>
+                                                <UserInfoBox
+                                                    text={'받는분'}
+                                                    value={user && user.name}
+                                                />
+                                                <UserInfoBox
+                                                    text={'연락처'}
+                                                    value={
+                                                        user &&
+                                                        user.hp &&
+                                                        stringToTel(user.hp)
+                                                    }
+                                                />
+                                                <UserInfoBox
+                                                    text={'배달 요청 시간'}
+                                                    value={
+                                                        '2020년 05월 17일 오전 9시 30분'
+                                                    }
+                                                />
+                                                <UserInfoBox
+                                                    text={'배달 주소'}
+                                                    value={orders && `${orders.s_addr1} ${orders.s_addr2}`}
+                                                />
+                                                <UserInfoBox
+                                                    text={'요청 사항'}
+                                                    value={'빨리 배달 해주세요~~'}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className={styles['user-info']}>
+                                            <div className={styles['title']}>
+                                                주문정보
+                                        </div>
+                                            <div className={styles['context']}>
+                                                <UserInfoBox
+                                                    text={'주문자'}
+                                                    value={user && user.name}
+                                                />
+                                                <UserInfoBox
+                                                    text={'연락처'}
+                                                    value={user && stringToTel(user.hp)}
+                                                />
+                                                <UserInfoBox
+                                                    text={'이메일'}
+                                                    value={user && user.email}
+                                                />
+                                                <UserInfoBox
+                                                    text={'주문 종류'}
+                                                    value={'예약주문'}
+                                                />
+                                                <UserInfoBox
+                                                    text={'요청 사항'}
+                                                    value={'빨리 배달 해주세요~~'}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className={styles['user-info']}>
+                                            <div className={styles['title']}>
+                                                매장정보
+                                        </div>
+                                            <div className={styles['context']}>
+                                                <UserInfoBox
+                                                    text={'매장명'}
+                                                    value={orders && orders.shop_name}
+                                                />
+                                                <UserInfoBox
+                                                    text={'매장주소'}
+                                                    value={
+                                                        orders && `${orders.shop_addr1} ${orders.shop_addr2}`
+                                                    }
+                                                />
+                                                <UserInfoBox
+                                                    text={'연락처'}
+                                                    value={orders && stringToTel(orders.shop_hp)}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className={styles['order-cancle']}>
+                                            <ButtonBase className={styles['btn']} onClick={userOrderCancle}>
+                                                주문취소하기
                                         </ButtonBase>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <StickerModal
-                                open={stickyOpen}
-                                handleClose={handleClose}
-                            />
-                        </>
-                    )}
-                </>
-            )}
+                                <StickerModal
+                                    open={stickyOpen}
+                                    handleClose={handleClose}
+                                />
+                            </>
+                        )}
+                    </>
+                )}
         </>
     );
 };
