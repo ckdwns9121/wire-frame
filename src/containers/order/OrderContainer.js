@@ -294,7 +294,7 @@ const OrderContainer = () => {
                 'http://devapi.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
 
-            // PaypleCpayAuthCheck(obj);
+            PaypleCpayAuthCheck(obj);
         });
     };
 
@@ -350,7 +350,10 @@ const OrderContainer = () => {
                                 </div>
                                 <div className={styles['hp']}>
                                     <div className={styles['first']}>
-                                        <select name="phone" onChange={onChangePhoneFirst}>
+                                        <select
+                                            name="phone"
+                                            onChange={onChangePhoneFirst}
+                                        >
                                             <option value="010">010</option>
                                             <option value="011">011</option>
                                             <option value="016">016</option>
@@ -362,7 +365,10 @@ const OrderContainer = () => {
                                             ref={secondPhone}
                                             onChange={onChangePhoneNext}
                                             // onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
-                                            onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
+                                            onKeyDown={(e) =>
+                                                !onlyNumber(e.key) &&
+                                                e.preventDefault()
+                                            }
                                             className={styles['sub-number']}
                                             placeholder="핸드폰 앞자리"
                                         />
@@ -371,7 +377,10 @@ const OrderContainer = () => {
                                         <input
                                             ref={thirdPhone}
                                             onChange={onChangePhonePrev}
-                                            onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
+                                            onKeyDown={(e) =>
+                                                !onlyNumber(e.key) &&
+                                                e.preventDefault()
+                                            }
                                             className={styles['sub-number']}
                                             placeholder="핸드폰 뒷자리"
                                         />
@@ -408,15 +417,18 @@ const OrderContainer = () => {
                                     <div className={styles['second']}>
                                         <select name="hours">
                                             <option value="9">오전 9시</option>
-                                            <option value="10">
-                                                오전 10시
-                                            </option>
-                                            <option value="11">
-                                                오전 11시
-                                            </option>
-                                            <option value="12">
-                                                오전 12시
-                                            </option>
+                                            <option value="10">오전 10시</option>
+                                            <option value="11">오전 11시</option>
+                                            <option value="12">오후 12시 </option>
+                                            <option value="13">오후 1시 </option>
+                                            <option value="14">오후 2시 </option>
+                                            <option value="15">오후 3시 </option>
+                                            <option value="16">오후 4시 </option>
+                                            <option value="17">오후 5시 </option>
+                                            <option value="18">오후 6시 </option>
+                                            <option value="19">오후 7시 </option>
+                                            <option value="20">오후 8시 </option>
+                                            <option value="21">오후 9시 </option>
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
@@ -551,20 +563,36 @@ const OrderContainer = () => {
                                     <div className={styles['text']}>
                                         사용할 포인트
                                     </div>
-                                    <input className={styles['point-input']}
+                                    <input
+                                        className={styles['point-input']}
                                         value={numberFormat(usePoint)}
-                                        onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
-                                        onChange={e => {
-                                            const value = stringNumberToInt(e.target.value);
+                                        onKeyDown={(e) =>
+                                            !onlyNumber(e.key) &&
+                                            e.preventDefault()
+                                        }
+                                        onChange={(e) => {
+                                            const value = stringNumberToInt(
+                                                e.target.value,
+                                            );
                                             if (user.point < value) {
-                                                openModal('보유하신 포인트가 부족합니다!', '보유하신 포인트보다 많게 사용할 수 없습니다.');
-                                                setUsePoint(parseInt(user.point));
+                                                openModal(
+                                                    '보유하신 포인트가 부족합니다!',
+                                                    '보유하신 포인트보다 많게 사용할 수 없습니다.',
+                                                );
+                                                setUsePoint(
+                                                    parseInt(user.point),
+                                                );
                                             } else {
                                                 setUsePoint(value);
                                             }
                                         }}
                                     />
-                                    <ButtonBase className={styles['btn']} onClick={() => setUsePoint(parseInt(user.point))}>
+                                    <ButtonBase
+                                        className={styles['btn']}
+                                        onClick={() =>
+                                            setUsePoint(parseInt(user.point))
+                                        }
+                                    >
                                         전체사용
                                     </ButtonBase>
                                 </div>
@@ -613,7 +641,8 @@ const OrderContainer = () => {
                                         포인트사용
                                     </div>
                                     <div className={styles['price']}>
-                                        -{numberFormat(usePoint)}<span>원</span>
+                                        -{numberFormat(usePoint)}
+                                        <span>원</span>
                                     </div>
                                 </div>
                             </div>
