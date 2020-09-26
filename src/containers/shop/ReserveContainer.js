@@ -105,13 +105,17 @@ const ReserveContainer = ({ tab = '0' }) => {
 
         if (categorys.length === 1) {
             const res = await getCategory();
+            console.log(res);
             res.sort((a, b) => a.ca_id - b.ca_id);
             // 카테고리를 분류 순서로 정렬.
-            dispatch(get_catergory(res));
+            const ca_list = res.filter ((item) =>item.ca_id !==12);
+            console.log("필터");
+            console.log(ca_list);
+            dispatch(get_catergory(ca_list));
             let arr = [];
-            for (let i = 0; i < res.length; i++) {
-                const result = await getMenuList(res[i].ca_id);
-                const temp = { ca_id: res[i].ca_id, items: result };
+            for (let i = 0; i < ca_list.length; i++) {
+                const result = await getMenuList(ca_list[i].ca_id);
+                const temp = { ca_id: ca_list[i].ca_id, items: result };
                 arr.push(temp);
             }
             arr.sort((a, b) => a.ca_id - b.ca_id);
