@@ -62,17 +62,14 @@ $header-height: 100px;
     }
     .header-nav {
         display: flex;
-        align-items: center;
         height: $header-height;
         @include wireframe;
 
         .header-logo {
-            display: table;
+            border:1px solid red;
             height: $header-height;
             cursor: pointer;
             .logo {
-                display: table-cell;
-                vertical-align: middle;
                 width: 120px;
             }
         }
@@ -115,10 +112,15 @@ $header-height: 100px;
 
 .header ul {
     list-style: none;
+    display: table;
+    width: 100%;
 }
 .header li {
-    float: left;
-    margin: 0 37px;
+    display: table-cell;
+    vertical-align:middle;
+
+    
+    // margin: 0 37px;
     cursor: pointer;
     &:first-child {
         margin-left: 0;

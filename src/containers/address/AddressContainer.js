@@ -16,6 +16,7 @@ import { get_address } from '../../store/address/address';
 import { modalOpen } from '../../store/modal';
 import Message from '../../components/assets/Message';
 import produce from 'immer';
+import { noAuthAddCart } from '../../api/noAuth/cart';
 
 const AddressContainer = () => {
     const modalDispatch = useDispatch();
@@ -190,21 +191,19 @@ const AddressContainer = () => {
                     }
                 } else {
                     console.log(delivery_id);
-                    const noAuthAddrs = JSON.parse(
-                        localStorage.getItem('noAuthAddrs'),
-                    );
-                    if (noAuthAddrs[delivery_id].active === 1) {
+                    const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                    if(noAuthAddrs){
+                     //선택한 주소가 현재 활성 주소일시.
+                      if (noAuthAddrs[delivery_id].active === 1) {
+                        //배달지 없음으로 설정
                         dispatch(get_address(null));
-                    }
+                      }
+                    //선택한 주소를 제일 쉬로 올리기.
                     noAuthAddrs.splice(delivery_id, 1);
-                    localStorage.setItem(
-                        'noAuthAddrs',
-                        JSON.stringify(noAuthAddrs),
-                    );
-                    const temp = JSON.parse(
-                        localStorage.getItem('noAuthAddrs'),
-                    );
+                    localStorage.setItem( 'noAuthAddrs',JSON.stringify(noAuthAddrs));
+                    const temp = JSON.parse(localStorage.getItem('noAuthAddrs'));
                     setDeliveryList(temp);
+                    }
                 }
             });
         },
@@ -269,9 +268,7 @@ const AddressContainer = () => {
                             console.error(e);
                         }
                     } else {
-                        const noAuthAddrs = JSON.parse(
-                            localStorage.getItem('noAuthAddrs'),
-                        );
+                        const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
 
                         if (noAuthAddrs) {
                             noAuthAddrs.map((item) => (item.active = 0));

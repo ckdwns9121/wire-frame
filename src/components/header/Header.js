@@ -109,11 +109,11 @@ const Header = () => {
                 </div>
             </div>
             <div className={styles['header-nav']}>
-                <div className={styles['header-logo']} onClick={onClickHome}>
-                    <img className={styles['logo']} alt={'로고'} src={logo} />
-                </div>
                 <div className={styles['header-menu']}>
                     <ul>
+                        <li  onClick={onClickHome}>
+                        <img className={styles['logo']} alt={'로고'} src={logo} />
+                        </li>
                         <li onClick={onClickHome}>
                             <HeadLink to={Paths.index}>브랜드홈</HeadLink>
                         </li>
