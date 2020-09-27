@@ -15,7 +15,7 @@ import {
     couponInput,
 } from '../../api/coupon/coupon';
 import Loading from '../../components/assets/Loading';
-import Message from '../../components/message/Message';
+import Message from '../../components/assets/Message';
 import produce from 'immer';
 import { ButtonBase } from '@material-ui/core';
 import { dateToYYYYMMDD } from '../../lib/formatter';

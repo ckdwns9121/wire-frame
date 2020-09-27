@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 
 import styles from './FAQ.module.scss';
 
-import Message from '../../components/message/Message';
+import Message from '../../components/assets/Message';
 
 import DownArrow from '../svg/support/down.svg';
 import { requestFAQList } from '../../api/support/faq';
@@ -51,7 +51,6 @@ export default () => {
     const getFAQList = useCallback(async () => {
         setLoading(true);
         try {
-            console.log(quesCategory);
             const res = await requestFAQList(quesCategory);
             setList(res);
         } catch (e) {
@@ -63,6 +62,7 @@ export default () => {
 
     useEffect(() => {
         getFAQList();
+        setOpenIndex(-1);
     }, [getFAQList]);
 
     return (

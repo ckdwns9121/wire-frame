@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getCartList, deleteCartItem } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
@@ -17,7 +16,7 @@ import { ButtonBase } from '@material-ui/core';
 import Loading from '../../components/assets/Loading';
 import { useStore } from '../../hooks/useStore';
 import { numberFormat } from '../../lib/formatter';
-import Message from '../../components/message/Message';
+import Message from '../../components/assets/Message';
 import { useModal } from '../../hooks/useModal';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import CntModal from '../../components/modal/QunaityModal';

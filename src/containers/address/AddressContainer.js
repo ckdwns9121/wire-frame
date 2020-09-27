@@ -14,7 +14,7 @@ import {
 import { useStore } from '../../hooks/useStore';
 import { get_address } from '../../store/address/address';
 import { modalOpen } from '../../store/modal';
-import Message from '../../components/message/Message';
+import Message from '../../components/assets/Message';
 import produce from 'immer';
 
 const AddressContainer = () => {

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Notice.module.scss';
 
-import Message from '../message/Message';
+import Message from '../assets/Message';
 import { requestNoticeItem, requestNoticeList } from '../../api/support/notice';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';

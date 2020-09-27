@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import qs from 'querystring';
 import classnames from 'classnames/bind';
 import { useHistory } from 'react-router-dom';
-import { requestQNADetail, requestQNAList, requestQNAStore } from '../../api/support/qna';
+import { requestQNADelete, requestQNADetail, requestQNAList, requestQNAStore } from '../../api/support/qna';
 import { Paths } from '../../paths';
 
-import Message from '../message/Message';
+import Message from '../assets/Message';
 
 import styles from './QNA.module.scss';
 import { ButtonBase, IconButton } from '@material-ui/core';
@@ -36,7 +36,6 @@ export default ({ match, location }) => {
         if (token) {
             try {
                 const res = await requestQNAList(token);
-                console.log(res);
                 setList(res.qnas);
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -64,8 +63,8 @@ export default ({ match, location }) => {
             >
                 문의하기
             </ButtonBase>}
-            {writeMode ? <QNAWrite />
-                : viewMode ? <QNADetail id={query.id} />
+            {writeMode ? <QNAWrite token={token} />
+                : viewMode ? <QNADetail tolen={token} id={query.id} />
                     : <QNATable list={list} handleClick={handleClickDetail} />}
             
         </div>}
@@ -93,9 +92,7 @@ const QNATable = ({ list, handleClick }) => (
         )}
     </div>
 );
-const QNAWrite = () => {
-    const token = useStore();
-
+const QNAWrite = ({ token }) => {
     const openModal = useModal();
     
     const [title, setTitle] = useState('');
@@ -187,13 +184,30 @@ const QNAWrite = () => {
         </>
     )
 }
-const QNADetail = ({ id }) => {
+const QNADetail = ({ id, token }) => {
     const openModal = useModal();
     const history = useHistory();
 
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({});
 
+    const deleteQNA = useCallback(async () => {
+        if (token) {
+            setLoading(true);
+            try {
+                const res = await requestQNADelete(token, id);
+                console.log(res);
+
+            } catch (e) {
+                openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+                history.push(Paths.index);
+            }
+            setLoading(false);
+        } else {
+            openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+            history.push(Paths.index);
+        }
+    }, [history, id, openModal, token]);
 
     const getQNADetail = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
@@ -205,21 +219,24 @@ const QNADetail = ({ id }) => {
                     setData(res.data.query);
                 } else {
                     openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
-                    history.push(Paths.ajoonamu.signin);
+                    history.push(Paths.index);
                 }
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
-                history.push(Paths.ajoonamu.signin);
+                history.push(Paths.index);
             }
             setLoading(false);
         } else {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
-            history.push(Paths.ajoonamu.signin);
+            history.push(Paths.index);
         }
     }, [history, id, openModal])
 
     useEffect(() => {
         getQNADetail();
+        return () => {
+
+        }
     }, [getQNADetail]);
 
     const { status, subject, q_datetime, a_datetime, question, answer } = data;
@@ -243,7 +260,7 @@ const QNADetail = ({ id }) => {
                     <div className={styles['q-content']}>{question}</div>
                     <div className={styles['interaction']}>
                         <ButtonBase className={styles['btn']}>수정</ButtonBase>
-                        <ButtonBase className={styles['btn']}>삭제</ButtonBase>
+                        <ButtonBase className={styles['btn']} onClick={deleteQNA}>삭제</ButtonBase>
                     </div>
                 </div>
                 {status === 1 && <div className={styles['answer']}>

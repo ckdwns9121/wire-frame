@@ -7,9 +7,9 @@ import defaultImage from '../../components/svg/event/event_test.png';
 
 import { Paths } from '../../paths';
 import { requestEventList, requestEventShow } from '../../api/event/event';
-import Message from '../../components/message/Message';
+import Message from '../../components/assets/Message';
 import { dateToYYYYMMDD } from '../../lib/formatter';
-import { ButtonBase, StepLabel } from '@material-ui/core';
+import { ButtonBase } from '@material-ui/core';
 import { useModal } from '../../hooks/useModal';
 import Loading from '../../components/assets/Loading';
 

@@ -38,7 +38,8 @@ const BreakfastContainer = () => {
                     <p className={styles['title']}>든든한 하루의 시작</p>
                     <p className={styles['text']}>샌달 기업조식 서비스.</p>
                     <div className={styles['button-area']}>
-                        <ButtonBase onClick={() => history.push(Paths.ajoonamu.breakfast + '/menu')} className={cn('button', 'green')}>
+                        <ButtonBase onClick={() => { history.push(Paths.ajoonamu.breakfast + '/menu'); window.scrollTo(0, 0) }}
+                            className={cn('button', 'green')}>
                             메뉴보기
                         </ButtonBase>
                         <ButtonBase onClick={() => history.push(Paths.ajoonamu.support + '/qna/write')} className={cn('button', 'white', 'grid')}>
@@ -136,15 +137,13 @@ const BreakfastContainer = () => {
                         <div className={styles['slider']}>
                             <MenuSlick />
                         </div>
-                        <div className={styles['side-button-area']} data-aos='fade-right'>
-                            <p className={styles['text']}>매달 업데이트 되는</p>
-                            <p className={styles['key-text']}>다양한 메뉴</p>
-                            <ButtonBase style={{ width: '300px', height: '64px', fontWeight: 500 }}
-                                className={cn('button', 'green')}
-                                onClick={() => { history.push(Paths.ajoonamu.shop) ; window.scrollTo(0,0)}} >
-                                더 많은 메뉴 보기
-                            </ButtonBase>
-                        </div>
+                        <SideButtonArea
+                            text="매달 업데이트 되는"
+                            keyText="다양한 메뉴"
+                            green
+                            buttonText="더 많은 메뉴 보기"
+                            onClick={() => { history.push(Paths.ajoonamu.breakfast + '/menu'); window.scrollTo(0, 0) }}
+                        />
                     </div>
                 </div>
             </div>
@@ -162,15 +161,13 @@ const BreakfastContainer = () => {
                                 <CardNews delay={400}/>
                             </div>
                         </div>
-                        <div className={cn('side-button-area', 'right')} data-aos='fade-up'>
-                            <p className={styles['text']}>00명의 고객들이 말하는</p>
-                            <p className={styles['key-text']}>샌달 조식의 특별함</p>
-                            <ButtonBase style={{ width: '300px', height: '64px', fontWeight: 500 }}
-                                className={cn('button')}
-                                onClick={() => history.push(Paths.ajoonamu.support + '/qna/write')}>
-                                맞춤식단 상담하기
-                            </ButtonBase>
-                        </div>
+                        <SideButtonArea
+                            text="00명의 고객들이 말하는"
+                            keyText="샌달 조식의 특별함"
+                            right
+                            buttonText="맞춤식단 상담하기"
+                            onClick={() => history.push(Paths.ajoonamu.support + '/qna/write')}
+                        />
                     </div>
                 </div>
             </div>
@@ -183,14 +180,12 @@ const BreakfastContainer = () => {
                             <Column type="플러스" fee="무료" location="서울/경기" cost="50,000원/일" />
                             <Column type="프리미엄" fee="무료" location="서울/경기" cost="50,000원/일" />
                         </div>
-                        <div className={styles['side-button-area']} data-aos='fade-right'>
-                            <p className={styles['text']}>합리적인 가격으로</p>
-                            <p className={styles['key-text']}>하루의 행복을</p>
-                            <ButtonBase style={{ width: '300px', height: '64px', fontWeight: 500 }}
-                                className={cn('button', 'green')}>
-                                가격 자세히 보기
-                            </ButtonBase>
-                        </div>
+                        <SideButtonArea
+                            text="합리적인 가격으로"
+                            keyText="하루의 행복을"
+                            green
+                            buttonText="가격 자세히 보기"
+                        />
                     </div>
                 </div>
             </div>
@@ -198,3 +193,18 @@ const BreakfastContainer = () => {
     );
 };
 export default BreakfastContainer;
+
+
+const SideButtonArea = ({ right, text, keyText, green, buttonText, onClick }) => (
+    <div className={cn('side-button-area', { right })}>
+        <div data-aos={right ? "fade-right" : "fade-left"}>
+            <p className={styles['text']}>{text}</p>
+            <p className={styles['key-text']}>{keyText}</p>
+            <ButtonBase style={{ width: '300px', height: '64px', fontWeight: 500 }}
+                className={cn('button', { green })}
+                onClick={onClick}>
+                {buttonText}
+            </ButtonBase>
+        </div>
+    </div>
+);

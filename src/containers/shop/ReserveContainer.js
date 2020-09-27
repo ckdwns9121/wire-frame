@@ -5,12 +5,11 @@ import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
 import TabMenu from '../../components/tab/TabMenu';
 import MenuItemList from '../../components/item/MenuItemList';
-import Message from 'components/message/Message';
+import Message from 'components/assets/Message';
 import CustomItemList from '../../components/item/CustomItemList';
 import PreferModal from '../../components/modal/PreferModal';
 import { useHistory } from 'react-router';
 import ShopBanner from '../../components/svg/shop/shop_banner.png';
-import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
 
 import {
@@ -20,7 +19,6 @@ import {
 } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
 import { get_catergory, get_menulist } from '../../store/product/product';
-import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import { stringNumberToInt } from '../../lib/formatter';
 
 function TabPanel(props) {

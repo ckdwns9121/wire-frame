@@ -1,18 +1,13 @@
 import { ButtonBase } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './Custom.module.scss';
 
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
 
 //추천 메뉴 아이템
 const CustomItem = ({ datas, index }) => {
     const history = useHistory();
-    useEffect(() => {
-        AOS.init({ duration: 1000 });
-    }, []);
     return (
         <div className={styles['custom-item']} data-aos='fade-up' data-aos-delay={200 * index}>
             <div className={styles['content']}>

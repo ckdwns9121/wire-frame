@@ -30,6 +30,19 @@ export const requestQNADetail = async (token, id) => {
     return res;
 }
 
+export const requestQNADelete = async (token, id) => {
+    const req = Paths.api + 'user/qna/delete';
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const formData = new FormData();
+    formData.append('id', id);
+
+    const res = await axios.delete(req, formData);
+    return res;
+}
+
 export const requestQNAStore = async (token, {
     title: subject,
     content: question,
