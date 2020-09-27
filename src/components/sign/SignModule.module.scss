@@ -15,6 +15,11 @@
         font-weight: 500;
         padding-left: 13px;
         color: #222222;
+        &.mypage {
+            max-width: 150px; min-width: 150px;
+            font-weight: bold;
+            padding: 0;
+        }
     }
     input {
         outline: none;
@@ -28,11 +33,12 @@
         box-sizing: border-box;
         padding: 16px;
 
-        &.normal {
-            width: 540px;
-        }
         &.auth {
             width: 360px;
+        }
+        &.mypage {
+            width: 280px;
+            font-size: 1.667rem;
         }
         &::placeholder {
             font-weight: 500;

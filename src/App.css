@@ -8,6 +8,7 @@ body {
     /* min-width: 1328px; */
     min-width: 1280px;
     font-size: 11px;
+    font-family: "애플 SD 산돌고딕 Neo", "Apple SD Gothic Neo", 나눔고딕, "NanumGothic", "맑은 고딕", "Malgun Gothic", Ngothic, sans-serif;
 }
 
 input[type='checkbox'] {

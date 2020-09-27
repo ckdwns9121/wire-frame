@@ -36,6 +36,7 @@ export default ({ match, location }) => {
         if (token) {
             try {
                 const res = await requestQNAList(token);
+                console.log(res.qnas);
                 setList(res.qnas);
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -45,29 +46,31 @@ export default ({ match, location }) => {
         setLoading(false);
     }, [history, openModal, token]);
 
+    const onRemoveList = useCallback(id => setList(list => list.filter(item => item.id !== id)), []);
+
     const handleClickDetail = useCallback(id => {
         history.push(`${Paths.ajoonamu.support}/qna/view?id=${id}`)
     }, [history])
 
     useEffect(() => {
         getQNAList();
-    }, [getQNAList, location]);
+    }, [getQNAList]);
 
     return (
         <>
-        {loading ? <Loading open={loading} /> :
-        <div className={styles['box']}>
-            {!writeMode && !viewMode && <ButtonBase
-                className={styles['qna-button']}
-                onClick={() => history.push(`${Paths.ajoonamu.support}/qna/write`)}
-            >
-                문의하기
-            </ButtonBase>}
-            {writeMode ? <QNAWrite token={token} />
-                : viewMode ? <QNADetail tolen={token} id={query.id} />
-                    : <QNATable list={list} handleClick={handleClickDetail} />}
-            
-        </div>}
+            {loading ? <Loading open={loading} /> :
+            <div className={styles['box']}>
+                {!writeMode && !viewMode && <ButtonBase
+                    className={styles['qna-button']}
+                    onClick={() => history.push(`${Paths.ajoonamu.support}/qna/write`)}
+                >
+                    문의하기
+                </ButtonBase>}
+                {writeMode ? <QNAWrite token={token} />
+                    : viewMode ? <QNADetail token={token} id={query.id} onRemove={onRemoveList} />
+                        : <QNATable list={list} handleClick={handleClickDetail} />}
+                
+            </div>}
         </>
     );
 };
@@ -184,7 +187,7 @@ const QNAWrite = ({ token }) => {
         </>
     )
 }
-const QNADetail = ({ id, token }) => {
+const QNADetail = ({ id, token, onRemove }) => {
     const openModal = useModal();
     const history = useHistory();
 
@@ -196,8 +199,13 @@ const QNADetail = ({ id, token }) => {
             setLoading(true);
             try {
                 const res = await requestQNADelete(token, id);
-                console.log(res);
-
+                if (res.data.msg === '성공') {
+                    openModal('게시글을 삭제하였습니다!', '');
+                    onRemove(parseInt(id));
+                    history.replace(Paths.ajoonamu.support + '/qna');
+                } else {
+                    openModal('삭제를 실패했습니다.', '다시 시도해주세요.');
+                }
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
                 history.push(Paths.index);
@@ -207,7 +215,7 @@ const QNADetail = ({ id, token }) => {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.push(Paths.index);
         }
-    }, [history, id, openModal, token]);
+    }, [history, id, onRemove, openModal, token]);
 
     const getQNADetail = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');

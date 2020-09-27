@@ -8,8 +8,8 @@ import { Paths } from '../../paths';
 import Check from 'components/svg/coupon/Check';
 import SignAuthInput from '../sign/SignAuthInput';
 
-import styles from './AuthPhone.module.scss';
-import AuthTimer from './AuthTimer';
+import styles from './MypagePhone.module.scss';
+import AuthTimer from '../assets/AuthTimer';
 
 const cn = classnames.bind(styles);
 
@@ -76,7 +76,7 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
     return (
         <>
             <SignAuthInput
-                label={'휴대폰'}
+                label={'휴대폰 번호'}
                 inputType={'text'}
                 name={'phoneNumber'}
                 initValue={phoneNumber}
@@ -86,8 +86,9 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                 placeholder={'숫자만 입력해 주세요.'}
                 buttonTitle={phoneAuth ? '인증 완료' : auth_start ? '인증번호 재발송' : '인증번호 발송'}
                 input_disabled={auth_start || phoneAuth}
-                noLabel={noLabel}
                 button_disabled={auth_start || phoneAuth}
+                noLabel={noLabel}
+                mypage
             />
             <div className={cn('auth-btn', { not_view: !auth_start })}>
                 <SignAuthInput
@@ -99,6 +100,7 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                     onChange={e => setAuthNumber(e.target.value)}
                     buttonTitle={'인증하기'}
                     noLabel={noLabel}
+                    mypage
                 />
                 <div className={styles['timer']}>
                     {phoneAuth ? (<Check on={true} />) : (<AuthTimer start={start_timer} />)}

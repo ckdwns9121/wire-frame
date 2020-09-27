@@ -19,13 +19,14 @@ const SignAuthInput = ({
     input_disabled = false,
     button_disabled = false,
     noLabel = false,
-    onClick = () => {}
+    onClick = () => {},
+    mypage
 }) => {
     return (
         <div className={cx('sign-input')}>
-            {!noLabel && <div className={styles['label']}>{label}</div>}
+            {!noLabel && <div className={cx('label', { mypage })}>{label}</div>}
             <input
-                className={styles['auth']}
+                className={styles['mypage']}
                 name={name}
                 type={inputType}
                 value={initValue}
