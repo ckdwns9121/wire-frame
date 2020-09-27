@@ -11,8 +11,6 @@ import styles from './QNA.module.scss';
 import { ButtonBase, IconButton } from '@material-ui/core';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import Delete from '../svg/support/Delete';
-import { useDispatch } from 'react-redux';
-import { modalOpen } from '../../store/modal';
 import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
 import Loading from '../assets/Loading';
@@ -33,11 +31,12 @@ export default ({ match, location }) => {
     const search = location.search.replace('?', '');
     const query = qs.parse(search);
 
-    const getNoticeList = useCallback(async () => {
+    const getQNAList = useCallback(async () => {
         setLoading(true);
         if (token) {
             try {
                 const res = await requestQNAList(token);
+                console.log(res);
                 setList(res.qnas);
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -52,8 +51,8 @@ export default ({ match, location }) => {
     }, [history])
 
     useEffect(() => {
-        getNoticeList();
-    }, [getNoticeList]);
+        getQNAList();
+    }, [getQNAList, location]);
 
     return (
         <>
@@ -192,21 +191,27 @@ const QNADetail = ({ id }) => {
     const openModal = useModal();
     const history = useHistory();
 
-    const [data, setData] = useState({
-        q_datetime: new Date(0)
-    });
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState({});
 
 
     const getQNADetail = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
         if (token) {
-            const res = await requestQNADetail(token, id);
-            if (res.data.query !== null) {
-                setData(res.data.query);
-            } else {
+            setLoading(true);
+            try  {
+                const res = await requestQNADetail(token, id);
+                if (res.data.query !== null) {
+                    setData(res.data.query);
+                } else {
+                    openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+                    history.push(Paths.ajoonamu.signin);
+                }
+            } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
                 history.push(Paths.ajoonamu.signin);
             }
+            setLoading(false);
         } else {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.push(Paths.ajoonamu.signin);
@@ -217,39 +222,38 @@ const QNADetail = ({ id }) => {
         getQNADetail();
     }, [getQNADetail]);
 
-    const { status, subject, q_datetime, question } = data;
+    const { status, subject, q_datetime, a_datetime, question, answer } = data;
 
     return (
         <>
-            <div style={{ marginBottom: '0' }} className={styles['table']}>
-                <div className={styles['column']}>
-                    <div className={styles['row']}>
-                        <QNAState status={status} />
-                        <div className={styles['subject']}>{subject}</div>
-                        <div className={styles['datetime']}>
-                            {dateToYYYYMMDD(q_datetime, '/')}
+            {loading ? <Loading open={loading} />
+            : <>
+                <div style={{ marginBottom: '0' }} className={styles['table']}>
+                    <div className={styles['column']}>
+                        <div className={styles['row']}>
+                            <QNAState status={status} />
+                            <div className={styles['subject']}>{subject}</div>
+                            <div className={styles['datetime']}>
+                                {dateToYYYYMMDD(q_datetime, '/')}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className={styles['question']}>
-                <div className={styles['q-content']}>{question}</div>
-                <div className={styles['interaction']}>
-                    <ButtonBase className={styles['btn']}>수정</ButtonBase>
-                    <ButtonBase className={styles['btn']}>삭제</ButtonBase>
+                <div className={styles['question']}>
+                    <div className={styles['q-content']}>{question}</div>
+                    <div className={styles['interaction']}>
+                        <ButtonBase className={styles['btn']}>수정</ButtonBase>
+                        <ButtonBase className={styles['btn']}>삭제</ButtonBase>
+                    </div>
                 </div>
-            </div>
-            <div className={styles['answer']}>
-                <div className={styles['info']}>
-                    <span className={styles['a-name']}>답변</span>
-                    <span className={styles['a-date']}>2020/00/00</span>
-                </div>
-                <div className={styles['a-content']}>
-                    안녕하세요. <br />
-                    아주나무입니다. 문의해주신 내용은 아래와 같이 답변 드립니다. <br />
-                    감사합니다.
-                </div>
-            </div>
+                {status === 1 && <div className={styles['answer']}>
+                    <div className={styles['info']}>
+                        <span className={styles['a-name']}>답변</span>
+                        <span className={styles['a-date']}>{dateToYYYYMMDD(a_datetime, '/')}</span>
+                    </div>
+                    <div className={styles['a-content']} dangerouslySetInnerHTML={{ __html: answer}} />
+                </div>}
+            </>}
         </>
     );
 };

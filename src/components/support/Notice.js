@@ -103,11 +103,9 @@ const NoticeContent = ({ item }) => (
                 {item.title}
             </div>
             <div className={styles['created']}>
-                {dateToYYYYMMDD(item.created_at)}
+                {dateToYYYYMMDD(item.created_at, '/')}
             </div>
         </div>
-        <div className={styles['content']}>
-            {item.content}
-        </div>
+        <div className={styles['content']} dangerouslySetInnerHTML={{ __html: item.body}} />
     </>
 );

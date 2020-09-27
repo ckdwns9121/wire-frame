@@ -33,7 +33,6 @@ const Header = () => {
     const [logon, setLogon] = useState(false);
 
     useEffect(() => {
-        console.log(user);
         setLogon(user);
     }, [user]);
 

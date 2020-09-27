@@ -41,7 +41,7 @@ const HomeContainer = () => {
 
     useEffect(() => {
         getMainMenu();
-    }, []);
+    }, [category]);
 
     return (
         <>
@@ -61,8 +61,8 @@ const HomeContainer = () => {
                         <li onClick={() => setCategory(3)} className={cx('item', { active: category === 3})}>베이커리</li>
                         <li onClick={() => setCategory(4)} className={cx('item', { active: category === 4})}>기타</li>
                     </ul>
-                    {loading ? <Loading open={true}/> :   
-                    <MenuListView  menuList={menuList} onClick={onClickDetailItem}/>}
+                    <Loading open={loading}/>
+                    { menuList !== [] && <MenuListView menuList={menuList} onClick={onClickDetailItem}/>}
                 </div>
                 <div className={styles['banner-img']} onClick ={()=>{   history.push(`${Paths.ajoonamu.shop}?tab=${0}`) ; window.scrollTo(0,0)}}>
                     <img src={bannerImg} alt="배너" />
