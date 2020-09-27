@@ -1,0 +1,26 @@
+
+.pagination {
+    // border:1px solid red;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    list-style:none;
+    margin-top:40px;
+    padding:0;
+}
+
+.pagination_item {
+    cursor: pointer;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    border : 0;
+    float: left;
+    font-size: 18px;
+    & + &::before{
+        content: '';
+        display: inline-block;
+        width: 0px; height: 12px;
+        border-left: solid 1px #DBDBDB;
+        margin: 0 20px;
+    }
+}

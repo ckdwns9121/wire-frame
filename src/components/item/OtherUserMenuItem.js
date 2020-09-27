@@ -1,20 +1,20 @@
 import React from 'react';
 import styles from './OtherMenu.module.scss';
+import IMG from '../svg/menu/menu1.png';
+import { numberFormat } from "../../lib/formatter";
 
 //홈 메뉴 아이템 컴포넌트
-const OtherUserMenuItem = ({
-    item_id,
-    menuTitle,
-    menuPrice,
-    src,
-}) => {
+const OtherUserMenuItem = (props) => {
+    
+
+
     // item_id 로 경로 줘야함
     return (
         <div className={styles['menu-item']}>
-            <MenuImg src={src} />
+            <MenuImg src={IMG} />
             <div className={styles['menu-info']}>
-                <MenuTitle menuTitle={menuTitle} />
-                <MenuPrice menuPrice={menuPrice} />
+                <MenuTitle menuTitle={props.item_name} />
+                <MenuPrice menuPrice={props.item_price} />
             </div>
         </div>
     );
@@ -35,7 +35,7 @@ function MenuTitle({ menuTitle }) {
 
 //홈 메뉴 가격 컴포넌트
 function MenuPrice({ menuPrice }) {
-    return (<div className={styles['menu-price']}>{menuPrice}</div>);
+    return (<div className={styles['menu-price']}>{numberFormat(menuPrice)}원~</div>);
 }
 
 export default OtherUserMenuItem;

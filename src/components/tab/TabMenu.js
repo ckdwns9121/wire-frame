@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TabMenu = ({ tabs, index, onChange }) => {
     const classes = useStyles();
-    const history = useHistory();
 
     const settings = {
         infinite: true,

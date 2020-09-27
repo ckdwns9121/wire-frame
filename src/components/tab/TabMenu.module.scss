@@ -8,7 +8,9 @@ html, body {
         font-size: 1.667rem !important;
         max-width: unset;
         flex : 1 1 auto !important;
+        // border:1px solid red !important;
         border-bottom: solid 2px #000;
+        box-sizing: border-box !important;
         color: #999;
         min-width: unset !important;
         font-weight: normal;

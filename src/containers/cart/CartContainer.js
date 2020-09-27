@@ -20,6 +20,7 @@ import Message from '../../components/assets/Message';
 import { useModal } from '../../hooks/useModal';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import CntModal from '../../components/modal/QunaityModal';
+import {noAuthGetCartList} from '../../api/noAuth/cart';
 
 const cx = cn.bind(styles);
 
@@ -135,6 +136,33 @@ const CartContainer = () => {
                     setCost(query.delivery_cost);
                     setCartList(list);
                 }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        else{
+
+            try {
+                const cart_id = JSON.parse(localStorage.getItem('noAuthCartId'));
+                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+
+                const res = await noAuthGetCartList();
+                console.log(res);
+                // if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
+                //     openModal(res.data.msg, '주소지 설정을 해주세요.', () => {
+                //         history.push(Paths.ajoonamu.address);
+                //     });
+                // } else {
+                //     const { query } = res.data;
+                //     let len = Object.keys(query).length;
+                //     let list = [];
+                //     for (let i = 0; i < len - 2; i++) {
+                //         list[i] = query[i];
+                //         list[i].checked = false;
+                //     }
+                //     setCost(query.delivery_cost);
+                //     setCartList(list);
+                // }
             } catch (e) {
                 console.log(e);
             }

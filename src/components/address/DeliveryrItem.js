@@ -24,7 +24,7 @@ const DeliveryrItem = (props) => {
                 className={styles['delete']}
                 onClick={(e) => {
                     e.stopPropagation();
-                    onRemove(props.id);
+                    onRemove();
                 }}
             >
                 <RemoveIcon />

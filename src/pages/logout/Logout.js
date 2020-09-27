@@ -24,6 +24,14 @@ export default ({ history }) => {
                     dispatch(get_address(null));
                     openMessage(false, '로그아웃 성공!', '성공적으로 로그아웃 되었습니다.');
                     sessionStorage.removeItem('access_token');
+                    const noAuth = JSON.parse(localStorage.getItem('noAuth'));
+                    if(noAuth){
+                        const index = noAuth.findIndex((item) =>item.active===1);
+                        if(index!==-1){
+                            dispatch(get_address(noAuth[index].addr1));
+                        }
+                        
+                    }
                 } else {
                     openMessage(false, '치명적인 에러!');
                 }

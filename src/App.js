@@ -36,10 +36,18 @@ function App() {
     const dispatch = useDispatch();
     const getInfo = async () => {
         const token = sessionStorage.getItem('access_token');
-        if (token !== null || token !== undefined) {
+        if (token) {
             dispatch(get_user_info(token));
             const res = await getActiveAddr(token);
             dispatch(get_address(res));
+        } else {
+            const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
+            if (noAuth) {
+                const index = noAuth.findIndex((item) => item.active === 1);
+                if (index !== -1) {
+                    dispatch(get_address(noAuth[index].addr1));
+                }
+            }
         }
     };
 

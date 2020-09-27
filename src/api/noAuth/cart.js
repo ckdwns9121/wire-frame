@@ -17,3 +17,13 @@ export const noAuthAddCart = async (
     const res = await axios.post(req, form_data);
     return res;
 };
+
+export const noAuthGetCartList = async(cart_id, addr1) =>{
+
+    const req = Paths.api + `noauth/cart/list?card_ids=${cart_id}&addr1=${addr1}`;
+    axios.defaults.baseURL = req;
+    const res = await axios.get();
+    console.log(res);
+    return res;
+
+}

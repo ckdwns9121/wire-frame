@@ -20,6 +20,7 @@ import SampleMenu from '../../components/svg/breakfast/sandal_menu.png';
 
 import CategoryMenu from '../../components/tab/CategoryMenu';
 import Configure from '../../components/breakfast/Configure';
+import { getBreakCategory } from '../../api/break_fast/break_fast';
 
 function TabPanel(props) {
     const { children, value, index } = props;
@@ -37,6 +38,8 @@ function TabPanel(props) {
 
 const BreakfastMenuContainer = ({ menu = '0' }) => {
     const [menu_list, setMenuList] = useState([]);
+
+    const [break_categorys, setCategorys] = useState([]);
 
     const new_category = [
         { ca_id: 1, ca_name: '샐러드', ca_order: 0, ca_use: 1 },
@@ -63,6 +66,37 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
     const onChangeIndex = (e, index) => {
         setTitleIndex(index);
     };
+
+    const callBreakCategoryApi = async () => {
+        try {
+            const res = await getBreakCategory();
+            console.log(res);
+            setCategorys(res.data.query.categorys);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    //임의로 설정한 ca_id (메뉴분류 값) 을 가지고 실제 메뉴 불러오기
+    const callBreakMenuList = useCallback(async () => {
+        setLoading(true);
+        let arr = [];
+        try {
+            for (let i = 0; i < break_categorys.length; i++) {
+                const result = await getMenuList(break_categorys[i].ca_id);
+                console.log(result);
+                const temp = {
+                    ca_id: break_categorys[i].ca_id,
+                    items: result,
+                };
+                arr.push(temp);
+            }
+            setMenuList(arr);
+        } catch (e) {
+            console.error(e);
+        }
+        setLoading(false);
+    }, [break_categorys]);
 
     //메뉴 아이템을 클릭했을 시 상세보기 페이지로 푸쉬
     const onClickMenuItem = useCallback(
@@ -95,29 +129,10 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         },
         [menu_list, onClickMenuItem],
     );
-    //임의로 설정한 ca_id (메뉴분류 값) 을 가지고 실제 메뉴 불러오기
-    const getProductList = useCallback(async () => {
-        setLoading(true);
-        let arr = [];
-        try {
-            for (let i = 0; i < new_category.length; i++) {
-                const result = await getMenuList(new_category[i].ca_id);
-                const temp = {
-                    ca_id: new_category[i].ca_id,
-                    items: result,
-                };
-                arr.push(temp);
-            }
-            setMenuList(arr);
-        } catch (e) {
-            console.error(e);
-        }
-        setLoading(false);
-    }, [new_category]);
 
     // 아이템 카테고리가 존재하면 그 갯수만큼 패널 생성
     const renderContent = useCallback(() => {
-        const list = new_category.map((category, index) => (
+        const list = break_categorys.map((category, index) => (
             <TabPanel
                 key={category.ca_id}
                 value={tab_index}
@@ -126,12 +141,15 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
             />
         ));
         return <>{list}</>;
-    }, [new_category, tab_index, renderMenuList]);
+    }, [break_categorys, tab_index, renderMenuList]);
 
     //마운트 되었을 시 메뉴 리스트 받아오기
     useEffect(() => {
-        getProductList();
+        callBreakCategoryApi();
     }, []);
+    useEffect(()=>{
+        callBreakMenuList();
+    },[callBreakMenuList]);
 
     //탭이 바뀌면 url 변경
     useEffect(() => {
@@ -158,7 +176,7 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                 <div className={styles['container']}>
                     <div className={styles['content']}>
                         <TabMenu
-                            tabs={new_category}
+                            tabs={break_categorys}
                             index={tab_index}
                             onChange={onChangeTabIndex}
                         />

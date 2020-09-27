@@ -9,21 +9,34 @@ import { getOrderList } from '../../api/order/orderItem';
 import { useStore } from '../../hooks/useStore';
 import PreviewOrderList from '../../components/order/PreviewOrderItemList';
 import { dateToYYYYMMDD } from '../../lib/formatter';
-
+import Pagination  from '../../components/pagenation/Pagenation';
 //주문내역 페이지
 const OrderListContainer = () => {
     const user_token = useStore();
     const history = useHistory();
-    const [loading, setLoading] = useState(false);
 
-    const [order_list, setOrderList] = useState([]);
+    const [order_list, setOrderList] = useState([]); //전체 데이터.
+    const [loading, setLoading] = useState(false); //로딩
+    const [currentPage, setCurrentPage] = useState(1);   //현재 페이지
+    const [postsPerPage] = useState(2);  //한페이지에서 보여줄 POST의 수
+
+    const indexOfLastPost = currentPage * postsPerPage; // 현재 포스트에서 마지막 인덱스
+    const indexOfFirstPost = indexOfLastPost - postsPerPage; //현재 포스트에서 첫번째 인덱스
+    const currentPosts = order_list.slice(indexOfFirstPost, indexOfLastPost); //현재 포스트에서 보여줄 리스트
+    
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber); 
+        console.log(pageNumber);
+    }//페이지를 이동시킬 함수.
 
     const callOrderListApi = async () => {
         setLoading(true);
         if (user_token) {
             const res = await getOrderList(user_token);
-            console.log(res);
-            setOrderList(res);
+            console.log("나오냐?");
+            console.log(res.orders);
+            setOrderList(res.orders);
+
         }
         setLoading(false);
     };
@@ -35,6 +48,18 @@ const OrderListContainer = () => {
     useEffect(() => {
         callOrderListApi();
     }, []);
+    // useEffect(()=>{
+    //     console.log("슬라이스");
+    //     console.log(indexOfFirstPost);
+    //     console.log(indexOfLastPost);
+    //     console.log(order_list.slice(indexOfFirstPost, indexOfLastPost));
+    //     setCurrentPosts(order_list.slice(indexOfFirstPost, indexOfLastPost));
+    // },[order_list])
+
+    // useEffect(()=>{
+    //     console.log("현재 포스트");
+    //     console.log(currentPosts);
+    // },[currentPosts])
 
     return (
         <div className={styles['container']}>
@@ -88,11 +113,15 @@ const OrderListContainer = () => {
                         </div>
                     </div>
                     <div className={styles['order-list']}>
-                        {order_list.length !== 0 ? (
+                        {currentPosts.legnth!== 0 ? (
+                            <>
                             <PreviewOrderList
-                                order_list={order_list}
+                                order_list={currentPosts}
                                 onClick={onClickOrderItem}
                             />
+                             <Pagination postsPerPage={postsPerPage} totalPosts={order_list.length} paginate={paginate} />
+                         </>
+
                         ) : (
                             <Message
                                 msg={'주문 내역이 존재하지 않습니다.'}

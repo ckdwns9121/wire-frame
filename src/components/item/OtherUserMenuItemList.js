@@ -12,13 +12,10 @@ const OtherUserMenuItemList = ({ menu_list }) => {
         여기서 didmount로 메뉴 리스트 받아오기
     */
 
-    const menuList = menu_list.map((menu,index) => (
+    const menuList = menu_list.map((item) => (
         <OtherUserMenuItem
-            key={index}
-            menuTitle={menu.title}
-            menuText={menu.text}
-            menuPrice={menu.price}
-            src={menu.img}
+            key={item.item_id}
+            {...item}
         />
     ));
 

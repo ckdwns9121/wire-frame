@@ -6,7 +6,8 @@ import styles from './Preview.module.scss';
 
 const PreviewOrderList = ({order_list ,onClick}) =>{
 
-    const list = order_list.orders.map((item) =>{
+    console.log(order_list);
+    const list = order_list.map((item) =>{
         return <PreviewOrderItem key ={item.order_id} {...item}  onClick={()=> onClick(item.order_id)}/>
     })
     return(

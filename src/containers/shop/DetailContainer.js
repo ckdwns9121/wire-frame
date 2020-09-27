@@ -3,7 +3,7 @@ import { Paths } from 'paths';
 import styles from './Detail.module.scss';
 import AdditionalList from 'components/item/AdditionalList';
 import { useHistory } from 'react-router';
-import OtherUserMenuItemList from 'components/item/OtherUserMenuItemList';
+import OtherUserMenuItemList from '../../components/item/OtherUserMenuItemList';
 import { getOtherUserMenu } from '../../api/menu/menu';
 import TabMenu from '../../components/tab/TabMenu';
 import Count from '../../components/svg/counter/Count';
@@ -36,7 +36,7 @@ const DetailContainer = ({ item_id }) => {
     const getOtherUserMenuApi = useCallback(async () => {
         const res = await getOtherUserMenu();
         console.log(res);
-        setOtherMenuList(res);
+        setOtherMenuList(res.data.query.items);
     }, []);
 
     //장바구니 담기
@@ -65,7 +65,21 @@ const DetailContainer = ({ item_id }) => {
                     quanity,
                 );
                 console.log('비회원 장바구니 담기');
-                console.log(res);
+                const noAuthCartId = JSON.parse(localStorage.getItem('noAuthCartId'));
+                console.log(noAuthCartId);
+                if (noAuthCartId) {
+                    noAuthCartId.push(res.data.query);
+                    console.log(noAuthCartId);
+                    localStorage.setItem(
+                        'noAuthCartId',
+                        JSON.stringify(noAuthCartId),
+                    );
+                } else {
+                    localStorage.setItem(
+                        'noAuthCartId',
+                        JSON.stringify([res.data.query]),
+                    );
+                }
                 setSuccess(true);
             } catch (e) {
                 alert('Error!');
