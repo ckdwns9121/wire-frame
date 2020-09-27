@@ -15,9 +15,9 @@ const Footer = () => (
                     </div>
                 </div>
                 <div className={styles['sns']}>
-                    <Icon src={Fb_Icon} alt={'fb'} />
-                    <Icon src={Insta_Icon} alt={'insta'} />
-                    <Icon src={Blog_Icon} alt={'blog'} />
+                    <Icon src={Fb_Icon} alt={'fb'} href="https://www.facebook.com/ajoonamu/" />
+                    <Icon src={Insta_Icon} alt={'insta'} href="https://www.instagram.com/ajoonamu_ajoonamu/" />
+                    <Icon src={Blog_Icon} alt={'blog'} href="https://blog.naver.com/ajoonamu/" />
                 </div>
             </div>
             <div className={styles['context']}>
@@ -60,10 +60,10 @@ const Footer = () => (
     </div>
 );
 
-const Icon = ({ src, alt }) => (
-    <div className={styles['asset']}>
+const Icon = ({ src, alt, href }) => (
+    <a className={styles['asset']} href={href}>
         <img src={src} alt={alt} />
-    </div>
+    </a>
 );
 
 export default Footer;

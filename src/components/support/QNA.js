@@ -36,7 +36,6 @@ export default ({ match, location }) => {
         if (token) {
             try {
                 const res = await requestQNAList(token);
-                console.log(res.qnas);
                 setList(res.qnas);
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -126,7 +125,7 @@ const QNAWrite = ({ token }) => {
                 });
                 if (res.data.msg === "성공") {
                     openModal('성공적으로 작성하였습니다!', '답변이 올 때까지는 조금 시간이 소요됩니다.');
-                    history.replace(`${Paths.ajoonamu.support}/qna`);
+                    window.location.replace(`${Paths.ajoonamu.support}/qna`);
                 } else {
                     openModal('작성하는 도중 오류가 발생했습니다!', '다시 시도해 주세요.');
                 }

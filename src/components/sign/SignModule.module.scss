@@ -32,7 +32,9 @@
         outline: none;
         box-sizing: border-box;
         padding: 16px;
-
+        &.normal {
+            width: 540px;
+        }
         &.auth {
             width: 360px;
         }

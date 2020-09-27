@@ -39,8 +39,8 @@ const AccountContainer = () => {
     const [passwordSame, setPasswordSame] = useState(true);
     const { pw_o, pw, pw_c } = passwordState;
     const [phone, setPhone] = useState('');
-    const [emailAgree, setEmailAgree] = useState(false);
-    const [smsAgree, setSMSAgree] = useState(false);
+    const [emailAgree, setEmailAgree] = useState(0);
+    const [smsAgree, setSMSAgree] = useState(0);
 
     const [phoneAuth, setPhoneAuth] = useState(true);
     const [passwordChangeMode, setPasswordChangeMode] = useState(false);
@@ -56,11 +56,11 @@ const AccountContainer = () => {
     }, [pw, pw_c, passwordSame]);
 
     const onChangeEmailAgree = useCallback(() => {
-        setEmailAgree(!emailAgree);
+        setEmailAgree(emailAgree === 0 ? 1 : 0);
     }, [emailAgree]);
 
     const onChangeSMSAgree = useCallback(() => {
-        setSMSAgree(!smsAgree);
+        setSMSAgree(smsAgree === 0 ? 1 : 0);
     }, [smsAgree]);
 
     const sendPutAccount = useCallback(async () => {
@@ -79,7 +79,12 @@ const AccountContainer = () => {
                                 if (res.data.msg !== '성공') {
                                     errorList.push('이름');
                                 } else {
-                                    dispatch(update_user_info({ name: 'name', value: name }));
+                                    dispatch(
+                                        update_user_info({
+                                            name: 'name',
+                                            value: name,
+                                        }),
+                                    );
                                 }
                             }
                             if (passwordChangeMode) {
@@ -95,11 +100,19 @@ const AccountContainer = () => {
                                 }
                             }
                             if (phoneChangeMode) {
-                                const res = await updatePhone(user_token, phone);
+                                const res = await updatePhone(
+                                    user_token,
+                                    phone,
+                                );
                                 if (res.data.msg !== '성공') {
                                     errorList.push('휴대폰 번호');
                                 } else {
-                                    dispatch(update_user_info({ name: 'hp', value: phone }));
+                                    dispatch(
+                                        update_user_info({
+                                            name: 'hp',
+                                            value: phone,
+                                        }),
+                                    );
                                 }
                             }
                             if (user.agree_mail !== emailAgree) {
@@ -111,7 +124,12 @@ const AccountContainer = () => {
                                 if (res.data.msg !== '성공') {
                                     errorList.push('이메일 알림');
                                 } else {
-                                    dispatch(update_user_info({ name: 'agree_mail', value: emailAgree }));
+                                    dispatch(
+                                        update_user_info({
+                                            name: 'agree_mail',
+                                            value: emailAgree,
+                                        }),
+                                    );
                                 }
                             }
                             if (user.agree_sms !== smsAgree) {
@@ -123,7 +141,12 @@ const AccountContainer = () => {
                                 if (res.data.msg !== '성공') {
                                     errorList.push('SMS 알림');
                                 } else {
-                                    dispatch(update_user_info({ name: 'agree_sms', value: smsAgree }));
+                                    dispatch(
+                                        update_user_info({
+                                            name: 'agree_sms',
+                                            value: smsAgree,
+                                        }),
+                                    );
                                 }
                             }
                             if (errorList.length) {
@@ -151,7 +174,10 @@ const AccountContainer = () => {
                         );
                     }
                 } else {
-                    openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.');
+                    openModal(
+                        '형식에 맞지 않는 비밀번호입니다.',
+                        '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.',
+                    );
                 }
             } else {
                 openModal(
@@ -165,18 +191,19 @@ const AccountContainer = () => {
         setLoading(false);
     }, [
         passwordSame,
+        passwordChangeMode,
+        pw,
+        pw_c,
         phoneAuth,
         active,
         user,
         name,
-        passwordChangeMode,
         phoneChangeMode,
         emailAgree,
         smsAgree,
         user_token,
+        dispatch,
         pw_o,
-        pw,
-        pw_c,
         phone,
         openModal,
     ]);
@@ -332,7 +359,7 @@ const AccountContainer = () => {
                             className={styles['user-value']}
                             onClick={onChangeEmailAgree}
                         >
-                            <Select check={emailAgree} />
+                            <Select check={emailAgree !== 0} />
                             <span>
                                 이메일을 통해 할인/이벤트/쿠폰 정보를 받아보실
                                 수 있습니다.
@@ -345,7 +372,7 @@ const AccountContainer = () => {
                             className={styles['user-value']}
                             onClick={onChangeSMSAgree}
                         >
-                            <Select check={smsAgree} />
+                            <Select check={smsAgree !== 0} />
                             <span>
                                 SMS을 통해 할인/이벤트/쿠폰 정보를 받아보실 수
                                 있습니다.
