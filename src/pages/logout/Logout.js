@@ -24,11 +24,11 @@ export default ({ history }) => {
                     dispatch(get_address(null));
                     openMessage(false, '로그아웃 성공!', '성공적으로 로그아웃 되었습니다.');
                     sessionStorage.removeItem('access_token');
-                    const noAuth = JSON.parse(localStorage.getItem('noAuth'));
-                    if(noAuth){
-                        const index = noAuth.findIndex((item) =>item.active===1);
+                    const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                    if(noAuthAddrs){
+                        const index = noAuthAddrs.findIndex((item) =>item.active===1);
                         if(index!==-1){
-                            dispatch(get_address(noAuth[index].addr1));
+                            dispatch(get_address(noAuthAddrs[index].addr1));
                         }
                         
                     }

@@ -5,7 +5,6 @@ import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import CartItemList from '../../components/cart/CartItemList';
 import CartModal from 'components/modal/EstmModal';
-import produce from 'immer';
 import PlusIcon from '../../components/svg/cart/PlusIcon';
 import EqualsIcon from '../../components/svg/cart/EqualsIcon';
 import CheckBox from '../../components/checkbox/CheckBox';
@@ -22,9 +21,12 @@ import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import CntModal from '../../components/modal/QunaityModal';
 import {noAuthGetCartList} from '../../api/noAuth/cart';
 
+import produce from 'immer';
+
 const cx = cn.bind(styles);
 
 const CartContainer = () => {
+
     const history = useHistory();
     const openModal = useModal();
 

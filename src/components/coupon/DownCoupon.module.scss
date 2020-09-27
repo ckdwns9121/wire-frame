@@ -11,10 +11,7 @@ $value2: 22px;
 }
 
 .downcoupon-list {
-    margin: $value1 0 0 $value1;
-    margin-top: 40px;
-    display: flex;
-    flex-wrap: wrap;
+    margin: 0 0 0 $value1;
     .coupon-item {
         cursor: pointer;
         margin: $value2 0 0 $value2;
@@ -22,7 +19,6 @@ $value2: 22px;
         box-sizing: border-box;
         height: 200px;
         position: relative;
-        display: flex;
         text-align: left;
         border: 1px solid #dbdbdb;
         border-radius: 10px;

@@ -128,12 +128,12 @@ const OrderContainer = () => {
     // 결제방식 변경
     const onClickPayment = (payment) => {
         setPayment(payment);
-        sessionStorage.setItem('payment', payment);
+        localStorage.setItem('user_payment', payment);
     };
 
     //결제 방법 스토리지에 있다면 들고오기
     const getPayment = () => {
-        const payment_item = sessionStorage.getItem('payment');
+        const payment_item = localStorage.getItem('user_payment');
         if (payment_item) {
             setPayment(payment_item);
         }
