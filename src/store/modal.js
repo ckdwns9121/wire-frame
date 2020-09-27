@@ -14,7 +14,7 @@ const initialState = {
     confirm: false,
     title: "창입니다.",
     text: "내용입니다.",
-    handleClick: () => console.log('기본 값입니다.')
+    handleClick: () => {}
 };
 
 const modal = handleActions(

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import classnames from 'classnames/bind';
 import { makeStyles } from '@material-ui/core/styles';
 /* Library */
@@ -31,13 +31,24 @@ export default ({ confirm, title, text, handleClick = () => {}, open }) => {
         onClose();
     }, [handleClick, onClose]);
 
-    const onEnter = useCallback(e => {
-        console.log(e);
-    }, []);
+    useEffect(() => {
+        const keydownEvent = e => {
+            if (e.key === 'Enter') {
+                onClick();
+            }
+            if (e.key === 'Escape') {
+                onClose();
+            }
+        };
+        document.addEventListener('keydown', keydownEvent, true);
+        return () => {
+            document.removeEventListener('keydown', keydownEvent, true);
+        }
+    }, [onClick, onClose]);
 
     return (
         <>
-            <div className={cn('modal', { confirm,  open })} onKeyPress={onEnter}>
+            <div className={cn('modal', { confirm,  open })}>
                 <div className={styles['area']}>
                     <div className={cn('content')}>
                         <h3 className={styles['title']}>{title}</h3>

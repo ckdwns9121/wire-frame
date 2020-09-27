@@ -36,10 +36,7 @@ export const requestQNADelete = async (token, id) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
-    const formData = new FormData();
-    formData.append('id', id);
-
-    const res = await axios.delete(req, formData);
+    const res = await axios.delete(req, { data: { id } });
     return res;
 }
 

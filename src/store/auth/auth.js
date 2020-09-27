@@ -61,15 +61,15 @@ const auth = handleActions(
             succeed: false,
             user: null,
         }),
-        [UPDATE_USERINFO] :(state,action)=>{
-            const {user} = state;
-            const {name,value} = action.payload;
-            user[name]  = value;
+        [UPDATE_USERINFO]: (state, action) => {
+            const { user } = state;
+            const { name, value } = action.payload;
+            user[name] = value;
             return {
                 ...state,
-                user :user
-            }
-        }
+                user: user,
+            };
+        },
     },
     initState,
 );

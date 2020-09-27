@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
@@ -27,6 +27,8 @@ const SignInContainer = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const emailInput = useRef(null);
+
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
     };
@@ -48,15 +50,6 @@ const SignInContainer = () => {
         history.push(Paths.ajoonamu.recovery);
     }, [history]);
 
-    useEffect(() => {
-        const data = localStorage.getItem('user');
-        if (data !== null) {
-            const temp = JSON.parse(data);
-            setEmail(temp.email);
-            setPassword(temp.password);
-            setChecked(temp.checked);
-        }
-    }, []);
 
     const onClickLogin = useCallback(async () => {
         if (!isEmailForm(email)) {
@@ -105,6 +98,32 @@ const SignInContainer = () => {
         }
     }, [history, checked, dispatch, email, password, openModal]);
 
+    useEffect(() => {
+        const data = localStorage.getItem('user');
+        if (data !== null) {
+            const temp = JSON.parse(data);
+            setEmail(temp.email);
+            setPassword(temp.password);
+            setChecked(temp.checked);
+        }
+    }, []);
+
+    useEffect(() => {
+        emailInput.current.focus();
+    }, [])
+
+    useEffect(() => {
+        const kepressEvent = e => {
+            if (e.key === 'Enter') {
+                onClickLogin();
+            }
+        };
+        document.addEventListener('keypress', kepressEvent, true);
+        return () => {
+            document.removeEventListener('keypress', kepressEvent, true);
+        }
+    }, [onClickLogin]);
+
     return (
         <div className={styles['container']}>
             <div className={cx('content', 'sign-in')}>
@@ -116,6 +135,7 @@ const SignInContainer = () => {
                         value={email}
                         onChange={onChangeEmail}
                         placeholder="이메일"
+                        ref={emailInput}
                     />
                     <input
                         type="password"
