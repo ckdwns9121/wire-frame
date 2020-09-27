@@ -9,7 +9,6 @@ import { Paths } from 'paths';
 import { useSelector } from 'react-redux';
 import styles from './Order.module.scss';
 import classNames from 'classnames/bind';
-import CircleCheckBox from '../../components/checkbox/CircleCheckBox';
 import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
 import Button from '../../components/button/Button';
 import CheckBox from '../../components/checkbox/CheckBox';
@@ -25,6 +24,7 @@ import { user_order } from '../../api/order/order';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import { onlyNumber } from '../../lib/formatChecker';
 import { useModal } from '../../hooks/useModal';
+import Select from '../../components/svg/select/Select';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -61,6 +61,7 @@ const OrderContainer = () => {
     const { user } = useSelector(state => state.auth);
     const { address } = useSelector(state => state.address);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
+    const [addContact, setAddContact] = useState(false);
     const { check1, check2 } = check;
     const [toggle, setToggle] = useState(false); // 결제 동의
     const [payment, setPayment] = useState('만나서 직접 결제'); //결제 방법
@@ -77,6 +78,12 @@ const OrderContainer = () => {
     const [cp_price, setCpPrice] = useState(0);
     const [date, setDate] = useState(new Date());
 
+
+    const [firstPhoneNumber, setFirstPhoneNumber] = useState('');
+    const [secondPhoneNumber, setSecondPhoneNumber] = useState('');
+    const [firstPhoneAuth, setFirstPhoneAuth] = useState('');
+    const [secondPhoneAuth, setSecondPhoneAuth] = useState('');
+
     const paymentInfo = useRef(null);
     const paymentBox = useRef(null);
 
@@ -85,24 +92,6 @@ const OrderContainer = () => {
     const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
     const onChangeOrderMemo = (e) => setOrderMemo(e.target.value);
 
-    const secondPhone = useRef(null);
-    const thirdPhone = useRef(null);
-    
-    const onChangePhoneFirst = useCallback(() => {  
-        secondPhone.current.focus();
-    }, []);
-    const onChangePhoneNext = useCallback(e => {
-        if (e.target.value.length >= 4) {
-            thirdPhone.current.focus();
-        }
-        e.target.value = e.target.value.substr(0, 4);
-    }, []);
-    const onChangePhonePrev = useCallback(e => {
-        if (e.target.value.length === 0) {
-            secondPhone.current.focus();
-        }
-        e.target.value = e.target.value.substr(0, 4);
-    }, []);
 
     const updateAllCheck = (e) => {
         dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
@@ -298,6 +287,12 @@ const OrderContainer = () => {
     };
 
     useEffect(() => {
+        if (user) {
+            setFirstPhoneNumber(user.hp);
+        }
+    }, [user]);
+
+    useEffect(() => {
         getPayment();
         getUserCoupons();
         getTotalPrice();
@@ -305,12 +300,10 @@ const OrderContainer = () => {
         const temp = JSON.parse(localStorage.getItem('requestMemo'));
         if (temp) {
             if (temp.dlvMemo !== false) {
-                console.log(temp.dlvMemo);
                 setDlvMemoCheck(true);
                 setDlvMemo(temp.dlvMemo);
             }
             if (temp.orderMemo !== false) {
-                console.log(temp.orderMemo);
                 setOrderMemoCheck(true);
                 setOrderMemo(temp.orderMemo);
             }
@@ -370,46 +363,12 @@ const OrderContainer = () => {
                                     {address},
                                     {/* 101호(샌달아파트) */}
                                 </div>
-                                <div className={styles['hp']}>
-                                    <div className={styles['first']}>
-                                        <select
-                                            name="phone"
-                                            onChange={onChangePhoneFirst}
-                                        >
-                                            <option value="010">010</option>
-                                            <option value="011">011</option>
-                                            <option value="016">016</option>
-                                            <option value="019">019</option>
-                                        </select>
-                                    </div>
-                                    <div className={styles['second']}>
-                                        <input
-                                            ref={secondPhone}
-                                            onChange={onChangePhoneNext}
-                                            onKeyDown={(e) =>
-                                                !onlyNumber(e.key) &&
-                                                e.preventDefault()
-                                            }
-                                            className={styles['sub-number']}
-                                            placeholder="핸드폰 앞자리"
-                                        />
-                                    </div>
-                                    <div className={styles['second']}>
-                                        <input
-                                            ref={thirdPhone}
-                                            onChange={onChangePhonePrev}
-                                            onKeyDown={(e) =>
-                                                !onlyNumber(e.key) &&
-                                                e.preventDefault()
-                                            }
-                                            className={styles['sub-number']}
-                                            placeholder="핸드폰 뒷자리"
-                                        />
-                                    </div>
-                                </div>
-                                <div className={styles['input-hp']}>
-                                    <CircleCheckBox text={'연락처 추가'} />
-                                </div>
+                                <PhoneInputArea phoneNumber={firstPhoneNumber} setPhoneNumber={setFirstPhoneNumber} auth={firstPhoneAuth} setAuth={setFirstPhoneAuth} />
+                                {addContact && <PhoneInputArea phoneNumber={secondPhoneNumber} setPhoneNumber={setSecondPhoneNumber} auth={secondPhoneAuth} setAuth={setSecondPhoneAuth} />}
+                                <span className={styles['input-hp']} onClick={() => setAddContact(!addContact)}>
+                                    <Select check={addContact} />
+                                    <span>연락처 추가 입력</span>
+                                </span>
                             </div>
                         </div>
 
@@ -708,40 +667,146 @@ function Payment({ text, onClick, check, payment }) {
     );
 }
 
-const AcceptContainer = (props) => {
-    return (
-        <div className={cx('agree')}>
-            <div className={styles['terms']}>
-                <div className={styles['all']}>
+const AcceptContainer = (props) => (
+    <div className={cx('agree')}>
+        <div className={styles['terms']}>
+            <div className={styles['all']}>
+                <CheckBox
+                    id={'all'}
+                    text={'모두 동의합니다.'}
+                    check={props.allCheck}
+                    onChange={props.updateAllCheck}
+                />
+            </div>
+            <div className={cx('pd-sub-top')}>
+                <div className={styles['chk-box']}>
                     <CheckBox
-                        id={'all'}
-                        text={'모두 동의합니다.'}
-                        check={props.allCheck}
-                        onChange={props.updateAllCheck}
+                        id={'check1'}
+                        text={'개인정보처리방침 필수 동의'}
+                        check={props.check1}
+                        onChange={props.onChangeCheck1}
+                        url={Paths.index}
                     />
                 </div>
-                <div className={cx('pd-sub-top')}>
-                    <div className={styles['chk-box']}>
-                        <CheckBox
-                            id={'check1'}
-                            text={'개인정보처리방침 필수 동의'}
-                            check={props.check1}
-                            onChange={props.onChangeCheck1}
-                            url={Paths.index}
-                        />
-                    </div>
-                    <div className={styles['chk-box']}>
-                        <CheckBox
-                            id={'check2'}
-                            text={'이용약관 필수'}
-                            check={props.check2}
-                            onChange={props.onChangeCheck2}
-                            url={Paths.index}
-                        />
-                    </div>
+                <div className={styles['chk-box']}>
+                    <CheckBox
+                        id={'check2'}
+                        text={'이용약관 필수'}
+                        check={props.check2}
+                        onChange={props.onChangeCheck2}
+                        url={Paths.index}
+                    />
                 </div>
+            </div>
+        </div>
+    </div>
+);
+
+export default OrderContainer;
+
+
+const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
+    const [firstValue, setFirstValue] = useState('');
+    const [secondValue, setSecondValue] = useState('');
+    const [thirdValue, setThirdValue] = useState('');
+
+    const [start, setStart] = useState(false);
+    const [authNumber, setAuthNumber] = useState('');
+
+    const secondPhone = useRef(null);
+    const thirdPhone = useRef(null);
+    
+    const onChangePhoneFirst = useCallback(e => {  
+        secondPhone.current.focus();
+        setFirstValue(e.target.value);
+    }, []);
+    const onChangePhoneNext = useCallback(e => {
+        if (e.target.value.length >= 4) {
+            thirdPhone.current.focus();
+        }
+        e.target.value = e.target.value.substr(0, 4);
+        setSecondValue(e.target.value);
+    }, []);
+    const onChangePhonePrev = useCallback(e => {
+        if (e.target.value.length === 0) {
+            secondPhone.current.focus();
+        }
+        e.target.value = e.target.value.substr(0, 4);
+        setThirdValue(e.target.value);
+    }, []);
+
+    useEffect(() => {
+        setPhoneNumber(
+            firstValue + secondValue + thirdValue
+        );
+    }, [firstValue, secondValue, setPhoneNumber, thirdValue]);
+
+    return (
+        <div className={styles['hp']}>
+            <div className={styles['first']}>
+                <select
+                    name="phone"
+                    onChange={onChangePhoneFirst}
+                >
+                    <option value="010">010</option>
+                    <option value="011">011</option>
+                    <option value="016">016</option>
+                    <option value="019">019</option>
+                </select>
+            </div>
+            <div className={styles['second']}>
+                <input
+                    ref={secondPhone}
+                    onChange={onChangePhoneNext}
+                    onKeyDown={e =>
+                        !onlyNumber(e.key) &&
+                        e.preventDefault()
+                    }
+                    className={styles['sub-number']}
+                    placeholder="핸드폰 앞자리"
+                />
+            </div>
+            <div className={styles['second']}>
+                <input
+                    ref={thirdPhone}
+                    onChange={onChangePhonePrev}
+                    onKeyDown={e =>
+                        !onlyNumber(e.key) &&
+                        e.preventDefault()
+                    }
+                    className={styles['sub-number']}
+                    placeholder="핸드폰 뒷자리"
+                />
+            </div>
+            <div className={cx('auth', { start })}>
+                <input
+                    onChange={e => {
+                        if (e.target.value.length <= 6) {
+                            setAuthNumber(e.target.value)
+                        } else {
+                            e.target.value = authNumber;
+                        }
+                    }}
+                    onKeyDown={e =>
+                        !onlyNumber(e.key) &&
+                        e.preventDefault()
+                    }
+                    className={styles['auth-input']}
+                />
+            </div>
+            <div className={styles['button-area']}>
+                <ButtonBase
+                    onClick={start ?
+                        authNumber.length === 6 ?
+                        () => { alert('인증되었습니다.') } : () => { alert('인증번호: 49996') }
+                    : () => {setStart(true)}}
+                    className={styles['button']}>
+                        {start ?
+                            authNumber.length === 6 ?
+                                "인증번호 확인" : "인증번호 재발송"
+                        : "인증번호 발송"}
+                    </ButtonBase>
             </div>
         </div>
     );
 };
-export default OrderContainer;

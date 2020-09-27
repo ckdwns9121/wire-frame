@@ -39,6 +39,7 @@ $pd: 20px;
                     input {
                         border: 1px solid #dbdbdb;
                         outline: none;
+                        font-size: 1.5rem;
                         height: 56px;
                         box-sizing: border-box;
                         padding: 0 $pd;
@@ -73,11 +74,45 @@ $pd: 20px;
                                 border: 1px solid #dbdbdb;
                                 box-sizing: border-box;
                                 outline: none;
-                                font-size: 1.333rem;
+                                font-size: 1.5rem;
                                 width: 160px;
                                 height: 48px;
                                 padding-left: 20px;
                             }
+                        }
+                        .auth {
+                            width: 0;
+                            overflow: hidden;
+                            margin-left: 20px;
+                            transition: width .3s ease-in-out;
+                            &.start {
+                                width: 150px;
+                            }
+                            .auth-input {
+                                width: 100%; height: 48px;
+                            }
+                        }
+                        .button-area {
+                            margin-left: 20px;
+                            .button {
+                                width: 120px; height: 100%;
+                                font-size: 1.5rem;
+                                border: solid 1px #007246;
+                                color: #007246;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                    .input-hp {
+                        color: #222;
+                        font-size: 1.5rem;
+                        vertical-align: middle;
+                        cursor: pointer;
+                        span, svg {
+                            vertical-align: middle;
+                        }
+                        span {
+                            margin-left: 10px;
                         }
                     }
                     .coupon {
@@ -128,6 +163,7 @@ $pd: 20px;
                         }
                         .memo-input {
                             .input {
+                                font-size: 1.5rem;
                                 width: 100%;
                                 height: 56px;
                                 border: 1px solid #dbdbdb;
@@ -146,7 +182,7 @@ $pd: 20px;
                             height: 64px;
                             color: #222;
                             font-size: 1.5rem;
-
+                            transition: all .15s ease-in-out;
                             &.check {
                                 border: 2px solid $main-color;
                                 color: $main-color;
