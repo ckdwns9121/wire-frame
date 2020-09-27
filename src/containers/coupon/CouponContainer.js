@@ -17,11 +17,9 @@ import {
 import Loading from '../../components/assets/Loading';
 import Message from '../../components/assets/Message';
 import produce from 'immer';
-import { ButtonBase } from '@material-ui/core';
-import { dateToYYYYMMDD } from '../../lib/formatter';
-import { useDispatch } from 'react-redux';
-import { modalOpen } from '../../store/modal';
 import cn from 'classnames/bind';
+import DateRangePicker from '../../components/mypage/DateRangePicker';
+import { useModal } from '../../hooks/useModal';
 
 const cx = cn.bind(styles);
 
@@ -44,17 +42,14 @@ const tabInit = [
 ];
 
 const CouponConatiner = (props) => {
-    const modalDispatch = useDispatch();
-    const openAlert = useCallback(
-        (title, text, handleClick = () => {}) => {
-            modalDispatch(modalOpen(false, title, text, handleClick));
-        },
-        [modalDispatch],
-    );
+    const openModal = useModal();
 
     const query = qs.parse(props.location.search, {
         ignoreQueryPrefix: true,
     });
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     const [loading, setLoading] = useState(false);
     const [index, setIndex] = useState(0);
@@ -81,7 +76,6 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             const res = await getMyCoupons(user_token);
-            console.log(res);
             setCpList(res);
         }
         setLoading(false);
@@ -92,7 +86,6 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             const res = await getDownloadCpList(user_token);
-            console.log(res);
             setDownCpList(res);
         }
         setLoading(false);
@@ -104,12 +97,11 @@ const CouponConatiner = (props) => {
             try {
                 const res = await downloadCoupon(user_token, cz_id);
                 if (
-                    res.data.msg ===
-                    '이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.'
+                    res.data.msg === '이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.'
                 ) {
-                    openAlert('이미 다운로드 한 쿠폰입니다.', res.data.msg);
+                    openModal('이미 다운로드 한 쿠폰입니다.', res.data.msg);
                 } else {
-                    openAlert('다운로드 성공했습니다.', res.data.msg);
+                    openModal('다운로드 성공했습니다.', res.data.msg);
                 }
                 const idx = down_cp_list.findIndex(
                     (item) => item.cz_id === cz_id,
@@ -124,7 +116,7 @@ const CouponConatiner = (props) => {
             }
             setLoading(false);
         },
-        [user_token, down_cp_list],
+        [user_token, down_cp_list, openModal],
     );
 
     const inputCoupon = useCallback(async () => {
@@ -134,16 +126,15 @@ const CouponConatiner = (props) => {
         setLoading(true);
         try {
             const res = await couponInput(user_token, user_input_cp);
-            console.log(res);
             if (res.data.msg === '성공') {
-                openAlert('쿠폰등록이 완료되었습니다.');
+                openModal('쿠폰 등록이 완료되었습니다.');
             }
         } catch (e) {
             console.error(e);
         }
 
         setLoading(false);
-    }, [user_token, user_input_cp]);
+    }, [user_token, user_input_cp, openModal]);
     useEffect(() => {
         getMyCouponList();
         getDownCouponList();
@@ -176,44 +167,12 @@ const CouponConatiner = (props) => {
                 <div className={cx('tab-title', { border_none: index === 0 })}>
                     {getTitle()}
                 </div>
-
-                {index === 2 && (
-                    <div className={styles['use-coupon']}>
-                        <div className={styles['date']}>
-                            <ButtonBase className={styles['date-box']}>
-                                1주일
-                            </ButtonBase>
-                            <ButtonBase className={styles['date-box']}>
-                                1개월
-                            </ButtonBase>
-                            <ButtonBase className={styles['date-box']}>
-                                3개월
-                            </ButtonBase>
-                            <ButtonBase className={styles['date-box']}>
-                                6개월
-                            </ButtonBase>
-                        </div>
-                        <div className={styles['date-input-box']}>
-                            <div className={styles['text']}>기간 입력</div>
-                            <div className={styles['input']}>
-                                <input
-                                    value={dateToYYYYMMDD(new Date(), '/')}
-                                />
-                            </div>
-                            <div className={styles['line']}></div>
-
-                            <div className={styles['input']}>
-                                <input
-                                    value={dateToYYYYMMDD(new Date(), '/')}
-                                />
-                            </div>
-                            <ButtonBase className={styles['btn']}>
-                                조회
-                            </ButtonBase>
-                        </div>
-                    </div>
-                )}
-
+                {index === 2 &&
+                    <DateRangePicker
+                        startDate={startDate} setStartDate={setStartDate}
+                        endDate={endDate} setEndDate={setEndDate}
+                        onClick={getDownCouponList} // 임시
+                    />}
                 <div className={styles['coupon-list']}>
                     {index === 0 && (
                         <>

@@ -1,14 +1,12 @@
 import React from 'react';
 import styles from './Preview.module.scss';
 import menu1 from '../svg/menu/menu1.png';
-import menu2 from '../svg/menu/menu2.png';
-import menu3 from '../svg/menu/menu3.png';
 import Arrow from '../svg/arrow/Arrow';
 import { numberFormat } from "../../lib/formatter";
 
 const PreviewOrderItem = (props) => {
 
-
+    console.log(props);
     const {
         cp_price,
         items,

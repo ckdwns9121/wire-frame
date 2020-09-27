@@ -20,16 +20,15 @@ const MypageContainer = ({ pathname }) => {
 
     const getTitle = useCallback((path) => {
         if (path.indexOf('/order_list') !== -1) {
-            return "주문내역";
+            return '주문내역';
         } else if (path.indexOf('/coupon') !== -1) {
-            return "쿠폰함";
-        }  else if(path.indexOf('/order_detail') !==-1){
-            return "주문내역";
-        }else if(path.indexOf('/secession') !==-1){
-            return "회원탈퇴"
-        } 
-        else {
-            return "내 정보 관리";
+            return '쿠폰함';
+        } else if (path.indexOf('/order_detail') !== -1) {
+            return '주문내역';
+        } else if (path.indexOf('/secession') !== -1) {
+            return '회원탈퇴';
+        } else {
+            return '내 정보 관리';
         }
     }, []);
 

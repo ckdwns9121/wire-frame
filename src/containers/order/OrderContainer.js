@@ -19,6 +19,8 @@ import { numberFormat, stringNumberToInt } from '../../lib/formatter';
 import { getOrderCoupons } from '../../api/coupon/coupon';
 import { useStore } from '../../hooks/useStore';
 import $script from 'scriptjs';
+import ko from 'date-fns/locale/ko';
+import DatePicker from 'react-datepicker';
 import { user_order } from '../../api/order/order';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import { onlyNumber } from '../../lib/formatChecker';
@@ -73,6 +75,10 @@ const OrderContainer = () => {
     const [usePoint, setUsePoint] = useState(0);
     const order_id = useRef(null);
     const [cp_price, setCpPrice] = useState(0);
+    const [date, setDate] = useState(new Date());
+
+    const paymentInfo = useRef(null);
+    const paymentBox = useRef(null);
 
     const onChangeDlvCheck = (e) => setDlvMemoCheck(e.target.checked);
     const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
@@ -96,10 +102,6 @@ const OrderContainer = () => {
             secondPhone.current.focus();
         }
         e.target.value = e.target.value.substr(0, 4);
-    }, []);
-
-    const onChangeUsePoint = useCallback(e => {
-
     }, []);
 
     const updateAllCheck = (e) => {
@@ -144,7 +146,6 @@ const OrderContainer = () => {
         if (user_token) {
             try {
                 const res = await getCartList(user_token);
-                console.log(res);
                 if (res.data.msg === 'success') {
                     let price = 0;
                     const { query } = res.data;
@@ -184,7 +185,6 @@ const OrderContainer = () => {
     const getUserCoupons = async () => {
         if (user_token) {
             const res = await getOrderCoupons(user_token);
-            console.log(res);
             setCouponList(res);
         }
     };
@@ -216,9 +216,6 @@ const OrderContainer = () => {
         const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
         const res = await user_order(user_token);
         order_id.current = res.data.query;
-
-        console.log("주문 1단계");
-        console.log(res);
         $script(payple_url, () => {
             /*global PaypleCpayAuthCheck*/
 
@@ -334,6 +331,29 @@ const OrderContainer = () => {
         );
     }, [dlvMemoCheck, orderMemoCheck, dlvMemo, orderMemo]);
 
+    useEffect(() => {
+        const boundingBox = paymentBox.current.getBoundingClientRect();
+        const boundingInfo = paymentInfo.current.getBoundingClientRect();
+        const STICKY = boundingInfo.top + window.pageYOffset;
+        const ABSOLUTE = boundingBox.top + boundingBox.height - boundingInfo.height;
+        const scrollEvent = () => {
+            if (ABSOLUTE <= window.pageYOffset) {
+                paymentInfo.current.style.position = 'absolute';
+                paymentInfo.current.style.top = '';
+                paymentInfo.current.style.bottom = 0;
+            }
+            else if (STICKY <= window.pageYOffset) {
+                paymentInfo.current.style.position = 'fixed';
+                paymentInfo.current.style.top = 0;
+            } else {
+                paymentInfo.current.style.position = 'static';
+                paymentInfo.current.style.top = '';
+            }
+        }
+        window.addEventListener('scroll', scrollEvent);
+        return () => window.removeEventListener('scroll', scrollEvent);
+    }, []);
+
     return (
         <ScrollTop>
             <div className={styles['container']}>
@@ -347,7 +367,7 @@ const OrderContainer = () => {
                                     {user && user.name}
                                 </div>
                                 <div className={styles['addr']}>
-                                    {address}, 
+                                    {address},
                                     {/* 101호(샌달아파트) */}
                                 </div>
                                 <div className={styles['hp']}>
@@ -366,7 +386,6 @@ const OrderContainer = () => {
                                         <input
                                             ref={secondPhone}
                                             onChange={onChangePhoneNext}
-                                            // onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
                                             onKeyDown={(e) =>
                                                 !onlyNumber(e.key) &&
                                                 e.preventDefault()
@@ -400,21 +419,15 @@ const OrderContainer = () => {
                             </div>
                             <div className={styles['user-info']}>
                                 <div className={styles['date']}>
-                                    <div className={styles['first']}>
-                                        <select name="date">
-                                            <option value="2000">
-                                                2000-00-00
-                                            </option>
-                                            <option value="2001">
-                                                2000-00-00
-                                            </option>
-                                            <option value="2002">
-                                                2000-00-00
-                                            </option>
-                                            <option value="2003">
-                                                2000-00-00
-                                            </option>
-                                        </select>
+                                    <div className={styles['first']}>                    
+                                        <DatePicker
+                                            locale={ko}
+                                            dateFormat="yyyy-MM-dd"
+                                            minDate={date}
+                                            selected={date}
+                                            onChange={date => setDate(date)}
+                                            withPortal
+                                        />
                                     </div>
                                     <div className={styles['second']}>
                                         <select name="hours">
@@ -607,73 +620,75 @@ const OrderContainer = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={styles['order-info-box']}>
-                        <div className={styles['order-box-item']}>
-                            <div className={styles['title']}>결제 정보</div>
-                            <div className={styles['order-price']}>
-                                <div className={styles['text-price']}>
-                                    <div className={styles['text']}>
-                                        주문금액
+                    <div className={styles['order-info-box']} ref={paymentBox}>
+                        <div ref={paymentInfo}>
+                            <div className={styles['order-box-item']}>
+                                <div className={styles['title']}>결제 정보</div>
+                                <div className={styles['order-price']}>
+                                    <div className={styles['text-price']}>
+                                        <div className={styles['text']}>
+                                            주문금액
+                                        </div>
+                                        <div className={styles['price']}>
+                                            {numberFormat(totalPrice)}
+                                            <span>원</span>
+                                        </div>
                                     </div>
-                                    <div className={styles['price']}>
-                                        {numberFormat(totalPrice)}
-                                        <span>원</span>
+                                    <div className={styles['text-price']}>
+                                        <div className={styles['text']}>
+                                            배달비용
+                                        </div>
+                                        <div className={styles['price']}>
+                                            {numberFormat(dlvCost)}
+                                            <span>원</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className={styles['text-price']}>
-                                    <div className={styles['text']}>
-                                        배달비용
+                                    <div className={styles['text-price']}>
+                                        <div className={styles['text']}>
+                                            쿠폰할인
+                                        </div>
+                                        <div className={styles['price']}>
+                                            -{numberFormat(cp_price)}
+                                            <span>원</span>
+                                        </div>
                                     </div>
-                                    <div className={styles['price']}>
-                                        {numberFormat(dlvCost)}
-                                        <span>원</span>
-                                    </div>
-                                </div>
-                                <div className={styles['text-price']}>
-                                    <div className={styles['text']}>
-                                        쿠폰할인
-                                    </div>
-                                    <div className={styles['price']}>
-                                        -{numberFormat(cp_price)}
-                                        <span>원</span>
-                                    </div>
-                                </div>
-                                <div className={styles['text-price']}>
-                                    <div className={styles['text']}>
-                                        포인트사용
-                                    </div>
-                                    <div className={styles['price']}>
-                                        -{numberFormat(usePoint)}
-                                        <span>원</span>
+                                    <div className={styles['text-price']}>
+                                        <div className={styles['text']}>
+                                            포인트사용
+                                        </div>
+                                        <div className={styles['price']}>
+                                            -{numberFormat(usePoint)}
+                                            <span>원</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className={styles['total-price']}>
-                            <div className={styles['text']}>합계</div>
-                            <div className={styles['price']}>
-                                {numberFormat(
-                                    parseInt(totalPrice) +
-                                        parseInt(dlvCost) -
-                                        parseInt(cp_price),
-                                )}
-                                <span>원</span>
+                            <div className={styles['total-price']}>
+                                <div className={styles['text']}>합계</div>
+                                <div className={styles['price']}>
+                                    {numberFormat(
+                                        parseInt(totalPrice) +
+                                            parseInt(dlvCost) -
+                                            parseInt(cp_price),
+                                    )}
+                                    <span>원</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles['order-btn']}>
-                            <Button
-                                title={'결제하기'}
-                                toggle={toggle}
-                                onClick={toggle ? onClickOrder : () => {}}
-                            ></Button>
-                        </div>
-                        <div className={styles['agree-order']}>
-                            <AcceptContainer
-                                {...check}
-                                updateAllCheck={updateAllCheck}
-                                onChangeCheck1={onChangeCheck1}
-                                onChangeCheck2={onChangeCheck2}
-                            />
+                            <div className={styles['order-btn']}>
+                                <Button
+                                    title={'결제하기'}
+                                    toggle={toggle}
+                                    onClick={toggle ? onClickOrder : () => {}}
+                                ></Button>
+                            </div>
+                            <div className={styles['agree-order']}>
+                                <AcceptContainer
+                                    {...check}
+                                    updateAllCheck={updateAllCheck}
+                                    onChangeCheck1={onChangeCheck1}
+                                    onChangeCheck2={onChangeCheck2}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

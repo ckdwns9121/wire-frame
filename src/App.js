@@ -30,6 +30,7 @@ import ModalContainer from './containers/assets/ModalContainer';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 function App() {
 
@@ -53,7 +54,7 @@ function App() {
 
     useEffect(() => {
         getInfo();
-        AOS.init({ duration: 1500 });
+        AOS.init({ duration: 1500, once: true });
     }, []);
 
 

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import qs from 'querystring';
 import classnames from 'classnames/bind';
 import { useHistory } from 'react-router-dom';
-import { requestQNADelete, requestQNADetail, requestQNAList, requestQNAStore } from '../../api/support/qna';
+import { requestQNADelete, requestQNADetail, requestQNAList, requestQNAStore, requestQNAUpdate } from '../../api/support/qna';
 import { Paths } from '../../paths';
 
 import Message from '../assets/Message';
@@ -65,7 +65,7 @@ export default ({ match, location }) => {
                 >
                     문의하기
                 </ButtonBase>}
-                {writeMode ? <QNAWrite token={token} />
+                {writeMode ? <QNAWrite token={token} id={query.id} />
                     : viewMode ? <QNADetail token={token} id={query.id} onRemove={onRemoveList} />
                         : <QNATable list={list} handleClick={handleClickDetail} />}
                 
@@ -94,12 +94,13 @@ const QNATable = ({ list, handleClick }) => (
         )}
     </div>
 );
-const QNAWrite = ({ token }) => {
+const QNAWrite = ({ token, id }) => {
     const openModal = useModal();
     
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [files, setFiles] = useState([]);
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
 
     const onChangeTitle = useCallback(e => setTitle(e.target.value), [])
@@ -113,8 +114,35 @@ const QNAWrite = ({ token }) => {
         setFiles(fileArray);
     }, []);
 
-    const onDeleteFile = useCallback(name => setFiles(files => files.filter(file => file.name !== name)), []);
+    const getQNADetail = useCallback(async () => {
+        const token = sessionStorage.getItem('access_token');
+        if (token) {
+            setLoading(true);
+            try  {
+                const res = await requestQNADetail(token, id);
+                const { query: data} = res.data;
+                if (data !== null) {
+                    const { subject, question, q_files } = data;
+                    setTitle(subject);
+                    setContent(question);
+                    console.log(q_files);
+                    // setFiles(q_files);
+                } else {
+                    openModal('없는 게시물입니다.', '게시글을 확인해 주세요.');
+                    history.replace(Paths.ajoonamu.support + '/qna');
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+                history.push(Paths.index);
+            }
+            setLoading(false);
+        } else {
+            openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+            history.push(Paths.index);
+        }
+    }, [history, id, openModal])
 
+    const onDeleteFile = useCallback(name => setFiles(files => files.filter(file => file.name !== name)), []);
     const sendQNAStore = useCallback(async () => {
         if (token) {
             try {
@@ -135,9 +163,38 @@ const QNAWrite = ({ token }) => {
             }
         }
     }, [token, title, content, files, openModal, history]);
+    const sendQNAUpdate = useCallback(async () => {
+        if (token) {
+            try {
+                const res = await requestQNAUpdate(token, {
+                    id,
+                    title,
+                    content,
+                    files,
+                });
+                if (res.data.msg === "성공") {
+                    openModal('수정이 완료되었습니다!', '답변이 올 때까지는 조금 시간이 소요됩니다.');
+                    window.location.replace(`${Paths.ajoonamu.support}/qna`);
+                } else {
+                    openModal('수정하는 도중 오류가 발생했습니다!', '다시 시도해 주세요.');
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+                history.replace(Paths.index);
+            }
+        }
+    }, [token, id, title, content, files, openModal, history]);
+
+    useEffect(() => {
+        if (id) {
+            getQNADetail();
+        }
+    }, [id, getQNADetail]);
 
     return (
         <>
+            {loading ? <Loading open={loading} />
+            : <>
             <div className={styles['table']}>
                 <div className={cn('input-area')}>
                     <div className={styles['area-name']}>문의 제목</div>
@@ -179,10 +236,11 @@ const QNAWrite = ({ token }) => {
                 </div>
             </div>
             <div className={styles['button-area']}>
-                <ButtonBase onClick={sendQNAStore} className={styles['confirm']}>
-                    등록
+                <ButtonBase onClick={id ? sendQNAUpdate : sendQNAStore} className={styles['confirm']}>
+                    {id ? '수정' : '등록'}
                 </ButtonBase>
             </div>
+            </>}
         </>
     )
 }
@@ -225,8 +283,8 @@ const QNADetail = ({ id, token, onRemove }) => {
                 if (res.data.query !== null) {
                     setData(res.data.query);
                 } else {
-                    openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
-                    history.push(Paths.index);
+                    openModal('없는 게시물입니다.', '게시글을 확인해 주세요.');
+                    history.replace(Paths.ajoonamu.support + '/qna');
                 }
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -241,9 +299,6 @@ const QNADetail = ({ id, token, onRemove }) => {
 
     useEffect(() => {
         getQNADetail();
-        return () => {
-
-        }
     }, [getQNADetail]);
 
     const { status, subject, q_datetime, a_datetime, question, answer } = data;
@@ -266,7 +321,7 @@ const QNADetail = ({ id, token, onRemove }) => {
                 <div className={styles['question']}>
                     <div className={styles['q-content']}>{question}</div>
                     <div className={styles['interaction']}>
-                        <ButtonBase className={styles['btn']}>수정</ButtonBase>
+                        <ButtonBase className={styles['btn']} onClick={() => history.push(`${Paths.ajoonamu.support}/qna/write?id=${id}`)}>수정</ButtonBase>
                         <ButtonBase className={styles['btn']} onClick={deleteQNA}>삭제</ButtonBase>
                     </div>
                 </div>

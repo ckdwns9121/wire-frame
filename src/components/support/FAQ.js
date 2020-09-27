@@ -12,6 +12,7 @@ import { Paths } from '../../paths';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
 import Loading from '../assets/Loading';
+import { useModal } from '../../hooks/useModal';
 
 const cn = classnames.bind(styles);
 
@@ -25,6 +26,7 @@ const faq_list = [
 ];
 
 export default () => {
+    const openModal = useModal();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [quesCategory, setQuesCategory] = useState(0);
@@ -54,8 +56,8 @@ export default () => {
             const res = await requestFAQList(quesCategory);
             setList(res);
         } catch (e) {
-            alert('잘못된 접근입니다.');
-            history.push(Paths.ajoonamu.signin);
+            openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+            history.replace(Paths.index);
         }
         setLoading(false);
     }, [quesCategory, history]);

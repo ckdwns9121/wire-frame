@@ -7,6 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import Loading from '../assets/Loading';
+import { useModal } from '../../hooks/useModal';
 
 
 const numbering = (number) => {
@@ -20,6 +21,7 @@ const numbering = (number) => {
 }
 
 export default ({ match }) => {
+    const openModal = useModal();
     const [loading, setLoading] = useState(false);
     const [noticeList, setNoticeList] = useState([]);
     const [noticeItem, setNoticeItem] = useState({});
@@ -33,11 +35,11 @@ export default ({ match }) => {
             const res = await requestNoticeList();
             setNoticeList(res.notices);
         } catch (e) {
-            alert('잘못된 접근입니다.');
+            openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.replace(Paths.index);
         }
         setLoading(false);
-    }, [history]);
+    }, [history, openModal]);
 
     const getNoticeItem = useCallback(async () => {
         setLoading(true);
@@ -45,13 +47,16 @@ export default ({ match }) => {
             const res = await requestNoticeItem(parseInt(params.id));
             if (res.notice !== null && res.notice !== undefined) {
                 setNoticeItem(res.notice);
+            } else {
+                openModal('없는 게시물입니다.', '게시글을 확인해 주세요.');
+                history.replace(Paths.ajoonamu.support + '/notice');
             }
         } catch (e) {
-            alert('잘못된 접근입니다.');
+            openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.replace(Paths.index);
         }
         setLoading(false);
-    }, [history, params]);
+    }, [history, params, openModal]);
 
     useEffect(() => {
         getNoticeList();
