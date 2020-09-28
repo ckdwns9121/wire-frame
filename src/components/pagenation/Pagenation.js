@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from './Pagenation.module.scss';
-const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
+import cn from 'classnames/bind';
+const cx  = cn.bind(styles);
+
+const Pagination = ({ postsPerPage, totalPosts,paginate,index }) => {
     const pageNumber = [];
 
     // 페이지 넘버를 설정하기 위해 페이지당 포스트 개수와 총 포스트 개수를 가져온다.
@@ -15,7 +18,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
             {pageNumber.map((pageNum) => (
                 <li
                     key={pageNum}
-                    className={styles["pagination_item"]}
+                    className={cx("pagination_item",{active :index===pageNum})}
                     onClick={() => paginate(pageNum)}
                 >
                     {pageNum}

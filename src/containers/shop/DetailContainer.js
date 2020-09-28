@@ -1,4 +1,7 @@
+/*global kakao*/
+
 import React, { useCallback, useEffect, useState } from 'react';
+import {useSelector} from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Detail.module.scss';
 import AdditionalList from '../../components/item/AdditionalList';
@@ -22,6 +25,8 @@ const DetailContainer = ({ item_id }) => {
 
     const user_token = useStore(false);
     const history = useHistory();
+    const {addr1,addr2} = useSelector((state)=>(state.address));
+
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -62,27 +67,47 @@ const DetailContainer = ({ item_id }) => {
         }
         else {
             try {
-                const res = await noAuthAddCart(
-                    item_id,
-                    options,
-                    quanity,
-                );
-                console.log('비회원 장바구니 담기');
-                const noAuthCartId = JSON.parse(localStorage.getItem('noAuthCartId'));
-                console.log(noAuthCartId);
-                if (noAuthCartId) {
-                    noAuthCartId.push(res.data.query);
-                    console.log(noAuthCartId);
-                    localStorage.setItem(
-                        'noAuthCartId',
-                        JSON.stringify(noAuthCartId),
-                    );
-                } else {
-                    localStorage.setItem(
-                        'noAuthCartId',
-                        JSON.stringify([res.data.query]),
-                    );
-                }
+                var geocoder = new kakao.maps.services.Geocoder();
+                let lat, lng =null;
+
+
+                //주소가 존재할 때
+                if (addr1) {
+                    geocoder.addressSearch(addr1, async function ( result, status,) {
+                        // 정상적으로 검색이 완료됐으면
+                        if (status === kakao.maps.services.Status.OK) {
+                            console.log('좌표');
+                            lat = result[0].y;
+                            lng = result[0].x;
+                            try {
+                                
+                                console.log("장바구니 담기");
+                                const res = await noAuthAddCart(item_id,options, quanity,lat, lng );
+                                console.log(res);
+                                const noAuthCartId = JSON.parse( localStorage.getItem('noAuthCartId'));
+                                console.log(noAuthCartId);
+
+                                //이미 담은 cart_id가 존재할 경우
+                                if (noAuthCartId) {
+                                    //기존 list에서 push
+                                    noAuthCartId.push(res.data.query);
+                                    //그리고 다시 저장
+                                    localStorage.setItem('noAuthCartId',JSON.stringify(noAuthCartId));
+                                }
+                                else {
+                                    // cart_id가 존재하지 않을 경우 배열의 형태로 push
+                                    localStorage.setItem('noAuthCartId',JSON.stringify([res.data.query]));
+                                }
+                               
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        } else {
+                            console.log('검색 실패');
+                        }
+                    });
+                } 
+       
                 setSuccess(true);
             } catch (e) {
                 alert('Error!');
@@ -90,7 +115,7 @@ const DetailContainer = ({ item_id }) => {
         }
         setLoading(false);
         history.push(Paths.ajoonamu.cart);
-    }, [history, item_id, options, quanity,user_token]);
+    }, [history, item_id, options, quanity,user_token,addr1]);
 
 
     //옵션아이템 클릭

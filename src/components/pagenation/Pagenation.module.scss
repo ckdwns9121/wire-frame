@@ -16,11 +16,16 @@
     border : 0;
     float: left;
     font-size: 18px;
+    color:#999;
     & + &::before{
         content: '';
         display: inline-block;
         width: 0px; height: 12px;
         border-left: solid 1px #DBDBDB;
         margin: 0 20px;
+    }
+    &.active{
+        color:#222;
+        font-weight: bold;
     }
 }

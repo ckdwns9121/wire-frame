@@ -67,8 +67,13 @@ const AddressContainer = () => {
     //검색버튼 클릭
     const onClickSearch = useCallback(async () => {
         if (searchAddr !== '') {
+            try{
             const result = await callSearchApi();
             setSearchList(result);
+            }
+            catch(e){
+                alert("에러");
+            }
         }
     }, [searchAddr]); //search 혹은 addrs 가 바뀌었을때만 함수생성
 
@@ -119,9 +124,15 @@ const AddressContainer = () => {
         setDetailAddr(e.target.value);
     };
 
+    const onKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            onClickDeliveryAddrInsert();
+        }
+    };
+
     //선택한 주소지로 설정
     const onClickDeliveyAddr = useCallback(
-        (delivery_id, addr1) => {
+        (delivery_id, addr1,addr2) => {
             openMessage(
                 true,
                 '선택한 주소지로 설정하시겠습니까?',
@@ -134,7 +145,7 @@ const AddressContainer = () => {
                                 delivery_id,
                             );
                             console.log(res);
-                            dispatch(get_address(addr1));
+                            dispatch(get_address({addr1,addr2}));
                             callDeliveryList();
                         } catch (e) {
                             console.error(e);
@@ -160,7 +171,7 @@ const AddressContainer = () => {
                             localStorage.getItem('noAuthAddrs'),
                         );
                         setDeliveryList(temp);
-                        dispatch(get_address(addr1));
+                        dispatch(get_address({addr1,addr2}));
                     }
                 },
             );
@@ -179,7 +190,7 @@ const AddressContainer = () => {
                             (item) => item.delivery_id === delivery_id,
                         );
                         if (delivery_list[index].active === 1) {
-                            dispatch(get_address(null));
+                            dispatch(get_address({addr1:null, addr2:null}));
                         }
                         setDeliveryList((list) =>
                             list.filter(
@@ -192,17 +203,26 @@ const AddressContainer = () => {
                 } else {
                     console.log(delivery_id);
                     const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
-                    if(noAuthAddrs){
-                     //선택한 주소가 현재 활성 주소일시.
-                      if (noAuthAddrs[delivery_id].active === 1) {
-                        //배달지 없음으로 설정
-                        dispatch(get_address(null));
-                      }
-                    //선택한 주소를 제일 쉬로 올리기.
-                    noAuthAddrs.splice(delivery_id, 1);
-                    localStorage.setItem( 'noAuthAddrs',JSON.stringify(noAuthAddrs));
-                    const temp = JSON.parse(localStorage.getItem('noAuthAddrs'));
-                    setDeliveryList(temp);
+                    if (noAuthAddrs) {
+                        //선택한 주소가 현재 활성 주소일시.
+                        if (noAuthAddrs.length !== 0) {
+                            if (noAuthAddrs[delivery_id].active === 1) {
+                                //배달지 없음으로 설정
+                                dispatch(
+                                    get_address({ addr1: null, addr2: null }),
+                                );
+                            }
+                            //선택한 주소를 제일 쉬로 올리기.
+                            noAuthAddrs.splice(delivery_id, 1);
+                            localStorage.setItem(
+                                'noAuthAddrs',
+                                JSON.stringify(noAuthAddrs),
+                            );
+                            const temp = JSON.parse(
+                                localStorage.getItem('noAuthAddrs'),
+                            );
+                            setDeliveryList(temp);
+                        }
                     }
                 }
             });
@@ -255,7 +275,7 @@ const AddressContainer = () => {
                             );
                             if (res.data.msg === '성공') {
                                 callDeliveryList();
-                                dispatch(get_address(selectAddr));
+                                dispatch(get_address({addr1:selectAddr ,addr2: detailAddr}));
                                 setOpen(false);
                             } else {
                                 openMessage(
@@ -296,7 +316,7 @@ const AddressContainer = () => {
                         const test2 = JSON.parse(
                             localStorage.getItem('noAuthAddrs'),
                         );
-                        dispatch(get_address(selectAddr));
+                        dispatch(get_address({addr1: selectAddr, addr2: detailAddr}));
                         setDeliveryList(test2);
                         setOpen(false);
                     }
@@ -358,6 +378,7 @@ const AddressContainer = () => {
                 detailAddr={detailAddr}
                 onChangeDetail={onChangeDetail}
                 onInsertAddr={onClickInsertAddr}
+                onKeyPress ={onKeyPress}
             />
         </>
     );

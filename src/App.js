@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { get_user_info } from './store/auth/auth';
-import Header from 'components/header/Header';
-import Footer from 'components/footer/Footer';
+import Header from './components/header/Header';
+import Footer from './components/footer/Footer';
 import './App.css';
 import { Paths } from 'paths';
 import {
@@ -40,13 +40,15 @@ export default function App() {
         if (token) {
             dispatch(get_user_info(token));
             const res = await getActiveAddr(token);
+            console.log(res);
             dispatch(get_address(res));
         } else {
             const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
             if (noAuth) {
                 const index = noAuth.findIndex((item) => item.active === 1);
                 if (index !== -1) {
-                    dispatch(get_address(noAuth[index].addr1));
+                    const {addr1, addr2} = noAuth[index];
+                    dispatch(get_address({addr1,addr2}));
                 }
             }
         }

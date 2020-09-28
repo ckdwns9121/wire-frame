@@ -1,6 +1,8 @@
+/*global kakao*/
+
 import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getCartList, deleteCartItem } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import CartItemList from '../../components/cart/CartItemList';
@@ -19,7 +21,8 @@ import Message from '../../components/assets/Message';
 import { useModal } from '../../hooks/useModal';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import CntModal from '../../components/modal/QunaityModal';
-import { noAuthGetCartList } from '../../api/noAuth/cart';
+import { getCartList, deleteCartItem } from '../../api/cart/cart';
+import { noAuthGetCartList, noAuthRemoveCartItem } from '../../api/noAuth/cart';
 
 import produce from 'immer';
 
@@ -30,6 +33,8 @@ const CartContainer = () => {
     const openModal = useModal();
 
     const user_token = useStore(false);
+
+    const { addr1, addr2 } = useSelector((state) => state.address);
     const [estmOpen, setEstmOpen] = useState(false);
     const [allChecked, setAllChecked] = useState(false); //전체선택
     const [estm, setEstm] = useState(true); //견적서 발송
@@ -115,9 +120,9 @@ const CartContainer = () => {
 
     //장바구니 들고오기
     const getCartListApi = useCallback(async () => {
-        setLoading(true);
         //유저 정보가 있을때
         if (user_token) {
+            setLoading(true);
             try {
                 const res = await getCartList(user_token);
                 console.log(res);
@@ -139,38 +144,61 @@ const CartContainer = () => {
             } catch (e) {
                 console.log(e);
             }
+            setLoading(false);
         } else {
-            try {
-                const cart_id = JSON.parse(
-                    localStorage.getItem('noAuthCartId'),
-                );
-                const noAuthAddrs = JSON.parse(
-                    localStorage.getItem('noAuthAddrs'),
-                );
+            setLoading(true);
+            console.log('비회원 장바구니 조회');
+            var geocoder = new kakao.maps.services.Geocoder();
+            let lat,
+                lng = null;
 
-                const res = await noAuthGetCartList();
-                console.log(res);
-                // if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
-                //     openModal(res.data.msg, '주소지 설정을 해주세요.', () => {
-                //         history.push(Paths.ajoonamu.address);
-                //     });
-                // } else {
-                //     const { query } = res.data;
-                //     let len = Object.keys(query).length;
-                //     let list = [];
-                //     for (let i = 0; i < len - 2; i++) {
-                //         list[i] = query[i];
-                //         list[i].checked = false;
-                //     }
-                //     setCost(query.delivery_cost);
-                //     setCartList(list);
-                // }
-            } catch (e) {
-                console.log(e);
-            }
+            // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
+            setTimeout(() => {
+                if (addr1) {
+                    geocoder.addressSearch(addr1, async function (
+                        result,
+                        status,
+                    ) {
+                        // 정상적으로 검색이 완료됐으면
+                        if (status === kakao.maps.services.Status.OK) {
+                            lat = result[0].y;
+                            lng = result[0].x;
+                            try {
+                                setLoading(true);
+                                const cart_id = JSON.parse(
+                                    localStorage.getItem('noAuthCartId'),
+                                );
+                                const res = await noAuthGetCartList(
+                                    cart_id,
+                                    lat,
+                                    lng,
+                                    addr1,
+                                );
+                                const { query } = res.data;
+                                let len = Object.keys(query).length;
+                                let list = [];
+                                for (let i = 0; i < len - 1; i++) {
+                                    list[i] = query[i];
+                                    list[i].checked = false;
+                                }
+                                setCost(query.delivery_cost);
+                                setCartList(list);
+                                setLoading(false);
+                            } catch (e) {
+                                console.error(e);
+                                setLoading(false);
+                            }
+                        }
+                        //검색이 완료되지 않앗으면.
+                        else {
+                            console.log('검색 실패');
+                            setLoading(false);
+                        }
+                    });
+                }
+            }, 500);
         }
-        setLoading(false);
-    }, [user_token]);
+    }, [user_token, addr1, history]);
 
     //장바구니 메뉴 삭제
     const handleDelete = useCallback(
@@ -180,14 +208,48 @@ const CartContainer = () => {
                 '삭제를 원하시면 예를 눌러주세요.',
                 async () => {
                     if (user_token) {
-                        const res = await deleteCartItem(user_token, cart_id);
-                        console.log(res);
+                        try {
+                            const res = await deleteCartItem(
+                                user_token,
+                                cart_id,
+                            );
+                            console.log(res);
+                            setCartList((list) =>
+                                list.filter(
+                                    ({ item }) =>
+                                        cart_id.indexOf(item.cart_id) === -1,
+                                ),
+                            );
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    } else {
+                        try {
+                            const res = await noAuthRemoveCartItem(cart_id);
+                            console.log(res);
+                            console.log(`카트 id = ${cart_id}`);
+                            const cart_ids = JSON.parse(
+                                localStorage.getItem('noAuthCartId'),
+                            );
+                            const newState = cart_ids.filter(
+                                (v) => parseInt(v) !== parseInt(cart_id),
+                            );
+                            console.log(newState);
+                            localStorage.setItem(
+                                'noAuthCartId',
+                                JSON.stringify(newState),
+                            );
+                            setCartList((list) =>
+                                list.filter(
+                                    ({ item }) =>
+                                        cart_id.indexOf(item.cart_id) === -1,
+                                ),
+                            );
+                            console.log(cart_ids);
+                        } catch (e) {
+                            console.error(e);
+                        }
                     }
-                    setCartList((list) =>
-                        list.filter(
-                            ({ item }) => cart_id.indexOf(item.cart_id) === -1,
-                        ),
-                    );
                 },
                 true,
             );
@@ -199,16 +261,22 @@ const CartContainer = () => {
     const selectCartItemDelete = async () => {
         setLoading(true);
 
+        let obj = [];
+        //장바구니 리스트를 탐색
+        for (let i = 0; i < cartList.length; i++) {
+            const { checked, item } = cartList[i];
+            // 선택된 아이템 푸쉬
+            if (checked) obj.push(item.cart_id);
+        }
+
         if (user_token) {
             try {
-                let obj = [];
-                for (let i = 0; i < cartList.length; i++) {
-                    const { checked, item } = cartList[i];
-                    if (checked) obj.push(item.cart_id);
-                }
+                //선택된 아이템이 없을시
                 if (obj.length === 0) {
                     openModal('삭제할 상품을 선택해주세요.');
-                } else {
+                }
+                //선택된 아이템이 존재하면
+                else {
                     openModal(
                         '이 상품을 삭제하시겠습니까?',
                         '삭제를 원하시면 예를 눌러주세요.',
@@ -223,6 +291,34 @@ const CartContainer = () => {
                 }
             } catch (e) {
                 console.error(e);
+            }
+        } else {
+            //선택된 아이템이 없을시
+            if (obj.length === 0) {
+                openModal('삭제할 상품을 선택해주세요.');
+            }
+            //선택된 아이템이 존재하면
+            else {
+                openModal(
+                    '이 상품을 삭제하시겠습니까?',
+                    '삭제를 원하시면 예를 눌러주세요.',
+                    async () => {
+                        const cart_id = JSON.parse(
+                            localStorage.getItem('noAuthCartId'),
+                        );
+                        const newState = cart_id.filter(
+                            (v, index) => v !== obj[index],
+                        );
+                        localStorage.setItem(
+                            'noAuthCartId',
+                            JSON.stringify(newState),
+                        );
+                        setCartList((list) =>
+                            list.filter((item) => item.checked === false),
+                        );
+                    },
+                    true,
+                );
             }
         }
         setLoading(false);
@@ -294,8 +390,7 @@ const CartContainer = () => {
 
     useEffect(() => {
         onCompareAllChecked();
-        console.log(cartList);
-    }, [cartList]);
+    }, [onCompareAllChecked]);
 
     const render = () => {
         return (

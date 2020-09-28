@@ -88,8 +88,8 @@ export const getActiveAddr = async (token) => {
     for(let i=0 ;i<len;i++){
         console.log(query[i].active);
         if(query[i].active===1){
-                addr = query[i].addr1;
-                return addr;
+              const {addr1, addr2} = query[i];
+                return {addr1,addr2};
         }
     }
 

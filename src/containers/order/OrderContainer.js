@@ -1,10 +1,6 @@
-import React, {
-    useState,
-    useEffect,
-    useReducer,
-    useCallback,
-    useRef,
-} from 'react';
+/*global kakao*/
+
+import React, {useState,useEffect, useReducer, useCallback,useRef} from 'react';
 import { Paths } from 'paths';
 import { useSelector } from 'react-redux';
 import styles from './Order.module.scss';
@@ -25,6 +21,8 @@ import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import { onlyNumber } from '../../lib/formatChecker';
 import { useModal } from '../../hooks/useModal';
 import Select from '../../components/svg/select/Select';
+import {noAuthGetCartList} from  '../../api/noAuth/cart';
+import Loading from '../../components/assets/Loading';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -56,10 +54,10 @@ const checkReducer = (state, action) => {
 };
 
 const OrderContainer = () => {
-    const user_token = useStore();
+    const user_token = useStore(false);
     const openModal = useModal();
     const { user } = useSelector(state => state.auth);
-    const { address } = useSelector(state => state.address);
+    const { addr1,addr2 } = useSelector(state => state.address);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const [addContact, setAddContact] = useState(false);
     const { check1, check2 } = check;
@@ -77,6 +75,7 @@ const OrderContainer = () => {
     const order_id = useRef(null);
     const [cp_price, setCpPrice] = useState(0);
     const [date, setDate] = useState(new Date());
+    const [loading, setLoading] = useState(false);
 
 
     const [firstPhoneNumber, setFirstPhoneNumber] = useState('');
@@ -130,8 +129,8 @@ const OrderContainer = () => {
         }
     };
 
-    //총 주문금액 구하기
-    const getTotalPrice = async () => {
+    //총 주문금액 구하기 (장바구니 조회해서 가져옴);
+    const getTotalPrice = useCallback(async () => {
         if (user_token) {
             try {
                 const res = await getCartList(user_token);
@@ -168,7 +167,68 @@ const OrderContainer = () => {
                 console.log(e);
             }
         }
-    };
+        else {
+            setLoading(true);
+            console.log('비회원 장바구니  주문조회');
+            var geocoder = new kakao.maps.services.Geocoder();
+            let lat,
+                lng = null;
+
+            // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
+            setTimeout(() => {
+                if (addr1) {
+                    geocoder.addressSearch(addr1, async function (
+                        result,
+                        status,
+                    ) {
+                        // 정상적으로 검색이 완료됐으면
+                        if (status === kakao.maps.services.Status.OK) {
+                            console.log("검색 완료");
+                            lat = result[0].y;
+                            lng = result[0].x;
+                            try {
+                                setLoading(true);
+                                const cart_id = JSON.parse( localStorage.getItem('noAuthCartId'));
+                                const res = await noAuthGetCartList( cart_id,lat,lng,addr1);
+                                console.log(res)
+                                const { query } = res.data;
+                                let len = Object.keys(query).length;
+                                let price = 0;
+
+                                for (let i = 0; i < len - 1; i++) {
+                                    const { item, options } = query[i];
+                                    console.log(query[i]);
+                                    price +=
+                                        parseInt(item.item_price) *
+                                        parseInt(item.item_quanity);
+            
+                                    for (let j = 0; j < options.length; j++) {
+                                        const { option_price } = options[j];
+                                        price +=
+                                            parseInt(option_price) *
+                                            parseInt(item.item_quanity);
+                                    }
+                                }
+                                let list = [];
+                               console.log(query.delivery_cost);
+                                setDlvCost(query.delivery_cost);
+                                setTotalPrice(price);
+                                setLoading(false);
+                            } catch (e) {
+                                console.error(e);
+                                setLoading(false);
+                            }
+                        }
+                        //검색이 완료되지 않앗으면.
+                        else {
+                            console.log('검색 실패');
+                            setLoading(false);
+                        }
+                    });
+                }
+            }, 500);
+        }
+    },[user_token,addr1]);
 
     // 유저의 쿠폰 가져오기
     const getUserCoupons = async () => {
@@ -295,7 +355,6 @@ const OrderContainer = () => {
     useEffect(() => {
         getPayment();
         getUserCoupons();
-        getTotalPrice();
 
         const temp = JSON.parse(localStorage.getItem('requestMemo'));
         if (temp) {
@@ -309,6 +368,9 @@ const OrderContainer = () => {
             }
         }
     }, []);
+    useEffect(()=>{
+        getTotalPrice();
+    },[getTotalPrice])
 
     useEffect(() => {
         isAllCheck();
@@ -349,6 +411,7 @@ const OrderContainer = () => {
 
     return (
         <ScrollTop>
+            {loading && <Loading open={true} />}
             <div className={styles['container']}>
                 <div className={styles['content']}>
                     <div className={styles['title']}>주문하기</div>
@@ -357,15 +420,42 @@ const OrderContainer = () => {
                             <div className={styles['sub-title']}>배달정보</div>
                             <div className={styles['user-info']}>
                                 <div className={styles['name']}>
-                                    {user && user.name}
+                                    {user ? (
+                                        user.name
+                                    ) : (
+                                        <div>
+                                            <input
+                                                className={
+                                                    styles['noauth-input']
+                                                }
+                                                placeholder={
+                                                    '이름을 입력하세요.'
+                                                }
+                                            ></input>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className={styles['addr']}>
-                                    {address},
-                                    {/* 101호(샌달아파트) */}
+                                    {addr1} {addr2}
                                 </div>
-                                <PhoneInputArea phoneNumber={firstPhoneNumber} setPhoneNumber={setFirstPhoneNumber} auth={firstPhoneAuth} setAuth={setFirstPhoneAuth} />
-                                {addContact && <PhoneInputArea phoneNumber={secondPhoneNumber} setPhoneNumber={setSecondPhoneNumber} auth={secondPhoneAuth} setAuth={setSecondPhoneAuth} />}
-                                <span className={styles['input-hp']} onClick={() => setAddContact(!addContact)}>
+                                <PhoneInputArea
+                                    phoneNumber={firstPhoneNumber}
+                                    setPhoneNumber={setFirstPhoneNumber}
+                                    auth={firstPhoneAuth}
+                                    setAuth={setFirstPhoneAuth}
+                                />
+                                {addContact && (
+                                    <PhoneInputArea
+                                        phoneNumber={secondPhoneNumber}
+                                        setPhoneNumber={setSecondPhoneNumber}
+                                        auth={secondPhoneAuth}
+                                        setAuth={setSecondPhoneAuth}
+                                    />
+                                )}
+                                <span
+                                    className={styles['input-hp']}
+                                    onClick={() => setAddContact(!addContact)}
+                                >
                                     <Select check={addContact} />
                                     <span>연락처 추가 입력</span>
                                 </span>
@@ -378,31 +468,55 @@ const OrderContainer = () => {
                             </div>
                             <div className={styles['user-info']}>
                                 <div className={styles['date']}>
-                                    <div className={styles['first']}>                    
+                                    <div className={styles['first']}>
                                         <DatePicker
                                             locale={ko}
                                             dateFormat="yyyy-MM-dd"
                                             minDate={new Date()}
                                             selected={date}
-                                            onChange={date => setDate(date)}
-                                            
+                                            onChange={(date) => setDate(date)}
+                                            withPortal
                                         />
                                     </div>
                                     <div className={styles['second']}>
                                         <select name="hours">
                                             <option value="9">오전 9시</option>
-                                            <option value="10">오전 10시</option>
-                                            <option value="11">오전 11시</option>
-                                            <option value="12">오후 12시 </option>
-                                            <option value="13">오후 1시 </option>
-                                            <option value="14">오후 2시 </option>
-                                            <option value="15">오후 3시 </option>
-                                            <option value="16">오후 4시 </option>
-                                            <option value="17">오후 5시 </option>
-                                            <option value="18">오후 6시 </option>
-                                            <option value="19">오후 7시 </option>
-                                            <option value="20">오후 8시 </option>
-                                            <option value="21">오후 9시 </option>
+                                            <option value="10">
+                                                오전 10시
+                                            </option>
+                                            <option value="11">
+                                                오전 11시
+                                            </option>
+                                            <option value="12">
+                                                오후 12시{' '}
+                                            </option>
+                                            <option value="13">
+                                                오후 1시{' '}
+                                            </option>
+                                            <option value="14">
+                                                오후 2시{' '}
+                                            </option>
+                                            <option value="15">
+                                                오후 3시{' '}
+                                            </option>
+                                            <option value="16">
+                                                오후 4시{' '}
+                                            </option>
+                                            <option value="17">
+                                                오후 5시{' '}
+                                            </option>
+                                            <option value="18">
+                                                오후 6시{' '}
+                                            </option>
+                                            <option value="19">
+                                                오후 7시{' '}
+                                            </option>
+                                            <option value="20">
+                                                오후 8시{' '}
+                                            </option>
+                                            <option value="21">
+                                                오후 9시{' '}
+                                            </option>
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
@@ -509,75 +623,86 @@ const OrderContainer = () => {
                             </div>
                         </div>
 
-                        <div className={styles['info-box']}>
-                            <div className={styles['sub-title']}>
-                                할인쿠폰 적용
-                            </div>
-                            <div className={styles['user-info']}>
-                                <div className={styles['coupon']}>
-                                    <select
-                                        name="coupon"
-                                        onChange={onChangeCpPrice}
-                                    >
-                                        <option value="default">
-                                            적용할 쿠폰을 선택해주세요.
-                                        </option>
-                                        {renderCpList()}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className={styles['info-box']}>
-                            <div className={styles['sub-title']}>
-                                포인트 사용
-                            </div>
-                            <div className={styles['user-info']}>
-                                <div className={styles['point']}>
-                                    <div className={styles['text']}>
-                                        사용할 포인트
+                        {user && (
+                            <>
+                                <div className={styles['info-box']}>
+                                    <div className={styles['sub-title']}>
+                                        할인쿠폰 적용
                                     </div>
-                                    <input
-                                        className={styles['point-input']}
-                                        value={numberFormat(usePoint)}
-                                        onKeyDown={(e) =>
-                                            !onlyNumber(e.key) &&
-                                            e.preventDefault()
-                                        }
-                                        onChange={(e) => {
-                                            const value = stringNumberToInt(
-                                                e.target.value,
-                                            );
-                                            if (user.point < value) {
-                                                openModal(
-                                                    '보유하신 포인트가 부족합니다!',
-                                                    '보유하신 포인트보다 많게 사용할 수 없습니다.',
-                                                );
-                                                setUsePoint(
-                                                    parseInt(user.point),
-                                                );
-                                            } else {
-                                                setUsePoint(value);
-                                            }
-                                        }}
-                                    />
-                                    <ButtonBase
-                                        className={styles['btn']}
-                                        onClick={() =>
-                                            setUsePoint(parseInt(user.point))
-                                        }
-                                    >
-                                        전체사용
-                                    </ButtonBase>
+                                    <div className={styles['user-info']}>
+                                        <div className={styles['coupon']}>
+                                            <select
+                                                name="coupon"
+                                                onChange={onChangeCpPrice}
+                                            >
+                                                <option value="default">
+                                                    적용할 쿠폰을 선택해주세요.
+                                                </option>
+                                                {renderCpList()}
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className={styles['user-point']}>
-                                    보유포인트{' '}
-                                    <span>
-                                        {user && numberFormat(user.point)}P
-                                    </span>
+                                <div className={styles['info-box']}>
+                                    <div className={styles['sub-title']}>
+                                        포인트 사용
+                                    </div>
+                                    <div className={styles['user-info']}>
+                                        <div className={styles['point']}>
+                                            <div className={styles['text']}>
+                                                사용할 포인트
+                                            </div>
+                                            <input
+                                                className={
+                                                    styles['point-input']
+                                                }
+                                                value={numberFormat(usePoint)}
+                                                onKeyDown={(e) =>
+                                                    !onlyNumber(e.key) &&
+                                                    e.preventDefault()
+                                                }
+                                                onChange={(e) => {
+                                                    const value = stringNumberToInt(
+                                                        e.target.value,
+                                                    );
+                                                    if (user.point < value) {
+                                                        openModal(
+                                                            '보유하신 포인트가 부족합니다!',
+                                                            '보유하신 포인트보다 많게 사용할 수 없습니다.',
+                                                        );
+                                                        setUsePoint(
+                                                            parseInt(
+                                                                user.point,
+                                                            ),
+                                                        );
+                                                    } else {
+                                                        setUsePoint(value);
+                                                    }
+                                                }}
+                                            />
+                                            <ButtonBase
+                                                className={styles['btn']}
+                                                onClick={() =>
+                                                    setUsePoint(
+                                                        parseInt(user.point),
+                                                    )
+                                                }
+                                            >
+                                                전체사용
+                                            </ButtonBase>
+                                        </div>
+                                        <div className={styles['user-point']}>
+                                            보유포인트{' '}
+                                            <span>
+                                                {user &&
+                                                    numberFormat(user.point)}
+                                                P
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </>
+                        )}
                     </div>
                     <div className={styles['order-info-box']} ref={paymentBox}>
                         <div ref={paymentInfo}>
@@ -602,24 +727,28 @@ const OrderContainer = () => {
                                             <span>원</span>
                                         </div>
                                     </div>
-                                    <div className={styles['text-price']}>
-                                        <div className={styles['text']}>
-                                            쿠폰할인
-                                        </div>
-                                        <div className={styles['price']}>
-                                            -{numberFormat(cp_price)}
-                                            <span>원</span>
-                                        </div>
-                                    </div>
-                                    <div className={styles['text-price']}>
-                                        <div className={styles['text']}>
-                                            포인트사용
-                                        </div>
-                                        <div className={styles['price']}>
-                                            -{numberFormat(usePoint)}
-                                            <span>원</span>
-                                        </div>
-                                    </div>
+                                    {user && (
+                                        <>
+                                            <div className={styles['text-price']}>
+                                                <div className={styles['text']}>
+                                                    쿠폰할인
+                                                </div>
+                                                <div className={styles['price']}>
+                                                    -{numberFormat(cp_price)}
+                                                    <span>원</span>
+                                                </div>
+                                            </div>
+                                            <div className={styles['text-price']}>
+                                                <div className={styles['text']}>
+                                                    포인트사용
+                                                </div>
+                                                <div className={styles['price']}>
+                                                    -{numberFormat(usePoint)}
+                                                <span>원</span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                             <div className={styles['total-price']}>

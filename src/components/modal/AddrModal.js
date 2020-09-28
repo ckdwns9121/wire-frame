@@ -80,6 +80,7 @@ const AddressModal = (props) => {
                             value={detailAddr}
                             placeholder="상세 주소를 입력하세요"
                             onChange={onChangeDetail}
+                            onKeyPress={props.onKeyPress}
                         ></input>
                     </div>
                     <div className={styles['btn-box']}>
