@@ -42,7 +42,7 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                 history.replace(Paths.index);
             }
         } else {
-            openModal('휴대폰 형식에 맞지 않습니다!', '휴대폰 번호를 확인해 주세요.')
+            openModal('휴대폰 형식에 맞지 않습니다!', '휴대폰 번호를 확인해 주세요.');
         }
     }, [phoneNumber, openModal, history]);
     // 인증번호 재발송

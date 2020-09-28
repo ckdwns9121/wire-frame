@@ -18,11 +18,12 @@ import ko from 'date-fns/locale/ko';
 import DatePicker from 'react-datepicker';
 import { user_order } from '../../api/order/order';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
-import { onlyNumber } from '../../lib/formatChecker';
+import { onlyNumberListener } from '../../lib/formatChecker';
 import { useModal } from '../../hooks/useModal';
 import Select from '../../components/svg/select/Select';
 import {noAuthGetCartList} from  '../../api/noAuth/cart';
 import Loading from '../../components/assets/Loading';
+import AuthTimer from '../../components/assets/AuthTimer';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -62,7 +63,8 @@ const OrderContainer = () => {
     const [addContact, setAddContact] = useState(false);
     const { check1, check2 } = check;
     const [toggle, setToggle] = useState(false); // 결제 동의
-    const [payment, setPayment] = useState('만나서 직접 결제'); //결제 방법
+    const [payable, setPayable] = useState(false);
+    const [payment, setPayment] = useState('페이플 카드 결제'); //결제 방법
     const [cp_list, setCouponList] = useState([]); //사용가능한 쿠폰
     const [totalPrice, setTotalPrice] = useState(0); //총 결제금액
     const [dlvCost, setDlvCost] = useState(0); // 배달비
@@ -77,7 +79,7 @@ const OrderContainer = () => {
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
 
-
+    const [noAuthName, setNoAuthName] = useState('');
     const [firstPhoneNumber, setFirstPhoneNumber] = useState('');
     const [secondPhoneNumber, setSecondPhoneNumber] = useState('');
     const [firstPhoneAuth, setFirstPhoneAuth] = useState('');
@@ -249,11 +251,9 @@ const OrderContainer = () => {
     };
 
     const onChangeCpPrice = (e) => {
-        console.log(e.target.value);
         const cp_id = e.target.value;
         if (cp_id !== 'default') {
             const index = cp_list.findIndex((item) => item.cp_id === cp_id);
-            console.log(index);
             setCpPrice(cp_list[index].cp_price);
         }
         else if(cp_id ==='default'){
@@ -377,6 +377,14 @@ const OrderContainer = () => {
     }, [isAllCheck]);
 
     useEffect(() => {
+        setPayable(
+            toggle && firstPhoneAuth
+            && (!addContact || secondPhoneAuth)
+            && (!user && noAuthName !== '')
+        )
+    }, [addContact, firstPhoneAuth, secondPhoneAuth, noAuthName, user, toggle]);
+
+    useEffect(() => {
         localStorage.setItem(
             'requestMemo',
             JSON.stringify({
@@ -392,6 +400,7 @@ const OrderContainer = () => {
         const STICKY = boundingInfo.top + window.pageYOffset;
         const ABSOLUTE = boundingBox.top + boundingBox.height - boundingInfo.height;
         const scrollEvent = () => {
+            console.log(ABSOLUTE, window.pageYOffset);
             if (ABSOLUTE <= window.pageYOffset) {
                 paymentInfo.current.style.position = 'absolute';
                 paymentInfo.current.style.top = '';
@@ -407,7 +416,7 @@ const OrderContainer = () => {
         }
         window.addEventListener('scroll', scrollEvent);
         return () => window.removeEventListener('scroll', scrollEvent);
-    }, []);
+    }, [user]);
 
     return (
         <ScrollTop>
@@ -420,18 +429,14 @@ const OrderContainer = () => {
                             <div className={styles['sub-title']}>배달정보</div>
                             <div className={styles['user-info']}>
                                 <div className={styles['name']}>
-                                    {user ? (
-                                        user.name
-                                    ) : (
+                                    {user ? (user.name) : (
                                         <div>
                                             <input
-                                                className={
-                                                    styles['noauth-input']
-                                                }
-                                                placeholder={
-                                                    '이름을 입력하세요.'
-                                                }
-                                            ></input>
+                                                onChange={e => setNoAuthName(e.target.value)}
+                                                value={noAuthName}
+                                                className={styles['noauth-input']}
+                                                placeholder={'이름을 입력하세요.'}
+                                            />
                                         </div>
                                     )}
                                 </div>
@@ -480,43 +485,11 @@ const OrderContainer = () => {
                                     </div>
                                     <div className={styles['second']}>
                                         <select name="hours">
-                                            <option value="9">오전 9시</option>
-                                            <option value="10">
-                                                오전 10시
-                                            </option>
-                                            <option value="11">
-                                                오전 11시
-                                            </option>
-                                            <option value="12">
-                                                오후 12시{' '}
-                                            </option>
-                                            <option value="13">
-                                                오후 1시{' '}
-                                            </option>
-                                            <option value="14">
-                                                오후 2시{' '}
-                                            </option>
-                                            <option value="15">
-                                                오후 3시{' '}
-                                            </option>
-                                            <option value="16">
-                                                오후 4시{' '}
-                                            </option>
-                                            <option value="17">
-                                                오후 5시{' '}
-                                            </option>
-                                            <option value="18">
-                                                오후 6시{' '}
-                                            </option>
-                                            <option value="19">
-                                                오후 7시{' '}
-                                            </option>
-                                            <option value="20">
-                                                오후 8시{' '}
-                                            </option>
-                                            <option value="21">
-                                                오후 9시{' '}
-                                            </option>
+                                            {[...new Array(22).keys()].splice(9, 13).map(item => (
+                                                <option value={item} key={item}>
+                                                    {(item >= 12 ? '오후 ' : '오전 ') + (item % 12) + '시'}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
@@ -596,7 +569,7 @@ const OrderContainer = () => {
                             <div className={styles['user-info']}>
                                 <div className={styles['payments']}>
                                     <Payment
-                                        text={'신용/체크카드 결제'}
+                                        text={'페이플 카드 결제'}
                                         check={true}
                                         onClick={onClickPayment}
                                         payment={payment}
@@ -657,10 +630,7 @@ const OrderContainer = () => {
                                                     styles['point-input']
                                                 }
                                                 value={numberFormat(usePoint)}
-                                                onKeyDown={(e) =>
-                                                    !onlyNumber(e.key) &&
-                                                    e.preventDefault()
-                                                }
+                                                onKeyDown={onlyNumberListener}
                                                 onChange={(e) => {
                                                     const value = stringNumberToInt(
                                                         e.target.value,
@@ -765,8 +735,8 @@ const OrderContainer = () => {
                             <div className={styles['order-btn']}>
                                 <Button
                                     title={'결제하기'}
-                                    toggle={toggle}
-                                    onClick={toggle ? onClickOrder : () => {}}
+                                    toggle={payable}
+                                    onClick={payable ? onClickOrder : () => {}}
                                 ></Button>
                             </div>
                             <div className={styles['agree-order']}>
@@ -835,6 +805,7 @@ export default OrderContainer;
 
 
 const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
+    const openModal = useModal();
     const [firstValue, setFirstValue] = useState('');
     const [secondValue, setSecondValue] = useState('');
     const [thirdValue, setThirdValue] = useState('');
@@ -842,41 +813,75 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
     const [start, setStart] = useState(false);
     const [authNumber, setAuthNumber] = useState('');
 
-    const secondPhone = useRef(null);
-    const thirdPhone = useRef(null);
+    const secondPhoneInput = useRef(null);
+    const thirdPhoneInput = useRef(null);
+    const authButton = useRef(null);
+    const authNumberInput = useRef(null);
+
+
+    const onClickStartAuth = useCallback(() => {
+        if (secondValue.length >= 3 && thirdValue.length === 4) {
+            setStart(true);
+            alert('499996');
+            // openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
+            authNumberInput.current.focus();
+        } else {
+            openModal('휴대폰 형식에 맞지 않습니다!', '휴대폰 번호를 확인해 주세요.');
+        }
+    }, [secondValue, thirdValue, openModal]);
+    const onClickResendAuth = useCallback(() => {
+        openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
+            alert('499996');
+        }, true);
+    }, [openModal]);
+    const onClickConfirmAuth = useCallback(() => {
+        if (authNumber === '499996') {
+            openModal('성공적으로 인증되었습니다!', '주문하기를 계속 진행하세요.');
+            setAuth(true);
+            setStart(false);
+        }
+    }, [authNumber, setAuth, openModal]);
     
+    const onChangeAuthNumber = useCallback(e => {
+        if (e.target.value.length <= 6) {
+            setAuthNumber(e.target.value);
+            if (e.target.value.length === 6) {
+                authButton.current.focus();
+            }
+        } else {
+            e.target.value = authNumber;
+        }
+    }, [authButton, authNumber, setAuthNumber]);
+
     const onChangePhoneFirst = useCallback(e => {  
-        secondPhone.current.focus();
+        secondPhoneInput.current.focus();
         setFirstValue(e.target.value);
     }, []);
     const onChangePhoneNext = useCallback(e => {
         if (e.target.value.length >= 4) {
-            thirdPhone.current.focus();
+            thirdPhoneInput.current.focus();
         }
         e.target.value = e.target.value.substr(0, 4);
         setSecondValue(e.target.value);
     }, []);
     const onChangePhonePrev = useCallback(e => {
         if (e.target.value.length === 0) {
-            secondPhone.current.focus();
+            secondPhoneInput.current.focus();
+        } else if(e.target.value.length >= 4) {
+            authButton.current.focus();
         }
         e.target.value = e.target.value.substr(0, 4);
         setThirdValue(e.target.value);
     }, []);
 
     useEffect(() => {
-        setPhoneNumber(
-            firstValue + secondValue + thirdValue
-        );
-    }, [firstValue, secondValue, setPhoneNumber, thirdValue]);
+        setPhoneNumber(firstValue + secondValue + thirdValue);
+    }, [firstValue, secondValue, thirdValue, setPhoneNumber]);
 
     return (
         <div className={styles['hp']}>
             <div className={styles['first']}>
-                <select
-                    name="phone"
-                    onChange={onChangePhoneFirst}
-                >
+                <select name="phone" onChange={onChangePhoneFirst} disabled={start || auth}>
                     <option value="010">010</option>
                     <option value="011">011</option>
                     <option value="016">016</option>
@@ -885,56 +890,46 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
             </div>
             <div className={styles['second']}>
                 <input
-                    ref={secondPhone}
+                    ref={secondPhoneInput}
                     onChange={onChangePhoneNext}
-                    onKeyDown={e =>
-                        !onlyNumber(e.key) &&
-                        e.preventDefault()
-                    }
+                    onKeyDown={onlyNumberListener}
                     className={styles['sub-number']}
                     placeholder="핸드폰 앞자리"
+                    disabled={start || auth}
                 />
             </div>
             <div className={styles['second']}>
                 <input
-                    ref={thirdPhone}
+                    ref={thirdPhoneInput}
                     onChange={onChangePhonePrev}
-                    onKeyDown={e =>
-                        !onlyNumber(e.key) &&
-                        e.preventDefault()
-                    }
+                    onKeyDown={onlyNumberListener}
                     className={styles['sub-number']}
                     placeholder="핸드폰 뒷자리"
+                    disabled={start || auth}
                 />
             </div>
             <div className={cx('auth', { start })}>
                 <input
-                    onChange={e => {
-                        if (e.target.value.length <= 6) {
-                            setAuthNumber(e.target.value)
-                        } else {
-                            e.target.value = authNumber;
-                        }
-                    }}
-                    onKeyDown={e =>
-                        !onlyNumber(e.key) &&
-                        e.preventDefault()
-                    }
+                    ref={authNumberInput}
+                    onChange={onChangeAuthNumber}
+                    onKeyDown={onlyNumberListener}
                     className={styles['auth-input']}
                 />
+                <AuthTimer start={start} />
             </div>
             <div className={styles['button-area']}>
                 <ButtonBase
-                    onClick={start ?
-                        authNumber.length === 6 ?
-                        () => { alert('인증되었습니다.') } : () => { alert('인증번호: 49996') }
-                    : () => {setStart(true)}}
+                    ref={authButton}
+                    onClick={auth ? () => openModal('인증이 완료되었습니다', '다음 절차를 진행하세요.')
+                        : start ?
+                        authNumber.length === 6 ? onClickConfirmAuth
+                            : onClickResendAuth : onClickStartAuth}
                     className={styles['button']}>
-                        {start ?
-                            authNumber.length === 6 ?
-                                "인증번호 확인" : "인증번호 재발송"
-                        : "인증번호 발송"}
-                    </ButtonBase>
+                    {auth ? "인증 완료"
+                        : start ?
+                        authNumber.length === 6 ? "인증번호 확인"
+                            : "인증번호 재발송" : "인증번호 발송"}
+                </ButtonBase>
             </div>
         </div>
     );

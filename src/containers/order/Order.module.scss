@@ -84,6 +84,7 @@ $pd: 20px;
                             width: 0;
                             overflow: hidden;
                             margin-left: 20px;
+                            position: relative;
                             transition: width .3s ease-in-out;
                             &.start {
                                 width: 150px;

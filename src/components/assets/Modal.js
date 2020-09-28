@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import classnames from 'classnames/bind';
 import { makeStyles } from '@material-ui/core/styles';
 /* Library */
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { modalClose } from '../../store/modal';
 /* Redux */
 
@@ -22,8 +22,11 @@ const useStyles = makeStyles((theme) => ({
 const cn = classnames.bind(styles);
 
 export default ({ confirm, title, text, handleClick = () => {}, open }) => {
+    const state = useSelector(state => state.modal);
     const classes = useStyles();
     const dispatch = useDispatch();
+
+    const confirmButton = useRef(null);
 
     const onClose = useCallback(() => dispatch(modalClose()), [dispatch]);
     const onClick = useCallback(() => {
@@ -33,18 +36,19 @@ export default ({ confirm, title, text, handleClick = () => {}, open }) => {
 
     useEffect(() => {
         const keydownEvent = e => {
-            if (e.key === 'Enter') {
-                onClick();
-            }
             if (e.key === 'Escape') {
                 onClose();
             }
         };
         document.addEventListener('keydown', keydownEvent, true);
-        return () => {
-            document.removeEventListener('keydown', keydownEvent, true);
-        }
+        return () => document.removeEventListener('keydown', keydownEvent, true);
     }, [onClick, onClose]);
+
+    useEffect(() => {
+        if (state.open) {
+            confirmButton.current.focus();
+        }
+    }, [state]);
 
     return (
         <>
@@ -60,7 +64,7 @@ export default ({ confirm, title, text, handleClick = () => {}, open }) => {
                                 아니오
                             </ButtonBase>
                         }
-                        <ButtonBase className={cn('button', 'active')} onClick={onClick}>
+                        <ButtonBase ref={confirmButton} className={cn('button', 'active')} onClick={onClick}>
                             {confirm ? "예" : "확인"}
                         </ButtonBase>
                     </div>
