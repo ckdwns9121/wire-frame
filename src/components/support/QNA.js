@@ -14,8 +14,12 @@ import Delete from '../svg/support/Delete';
 import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
 import Loading from '../assets/Loading';
+import ListPaging from '../sidebar/ListPaging';
 
 const cn = classnames.bind(styles);
+
+
+const PAGE_PER_VIEW = 2;
 
 export default ({ match, location }) => {
     const token = useStore();
@@ -23,7 +27,9 @@ export default ({ match, location }) => {
     const [loading, setLoading] = useState(false);
 
     const [list, setList] = useState([]);
+    const [count, setCount] = useState(0);
     const history = useHistory();
+
 
     const writeMode = match.params.id === 'write';
     const viewMode = match.params.id === 'view';
@@ -31,11 +37,16 @@ export default ({ match, location }) => {
     const search = location.search.replace('?', '');
     const query = qs.parse(search);
 
+    const page = query.page ? query.page : 1;
+
     const getQNAList = useCallback(async () => {
         setLoading(true);
         if (token) {
             try {
-                const res = await requestQNAList(token);
+                const res = await requestQNAList(token, page * PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
+                if (!count || count !== res.count) {
+                    setCount(res.count);
+                }
                 setList(res.qnas);
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -43,7 +54,7 @@ export default ({ match, location }) => {
             }
         }
         setLoading(false);
-    }, [history, openModal, token]);
+    }, [history, openModal, token, count, page]);
 
     const onRemoveList = useCallback(id => setList(list => list.filter(item => item.id !== id)), []);
 
@@ -67,32 +78,35 @@ export default ({ match, location }) => {
                 </ButtonBase>}
                 {writeMode ? <QNAWrite token={token} id={query.id} />
                     : viewMode ? <QNADetail token={token} id={query.id} onRemove={onRemoveList} />
-                        : <QNATable list={list} handleClick={handleClickDetail} />}
+                        : <QNATable total={count} page={page} list={list} handleClick={handleClickDetail} />}
                 
             </div>}
         </>
     );
 };
 
-const QNATable = ({ list, handleClick }) => (
-    <div className={styles['table']}>
-        {list.length > 0 ? (
-            list.map(({ id, subject, status, q_datetime }) => (
-                <ButtonBase key={id} className={styles['column']}
-                    onClick={() => handleClick(id)}>
-                    <div className={styles['row']}>
-                        <QNAState status={status} />
-                        <div className={styles['subject']}>{subject}</div>
-                        <div className={styles['datetime']}>
-                            {dateToYYYYMMDD(q_datetime, '/')}
+const QNATable = ({ list, handleClick, total, page }) => (
+    <>
+        <div className={styles['table']}>
+            {list.length > 0 ? (
+                list.map(({ id, subject, status, q_datetime }) => (
+                    <ButtonBase key={id} className={styles['column']}
+                        onClick={() => handleClick(id)}>
+                        <div className={styles['row']}>
+                            <QNAState status={status} />
+                            <div className={styles['subject']}>{subject}</div>
+                            <div className={styles['datetime']}>
+                                {dateToYYYYMMDD(q_datetime, '/')}
+                            </div>
                         </div>
-                    </div>
-                </ButtonBase>
-            ))
-        ) : (
-            <Message src={false} msg={'등록된 문의내역이 없습니다.'} size={260} />
-        )}
-    </div>
+                    </ButtonBase>
+                ))
+            ) : (
+                <Message src={false} msg={'등록된 문의내역이 없습니다.'} size={260} />
+            )}
+        </div>
+        <ListPaging baseURL={Paths.ajoonamu.support + '/qna'} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={total} />
+    </>
 );
 const QNAWrite = ({ token, id }) => {
     const openModal = useModal();

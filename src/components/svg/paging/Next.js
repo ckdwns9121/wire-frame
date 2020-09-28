@@ -1,5 +1,4 @@
 import React from 'react';
-import { toPath } from 'webpack/lib/Template';
 
 export default () => (
     <svg
@@ -8,7 +7,7 @@ export default () => (
         height="15.414"
         viewBox="0 0 8.207 15.414"
     >
-        <toPath
+        <path
             d="M-2744.107-14132.35l7,6.977-7,7.023"
             transform="translate(2744.814 14133.057)"
             fill="none"

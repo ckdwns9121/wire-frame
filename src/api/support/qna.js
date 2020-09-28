@@ -13,6 +13,7 @@ export const requestQNAList = async (token, limit, offset) => {
         }
     };
     const result = await axios.get(req, config);
+    console.log(result);
     return result.data.query;
 };
 

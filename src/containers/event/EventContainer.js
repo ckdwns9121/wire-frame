@@ -8,14 +8,16 @@ import defaultImage from '../../components/svg/event/event_test.png';
 import { Paths } from '../../paths';
 import { requestEventList, requestEventShow } from '../../api/event/event';
 import Message from '../../components/assets/Message';
-import { dateToYYYYMMDD } from '../../lib/formatter';
+import { dateToYYYYMMDD, DBImageFormat } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
 import { useModal } from '../../hooks/useModal';
 import Loading from '../../components/assets/Loading';
 
 const cn = classnames.bind(styles);
 
-const offset = 0, limit = 30;
+
+
+const URL = 'http://devapi.ajoonamu.com/storage/';
 
 export default ({ match }) => {
     const history = useHistory();
@@ -23,7 +25,9 @@ export default ({ match }) => {
 
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
-    const [item, setItem] = useState({});
+    const [item, setItem] = useState({
+        images: ''
+    });
     const [mode] = useState(0);
 
     const detail = match.params.id !== undefined;
@@ -31,17 +35,19 @@ export default ({ match }) => {
     const getEventList = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await requestEventList(offset, limit);
+            const res = await requestEventList();
             setList(res.events);
         } catch (e) {
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
         }
         setLoading(false);
     }, [openModal]);
+
     const getEventShow = useCallback(async () => {
         setLoading(true);
         try {
             const res = await requestEventShow(match.params.id);
+            console.log(res);
             setItem(res.event);
         } catch (e) {
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
@@ -87,9 +93,8 @@ export default ({ match }) => {
                             </p>
                         </div>
                         <div className={styles['e-content']}>
-                            {item.images === '[]' && (
-                                <img src={defaultImage} alt="기본 이미지" />
-                            )}
+                            {item && item.images === '[]' ? <img src={defaultImage} alt="기본 이미지" />
+                            : <img src={URL + DBImageFormat(item.images)} alt="이벤트 이미지" />}
                         </div>
                     </>
                 ) : list.length > 0 ? (
@@ -101,12 +106,8 @@ export default ({ match }) => {
                                 className={styles['item']}
                             >
                                 <div className={styles['image']}>
-                                    {images === '[]' && (
-                                        <img
-                                            src={defaultImage}
-                                            alt="기본 이미지"
-                                        />
-                                    )}
+                                    {images === '[]' ? <img src={defaultImage} alt="기본 이미지"/>
+                                    : <img src={URL + DBImageFormat(images)} alt="이벤트 이미지" />}
                                 </div>
                                 <div className={styles['text']}>
                                     <p className={styles['warn']}>{warn}</p>
