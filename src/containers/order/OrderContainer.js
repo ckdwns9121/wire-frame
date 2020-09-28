@@ -77,8 +77,10 @@ const OrderContainer = () => {
     const order_id = useRef(null);
     const [cp_price, setCpPrice] = useState(0);
     const [date, setDate] = useState(new Date());
-    const [loading, setLoading] = useState(false);
+    const [hours ,setHours]  = useState('09');
+    const [minite ,setMinite] = useState('00');
 
+    const [loading, setLoading] = useState(false);
     const [noAuthName, setNoAuthName] = useState('');
     const [firstPhoneNumber, setFirstPhoneNumber] = useState('');
     const [secondPhoneNumber, setSecondPhoneNumber] = useState('');
@@ -262,12 +264,27 @@ const OrderContainer = () => {
     };
 
     const onClickOrder = async () => {
+        console.log("주문 시작");
         const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
-        const res = await user_order(user_token);
-        order_id.current = res.data.query;
-        $script(payple_url, () => {
-            /*global PaypleCpayAuthCheck*/
 
+        console.log(date.getFullYear());
+        const year = date.getFullYear();
+        const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
+        const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
+
+        const delivery_req_time = `${year}-${month}-${day} ${hours}:${minite}:00`
+
+        if(user_token){
+             const res = await user_order(user_token ,'reserve',orderMemo,dlvMemo ,delivery_req_time);
+             console.log(res);
+             order_id.current = res.data.query;
+        }
+        else{
+
+        }
+        $script(payple_url, () => {
+
+            /*global PaypleCpayAuthCheck*/
             const getResult = function (res) {
                 alert('callback : ' + res.PCD_PAY_MSG);
             };
@@ -279,9 +296,9 @@ const OrderContainer = () => {
             let payple_payer_id = '';
 
             let buyer_no = ''; //고객 고유번호
-            let buyer_name = ''; //고객 이름
-            let buyer_hp = ''; //고객 번호
-            let buyer_email = ''; //고객 이메일
+            let buyer_name = user ? user.name : noAuthName ; //고객 이름
+            let buyer_hp = `${firstPhoneNumber}`;//고객 번호
+            let buyer_email = user && user.email; //고객 이메일
             let buy_goods = '테스트'; //구매하는 물건 이름
             let buy_total = Number(parseInt(totalPrice) + parseInt(dlvCost)); //가격
             let buy_taxtotal = 0;
@@ -291,11 +308,10 @@ const OrderContainer = () => {
             let is_taxsave = 'N';
             let simple_flag = 'N';
             let card_ver = '01';
-            // const auth_type = "";
-            // const is_direct = "";
-            // const pcd_rst_ur = "";
-            // const server_name = "";
 
+            console.log(buyer_name);
+            console.log(buyer_hp);
+            console.log(buyer_email);
             console.log(order_num);
 
             if (PCD_PAYER_ID !== null) {
@@ -342,7 +358,7 @@ const OrderContainer = () => {
                 'http://devapi.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
 
-           PaypleCpayAuthCheck(obj);
+        //    PaypleCpayAuthCheck(obj);
         });
     };
 
@@ -380,7 +396,7 @@ const OrderContainer = () => {
         setPayable(
             toggle && firstPhoneAuth
             && (!addContact || secondPhoneAuth)
-            && (!user && noAuthName !== '')
+            && (user || noAuthName !== '')
         )
     }, [addContact, firstPhoneAuth, secondPhoneAuth, noAuthName, user, toggle]);
 
@@ -400,7 +416,6 @@ const OrderContainer = () => {
         const STICKY = boundingInfo.top + window.pageYOffset;
         const ABSOLUTE = boundingBox.top + boundingBox.height - boundingInfo.height;
         const scrollEvent = () => {
-            console.log(ABSOLUTE, window.pageYOffset);
             if (ABSOLUTE <= window.pageYOffset) {
                 paymentInfo.current.style.position = 'absolute';
                 paymentInfo.current.style.top = '';
@@ -417,6 +432,7 @@ const OrderContainer = () => {
         window.addEventListener('scroll', scrollEvent);
         return () => window.removeEventListener('scroll', scrollEvent);
     }, [user]);
+
 
     return (
         <ScrollTop>
@@ -484,7 +500,7 @@ const OrderContainer = () => {
                                         />
                                     </div>
                                     <div className={styles['second']}>
-                                        <select name="hours">
+                                        <select name="hours"onChange ={(e) => {setHours(e.target.value)}}>
                                             {[...new Array(22).keys()].splice(9, 13).map(item => (
                                                 <option value={item} key={item}>
                                                     {(item >= 12 ? '오후 ' : '오전 ') + (item % 12) + '시'}
@@ -493,7 +509,7 @@ const OrderContainer = () => {
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
-                                        <select name="minute">
+                                        <select name="minute" onChange ={(e) => {setMinite(e.target.value)}}>
                                             <option value="00">00분</option>
                                             <option value="10">10분</option>
                                             <option value="20">20분</option>
@@ -806,7 +822,7 @@ export default OrderContainer;
 
 const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
     const openModal = useModal();
-    const [firstValue, setFirstValue] = useState('');
+    const [firstValue, setFirstValue] = useState('010');
     const [secondValue, setSecondValue] = useState('');
     const [thirdValue, setThirdValue] = useState('');
 
@@ -875,6 +891,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
     }, []);
 
     useEffect(() => {
+   
         setPhoneNumber(firstValue + secondValue + thirdValue);
     }, [firstValue, secondValue, thirdValue, setPhoneNumber]);
 
