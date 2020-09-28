@@ -53,7 +53,7 @@ export const requestQNAUpdate = async (token, {
     formData.append('id', id);
     formData.append('subject', subject);
     formData.append('question', question);
-    formData.append('q_files', q_files);
+    formData.append('q_files[]', q_files);
     formData.append('_method', 'put');
     
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -74,7 +74,7 @@ export const requestQNAStore = async (token, {
     
     formData.append('subject', subject);
     formData.append('question', question);
-    formData.append('q_files', q_files);
+    formData.append('q_files[]', q_files);
     
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';

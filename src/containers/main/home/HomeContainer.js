@@ -14,34 +14,69 @@ import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 
 import KakaoMap from '../../../components/map/KakaoMap';
-import { getMainMenuList } from '../../../api/menu/menu';
+import {
+    // getMainMenuList,
+    getMenuList
+} from '../../../api/menu/menu';
 import Loading from 'components/assets/Loading';
+import { getCategory } from '../../../api/category/category';
+import { get_catergory, get_menulist } from '../../../store/product/product';
+import { useDispatch, useSelector } from 'react-redux';
+
 const cx = cn.bind(styles);
+
 const HomeContainer = () => {
     const history = useHistory();
-    const [category, setCategory] = useState(0);
+    const [useCate, setUseCate] = useState(0);
+    const dispatch = useDispatch();
+    const { categorys, items } = useSelector((state) => state.product);
 
     const [loading, setLoading] = useState(false);
-    const [menuList, setMenuList] = useState([]);
 
-    const getMainMenu = async () => {
+    // const getMainMenu = useCallback(async () => {
+    //     setLoading(true);
+    //     try {
+    //         const res = await getMainMenuList();
+    //         setMenuList(res);
+    //     } catch (e) {
+    //         alert('error!');
+    //     }
+    //     setLoading(false);
+    // }, []);
+
+
+    const getProductList = useCallback(async () => {
         setLoading(true);
-        try {
-            const res = await getMainMenuList();
-            setMenuList(res);
-        } catch (e) {
-            alert('error!');
+        if (categorys.length === 1) {
+            const res = await getCategory();
+            res.sort((a, b) => a.ca_id - b.ca_id);
+            // 카테고리를 분류 순서로 정렬.
+            const ca_list = res.filter((item) => item.ca_id !== 12);
+
+            dispatch(get_catergory(ca_list));
+            let arr = [];
+            for (let i = 0; i < ca_list.length; i++) {
+                const result = await getMenuList(ca_list[i].ca_id);
+                const temp = { ca_id: ca_list[i].ca_id, items: result };
+                arr.push(temp);
+            }
+            arr.sort((a, b) => a.ca_id - b.ca_id);
+            dispatch(get_menulist(arr));
+        }
+        if (categorys[1]) {
+            setUseCate(categorys[1].ca_id);
         }
         setLoading(false);
-    }
+    }, [categorys, dispatch]);
 
     const onClickDetailItem = useCallback((item_id)=>{
         history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
     },[history]);
 
     useEffect(() => {
-        getMainMenu();
-    }, [category]);
+        // getMainMenu();
+        getProductList();
+    }, [getProductList]);
 
     return (
         <>
@@ -55,14 +90,15 @@ const HomeContainer = () => {
                 />
                 <div className={styles['menu-list']}>
                     <ul className={styles['category']}>
-                        <li onClick={() => setCategory(0)} className={cx('item', { active: category === 0})}>도시락</li>
-                        <li onClick={() => setCategory(1)} className={cx('item', { active: category === 1})}>베이커리</li>
-                        <li onClick={() => setCategory(2)} className={cx('item', { active: category === 2})}>기타</li>
-                        <li onClick={() => setCategory(3)} className={cx('item', { active: category === 3})}>베이커리</li>
-                        <li onClick={() => setCategory(4)} className={cx('item', { active: category === 4})}>기타</li>
+                        {categorys.slice(1, 6).map(category => (
+                            <li key={category.ca_id} onClick={() => setUseCate(category.ca_id)}
+                                className={cx('item', { active: useCate === category.ca_id})}>
+                                {category.ca_name}
+                            </li>
+                        ))}
                     </ul>
                     <Loading open={loading}/>
-                    { menuList !== [] && <MenuListView menuList={menuList} onClick={onClickDetailItem}/>}
+                    { items !== null && <MenuListView menuList={items[useCate].items} onClick={onClickDetailItem}/>}
                 </div>
                 <div className={styles['banner-img']} onClick ={()=>{   history.push(`${Paths.ajoonamu.shop}?tab=${0}`) ; window.scrollTo(0,0)}}>
                     <img src={bannerImg} alt="배너" />

@@ -47,8 +47,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [tab_index, setTab] = useState(parseInt(tab));
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
     const [preferMenuList, setPreferMenuList] = useState([]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -56,7 +54,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     const onChangeIndex = (e, index) => {
         setTab(index);
     };
-
     //주문 종류 선택
     const onChangeOrderType = (e) => {
         setOrderType(e.target.value);
@@ -98,17 +95,22 @@ const ReserveContainer = ({ tab = '0' }) => {
         }
     }, [budget, endBudget])
 
+    const getCategoryList = useCallback(async () => {
+        setLoading(true);
+        if (categorys.length === 1) {
+
+        }
+        setLoading(false);
+    }, []);
+    
     const getProductList = useCallback(async () => {
         setLoading(true);
-
         if (categorys.length === 1) {
             const res = await getCategory();
-            console.log(res);
             res.sort((a, b) => a.ca_id - b.ca_id);
             // 카테고리를 분류 순서로 정렬.
-            const ca_list = res.filter ((item) =>item.ca_id !==12);
-            console.log("필터");
-            console.log(ca_list);
+            const ca_list = res.filter((item) => item.ca_id !== 12);
+
             dispatch(get_catergory(ca_list));
             let arr = [];
             for (let i = 0; i < ca_list.length; i++) {
@@ -119,7 +121,6 @@ const ReserveContainer = ({ tab = '0' }) => {
             arr.sort((a, b) => a.ca_id - b.ca_id);
             dispatch(get_menulist(arr));
         }
-
         setLoading(false);
     }, [categorys, dispatch]);
 

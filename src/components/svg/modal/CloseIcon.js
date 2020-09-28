@@ -1,8 +1,9 @@
+import { IconButton } from '@material-ui/core';
 import React from 'react';
 
-export default function CloseIcon({ black }) {
+export default function CloseIcon({ black, onClick }) {
     return (
-        <>
+        <IconButton onClick={onClick}>
             <svg width="32" height="32" viewBox="0 0 32 32">
                 <g transform="translate(17323 9370)">
                     <g transform="translate(-17134.324 -10780.092) rotate(45)">
@@ -31,7 +32,7 @@ export default function CloseIcon({ black }) {
                     />
                 </g>
             </svg>
-        </>
+        </IconButton>
     );
 }
 

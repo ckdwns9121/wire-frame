@@ -267,6 +267,7 @@ const DetailContainer = ({ item_id }) => {
                                             (쿠키 추가 가능 개당 1천 원) (불고기
                                             샌드위치, 크랜베리 허니에그 샌드위치
                                             변경가능 - 변경 시 단가 변동)
+                                            {menu && menu.item.item_caution}
                                         </div>
                                     </div>
                                     </div>

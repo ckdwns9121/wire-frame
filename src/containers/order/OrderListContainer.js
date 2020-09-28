@@ -10,12 +10,13 @@ import { useStore } from '../../hooks/useStore';
 import PreviewOrderList from '../../components/order/PreviewOrderItemList';
 import Pagination  from '../../components/pagenation/Pagenation';
 import DateRangePicker from '../../components/mypage/DateRangePicker';
+import { calculateDate } from '../../lib/calculateDate';
 //주문내역 페이지
 const OrderListContainer = () => {
     const user_token = useStore();
     const history = useHistory();
 
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(calculateDate(new Date(), 7, 'DATE'));
     const [endDate, setEndDate] = useState(new Date());
     const [order_list, setOrderList] = useState([]); //전체 데이터.
     const [loading, setLoading] = useState(false); //로딩
@@ -27,19 +28,17 @@ const OrderListContainer = () => {
     const currentPosts = order_list.slice(indexOfFirstPost, indexOfLastPost); //현재 포스트에서 보여줄 리스트
     
     const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber); 
-        console.log(pageNumber);
+        setCurrentPage(pageNumber);
     }//페이지를 이동시킬 함수.
 
     const callOrderListApi = useCallback(async () => {
         setLoading(true);
         if (user_token) {
-            const res = await getOrderList(user_token);
-            console.log(res.orders);
-            setOrderList(res.orders);
+            const res = await getOrderList(user_token, 0, 10, startDate, endDate);
+            setOrderList(res.orders ? res.orders : []);
         }
         setLoading(false);
-    }, []);
+    }, [user_token, startDate, endDate]);
 
     const onClickOrderItem = useCallback((order_id) => {
         history.push(`${Paths.ajoonamu.mypage}/order_detail?order_id=${order_id}`,);
@@ -47,7 +46,7 @@ const OrderListContainer = () => {
 
     useEffect(() => {
         callOrderListApi();
-    }, [callOrderListApi]);
+    }, []);
 
     return (
         <div className={styles['container']}>
@@ -55,24 +54,29 @@ const OrderListContainer = () => {
                 <div className={styles['title']}>주문내역</div>
             </div>
             <DateRangePicker
-                startDate={startDate} setStartDate={setStartDate}
-                endDate={endDate} setEndDate={setEndDate}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
                 onClick={callOrderListApi}
             />
             {loading ? (
-                <Loading open={true} />
+                <Loading open={loading} />
             ) : (
                 <>
                     <div className={styles['order-list']}>
-                        {currentPosts.legnth!== 0 ? (
+                        {currentPosts.legnth !== 0 ? (
                             <>
-                            <PreviewOrderList
-                                order_list={currentPosts}
-                                onClick={onClickOrderItem}
-                            />
-                             <Pagination postsPerPage={postsPerPage} totalPosts={order_list.length} paginate={paginate} />
-                         </>
-
+                                <PreviewOrderList
+                                    order_list={currentPosts}
+                                    onClick={onClickOrderItem}
+                                />
+                                <Pagination
+                                    postsPerPage={postsPerPage}
+                                    totalPosts={order_list.length}
+                                    paginate={paginate}
+                                />
+                            </>
                         ) : (
                             <Message
                                 msg={'주문 내역이 존재하지 않습니다.'}

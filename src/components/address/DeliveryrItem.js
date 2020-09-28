@@ -21,8 +21,7 @@ const DeliveryrItem = (props) => {
         >
             <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
             <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
-            <IconButton
-                className={styles['delete']}
+            <IconButton className={styles['delete']}
                 onClick={(e) => {
                     e.stopPropagation();
                     onRemove();

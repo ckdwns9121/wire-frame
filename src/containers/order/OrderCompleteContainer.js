@@ -46,12 +46,10 @@ const OrderCompleteContainer = ({ order_number }) => {
         if (user_token) {
             try {
                 const res = await getDetailOrderView(user_token, order_number);
-                console.log(res);
                 setOrders(res.orders);
                 setPayInfo(res.payinfo);
                 const temp = JSON.parse(res.payinfo.pp_result);
                 setPaypleInfo(temp);
-                console.log(temp);
                 setLoading(false);
                 setSuccess(true);
             } catch (e) {
@@ -72,10 +70,8 @@ const OrderCompleteContainer = ({ order_number }) => {
     const userOrderCancle = async () => {
         if (user_token) {
             openMessage(true, '해당 상품을 취소하시겠습니까?', '취소를 원하시면 예를 눌러주세요', async () => {
-
                 try {
                     const res = await order_cancle(user_token, order_number);
-                    console.log(res);
                     if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.')) {
                         openMessage(false, '이미 취소된 거래건 입니다.');
                     }
@@ -111,7 +107,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                         <div className={styles['message']}>
                                             <div className={styles['title']}>
                                                 주문이 완료되었습니다.
-                                        </div>
+                                            </div>
                                             <div className={styles['msg']}>
                                                 <>
                                                     {user && user.name} 님 저희 아주나무 딜리버리 서비스를 이용해주셔서 감사합니다.
@@ -130,7 +126,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                     className={styles['item']}
                                                 >
                                                     문구서비스 신청
-                                            </ButtonBase>
+                                                </ButtonBase>
                                             </div>
                                         </div>
                                     </div>
@@ -296,8 +292,10 @@ const OrderCompleteContainer = ({ order_number }) => {
                                     </div>
                                 </div>
                                 <StickerModal
+                                    order_number={order_number}
                                     open={stickyOpen}
                                     handleClose={handleClose}
+                                    token={user_token}
                                 />
                             </>
                         )}

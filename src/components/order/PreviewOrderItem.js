@@ -2,16 +2,15 @@ import React from 'react';
 import styles from './Preview.module.scss';
 import menu1 from '../svg/menu/menu1.png';
 import Arrow from '../svg/arrow/Arrow';
-import { numberFormat } from "../../lib/formatter";
+import { dateToYYYYMMDDHHMMSS, numberFormat } from "../../lib/formatter";
 
 const PreviewOrderItem = (props) => {
-
-    console.log(props);
     const {
         cp_price,
         items,
         order_id,
         point_price,
+        receipt_time,
         receipt_price,
         send_cost,
         total_price,
@@ -25,7 +24,8 @@ const PreviewOrderItem = (props) => {
                 <div className={styles['order-info']}>
                     <div className={styles['top']}>
                         <div className={styles['order-date']}>
-                            2020/06/01 13:30:10
+                            {/* {dateToYYYYMMDDHHMMSS(receipt_time, '/')} */}
+                            {receipt_time.replace(/-/g, '/')}
                         </div>
                         <div className={styles['order-id']}>
                             주문번호 : {order_id}

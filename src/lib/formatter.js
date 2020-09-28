@@ -49,6 +49,12 @@ export const dateToYYYYMMDD = (date, join = '-') => {
     const dayFormatting = dateFormatting(absolute.getDate()); // 일을 두 자리로 변환
     return absolute.getFullYear() + join + monthFormatting + join + dayFormatting;
 };
+export const dateToYYYYMMDDHHMMSS = (date, join = '-') => {
+    const absolute = new Date(date);
+    return dateToYYYYMMDD(absolute, join) +
+        ` ${dateFormatting(absolute.getHours())}:${dateFormatting(absolute.getMinutes())}:${dateFormatting(absolute.getSeconds())}`;
+}
+    
 
 export const dateToRelative = (date, join = '-') => {
     // Javascript Date 객체를 현재 시간과 비교하여 표현함.

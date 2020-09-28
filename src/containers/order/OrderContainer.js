@@ -382,10 +382,10 @@ const OrderContainer = () => {
                                         <DatePicker
                                             locale={ko}
                                             dateFormat="yyyy-MM-dd"
-                                            minDate={date}
+                                            minDate={new Date()}
                                             selected={date}
                                             onChange={date => setDate(date)}
-                                            withPortal
+                                            
                                         />
                                     </div>
                                     <div className={styles['second']}>

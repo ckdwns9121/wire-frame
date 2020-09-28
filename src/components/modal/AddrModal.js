@@ -31,8 +31,8 @@ const AddressModal = (props) => {
         >
             <div className={styles['title-bar']}>
                 <div className={styles['title']}>배달 받을 주소 </div>
-                <div className={styles['close']} onClick={props.handleClose}>
-                    <CloseIcon />
+                <div className={styles['close']}>
+                    <CloseIcon onClick={props.handleClose}/>
                 </div>
             </div>
             <div className={styles['modal-content']}>

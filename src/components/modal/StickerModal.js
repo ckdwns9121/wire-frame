@@ -8,6 +8,7 @@ import PhraseTemplateList from '../assets/PhraseTemplateList';
 import { requestPostPhraseSerive } from '../../api/order/sticker';
 
 import { ButtonBase } from '@material-ui/core';
+import { useModal } from '../../hooks/useModal';
 
 const cn = classnames.bind(styles);
 
@@ -27,6 +28,7 @@ const InputLogo = ({ handleChange }) => {
                     id="import-logo"
                     className={styles['filebox']}
                     type="file"
+                    multiple
                     onChange={handleImageChange}
                 />
                 <label
@@ -45,7 +47,7 @@ const InputPhrase = ({ handleChange }) => {
         <div className={styles['input-area']}>
             <textarea
                 className={cn('input-phrase', 'input-box')}
-                onChange={handleChange}
+                onChange={e => handleChange(e.target.value)}
             />
         </div>
     );
@@ -66,10 +68,11 @@ const GuideTemplate = ({ title, children, className }) => (
     </div>
 );
 
-const StickerModal = (props) => {
+const StickerModal = ({ open, handleClose, order_number, token }) => {
     const [template, setTemplate] = useState(0);
     const [logo, setLogo] = useState(null);
     const [phrase, setPhrase] = useState('');
+    const openModal = useModal();
 
     const TemplateList = [
         {
@@ -101,19 +104,43 @@ const StickerModal = (props) => {
         },
     ];
 
+    const sendSticker = useCallback(async () => {
+        if (!logo) {
+            openModal('로고 이미지가 없습니다!', '로고 이미지를 첨부해 주셔야 합니다.');
+        } else if (phrase === '') {
+            openModal('입력하실 문구가 없습니다!', '서비스 받을 문구를 입력해 주셔야 합니다.');
+        } else {
+            try {
+                const res = await requestPostPhraseSerive(token, {
+                    order_id: order_number,
+                    sticker_logo: logo,
+                    sticker_text: phrase
+                });
+                if (res.data.msg === '성공') {
+                    openModal('문구서비스가 신청되었습니다!', '고객님이 원하시는 문구를 작성해 드리겠습니다.');
+                    handleClose();
+                } else {
+                    openModal('예기치 못한 에러가 발생했습니다!', '다시 시도해 주세요.');
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 다시 시도해 주세요.');
+            }
+        }
+    }, [logo, phrase, order_number, token, openModal, handleClose]);
+
     return (
         <Dialog
             fullWidth={true}
             maxWidth={'sm'}
-            open={props.open}
-            onClose={props.handleClose}
+            open={open}
+            onClose={handleClose}
             aria-labelledby="form-dialog-title"
             className={styles['dialog']}
         >
             <div className={styles['title-bar']}>
                 <div className={styles['title']}>문구 서비스 신청</div>
-                <div className={styles['close']} onClick={props.handleClose}>
-                    <CloseIcon />
+                <div className={styles['close']}>
+                    <CloseIcon onClick={handleClose}/>
                 </div>
             </div>
             <div className={styles['modal-content']}>
@@ -131,7 +158,7 @@ const StickerModal = (props) => {
                 <div className={styles['confirm']}>
                     <ButtonBase
                         className={styles['btn']}
-                        onClick={props.onClickCustomOrder}
+                        onClick={sendSticker}
                     >
                         신청하기
                     </ButtonBase>
