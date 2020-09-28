@@ -37,11 +37,9 @@ export default function App() {
     const dispatch = useDispatch();
     const getInfo = async () => {
         const token = sessionStorage.getItem('access_token');
-        console.log(token);
         if (token) {
             dispatch(get_user_info(token));
             const res = await getActiveAddr(token);
-            console.log(res);
             if(res){
                 dispatch(get_address(res))
             }

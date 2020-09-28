@@ -35,7 +35,6 @@ export function numberToKorean(number) {
     return resultString;
 }
 
-
 const MS = 1000;
 const DIF_MINUTES = 60 * MS;
 const DIF_HOURS = 60 * DIF_MINUTES;
@@ -54,7 +53,6 @@ export const dateToYYYYMMDDHHMMSS = (date, join = '-') => {
     return dateToYYYYMMDD(absolute, join) +
         ` ${dateFormatting(absolute.getHours())}:${dateFormatting(absolute.getMinutes())}:${dateFormatting(absolute.getSeconds())}`;
 }
-    
 
 export const dateToRelative = (date, join = '-') => {
     // Javascript Date 객체를 현재 시간과 비교하여 표현함.
@@ -97,3 +95,5 @@ export const stringToTel = (str) => str.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9
 // string을 전화번호 표현(구분자 '-' 추가)으로 변경
 export const telToString = (tel) => tel.replace('-', "");
 // 전화번호 표현을 string으로 변경
+
+export const DBImageFormat = (url) => url.replace(/\\/g, '').replace(/\[/g, '').replace(/\]/g, '').replace(/"/g, '');

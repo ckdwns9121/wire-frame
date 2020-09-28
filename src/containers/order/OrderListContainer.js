@@ -21,7 +21,7 @@ const OrderListContainer = () => {
     const query = qs.parse(location.search, {
         ignoreQueryPrefix: true,
     });
-    console.log(query);
+    
     let page = query.page ? parseInt(query.page) : 1;
 
     const [startDate, setStartDate] = useState(

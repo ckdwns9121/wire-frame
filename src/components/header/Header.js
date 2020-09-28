@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink, Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Paths } from 'paths';
@@ -6,6 +6,8 @@ import styles from './Header.module.scss';
 import { logo, storeIcon, locationIcon, searchIcon } from '../svg/header';
 
 import styled from 'styled-components';
+import { IconButton } from '@material-ui/core';
+import { getSearchMenu } from '../../api/menu/menu';
 
 const TabLink = styled(NavLink)`
     text-decoration: none;
@@ -31,14 +33,25 @@ const Header = () => {
     const { addr1 } = useSelector((state) => state.address);
 
     const [logon, setLogon] = useState(false);
+    const [search, setSearch] = useState('');
+
+    const onChangeSearch = useCallback(e => {
+        setSearch(e.target.value);
+    }, []);
+
+    const onClickSearch = useCallback(async e => {
+        try {
+            const res = await getSearchMenu(search, 0, 20);
+            console.log(res);
+            alert(res.data.query.count + '개의 검색 결과가 있습니다.');
+        } catch (e) {
+
+        }
+    }, [search]);
 
     useEffect(() => {
         setLogon(user);
     }, [user]);
-    useEffect(()=>{
-        console.log("헤더 주소 확인");
-        console.log(addr1);
-    },[])
 
     const onClickHome = () => history.push(Paths.index);
     const onClickAddr = () => history.push(Paths.ajoonamu.address);
@@ -116,7 +129,7 @@ const Header = () => {
                 <div className={styles['header-menu']}>
                     <ul>
                         <li  onClick={onClickHome}>
-                        <img className={styles['logo']} alt={'로고'} src={logo} />
+                            <img className={styles['logo']} alt={'로고'} src={logo} />
                         </li>
                         <li onClick={onClickHome}>
                             <HeadLink to={Paths.index}>브랜드홈</HeadLink>
@@ -135,21 +148,20 @@ const Header = () => {
                             </HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={Paths.ajoonamu.support}>
-                                고객센터
-                            </HeadLink>
+                            <HeadLink to={Paths.ajoonamu.support}>고객센터</HeadLink>
                         </li>
                     </ul>
                 </div>
                 <div className={styles['header-input']}>
                     <div className={styles['input']}>
-                        <input className={styles['search']} />
-                        <img
-                            className={styles['icon']}
-                            src={searchIcon}
-                            alt="검색"
-                            onClick={() => alert('준비중입니다.')}
+                        <input className={styles['search']}
+                            onChange={onChangeSearch}
+                            onKeyDown={e => e.key === 'Enter' && onClickSearch()}
                         />
+                        <IconButton className={styles['icon']}
+                            onClick={onClickSearch}>
+                            <img src={searchIcon} alt="검색" />
+                        </IconButton>
                     </div>
                 </div>
             </div>

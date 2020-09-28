@@ -5,7 +5,7 @@ import { searchIcon } from '../svg/header';
 import { getStroeList } from '../../api/store/store';
 import { stringToTel } from '../../lib/formatter';
 
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, IconButton } from '@material-ui/core';
 import { useModal } from '../../hooks/useModal';
 import Loading from '../assets/Loading';
 import Message from '../assets/Message';
@@ -49,32 +49,33 @@ function KakaoMap() {
         <div className={styles['kakao-map']}>
             <Map storeList={storeList} selectStore={selectStore} />
             <div className={styles['map-area']}>
-                <div className={styles['modal']} data-aos="fade-up">
-                    <h3 className={styles['title']}>지점찾기</h3>
-                    <div className={styles['search-input']}>
-                        <div className={styles['input']}>
-                            <input
-                                className={styles['search']}
-                                value={search}
-                                onChange={onChangeSearch}
-                                onKeyPress={onKeyPress}
-                            />
-                            <img
-                                className={styles['icon']}
-                                onClick={onClickSearch}
-                                src={searchIcon}
-                                alt="검색"
-                            />
-                            <p className={styles['count']}>
-                                총 <b>{storeList.length}개</b>의 지점을
-                                찾았습니다.
-                            </p>
-                            <div className={styles['list']}>
-                                <Loading open={loading} />
-                                {storeList.length !== 0 ?
-                                    <StoreList storeList={storeList} handleClick={handleChangeSelect}/>
-                                    : <Message msg="찾으시는 지점이 없습니다" size={200} />
-                                }
+                <div className={styles['modal-area']}>
+                    <div className={styles['modal']} data-aos="fade-up">
+                        <h3 className={styles['title']}>지점찾기</h3>
+                        <div className={styles['search-input']}>
+                            <div className={styles['input']}>
+                                <div style={{ position: 'relative' }}>
+                                <input
+                                    className={styles['search']}
+                                    value={search}
+                                    onChange={onChangeSearch}
+                                    onKeyPress={onKeyPress}
+                                />
+                                <IconButton onClick={onClickSearch} className={styles['icon']}>
+                                    <img src={searchIcon} alt="검색" />
+                                </IconButton>
+                                </div>
+                                <p className={styles['count']}>
+                                    총 <b>{storeList.length}개</b>의 지점을
+                                    찾았습니다.
+                                </p>
+                                <div className={styles['list']}>
+                                    <Loading open={loading} />
+                                    {storeList.length !== 0 ?
+                                        <StoreList storeList={storeList} handleClick={handleChangeSelect}/>
+                                        : <Message msg="찾으시는 지점이 없습니다" size={200} />
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>

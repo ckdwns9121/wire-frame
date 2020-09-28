@@ -84,16 +84,15 @@ const HomeContainer = () => {
                 <HomeSlick />
             </div>
             <div className={styles['container']}>
-                <Banner
-                    title={'메뉴 추천 받아보기'}
-                    subtitle={'샌달에서 간편하게 추천해드려요'}
-                />
+                <Banner title={'메뉴 추천 받아보기'} subtitle={'샌달에서 간편하게 추천해드려요'} />
                 <div className={styles['menu-list']}>
                     <ul className={styles['category']}>
                         {categorys.slice(1, 6).map(category => (
                             <li key={category.ca_id} onClick={() => setUseCate(category.ca_id)}
                                 className={cx('item', { active: useCate === category.ca_id})}>
-                                {category.ca_name}
+                                <ButtonBase style={{ fontSize: 'inherit', fontWeight: 'inherit', width: '100%', height: '100%', display: 'block', padding: '8px 25px' }}>
+                                    {category.ca_name}
+                                </ButtonBase>
                             </li>
                         ))}
                     </ul>

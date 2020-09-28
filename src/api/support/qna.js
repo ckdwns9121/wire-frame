@@ -27,6 +27,7 @@ export const requestQNADetail = async (token, id) => {
         params: { id }
     };
     const res = await axios.get(req, config);
+    console.log(res);
     return res;
 }
 
@@ -47,7 +48,6 @@ export const requestQNAUpdate = async (token, {
     files: q_files
 }) => {
     const req = Paths.api + 'user/qna/update';
-    console.log(id);
     const formData = new FormData();
     
     formData.append('id', id);
@@ -68,6 +68,7 @@ export const requestQNAStore = async (token, {
     content: question,
     files: q_files
 }) => {
+    console.log(q_files);
     const req = Paths.api + 'user/qna';
     
     const formData = new FormData();

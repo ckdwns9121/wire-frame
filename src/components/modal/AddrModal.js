@@ -64,9 +64,7 @@ const AddressModal = (props) => {
                                 addrs={addrs}
                                 onClick={onClickAddrItem}
                             />
-                        ) : (
-                            ''
-                        )}
+                        ) : ('')}
                     </div>
                 </div>
                 <div className={styles['detail-addr']}>
@@ -81,7 +79,7 @@ const AddressModal = (props) => {
                             placeholder="상세 주소를 입력하세요"
                             onChange={onChangeDetail}
                             onKeyPress={onKeyPressDeliveryAddr}
-                        ></input>
+                        />
                     </div>
                     <div className={styles['btn-box']}>
                         <ButtonBase className={styles['btn']} onClick={onClickDeliveryAddrInsert}>

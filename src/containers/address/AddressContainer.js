@@ -18,7 +18,7 @@ import { get_address } from '../../store/address/address';
 import { modalOpen } from '../../store/modal';
 import Message from '../../components/assets/Message';
 import produce from 'immer';
-import { noAuthAddCart } from '../../api/noAuth/cart';
+import { IconButton } from '@material-ui/core';
 
 const AddressContainer = () => {
     const modalDispatch = useDispatch();
@@ -48,7 +48,6 @@ const AddressContainer = () => {
             console.log('회원');
             try {
                 const res = await getDeliveryList(user_token);
-                console.log(res);
                 setDeliveryList(res.data.query);
             } catch (e) {
                 console.log(e);
@@ -63,16 +62,14 @@ const AddressContainer = () => {
         }
     }, [user_token]);
 
- 
     //검색버튼 클릭
     const onClickSearch = useCallback(async () => {
         if (searchAddr !== '') {
-            try{
-            const result = await callSearchApi();
-            setSearchList(result);
-            }
-            catch(e){
-                alert("에러");
+            try {
+                const result = await callSearchApi();
+                setSearchList(result);
+            } catch (e) {
+                alert('에러');
             }
         }
     }, [searchAddr]); //search 혹은 addrs 가 바뀌었을때만 함수생성
@@ -96,9 +93,8 @@ const AddressContainer = () => {
 
     //모달창 닫기
     const handleClose = useCallback(() => {
-        setOpen(false)
+        setOpen(false);
     }, []);
-
 
     //엔터키 추가
     const handleKeyPress = useCallback(
@@ -197,7 +193,9 @@ const AddressContainer = () => {
                     }
                 } else {
                     console.log(delivery_id);
-                    const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                    const noAuthAddrs = JSON.parse(
+                        localStorage.getItem('noAuthAddrs'),
+                    );
                     if (noAuthAddrs) {
                         //선택한 주소가 현재 활성 주소일시.
                         if (noAuthAddrs.length !== 0) {
@@ -239,22 +237,19 @@ const AddressContainer = () => {
 
     //최근 주소지에 추가
     const onClickDeliveryAddrInsert = async () => {
-        if( selectAddr ===''){
+        if (selectAddr === '') {
             openMessage(
                 false,
                 '주소가 선택되지 않았습니다.',
                 '주소를 선택해주세요.',
             );
-        }
-        else if (detailAddr === '') {
+        } else if (detailAddr === '') {
             openMessage(
                 false,
                 '상세 주소를 입력해주세요',
                 '상세주소가 입력되지 않았습니다.',
             );
-        } 
-
-        else {
+        } else {
             openMessage(
                 true,
                 '이 주소로 배달지를 설정하시겠습니까?',
@@ -386,7 +381,7 @@ const AddressContainer = () => {
         callDeliveryList();
     }, [callDeliveryList]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setDetailAddr('');
         setSelectAddr('');
         setPostNum('');
@@ -403,12 +398,9 @@ const AddressContainer = () => {
                         onChange={onChangeSearchAddr}
                         onKeyPress={handleKeyPress}
                     />
-                    <img
-                        className={styles['icon']}
-                        onClick={handleOpen}
-                        src={searchIcon}
-                        alt="search"
-                    />
+                    <IconButton className={styles['icon']} onClick={handleOpen}>
+                        <img src={searchIcon} alt="search" />
+                    </IconButton>
                 </div>
             </div>
             <div className={styles['container']}>
@@ -434,16 +426,16 @@ const AddressContainer = () => {
             <AddressModal
                 open={open} //핸들창 오픈여부
                 handleClose={handleClose} //핸들 닫기
-                onClickSearch={onClickSearch} //검색 버튼 
+                onClickSearch={onClickSearch} //검색 버튼
                 onClickDeliveryAddrInsert={onClickDeliveryAddrInsert} //최근배송지 추가
-                searchAddr={searchAddr} //검색어 
+                searchAddr={searchAddr} //검색어
                 onChangeSearchAddr={onChangeSearchAddr} //검색어 변경
                 detailAddr={detailAddr} //상세주소
                 onChangeDetail={onChangeDetailAddr} //상세주소 변경
                 handleKeyPress={onClickSearch} //
-                addrs={search_list}// 검색리스트
+                addrs={search_list} // 검색리스트
                 onClickAddrItem={onClickAddrItem} //검색 주소지 클릭
-                onKeyPressDeliveryAddr ={onKeyPressDeliveryAddr}
+                onKeyPressDeliveryAddr={onKeyPressDeliveryAddr}
             />
         </>
     );
