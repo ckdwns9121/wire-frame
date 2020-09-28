@@ -32,7 +32,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
-function App() {
+export default function App() {
 
     const dispatch = useDispatch();
     const getInfo = async () => {
@@ -135,4 +135,3 @@ function App() {
     );
 }
 
-export default App;

@@ -31,6 +31,9 @@ const DetailContainer = ({ item_id }) => {
     const [option_total, setOptionTotal] = useState(0);
 
     const [other_menu_list, setOtherMenuList] = useState([]);
+    const [index, setIndex ]= useState(0);
+
+    const onChangeIndex = (e, index) => setIndex (index);
 
     //임의로 넣어준 다른사람이 본 메뉴
     const getOtherUserMenuApi = useCallback(async () => {
@@ -114,6 +117,7 @@ const DetailContainer = ({ item_id }) => {
         setLoading(true);
         try {
             const res = await getMenuInfo(item_id);
+            console.log(res);
             setMenu(res);
             setSuccess(true);
         } catch (e) {
@@ -236,8 +240,12 @@ const DetailContainer = ({ item_id }) => {
                                             { name: '상세정보' },
                                             { name: '영양성분표' },
                                         ]}
-                                        index={0}
+                                        index={index}
+                                        onChange={onChangeIndex}
                                     />
+                                    {index ===  0 && 
+                                    
+                                    <div className={styles['detail-menu-view']}>
                                     <div className={styles['detail-img']}>
                                         <img
                                             src={DetailImg}
@@ -246,11 +254,10 @@ const DetailContainer = ({ item_id }) => {
                                     </div>
                                     <div className={styles['detail-text']}>
                                         <div className={styles['title']}>
-                                            과일도시락
+                                            {menu && menu.item.item_name}
                                         </div>
                                         <div className={styles['sub-title']}>
-                                            여러가지 과일로 알찬 구성 도시락
-                                            입니다!
+                                            {menu && menu.item.item_sub}
                                         </div>
                                         <div className={styles['explan']}>
                                             제철 과일은 종류에 따라 당도가 높고,
@@ -262,29 +269,21 @@ const DetailContainer = ({ item_id }) => {
                                             변경가능 - 변경 시 단가 변동)
                                         </div>
                                     </div>
-                                    <TabMenu
-                                        tabs={[
-                                            { name: '상세정보' },
-                                            { name: '영양성분표' },
-                                        ]}
-                                        index={1}
-                                    />
-                                    <div className={styles['detail-view']}>
-                                        <div className={styles['table']}>
-                                            <Cell tr={'중량(g)'} td={'100'} />
-                                            <Cell
-                                                tr={'열량(kcal)'}
-                                                td={'345'}
-                                            />
-                                            <Cell tr={'당류(g)'} td={'7'} />
-                                            <Cell tr={'단백질(g)'} td={'20'} />
-                                            <Cell tr={'포화지방(g)'} td={'5'} />
-                                            <Cell
-                                                tr={'나트륨(mg)'}
-                                                td={'790'}
-                                            />
-                                        </div>
                                     </div>
+
+                                    }
+                                    {index ===1 && 
+                                         <div className={styles['detail-view']}>
+                                            <div className={styles['table']}>
+                                                 <Cell tr={'중량(g)'} td={menu && menu.item.option_1} />
+                                                <Cell  tr={'열량(kcal)'} td={menu && menu.item.option_2} />
+                                                <Cell tr={'당류(g)'} td={menu && menu.item.option_3} />
+                                                <Cell tr={'단백질(g)'} td={menu && menu.item.option_4} />
+                                                <Cell tr={'포화지방(g)'} td={menu && menu.item.option_5} />
+                                                <Cell tr={'나트륨(mg)'}td={menu && menu.item.option_6}/>
+                                            </div>
+                                         </div>
+                                    }
                                 </div>
                             </div>
                         </div>
