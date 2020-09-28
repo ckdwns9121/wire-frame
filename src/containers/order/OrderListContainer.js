@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
-import styles from './OrderList.module.scss';
 
+import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory ,useLocation} from 'react-router-dom';
+import styles from './OrderList.module.scss';
 import { Paths } from 'paths';
 import Message from 'components/assets/Message';
 import Loading from '../../components/assets/Loading';
@@ -10,16 +10,25 @@ import { useStore } from '../../hooks/useStore';
 import PreviewOrderList from '../../components/order/PreviewOrderItemList';
 import Pagination  from '../../components/pagenation/Pagenation';
 import DateRangePicker from '../../components/mypage/DateRangePicker';
+import qs from 'qs';
+
 //주문내역 페이지
 const OrderListContainer = () => {
     const user_token = useStore();
     const history = useHistory();
+    const location = useLocation();
+
+    const query = qs.parse(location.search, {
+        ignoreQueryPrefix: true,
+    });
+    console.log(query);
+    let page = query.page ? parseInt(query.page) : 1;
 
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [order_list, setOrderList] = useState([]); //전체 데이터.
     const [loading, setLoading] = useState(false); //로딩
-    const [currentPage, setCurrentPage] = useState(1);   //현재 페이지
+    const [currentPage, setCurrentPage] = useState(page);   //현재 페이지
     const [postsPerPage] = useState(2);  //한페이지에서 보여줄 POST의 수
 
     const indexOfLastPost = currentPage * postsPerPage; // 현재 포스트에서 마지막 인덱스
@@ -28,7 +37,12 @@ const OrderListContainer = () => {
     
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber); 
-        console.log(pageNumber);
+        history.push({
+            pathname: `${Paths.ajoonamu.mypage}/order_list`,
+            search: `?page=${pageNumber}`,
+            // state: { isOTP: isOTP },
+          });
+          window.scrollTo(0,0);
     }//페이지를 이동시킬 함수.
 
     const callOrderListApi = useCallback(async () => {
@@ -70,7 +84,7 @@ const OrderListContainer = () => {
                                 order_list={currentPosts}
                                 onClick={onClickOrderItem}
                             />
-                             <Pagination postsPerPage={postsPerPage} totalPosts={order_list.length} paginate={paginate} />
+                             <Pagination postsPerPage={postsPerPage} totalPosts={order_list.length} paginate={paginate}  index ={currentPage}/>
                          </>
 
                         ) : (

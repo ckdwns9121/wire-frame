@@ -298,6 +298,7 @@ $pd: 20px;
                 font-weight: bold;
                 font-size: 2.667rem;
                 width: 100%;
+                text-align: right;
                 span {
                     color: $main-color;
                     font-size: 2.167rem;
@@ -331,6 +332,9 @@ $pd: 20px;
     }
 }
 
+.noauth-input{
+    width: 320px;
+}
 .chk-box {
     & + & {
         margin-top: 20px;

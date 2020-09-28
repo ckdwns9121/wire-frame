@@ -21,14 +21,15 @@ export default ({ history }) => {
                 const res = await localLogout(token);
                 if (res.status === 'success') {
                     dispatch(logout());
-                    dispatch(get_address(null));
+                    dispatch(get_address({addr1:null,addr2:null}));
                     openMessage(false, '로그아웃 성공!', '성공적으로 로그아웃 되었습니다.');
                     sessionStorage.removeItem('access_token');
                     const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
                     if(noAuthAddrs){
                         const index = noAuthAddrs.findIndex((item) =>item.active===1);
                         if(index!==-1){
-                            dispatch(get_address(noAuthAddrs[index].addr1));
+                            const {addr1, addr2} = noAuthAddrs[index];
+                            dispatch(get_address({addr1,addr2}));
                         }
                         
                     }

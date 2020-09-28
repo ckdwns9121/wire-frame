@@ -28,7 +28,7 @@ const HeadLink = styled(Link)`
 const Header = () => {
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
-    const { address } = useSelector((state) => state.address);
+    const { addr1 } = useSelector((state) => state.address);
 
     const [logon, setLogon] = useState(false);
 
@@ -54,8 +54,8 @@ const Header = () => {
                                 className={styles['text']}
                                 onClick={onClickAddr}
                             >
-                                {address
-                                    ? address
+                                {addr1
+                                    ? addr1
                                     : '배달받으실 주소를 입력해주세요.'}
                             </div>
                             <img src={storeIcon} alt="배달"></img>

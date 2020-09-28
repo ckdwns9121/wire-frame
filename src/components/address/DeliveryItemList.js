@@ -14,7 +14,7 @@ const DeliveryItemList = (props) => {
                 {...addr}
                 key={addr.delivery_id}
                 id={addr.delivery_id}
-                onClick={() => props.onClick(addr.delivery_id, addr.addr1)}
+                onClick={() => props.onClick(addr.delivery_id, addr.addr1 ,addr.addr2)}
                 onRemove={() => props.onRemove(addr.delivery_id)}
             />
         ));
