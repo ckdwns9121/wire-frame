@@ -28,6 +28,8 @@ export const getOrderList = async (
 
 export const getDetailOrderView = async (token, order_id) => {
     const req = Paths.api + `user/order/view?order_id=${order_id}`;
+    console.log(token);
+    console.log(order_id);
     const config = {
         headers: {
             'content-type': 'application/json',
@@ -35,5 +37,6 @@ export const getDetailOrderView = async (token, order_id) => {
         },
     };
     const res = await axios.get(req, config);
+    console.log(res);
     return res.data.query;
 };

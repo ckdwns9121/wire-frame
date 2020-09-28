@@ -1,3 +1,5 @@
+/*global kakao*/
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './Address.module.scss';
@@ -29,13 +31,14 @@ const AddressContainer = () => {
     );
 
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const user_token = useStore(false);
     const [searchAddr, serSearch] = useState(''); //검색
     const [selectAddr, setSelectAddr] = useState(''); //선택
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
     const [search_list, setSearchList] = useState(''); // 검색 리스트
     const [delivery_list, setDeliveryList] = useState([]);
-
+    const [post_num ,setPostNum] = useState('');
     const [open, setOpen] = React.useState(false);
 
     //최근 선택한 주소지 들고오기
@@ -125,7 +128,7 @@ const AddressContainer = () => {
 
     //선택한 주소지로 설정 하기
     const onClickDeliveyAddr = useCallback(
-        (delivery_id, addr1,addr2) => {
+        (delivery_id, addr1,addr2,lat,lng,post_num) => {
             openMessage(
                 true,
                 '선택한 주소지로 설정하시겠습니까?',
@@ -138,33 +141,36 @@ const AddressContainer = () => {
                                 delivery_id,
                             );
                             console.log(res);
-                            dispatch(get_address({addr1,addr2}));
+                            dispatch(get_address({addr1,addr2,lat,lng,post_num}));
                             callDeliveryList();
                         } catch (e) {
                             console.error(e);
                         }
-                    } else {
-                        const noAuthAddrs = JSON.parse(
-                            localStorage.getItem('noAuthAddrs'),
-                        );
+                    } 
+                    else {
 
+                        //로컬 스토리지에 있는 아이템을 들고온다.
+                        //선택한 주소지가 있다는 것은 로컬스토리지에 아이템이 있다고 판단하고 조건을 뺀다.
+                        const noAuthAddrs = JSON.parse( localStorage.getItem('noAuthAddrs'));
+
+                        //모든 활성화를 0으로 초기화
                         noAuthAddrs.map((item) => (item.active = 0));
-                        noAuthAddrs[delivery_id].active = 1;
-                        console.log(noAuthAddrs);
 
+                        //선택한 주소를 활성화
+                        noAuthAddrs[delivery_id].active = 1;
+
+                        //활성화된 스토리지의 주소를 제일 위로 올린다.
                         let tmp = noAuthAddrs[delivery_id];
                         noAuthAddrs.splice(delivery_id, 1);
                         noAuthAddrs.unshift(tmp);
 
-                        localStorage.setItem(
-                            'noAuthAddrs',
-                            JSON.stringify(noAuthAddrs),
-                        );
-                        const temp = JSON.parse(
-                            localStorage.getItem('noAuthAddrs'),
-                        );
+                        //활성화된 정보를 갱신
+                        localStorage.setItem('noAuthAddrs',JSON.stringify(noAuthAddrs) );
+
+                        //갱신한 뒤 상태 업데이트 및 리덕스 업데이트
+                        const temp = JSON.parse(localStorage.getItem('noAuthAddrs'));
                         setDeliveryList(temp);
-                        dispatch(get_address({addr1,addr2}));
+                        dispatch(get_address({addr1,addr2,lat,lng,post_num}));
                     }
                 },
             );
@@ -179,17 +185,13 @@ const AddressContainer = () => {
                 if (user_token) {
                     try {
                         await deleteAddr(user_token, delivery_id);
-                        const index = delivery_list.findIndex(
-                            (item) => item.delivery_id === delivery_id,
-                        );
+                        const index = delivery_list.findIndex((item) => item.delivery_id === delivery_id );
+
+                        //삭제하려는 주소가 활성화 주소라면 배달지 설정 초기화
                         if (delivery_list[index].active === 1) {
-                            dispatch(get_address({addr1:null, addr2:null}));
+                            dispatch(get_address({addr1:null, addr2:null,lat:null,lng:null ,post_num:null}));
                         }
-                        setDeliveryList((list) =>
-                            list.filter(
-                                (item) => item.delivery_id !== delivery_id,
-                            ),
-                        );
+                        setDeliveryList((list) =>list.filter((item) => item.delivery_id !== delivery_id));
                     } catch (e) {
                         console.error(e);
                     }
@@ -201,19 +203,12 @@ const AddressContainer = () => {
                         if (noAuthAddrs.length !== 0) {
                             if (noAuthAddrs[delivery_id].active === 1) {
                                 //배달지 없음으로 설정
-                                dispatch(
-                                    get_address({ addr1: null, addr2: null }),
-                                );
+                                dispatch(get_address({ addr1: null, addr2: null,lat:null,lng:null ,post_num:null}));
                             }
-                            //선택한 주소를 제일 쉬로 올리기.
+                            //선택한 주소를 제일 위로 올리기.
                             noAuthAddrs.splice(delivery_id, 1);
-                            localStorage.setItem(
-                                'noAuthAddrs',
-                                JSON.stringify(noAuthAddrs),
-                            );
-                            const temp = JSON.parse(
-                                localStorage.getItem('noAuthAddrs'),
-                            );
+                            localStorage.setItem('noAuthAddrs', JSON.stringify(noAuthAddrs));
+                            const temp = JSON.parse( localStorage.getItem('noAuthAddrs'));
                             setDeliveryList(temp);
                         }
                     }
@@ -223,10 +218,11 @@ const AddressContainer = () => {
         [user_token, delivery_list],
     );
 
-    // 검색리스트(모달)에 나오는 주소를 클릭했을때 배달지 주소로 설정.
+    // 검색리스트(모달)에 나오는 주소를 클릭했을때 active 활성
     const onClickAddrItem = useCallback(
-        (data, index) => {
+        (data,zipNo,index) => {
             setSelectAddr(data);
+            setPostNum(zipNo);
             const new_list = search_list.map((item) => ({
                 ...item,
                 active: false,
@@ -266,61 +262,120 @@ const AddressContainer = () => {
                 async () => {
                     if (user_token) {
                         try {
-                            const res = await insertAddress(
-                                user_token,
-                                13252,
-                                selectAddr,
-                                detailAddr,
-                                0,
-                                37.182184,
-                                129.227345,
-                            );
-                            if (res.data.msg === '성공') {
-                                callDeliveryList();
-                                dispatch(get_address({addr1:selectAddr ,addr2: detailAddr}));
-                                setOpen(false);
-                            } else {
-                                openMessage(
-                                    false,
-                                    res.data.msg,
-                                    '주변 매장정보를 확인해 주세요.',
-                                );
+
+                        var geocoder = new kakao.maps.services.Geocoder();
+                        var temp_lat, temp_lng;
+                        //선택한 주소의 좌표정보 받아오기
+                        geocoder.addressSearch(selectAddr, async function (result,status) {
+                            // 정상적으로 검색이 완료됐으면
+                            if (status === kakao.maps.services.Status.OK) {
+                                temp_lat = result[0].y;
+                                temp_lng = result[0].x;
+                                console.log(selectAddr);
+                                console.log(temp_lat);
+                                console.log(temp_lng);
+                                try {
+                                    const res = await insertAddress(
+                                        user_token,
+                                        post_num,
+                                        selectAddr,
+                                        detailAddr,
+                                        0,
+                                        temp_lat,
+                                        temp_lng,
+                                    );
+                                    if (res.data.msg === '성공') {
+                                        dispatch( get_address(
+                                            {addr1: selectAddr,
+                                            addr2: detailAddr,
+                                            lat:temp_lat, 
+                                            lng:temp_lng,
+                                            post_num : post_num
+                                        }));
+                                        callDeliveryList();
+                                        setOpen(false);
+                                    } else {
+                                        openMessage( false, res.data.msg,'주변 매장정보를 확인해 주세요.');
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                    setLoading(false);
+                                }
                             }
-                        } catch (e) {
+                            //검색이 완료되지 않앗으면.
+                            else {
+                                console.log('검색 실패');
+                                setLoading(false);
+                            }
+                        });
+
+                        } 
+                        catch (e) {
                             console.error(e);
                         }
                     } else {
-                        const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
 
-                        if (noAuthAddrs) {
-                            noAuthAddrs.map((item) => (item.active = 0));
-                            noAuthAddrs.push({
-                                addr1: selectAddr,
-                                addr2: detailAddr,
-                                active: 1,
-                            });
-                            localStorage.setItem(
-                                'noAuthAddrs',
-                                JSON.stringify(noAuthAddrs.reverse()),
-                            );
-                        } else {
-                            localStorage.setItem(
-                                'noAuthAddrs',
-                                JSON.stringify([
-                                    {
-                                        addr1: selectAddr,
-                                        addr2: detailAddr,
-                                        active: 1,
-                                    },
-                                ]),
-                            );
-                        }
-                        const test2 = JSON.parse(
-                            localStorage.getItem('noAuthAddrs'),
-                        );
-                        dispatch(get_address({addr1: selectAddr, addr2: detailAddr}));
-                        setDeliveryList(test2);
-                        setOpen(false);
+
+
+                        var geocoder = new kakao.maps.services.Geocoder();
+                        var temp_lat, temp_lng;
+                        //선택한 주소의 좌표정보 받아오기
+                        geocoder.addressSearch(selectAddr, async function (result,status) {
+                            // 정상적으로 검색이 완료됐으면
+                            if (status === kakao.maps.services.Status.OK) {
+                                temp_lat = result[0].y;
+                                temp_lng = result[0].x;
+                                console.log(selectAddr);
+                                console.log(temp_lat);
+                                console.log(temp_lng);
+                                try {
+                                    //비회원일시 로컬스토리지에서 아이템을 들고온다.
+                                    const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                                    //로컬 스토리지에 아이템이 있을시.
+                                    if (noAuthAddrs) {
+                                        //모든 활성화를 0으로 초기화
+                                        noAuthAddrs.map((item) => (item.active = 0));
+                                        //새로운 주소를 푸쉬
+                                        noAuthAddrs.push({
+                                            addr1: selectAddr,
+                                            addr2: detailAddr,
+                                            lat:temp_lat,
+                                            lng :temp_lng,
+                                            post_num:post_num,
+                                            active: 1,
+                                        });
+                                        localStorage.setItem('noAuthAddrs',JSON.stringify(noAuthAddrs.reverse()));
+                                    }
+                                    //로컬스토리지에 아이템이 없을시.
+                                    else {
+                                        localStorage.setItem('noAuthAddrs',JSON.stringify([
+                                            {
+                                                    addr1: selectAddr,
+                                                    addr2: detailAddr,
+                                                    lat:temp_lat,
+                                                    lng :temp_lng,
+                                                    post_num:post_num,
+                                                    active: 1,
+                                                },
+                                            ]),
+                                        );
+                                    }
+                                    //모든 작업이 완료 되었다면. 리덕스에 좌표정보저장, 추가된 배열로 상태 업데이트
+                                    const test2 = JSON.parse(localStorage.getItem('noAuthAddrs'),);
+                                    dispatch( get_address({addr1: selectAddr, addr2: detailAddr,lat:temp_lat, lng:temp_lng ,post_num:post_num}));
+                                    setDeliveryList(test2);
+                                    setOpen(false);
+                                } 
+                                catch (e) {
+                                  
+                                }
+                            }
+                            //검색이 완료되지 않앗으면.
+                            else {
+                                console.log('검색 실패');
+                                setLoading(false);
+                            }
+                        });
                     }
                 },
             );
@@ -334,6 +389,7 @@ const AddressContainer = () => {
     useEffect(()=>{
         setDetailAddr('');
         setSelectAddr('');
+        setPostNum('');
     },[open])
 
     return (

@@ -1,4 +1,3 @@
-/*global kakao*/
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -21,8 +20,8 @@ import Message from '../../components/assets/Message';
 import { useModal } from '../../hooks/useModal';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import CntModal from '../../components/modal/QunaityModal';
-import { getCartList, deleteCartItem } from '../../api/cart/cart';
-import { noAuthGetCartList, noAuthRemoveCartItem } from '../../api/noAuth/cart';
+import { getCartList, deleteCartItem,updateCartQunaity } from '../../api/cart/cart';
+import { noAuthGetCartList, noAuthRemoveCartItem,noAuthUpdateCartQunaity } from '../../api/noAuth/cart';
 
 import produce from 'immer';
 
@@ -34,7 +33,7 @@ const CartContainer = () => {
 
     const user_token = useStore(false);
 
-    const { addr1, addr2 } = useSelector((state) => state.address);
+    const { addr1, addr2,lat,lng } = useSelector((state) => state.address);
     const [estmOpen, setEstmOpen] = useState(false);
     const [allChecked, setAllChecked] = useState(false); //전체선택
     const [estm, setEstm] = useState(true); //견적서 발송
@@ -147,61 +146,38 @@ const CartContainer = () => {
             setLoading(false);
         } else {
             setLoading(true);
-            console.log('비회원 장바구니 조회');
-            var geocoder = new kakao.maps.services.Geocoder();
-            let lat,
-                lng = null;
-
+     
             // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
-            setTimeout(() => {
+            setTimeout( async() => {
                   setLoading(true);
                 if (addr1) {
-                    geocoder.addressSearch(addr1, async function (
-                        result,
-                        status,
-                    ) {
-                        // 정상적으로 검색이 완료됐으면
-                        if (status === kakao.maps.services.Status.OK) {
-                            lat = result[0].y;
-                            lng = result[0].x;
-                            try {
-                                const cart_id = JSON.parse(
-                                    localStorage.getItem('noAuthCartId'),
-                                );
-                                const res = await noAuthGetCartList(
-                                    cart_id,
-                                    lat,
-                                    lng,
-                                    addr1,
-                                );
-                                const { query } = res.data;
-                                let len = Object.keys(query).length;
-                                let list = [];
-                                for (let i = 0; i < len - 1; i++) {
-                                    list[i] = query[i];
-                                    list[i].checked = false;
-                                }
-                                setCost(query.delivery_cost);
-                                setCartList(list);
-                                setLoading(false);
-                            } catch (e) {
-                                console.error(e);
-                                setLoading(false);
-                            }
-                        }
-                        //검색이 완료되지 않앗으면.
-                        else {
-                            console.log('검색 실패');
-                            setLoading(false);
-                        }
-                    });
+                     try {
+                        console.log("비회원 장바구니");
+                        console.log(addr1);
+                        console.log()
+                         const cart_id = JSON.parse(localStorage.getItem('noAuthCartId'));
+                         const res = await noAuthGetCartList(cart_id,lat,lng,addr1);
+                         const { query } = res.data;
+                         let len = Object.keys(query).length;
+                         let list = [];
+                         for (let i = 0; i < len - 1; i++) {
+                             list[i] = query[i];
+                             list[i].checked = false;
+                         }
+                         setCost(query.delivery_cost);
+                         setCartList(list);
+                         setLoading(false);
+                     } catch (e) {
+                         console.error(e);
+                         setLoading(false);
+                     }
                 }
                 else{
                     setLoading(false);
                 }
             }, 500);
         }
-    }, [user_token, addr1, history]);
+    }, [user_token, addr1, lat,lng,history]);
 
     //장바구니 메뉴 삭제
     const handleDelete = useCallback(
@@ -306,9 +282,11 @@ const CartContainer = () => {
                     '이 상품을 삭제하시겠습니까?',
                     '삭제를 원하시면 예를 눌러주세요.',
                     async () => {
-                        const cart_id = JSON.parse( localStorage.getItem('noAuthCartId'));
-                        const newState = cart_id.filter(c => obj.filter(o => o !== c).length);
-                       
+                        const cart_ids = JSON.parse( localStorage.getItem('noAuthCartId'));
+                        const newState = cart_ids.filter(c => !obj.filter(o => o === c).length);
+                        console.log(newState);
+
+
                         localStorage.setItem(
                             'noAuthCartId',
                             JSON.stringify(newState),
@@ -378,9 +356,41 @@ const CartContainer = () => {
         return;
     }, [cartList]);
 
-    const onClickOrder = useCallback(() => history.push(Paths.ajoonamu.order), [
-        history,
-    ]);
+    const onClickOrder = useCallback(async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                for (let i = 0; i < cartList.length; i++) {
+                    const { item } = cartList[i];
+                    const res = await updateCartQunaity(
+                        user_token,
+                        item.cart_id,
+                        item.item_quanity,
+                    );
+                    console.log(res);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        } else {
+            try {
+                for (let i = 0; i < cartList.length; i++) {
+                    const { item } = cartList[i];
+                    console.log(item.cart_id);
+                    console.log(item.item_quanity);
+                    const res = await noAuthUpdateCartQunaity(
+                        item.cart_id,
+                        item.item_quanity,
+                    );
+                    console.log(res);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        setLoading(false);
+        history.push(Paths.ajoonamu.order);
+    }, [user_token, cartList, history]);
 
 
     useEffect(()=>{

@@ -14,7 +14,7 @@ const DeliveryItemList = (props) => {
                 {...addr}
                 key={addr.delivery_id}
                 id={addr.delivery_id}
-                onClick={() => props.onClick(addr.delivery_id, addr.addr1 ,addr.addr2)}
+                onClick={() => props.onClick(addr.delivery_id, addr.addr1 ,addr.addr2 ,addr.lat,addr.lng ,addr.post_num)}
                 onRemove={() => props.onRemove(addr.delivery_id)}
             />
         ));
@@ -24,7 +24,7 @@ const DeliveryItemList = (props) => {
                 {...addr}
                 key={index}
                 id={index}
-                onClick={() => props.onClick(index, addr.addr1)}
+                onClick={() => props.onClick(index, addr.addr1, addr.addr2, addr.lat, addr.lng , addr.post_num)}
                 onRemove={() => props.onRemove(index)}
             />
         ));

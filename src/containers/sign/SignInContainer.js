@@ -85,7 +85,7 @@ const SignInContainer = () => {
                             localStorage.removeItem('user');
                         }
                         dispatch(get_user_info(res.data.access_token));
-                        response ? dispatch(get_address(response)) :dispatch(get_address({addr1:null,addr2:null}));
+                        response ? dispatch(get_address(response)) :dispatch(get_address({addr1:null,addr2:null ,lat:null,lng:null,post_num:null}));
                         history.replace(Paths.index);
                     }
                 } else {

@@ -24,6 +24,7 @@ import Select from '../../components/svg/select/Select';
 import {noAuthGetCartList} from  '../../api/noAuth/cart';
 import Loading from '../../components/assets/Loading';
 import AuthTimer from '../../components/assets/AuthTimer';
+import {noAuth_order} from '../../api/noAuth/order';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -58,7 +59,7 @@ const OrderContainer = () => {
     const user_token = useStore(false);
     const openModal = useModal();
     const { user } = useSelector(state => state.auth);
-    const { addr1,addr2 } = useSelector(state => state.address);
+    const { addr1,addr2,lat,lng } = useSelector(state => state.address);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const [addContact, setAddContact] = useState(false);
     const { check1, check2 } = check;
@@ -135,6 +136,7 @@ const OrderContainer = () => {
 
     //총 주문금액 구하기 (장바구니 조회해서 가져옴);
     const getTotalPrice = useCallback(async () => {
+        setLoading(true);
         if (user_token) {
             try {
                 const res = await getCartList(user_token);
@@ -142,6 +144,8 @@ const OrderContainer = () => {
                     let price = 0;
                     const { query } = res.data;
                     let len = Object.keys(query).length;
+                    console.log("길이");
+                    console.log(len);
 
                     for (let i = 0; i < len - 2; i++) {
                         const { item, options } = query[i];
@@ -172,66 +176,41 @@ const OrderContainer = () => {
             }
         }
         else {
-            setLoading(true);
             console.log('비회원 장바구니  주문조회');
-            var geocoder = new kakao.maps.services.Geocoder();
-            let lat,
-                lng = null;
+            try {
+                if(addr1){
+                const cart_id = JSON.parse(
+                    localStorage.getItem('noAuthCartId'),
+                );
+                const res = await noAuthGetCartList(cart_id, lat, lng, addr1);
+                console.log(res);
+                const { query } = res.data;
+                let len = Object.keys(query).length;
+                let price = 0;
 
-            // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
-            setTimeout(() => {
-                if (addr1) {
-                    geocoder.addressSearch(addr1, async function (
-                        result,
-                        status,
-                    ) {
-                        // 정상적으로 검색이 완료됐으면
-                        if (status === kakao.maps.services.Status.OK) {
-                            console.log("검색 완료");
-                            lat = result[0].y;
-                            lng = result[0].x;
-                            try {
-                                setLoading(true);
-                                const cart_id = JSON.parse( localStorage.getItem('noAuthCartId'));
-                                const res = await noAuthGetCartList( cart_id,lat,lng,addr1);
-                                console.log(res)
-                                const { query } = res.data;
-                                let len = Object.keys(query).length;
-                                let price = 0;
+                for (let i = 0; i < len - 1; i++) {
+                    const { item, options } = query[i];
+                    console.log(query[i]);
+                    price +=
+                        parseInt(item.item_price) * parseInt(item.item_quanity);
 
-                                for (let i = 0; i < len - 1; i++) {
-                                    const { item, options } = query[i];
-                                    console.log(query[i]);
-                                    price +=
-                                        parseInt(item.item_price) *
-                                        parseInt(item.item_quanity);
-            
-                                    for (let j = 0; j < options.length; j++) {
-                                        const { option_price } = options[j];
-                                        price +=
-                                            parseInt(option_price) *
-                                            parseInt(item.item_quanity);
-                                    }
-                                }
-                                let list = [];
-                               console.log(query.delivery_cost);
-                                setDlvCost(query.delivery_cost);
-                                setTotalPrice(price);
-                                setLoading(false);
-                            } catch (e) {
-                                console.error(e);
-                                setLoading(false);
-                            }
-                        }
-                        //검색이 완료되지 않앗으면.
-                        else {
-                            console.log('검색 실패');
-                            setLoading(false);
-                        }
-                    });
+                    for (let j = 0; j < options.length; j++) {
+                        const { option_price } = options[j];
+                        price +=
+                            parseInt(option_price) *
+                            parseInt(item.item_quanity);
+                    }
                 }
-            }, 500);
+                console.log(query.delivery_cost);
+                setDlvCost(query.delivery_cost);
+                setTotalPrice(price);
+            }
+            } catch (e) {
+                console.error(e);
+            }
+
         }
+        setLoading(false);
     },[user_token,addr1]);
 
     // 유저의 쿠폰 가져오기
@@ -273,13 +252,19 @@ const OrderContainer = () => {
         const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
 
         const delivery_req_time = `${year}-${month}-${day} ${hours}:${minite}:00`
-
+        //회원 주문
         if(user_token){
              const res = await user_order(user_token ,'reserve',orderMemo,dlvMemo ,delivery_req_time);
              console.log(res);
              order_id.current = res.data.query;
         }
+        //비회원 주문
         else{
+            const cart_ids = JSON.parse(localStorage.getItem('noAuthCartId'));
+            console.log(cart_ids);
+            const res = await noAuth_order(cart_ids,firstPhoneNumber,16546,addr1,addr2,lat,lng,'reserve',orderMemo,dlvMemo,delivery_req_time);
+            console.log(res);
+            order_id.current = res.data.query;
 
         }
         $script(payple_url, () => {
@@ -654,7 +639,7 @@ const OrderContainer = () => {
                                                     if (user.point < value) {
                                                         openModal(
                                                             '보유하신 포인트가 부족합니다!',
-                                                            '보유하신 포인트보다 많게 사용할 수 없습니다.',
+                                                            '보유하신 포인트보다 사용하실 포인트가 많을 수 없습니다.',
                                                         );
                                                         setUsePoint(
                                                             parseInt(

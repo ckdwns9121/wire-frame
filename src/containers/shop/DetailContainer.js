@@ -1,4 +1,4 @@
-/*global kakao*/
+
 
 import React, { useCallback, useEffect, useState } from 'react';
 import {useSelector} from 'react-redux';
@@ -29,7 +29,7 @@ const DetailContainer = ({ item_id }) => {
     const openModal = useModal();
     
     const history = useHistory();
-    const {addr1,addr2} = useSelector((state)=>(state.address));
+    const {addr1,addr2,lat,lng} = useSelector((state)=>(state.address));
 
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -92,49 +92,38 @@ const DetailContainer = ({ item_id }) => {
         }
         else {
             try {
-                var geocoder = new kakao.maps.services.Geocoder();
-                let lat, lng =null;
-
                 //주소가 존재할 때
                 if (addr1) {
-                    geocoder.addressSearch(addr1, async function ( result, status,) {
-                        // 정상적으로 검색이 완료됐으면
-                        if (status === kakao.maps.services.Status.OK) {
-                            console.log('좌표');
-                            lat = result[0].y;
-                            lng = result[0].x;
-                            try {
-                                console.log("장바구니 담기");
-                                const res = await noAuthAddCart(item_id,options, quanity,lat, lng );
-                                console.log(res);
-                                const noAuthCartId = JSON.parse( localStorage.getItem('noAuthCartId'));
-                                console.log(noAuthCartId);
-                                //이미 담은 cart_id가 존재할 경우
-                                if (noAuthCartId) {
-                                    //기존 list에서 push
-                                    noAuthCartId.push(res.data.query);
-                                    //그리고 다시 저장
-                                    localStorage.setItem('noAuthCartId',JSON.stringify(noAuthCartId));
-                                }
-                                else {
-                                    // cart_id가 존재하지 않을 경우 배열의 형태로 push
-                                    localStorage.setItem('noAuthCartId',JSON.stringify([res.data.query]));
-                                }
-                                openModal(
-                                    '장바구니에 담았습니다.',
-                                    '장바구니로 이동하시겠습니까?',
-                                    () => {
-                                        history.push(Paths.ajoonamu.cart);
-                                    },
-                                    true,
-                                );
-                            } catch (e) {
-                                console.error(e);
+                    try {
+                        console.log("비회원 장바구니 담기");
+                        const res = await noAuthAddCart(item_id,options, quanity,lat, lng );
+                        console.log(res);
+                        const noAuthCartId = JSON.parse( localStorage.getItem('noAuthCartId'));
+
+                        if (res.data.msg === '성공') {
+                            console.log(noAuthCartId);
+                            //이미 담은 cart_id가 존재할 경우
+                            if (noAuthCartId) {
+                                //기존 list에서 push
+                                noAuthCartId.push(res.data.query);
+                                //그리고 다시 저장
+                                localStorage.setItem('noAuthCartId' ,JSON.stringify(noAuthCartId));
+                            } else {
+                                // cart_id가 존재하지 않을 경우 배열의 형태로 push
+                                localStorage.setItem('noAuthCartId',JSON.stringify([res.data.query]));
                             }
-                        } else {
-                            console.log('검색 실패');
+                            openModal(
+                                '장바구니에 담았습니다.',
+                                '장바구니로 이동하시겠습니까?',
+                                () => {
+                                    history.push(Paths.ajoonamu.cart);
+                                },
+                                true,
+                            );
                         }
-                    });
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
                 else{
                     openModal('배달지 주소가 설정되지 않았습니다.','배달지 주소를 설정하시려면 예를 눌러주세요',
@@ -147,7 +136,7 @@ const DetailContainer = ({ item_id }) => {
             }
         }
         setLoading(false);
-    }, [history, item_id, options, quanity,user_token,addr1]);
+    }, [history, item_id, options, quanity,user_token,addr1,lat,lng]);
 
 
     //옵션아이템 클릭
@@ -170,6 +159,7 @@ const DetailContainer = ({ item_id }) => {
 
 
 
+    //옵션 추가 
     const onClickOptionItem = (id) => {
         const newOptionItem = menu.options.map((item) => {
             if (item.option_id === id) {
@@ -186,7 +176,6 @@ const DetailContainer = ({ item_id }) => {
 
     
     useEffect(() => {
-
         getDetailMenu();
     }, []);
 

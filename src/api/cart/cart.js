@@ -43,3 +43,17 @@ export const deleteCartItem = async (token, cart_id) => {
     });
     return res;
 }
+
+export const updateCartQunaity = async(token ,cart_id,item_quanity)=>{
+    
+    const req = Paths.api + 'user/cart/quanity';
+    const form_data = {
+        cart_id,
+        item_quanity,
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.put(req, form_data);
+    return res;
+}

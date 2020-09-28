@@ -49,8 +49,8 @@ const OrderCompleteContainer = ({ order_number }) => {
                 console.log(res);
                 setOrders(res.orders);
                 setPayInfo(res.payinfo);
-                const temp = JSON.parse(res.payinfo.pp_result);
-                setPaypleInfo(temp);
+                const payment_info = JSON.parse(res.payinfo.pp_result);
+                setPaypleInfo(payment_info);
                 setLoading(false);
                 setSuccess(true);
             } catch (e) {

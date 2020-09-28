@@ -46,6 +46,18 @@ export const noAuthRemoveCartItem = async (cart_id)=>{
     });
     console.log(res);
     return res;
+}
 
-
+export const noAuthUpdateCartQunaity = async(cart_id,item_quanity)=>{
+    console.log(cart_id);
+    console.log(item_quanity);
+    
+    const req = Paths.api + 'noauth/cart/quanity';
+    const form_data = {
+        cart_id,
+        item_quanity,
+    };
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const res = await axios.put(req, form_data);
+    return res;
 }

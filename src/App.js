@@ -47,7 +47,7 @@ export default function App() {
             }
             else{
                 console.log('배달정보 없음');
-                dispatch(get_address({addr1:null, addr2:null}));
+                dispatch(get_address({addr1:null, addr2:null,lat:null,lng:null,post_num:null}));
             }
         
         } else {
@@ -55,8 +55,8 @@ export default function App() {
             if (noAuth) {
                 const index = noAuth.findIndex((item) => item.active === 1);
                 if (index !== -1) {
-                    const {addr1, addr2} = noAuth[index];
-                    dispatch(get_address({addr1,addr2}));
+                    const {addr1, addr2,lat,lng,post_num} = noAuth[index];
+                    dispatch(get_address({addr1,addr2,lat,lng,post_num}));
                 }
                 else{
                     console.log("비회원 배달정보 없음");
