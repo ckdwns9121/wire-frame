@@ -8,6 +8,7 @@ const PreviewOrderItem = (props) => {
     const {
         cp_price,
         items,
+        info,
         order_id,
         point_price,
         receipt_time,
@@ -30,11 +31,14 @@ const PreviewOrderItem = (props) => {
                         <div className={styles['order-id']}>
                             주문번호 : {order_id}
                         </div>
-                        <div className={styles['order-type']}>배달완료</div>
+                        <div className={styles['order-type']}>
+                            {info.od_status ==="order_cancel" && '주문취소'}
+                            {info.od_status ==="order_apply" && '배달완료'}
+                        </div>
                     </div>
                     <div className={styles['bottom']}>
                         <div className={styles['req-date']}>
-                            배달 요청 시간 : 2020-06-02 09:30:00
+                            배달 요청 시간 : {info.delivery_req_time ? info.delivery_req_time : '요청하신 시간이 없습니다.'}
                         </div>
                     </div>
                 </div>
