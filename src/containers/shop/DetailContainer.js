@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {useSelector} from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Detail.module.scss';
-import AdditionalList from 'components/item/AdditionalList';
+import AdditionalList from '../../components/item/AdditionalList';
 import { useHistory } from 'react-router';
 import OtherUserMenuItemList from '../../components/item/OtherUserMenuItemList';
 import { getOtherUserMenu } from '../../api/menu/menu';

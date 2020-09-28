@@ -42,7 +42,6 @@ const CartContainer = () => {
     const [total, setTotal] = useState(0); //총 주문금액
     const [delivery_cost, setCost] = useState(0); // 배달비
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
     const [cntOpen, setCntOpen] = useState(false);
 
     const [count, setCount] = useState(0); //모달 수량

@@ -46,6 +46,7 @@ const EstmModal = (props) => {
                     console.log(res);
                     if (res.data.msg === "성공") {
                         openModal('성공적으로 전송되었습니다!', '이메일을 확인해 주세요!');    
+                        props.order();
                     } else {
                         openModal('전송이 실패했습니다.', '다시 시도해 주세요.');
                     }
@@ -59,7 +60,7 @@ const EstmModal = (props) => {
         } else {
             openModal('미리보기 시도 후 전송하셔야 합니다.', '견적서를 한 번 확인 후에 시도해주세요.');
         }
-    }, [estmFile, state, openModal]);
+    }, [estmFile, state, openModal, props]);
 
     const onDownload = (ref) => {
         let position = 0;
@@ -71,22 +72,24 @@ const EstmModal = (props) => {
             const pageHeight = imgWidth * 1.414; // 출력 페이지 세로 길이 계산 A4 기준
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             let heightLeft = imgHeight;
-
-            doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-            while (heightLeft >= 20) {
-                position = heightLeft - imgHeight;
-                doc.addPage();
-                doc.addImage(
-                    imageData,
-                    'PNG',
-                    0,
-                    position,
-                    imgWidth,
-                    imgHeight,
-                );
-                heightLeft -= pageHeight;
-            }
+            console.log(canvas.width, canvas.height);
+            console.log(imgWidth, imgHeight);
+            doc.addImage(imageData, 'PNG', 0, 0, 210, 297);
+            // doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
+            // heightLeft -= pageHeight;
+            // while (heightLeft >= 20) {
+            //     position = heightLeft - imgHeight;
+            //     doc.addPage();
+            //     doc.addImage(
+            //         imageData,
+            //         'PNG',
+            //         0,
+            //         position,
+            //         imgWidth,
+            //         imgHeight,
+            //     );
+            //     heightLeft -= pageHeight;
+            // }
             const blob = doc.output('blob');
             const makeFile = new File([blob], '아주나무 견적서.pdf', {
                 type: blob.type,
