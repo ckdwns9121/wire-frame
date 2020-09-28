@@ -93,6 +93,7 @@ export const getActiveAddr = async (token) => {
         }
     }
 
-    return null;
+  return null;
+
 }
 

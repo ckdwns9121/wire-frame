@@ -40,9 +40,9 @@ export default ({ confirm, title, text, handleClick = () => {}, open }) => {
                 onClose();
             }
         };
-        document.addEventListener('keydown', keydownEvent, true);
+        // document.addEventListener('keydown', keydownEvent, true);
         return () => {
-            document.removeEventListener('keydown', keydownEvent, true);
+            // document.removeEventListener('keydown', keydownEvent, true);
         }
     }, [onClick, onClose]);
 

@@ -19,11 +19,15 @@ import { addCartItem } from '../../api/cart/cart';
 import {noAuthAddCart} from '../../api/noAuth/cart';
 import { useStore } from '../../hooks/useStore';
 import { getMenuInfo } from '../../api/menu/menu';
+import { useModal } from '../../hooks/useModal';
+
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 
 const DetailContainer = ({ item_id }) => {
 
     const user_token = useStore(false);
+    const openModal = useModal();
+    
     const history = useHistory();
     const {addr1,addr2} = useSelector((state)=>(state.address));
 
@@ -37,15 +41,32 @@ const DetailContainer = ({ item_id }) => {
 
     const [other_menu_list, setOtherMenuList] = useState([]);
     const [index, setIndex ]= useState(0);
-
     const onChangeIndex = (e, index) => setIndex (index);
 
+    
+    //메뉴 디테일 정보 가져오기
+    const getDetailMenu = async () => {
+        console.log('디테일 정보 가져오기');
+        setLoading(true);
+        try {
+            const res = await getMenuInfo(item_id);
+            console.log(res);
+            setMenu(res);
+            setSuccess(true);
+        } catch (e) {
+            setError(true);
+            alert('Error!');
+        }
+        setLoading(false);
+    };
+    
     //임의로 넣어준 다른사람이 본 메뉴
-    const getOtherUserMenuApi = useCallback(async () => {
+    const getOtherUserMenuApi = async () => {
         const res = await getOtherUserMenu();
         console.log(res);
         setOtherMenuList(res.data.query.items);
-    }, []);
+    };
+
 
     //장바구니 담기
     const onClickCart = useCallback(async () => {
@@ -61,6 +82,10 @@ const DetailContainer = ({ item_id }) => {
                 );
                 console.log(res);
                 setSuccess(true);
+                openModal('장바구니에 담았습니다.','장바구니로 이동하시겠습니까?',
+                ()=>{history.push(Paths.ajoonamu.cart)}, true
+                )
+
             } catch (e) {
                 alert('Error!');
             }
@@ -69,7 +94,6 @@ const DetailContainer = ({ item_id }) => {
             try {
                 var geocoder = new kakao.maps.services.Geocoder();
                 let lat, lng =null;
-
 
                 //주소가 존재할 때
                 if (addr1) {
@@ -80,13 +104,11 @@ const DetailContainer = ({ item_id }) => {
                             lat = result[0].y;
                             lng = result[0].x;
                             try {
-                                
                                 console.log("장바구니 담기");
                                 const res = await noAuthAddCart(item_id,options, quanity,lat, lng );
                                 console.log(res);
                                 const noAuthCartId = JSON.parse( localStorage.getItem('noAuthCartId'));
                                 console.log(noAuthCartId);
-
                                 //이미 담은 cart_id가 존재할 경우
                                 if (noAuthCartId) {
                                     //기존 list에서 push
@@ -98,7 +120,7 @@ const DetailContainer = ({ item_id }) => {
                                     // cart_id가 존재하지 않을 경우 배열의 형태로 push
                                     localStorage.setItem('noAuthCartId',JSON.stringify([res.data.query]));
                                 }
-                               
+                              history.push(Paths.ajoonamu.cart);
                             } catch (e) {
                                 console.error(e);
                             }
@@ -106,15 +128,18 @@ const DetailContainer = ({ item_id }) => {
                             console.log('검색 실패');
                         }
                     });
-                } 
-       
+                }
+                else{
+                    openModal('배달지 주소가 설정되지 않았습니다.','배달지 주소를 설정하시려면 예를 눌러주세요',
+                        ()=>{history.push(Paths.ajoonamu.address)}, true
+                    )
+                }
                 setSuccess(true);
             } catch (e) {
                 alert('Error!');
             }
         }
         setLoading(false);
-        history.push(Paths.ajoonamu.cart);
     }, [history, item_id, options, quanity,user_token,addr1]);
 
 
@@ -137,20 +162,6 @@ const DetailContainer = ({ item_id }) => {
     }, [quanity]);
 
 
-    //메뉴 디테일 정보 가져오기
-    const getDetailMenu = useCallback(async () => {
-        setLoading(true);
-        try {
-            const res = await getMenuInfo(item_id);
-            console.log(res);
-            setMenu(res);
-            setSuccess(true);
-        } catch (e) {
-            setError(true);
-            alert('Error!');
-        }
-        setLoading(false);
-    }, [item_id]);
 
     const onClickOptionItem = (id) => {
         const newOptionItem = menu.options.map((item) => {
@@ -166,10 +177,15 @@ const DetailContainer = ({ item_id }) => {
         setMenu({ ...menu }, { options: newOptionItem });
     };
 
+    
     useEffect(() => {
-        getOtherUserMenuApi();
+
         getDetailMenu();
-    }, [getDetailMenu, getOtherUserMenuApi]);
+    }, []);
+
+    useEffect(()=>{
+        getOtherUserMenuApi();
+    },[])
 
     useEffect(() => {
         menu && setOptionItem();

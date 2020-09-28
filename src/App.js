@@ -37,11 +37,19 @@ export default function App() {
     const dispatch = useDispatch();
     const getInfo = async () => {
         const token = sessionStorage.getItem('access_token');
+        console.log(token);
         if (token) {
             dispatch(get_user_info(token));
             const res = await getActiveAddr(token);
             console.log(res);
-            dispatch(get_address(res));
+            if(res){
+                dispatch(get_address(res))
+            }
+            else{
+                console.log('배달정보 없음');
+                dispatch(get_address({addr1:null, addr2:null}));
+            }
+        
         } else {
             const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
             if (noAuth) {
@@ -49,6 +57,9 @@ export default function App() {
                 if (index !== -1) {
                     const {addr1, addr2} = noAuth[index];
                     dispatch(get_address({addr1,addr2}));
+                }
+                else{
+                    console.log("비회원 배달정보 없음");
                 }
             }
         }

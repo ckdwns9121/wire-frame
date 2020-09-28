@@ -17,7 +17,7 @@ import { order_cancle } from '../../api/order/order';
 const cx = cn.bind(styles);
 
 const OrderCompleteContainer = ({ order_number }) => {
-    const user_token = useStore();
+    const user_token = useStore(false);
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
 
@@ -46,6 +46,7 @@ const OrderCompleteContainer = ({ order_number }) => {
         if (user_token) {
             try {
                 const res = await getDetailOrderView(user_token, order_number);
+                console.log(res);
                 setOrders(res.orders);
                 setPayInfo(res.payinfo);
                 const temp = JSON.parse(res.payinfo.pp_result);
@@ -62,6 +63,9 @@ const OrderCompleteContainer = ({ order_number }) => {
                     () => history.goBack()
                 );
             }
+        }
+        else{
+            console.log('비회원');
         }
         setLoading(false);
     }, [order_number, user_token]);

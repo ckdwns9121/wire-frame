@@ -13,12 +13,12 @@ const AddressModal = (props) => {
     const { open, addrs, searchAddr, detailAddr, selectAddr } = props;
     const {
         handleClose,
-        onChangeAddr,
+        onChangeSearchAddr,
         onClickSearch,
-        // onInsertAddr,
         onChangeDetail,
         onClickAddrItem,
-        onClick
+        onClickDeliveryAddrInsert,
+        onKeyPressDeliveryAddr
     } = props;
     return (
         <Dialog
@@ -42,7 +42,7 @@ const AddressModal = (props) => {
                         type="text"
                         value={searchAddr}
                         placeholder="예) 아주나무동12-3 또는 아주나무 아파트"
-                        onChange={onChangeAddr}
+                        onChange={onChangeSearchAddr}
                         onKeyPress={props.handleKeyPress}
                     ></input>
                     <img
@@ -80,11 +80,11 @@ const AddressModal = (props) => {
                             value={detailAddr}
                             placeholder="상세 주소를 입력하세요"
                             onChange={onChangeDetail}
-                            onKeyPress={props.onKeyPress}
+                            onKeyPress={onKeyPressDeliveryAddr}
                         ></input>
                     </div>
                     <div className={styles['btn-box']}>
-                        <ButtonBase className={styles['btn']} onClick={onClick}>
+                        <ButtonBase className={styles['btn']} onClick={onClickDeliveryAddrInsert}>
                             이 주소로 배달지 설정
                         </ButtonBase>
                     </div>

@@ -14,7 +14,7 @@ import qs from 'qs';
 
 //주문내역 페이지
 const OrderListContainer = () => {
-    const user_token = useStore();
+    const user_token = useStore(true);
     const history = useHistory();
     const location = useLocation();
 
@@ -57,6 +57,7 @@ const OrderListContainer = () => {
                 startDate,
                 endDate,
             );
+            console.log(res);
             setOrderList(res.orders ? res.orders : []);
         }
         setLoading(false);
