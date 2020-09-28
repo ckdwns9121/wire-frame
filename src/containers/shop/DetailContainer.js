@@ -120,7 +120,14 @@ const DetailContainer = ({ item_id }) => {
                                     // cart_id가 존재하지 않을 경우 배열의 형태로 push
                                     localStorage.setItem('noAuthCartId',JSON.stringify([res.data.query]));
                                 }
-                              history.push(Paths.ajoonamu.cart);
+                                openModal(
+                                    '장바구니에 담았습니다.',
+                                    '장바구니로 이동하시겠습니까?',
+                                    () => {
+                                        history.push(Paths.ajoonamu.cart);
+                                    },
+                                    true,
+                                );
                             } catch (e) {
                                 console.error(e);
                             }

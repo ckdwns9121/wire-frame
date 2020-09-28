@@ -306,12 +306,9 @@ const CartContainer = () => {
                     '이 상품을 삭제하시겠습니까?',
                     '삭제를 원하시면 예를 눌러주세요.',
                     async () => {
-                        const cart_id = JSON.parse(
-                            localStorage.getItem('noAuthCartId'),
-                        );
-                        const newState = cart_id.filter(
-                            (v, index) => v !== obj[index],
-                        );
+                        const cart_id = JSON.parse( localStorage.getItem('noAuthCartId'));
+                        const newState = cart_id.filter(c => obj.filter(o => o !== c).length);
+                       
                         localStorage.setItem(
                             'noAuthCartId',
                             JSON.stringify(newState),
