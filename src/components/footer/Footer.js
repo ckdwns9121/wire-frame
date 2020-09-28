@@ -3,6 +3,7 @@ import styles from './Footer.module.scss';
 import { Fb_Icon, Insta_Icon, Blog_Icon } from '../svg/footer';
 import { NavLink } from 'react-router-dom';
 import { Paths } from '../../paths';
+import { IconButton } from '@material-ui/core';
 
 const Footer = () => (
     <div className={styles['footer']}>
@@ -62,7 +63,9 @@ const Footer = () => (
 
 const Icon = ({ src, alt, href }) => (
     <a className={styles['asset']} href={href}>
-        <img src={src} alt={alt} />
+        <IconButton>
+            <img src={src} alt={alt} />
+        </IconButton>
     </a>
 );
 

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
-const URL = "http://www.juso.go.kr/addrlink/addrLinkApi.do";
-const KEY= 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU=';
+const URL = 'http://www.juso.go.kr/addrlink/addrLinkApi.do';
+const KEY = 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU=';
 
 export const getDeliveryList = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
@@ -11,31 +11,38 @@ export const getDeliveryList = async (token) => {
     axios.defaults.headers.get['Context-Type'] = 'application/json';
     const res = await axios.get();
     return res;
-}
+};
 
 export function getCoordinates() {
-    return new Promise(function(resolve, reject) {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
+    return new Promise(function (resolve, reject) {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
     });
 }
 
-export const insertAddress = async (token ,post_num, addr1,addr2,extra,lat,lng) => {
+export const insertAddress = async (
+    token,
+    post_num,
+    addr1,
+    addr2,
+    extra,
+    lat,
+    lng,
+) => {
     const req = Paths.api + `user/delivery`;
 
     const form_data = {
-        post_num:post_num,
-        addr1:addr1,
-        addr2:addr2,
-        extra:0,
-        lat:lat,
-        lng:lng,
+        post_num: post_num,
+        addr1: addr1,
+        addr2: addr2,
+        extra: 0,
+        lat: lat,
+        lng: lng,
     };
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post(req, form_data);
     return res;
-}
-
+};
 
 export const searchAddress = (searchAddr) => {
     return fetch(
@@ -46,8 +53,7 @@ export const searchAddress = (searchAddr) => {
         .catch((err) => console.log(err));
 };
 
-export const selectAddress =async (token,delivery_id) =>{
-
+export const selectAddress = async (token, delivery_id) => {
     const req = Paths.api + 'user/delivery/update';
     const form_data = {
         delivery_id: delivery_id,
@@ -58,7 +64,7 @@ export const selectAddress =async (token,delivery_id) =>{
     const res = await axios.put(req, form_data);
     console.log(res);
     return res;
-}
+};
 
 export const deleteAddr = async (token, delivery_id) => {
     const req = Paths.api + 'user/delivery/delete';
@@ -66,34 +72,27 @@ export const deleteAddr = async (token, delivery_id) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.delete(req, {
-        data: form_data
+        data: form_data,
     });
     return res;
-}
-
+};
 
 export const getActiveAddr = async (token) => {
-    
     const req = `${Paths.api}user/delivery/list`;
     axios.defaults.baseURL = req;
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.get['Context-Type'] = 'application/json';
     const res = await axios.get();
-    console.log(res.data.query);
 
-    const {query} = res.data;
+    const { query } = res.data;
     let len = Object.keys(query).length;
-    let addr ='';
 
-    for(let i=0 ;i<len;i++){
-        console.log(query[i].active);
-        if(query[i].active===1){
-              const {addr1, addr2} = query[i];
-                return {addr1,addr2};
+    for (let i = 0; i < len; i++) {
+        if (query[i].active === 1) {
+            const { addr1, addr2 } = query[i];
+            return { addr1, addr2 };
         }
     }
 
-  return null;
-
-}
-
+    return null;
+};

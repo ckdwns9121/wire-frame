@@ -29,7 +29,6 @@ export default ({ startDate, setStartDate, endDate, setEndDate, onClick }) => {
         onDateClick(7, 'DATE', 0);
     }, [onDateClick]);
 
-
     return (
         <div className={styles['select-date']}>
             <div className={styles['date']}>
@@ -62,10 +61,7 @@ export default ({ startDate, setStartDate, endDate, setEndDate, onClick }) => {
                         withPortal
                     />
                 </div>
-                <ButtonBase
-                    className={styles['btn']}
-                    onClick={onClick}
-                >
+                <ButtonBase className={styles['btn']} onClick={onClick}>
                     조회
                 </ButtonBase>
             </div>

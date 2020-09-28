@@ -118,10 +118,6 @@ $header-height: 100px;
 .header li {
     display: table-cell;
     vertical-align:middle;
-
-    
-    // margin: 0 37px;
-    cursor: pointer;
     &:first-child {
         margin-left: 0;
     }

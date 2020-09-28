@@ -142,51 +142,6 @@ const initMenu = [
     },
 ];
 
-const initMenu2 = [
-    {
-        item_id: 1,
-        title: '과일도시락',
-        text: '아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다',
-        img: Menu1,
-        price: '5,000원',
-    },
-    {
-        item_id: 2,
-        title: '과일도시락2',
-        text: '아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다',
-        img: Menu2,
-        price: '5,000원',
-    },
-    {
-        item_id: 3,
-        title: '과일도시락3',
-        text: '아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다',
-        img: Menu3,
-        price: '5,000원',
-    },
-    {
-        item_id: 4,
-        title: '과일도시락4',
-        text: '아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다',
-        img: Menu4,
-        price: '5,000원',
-    },
-    {
-        item_id: 5,
-        title: '과일도시락5',
-        img: Menu1,
-        text: '아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다',
-        price: '5,000원',
-    },
-    {
-        item_id: 6,
-        title: '과일도시락6',
-        text: '아주나무의 여러가지 과일로 구성된 알찬 도시락 입니다',
-        img: Menu2,
-        price: '5,000원',
-    },
-];
-
 
 export const getCustomMenuList = async () => {
     await sleep(1000); // 0.5초 쉬고
@@ -251,3 +206,17 @@ export const getMenuInfo = async (item_id) => {
     const result = await axios.get(req, config);
     return result.data.query;
 };
+
+export const getSearchMenu = async (search, offset, limit) => {
+    const req = Paths.api + 'user/item/search';
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+        },
+        params: {
+            offset, limit, search
+        }
+    };
+    const res = axios.get(req, config);
+    return res;
+}
