@@ -207,7 +207,7 @@ export const getMenuInfo = async (item_id) => {
     return result.data.query;
 };
 
-export const getSearchMenu = async (search, offset, limit) => {
+export const getSearchMenu = async (search, limit, offset) => {
     const req = Paths.api + 'user/item/search';
     const config = {
         headers: {

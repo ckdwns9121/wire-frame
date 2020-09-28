@@ -20,8 +20,11 @@ import produce from 'immer';
 import cn from 'classnames/bind';
 import DateRangePicker from '../../components/mypage/DateRangePicker';
 import { useModal } from '../../hooks/useModal';
+import ListPaging from '../../components/sidebar/ListPaging';
 
 const cx = cn.bind(styles);
+
+const PAGE_PER_VIEW = 5;
 
 const tabInit = [
     {
@@ -47,6 +50,8 @@ const CouponConatiner = (props) => {
     const query = qs.parse(props.location.search, {
         ignoreQueryPrefix: true,
     });
+
+    const page = query.page ? parseInt(query.page) : 1;
 
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -189,10 +194,12 @@ const CouponConatiner = (props) => {
                     {index === 1 && (
                         <>
                             {down_cp_list.length !== 0 ? (
-                                <DownCouponItemList
-                                    cp_list={down_cp_list}
-                                    onClick={callCouponDownload}
-                                />
+                                <>
+                                    <DownCouponItemList
+                                        cp_list={down_cp_list}
+                                        onClick={callCouponDownload}
+                                    />
+                                </>
                             ) : (
                                 <Message
                                     src={false}
@@ -201,7 +208,16 @@ const CouponConatiner = (props) => {
                             )}
                         </>
                     )}
-                    {index === 2 && <UseCouponItemList />}
+                    {index === 2 &&
+                    <>
+                        <UseCouponItemList />
+                        <ListPaging
+                            baseURL={Paths.ajoonamu.mypage + '/coupon?tab=2'}
+                            currentPage={page}
+                            pagePerView={PAGE_PER_VIEW}
+                            totalCount={5}
+                        />
+                    </>}
                 </div>
             </div>
             <Loading open={loading} />

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
-export const requestNoticeList = async (offset, limit) => {
+export const requestNoticeList = async (limit, offset) => {
     const req = Paths.api + 'user/notice/list';
     const config = {
         headers: {
@@ -12,6 +12,7 @@ export const requestNoticeList = async (offset, limit) => {
         }
     };
     const result = await axios.get(req, config);
+    console.log(result);
     return result.data.query;
 };
 

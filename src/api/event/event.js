@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
-export const requestEventList = async (offset, limit) => {
+export const requestEventList = async (limit, offset) => {
     const req = Paths.api + 'user/event/list';
     const config = {
         headers: {

@@ -15,11 +15,11 @@ import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
 import Loading from '../assets/Loading';
 import ListPaging from '../sidebar/ListPaging';
+import DetailPaging from '../sidebar/DetailPaging';
 
 const cn = classnames.bind(styles);
 
-
-const PAGE_PER_VIEW = 2;
+const PAGE_PER_VIEW = 5;
 
 export default ({ match, location }) => {
     const token = useStore();
@@ -30,21 +30,20 @@ export default ({ match, location }) => {
     const [count, setCount] = useState(0);
     const history = useHistory();
 
-
     const writeMode = match.params.id === 'write';
     const viewMode = match.params.id === 'view';
 
     const search = location.search.replace('?', '');
     const query = qs.parse(search);
 
-    const page = query.page ? query.page : 1;
+    const page = query.page ? parseInt(query.page) : 1;
 
     const getQNAList = useCallback(async () => {
         setLoading(true);
         if (token) {
             try {
-                const res = await requestQNAList(token, page * PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
-                if (!count || count !== res.count) {
+                const res = await requestQNAList(token, PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
+                if (count !== res.count) {
                     setCount(res.count);
                 }
                 setList(res.qnas);
@@ -348,6 +347,7 @@ const QNADetail = ({ id, token, onRemove }) => {
                     </div>
                     <div className={styles['a-content']} dangerouslySetInnerHTML={{ __html: answer}} />
                 </div>}
+                <DetailPaging baseURL={Paths.ajoonamu.support + '/qna'} />
             </>}
         </>
     );

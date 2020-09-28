@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import qs from 'querystring';
 import styles from './Notice.module.scss';
 
 import Message from '../assets/Message';
@@ -8,6 +9,8 @@ import { Paths } from '../../paths';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import Loading from '../assets/Loading';
 import { useModal } from '../../hooks/useModal';
+import ListPaging from '../sidebar/ListPaging';
+import DetailPaging from '../sidebar/DetailPaging';
 
 
 const numbering = (number) => {
@@ -20,7 +23,16 @@ const numbering = (number) => {
     return result;
 }
 
-export default ({ match }) => {
+const PAGE_PER_VIEW = 5;
+
+export default ({ match, location }) => {
+    const search = location.search.replace('?', '');
+    const query = qs.parse(search);
+
+    const page = query.page ? parseInt(query.page) : 1;
+    
+    const [count, setCount] = useState(0);
+
     const openModal = useModal();
     const [loading, setLoading] = useState(false);
     const [noticeList, setNoticeList] = useState([]);
@@ -32,14 +44,17 @@ export default ({ match }) => {
     const getNoticeList = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await requestNoticeList();
+            const res = await requestNoticeList(PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
+            if (!count || count !== res.count) {
+                setCount(res.count);
+            }
             setNoticeList(res.notices);
         } catch (e) {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.replace(Paths.index);
         }
         setLoading(false);
-    }, [history, openModal]);
+    }, [history, openModal, count, page]);
 
     const getNoticeItem = useCallback(async () => {
         setLoading(true);
@@ -78,6 +93,10 @@ export default ({ match }) => {
                 <NoticeList list={noticeList} />
                 : <Message src={false} msg={"등록된 공지사항이 없습니다."} size={260} />}
             </div>}
+            { params.id !== null && params.id !== undefined ?
+            <DetailPaging baseURL={Paths.ajoonamu.support + '/notice'} />
+            : noticeList.length > 0 &&
+            <ListPaging baseURL={Paths.ajoonamu.support + '/notice'} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={count} />}
         </div>
     );
 };

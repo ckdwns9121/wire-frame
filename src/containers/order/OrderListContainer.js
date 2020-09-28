@@ -7,10 +7,13 @@ import Loading from '../../components/assets/Loading';
 import { getOrderList } from '../../api/order/orderItem';
 import { useStore } from '../../hooks/useStore';
 import PreviewOrderList from '../../components/order/PreviewOrderItemList';
-import Pagination from '../../components/pagenation/Pagenation';
+// import Pagination from '../../components/pagenation/Pagenation';
 import DateRangePicker from '../../components/mypage/DateRangePicker';
 import { calculateDate } from '../../lib/calculateDate';
 import qs from 'qs';
+import ListPaging from '../../components/sidebar/ListPaging';
+
+const PAGE_PER_VIEW = 2;
 
 //주문내역 페이지
 const OrderListContainer = () => {
@@ -22,7 +25,7 @@ const OrderListContainer = () => {
         ignoreQueryPrefix: true,
     });
     
-    let page = query.page ? parseInt(query.page) : 1;
+    const page = query.page ? parseInt(query.page) : 1;
 
     const [startDate, setStartDate] = useState(
         calculateDate(new Date(), 7, 'DATE'),
@@ -30,30 +33,33 @@ const OrderListContainer = () => {
     const [endDate, setEndDate] = useState(new Date());
     const [order_list, setOrderList] = useState([]); //전체 데이터.
     const [loading, setLoading] = useState(false); //로딩
-    const [currentPage, setCurrentPage] = useState(page); //현재 페이지
-    const [postsPerPage] = useState(2); //한페이지에서 보여줄 POST의 수
 
-    const indexOfLastPost = currentPage * postsPerPage; // 현재 포스트에서 마지막 인덱스
-    const indexOfFirstPost = indexOfLastPost - postsPerPage; //현재 포스트에서 첫번째 인덱스
-    const currentPosts = order_list.slice(indexOfFirstPost, indexOfLastPost); //현재 포스트에서 보여줄 리스트
 
-    const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        history.push({
-            pathname: `${Paths.ajoonamu.mypage}/order_list`,
-            search: `?page=${pageNumber}`,
-            // state: { isOTP: isOTP },
-        });
-        window.scrollTo(0, 0);
-    }; //페이지를 이동시킬 함수.
+    // const [currentPage, setCurrentPage] = useState(page); //현재 페이지
+    // const [postsPerPage] = useState(2); //한페이지에서 보여줄 POST의 수
+
+    // const indexOfLastPost = currentPage * postsPerPage; // 현재 포스트에서 마지막 인덱스
+    // const indexOfFirstPost = indexOfLastPost - postsPerPage; //현재 포스트에서 첫번째 인덱스
+    // const currentPosts = order_list.slice(indexOfFirstPost, indexOfLastPost); //현재 포스트에서 보여줄 리스트
+
+    // const paginate = (pageNumber) => {
+    //     setCurrentPage(pageNumber);
+    //     history.push({
+    //         pathname: `${Paths.ajoonamu.mypage}/order_list`,
+    //         search: `?page=${pageNumber}`,
+    //         // state: { isOTP: isOTP },
+    //     });
+    //     window.scrollTo(0, 0);
+    // }; //페이지를 이동시킬 함수.
 
     const callOrderListApi = useCallback(async () => {
         setLoading(true);
         if (user_token) {
             const res = await getOrderList(
                 user_token,
-                0,
-                100,
+                // PAGE_PER_VIEW,
+                // (page - 1) * PAGE_PER_VIEW,
+                100, 0,
                 startDate,
                 endDate,
             );
@@ -61,7 +67,7 @@ const OrderListContainer = () => {
             setOrderList(res.orders ? res.orders : []);
         }
         setLoading(false);
-    }, [user_token, startDate, endDate]);
+    }, [user_token, startDate, endDate, page]);
 
     const onClickOrderItem = useCallback(
         (order_id) => {
@@ -93,17 +99,17 @@ const OrderListContainer = () => {
             ) : (
                 <>
                     <div className={styles['order-list']}>
-                        {currentPosts.legnth !== 0 ? (
+                        {order_list.legnth !== 0 ? (
                             <>
                                 <PreviewOrderList
-                                    order_list={currentPosts}
+                                    order_list={order_list}
                                     onClick={onClickOrderItem}
                                 />
-                                <Pagination
-                                    postsPerPage={postsPerPage}
-                                    totalPosts={order_list.length}
-                                    paginate={paginate}
-                                    index={currentPage}
+                                <ListPaging
+                                    baseURL={Paths.ajoonamu.mypage + '/order_list'}
+                                    currentPage={page}
+                                    pagePerView={PAGE_PER_VIEW}
+                                    totalCount={order_list.length}
                                 />
                             </>
                         ) : (

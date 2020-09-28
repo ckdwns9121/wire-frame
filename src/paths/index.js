@@ -31,7 +31,8 @@ export const Paths = {
         tos: '/tos',
         policy: '/agree/policy',
         term_use: '/agree/term_use',
-        agree: '/agree'
+        agree: '/agree',
+        search: '/search'
     },
     api: 'http://devapi.ajoonamu.com/api/',
 };

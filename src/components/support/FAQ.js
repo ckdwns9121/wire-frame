@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import qs from 'querystring';
 import classnames from 'classnames/bind';
 
 import styles from './FAQ.module.scss';
@@ -13,6 +14,7 @@ import { dateToYYYYMMDD } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
 import Loading from '../assets/Loading';
 import { useModal } from '../../hooks/useModal';
+import ListPaging from '../sidebar/ListPaging';
 
 const cn = classnames.bind(styles);
 
@@ -25,7 +27,16 @@ const faq_list = [
     { id: 5, value: '문구 서비스' },
 ];
 
-export default () => {
+const PAGE_PER_VIEW = 5;
+
+
+export default ({ location }) => {
+
+    const search = location.search.replace('?', '');
+    const query = qs.parse(search);
+
+    const page = query.page ? parseInt(query.page) : 1;
+
     const openModal = useModal();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
@@ -60,7 +71,7 @@ export default () => {
             history.replace(Paths.index);
         }
         setLoading(false);
-    }, [quesCategory, history]);
+    }, [quesCategory, openModal, history]);
 
     useEffect(() => {
         getFAQList();
@@ -73,7 +84,9 @@ export default () => {
                 <p className={styles['q-title']}>궁금하신 질문의 유형을 선택해주세요.</p>
                 <div className={styles['select-box']} onClick={handelSelectToggle}>
                     <img className={styles['opener']} src={DownArrow} alt="더보기" />
-                    <div className={styles['current']}>{faq_list[quesCategory].value}</div>
+                    <div className={styles['current']}>
+                        <h5 className={styles['value']}>{faq_list[quesCategory].value}</h5>
+                    </div>
                     <div className={cn('embed', { open: selectOpen })}>
                         {faq_list.map((item) => item.id !== quesCategory
                             &&(<div key={item.id} className={styles['s-area']}
@@ -86,20 +99,23 @@ export default () => {
                 </div>
             </div> 
             {loading ? <Loading open={loading} />
-            : <div className={styles['table']}>
-                {list.length > 0 ? (
-                    list.map((item, index) => (
-                        <div key={item.id} className={cn('column', { open: openIndex === index })}>
-                            <ButtonBase onClick={() => handleChange(index)} className={styles['row']}>
-                                <div className={styles['question']}>{item.question}</div>
-                                <div className={styles['created']}>{dateToYYYYMMDD(item.created_at, '/')}</div>
-                                <div className={styles['opener']}><img className={styles['direct']} src={DownArrow} alt="더보기" /></div>
-                            </ButtonBase>
-                            <div className={styles['answer']} dangerouslySetInnerHTML={{ __html: item.answer}} />
-                        </div>
-                    )) 
-                ) : (<Message src={false} msg={'등록된 자주 묻는 질문이 없습니다.'} size={260} />)}
-            </div>}
+            :<>
+                <div className={styles['table']}>
+                    {list.length > 0 ? (
+                        list.map((item, index) => (
+                            <div key={item.id} className={cn('column', { open: openIndex === index })}>
+                                <ButtonBase onClick={() => handleChange(index)} className={styles['row']}>
+                                    <div className={styles['question']}>{item.question}</div>
+                                    <div className={styles['created']}>{dateToYYYYMMDD(item.created_at, '/')}</div>
+                                    <div className={styles['opener']}><img className={styles['direct']} src={DownArrow} alt="더보기" /></div>
+                                </ButtonBase>
+                                <div className={styles['answer']} dangerouslySetInnerHTML={{ __html: item.answer}} />
+                            </div>
+                        )) 
+                    ) : (<Message src={false} msg={'등록된 자주 묻는 질문이 없습니다.'} size={260} />)}
+                </div>
+                <ListPaging baseURL={Paths.ajoonamu.support + '/faq'} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={list.length}  />
+            </>}
         </div>
     );
 };

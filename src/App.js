@@ -31,6 +31,7 @@ import ModalContainer from './containers/assets/ModalContainer';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Search } from './pages';
 
 export default function App() {
 
@@ -138,6 +139,10 @@ export default function App() {
                 <Route
                     path={`${Paths.ajoonamu.mypage}/:tab?`}
                     component={Mypage}
+                ></Route>
+                <Route
+                    path={`${Paths.ajoonamu.search}`}
+                    component={Search}
                 ></Route>
             </Switch>
             <Footer />

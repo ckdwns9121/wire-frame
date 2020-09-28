@@ -22,6 +22,7 @@
         vertical-align: middle;
         list-style: none;
         .number {
+            display: inline-block;
             font-size: 1.5rem;
             color: #999;
 
@@ -33,6 +34,22 @@
                 color: #222;
                 font-weight: bold;
             }
+        }
+    }
+}
+
+.number {
+    & + & {
+        position: relative;
+        margin-left: 1px;
+        &::before {
+            content: '';
+            position: absolute;
+            display: block;
+            left: -1px; top: 50%;
+            transform: translateY(-50%);
+            width: 1px; height: 14px;
+            background-color: #ebebeb;
         }
     }
 }

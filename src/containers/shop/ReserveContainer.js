@@ -103,6 +103,13 @@ const ReserveContainer = ({ tab = '0' }) => {
         setLoading(false);
     }, []);
     
+    const onClickMenuItem = useCallback(
+        (item_id) => {
+            console.log(item_id);
+            history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
+        },
+        [history],
+    );
     const getProductList = useCallback(async () => {
         setLoading(true);
         if (categorys.length === 1) {
@@ -180,13 +187,6 @@ const ReserveContainer = ({ tab = '0' }) => {
         [items, onClickMenuItem],
     );
 
-    const onClickMenuItem = useCallback(
-        (item_id) => {
-            console.log(item_id);
-            history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
-        },
-        [history],
-    );
 
     useEffect(() => {
         getProductList();

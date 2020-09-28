@@ -8,31 +8,51 @@ import Next from '../svg/paging/Next';
 
 const cn = classnames.bind(styles);
 
-export default ({ baseURL, currentPage, pagePerView, totalCount }) => {
+export default ({ baseURL, currentPage, pagePerView, totalCount, onClick }) => {
     const lastPage = Math.ceil(totalCount / pagePerView);
-    console.log(lastPage);
+    let pageList = Array.from({ length: lastPage }, (v, i) => currentPage - 2 + i).splice(0, 5);
+    if (pageList[0] <= 0) pageList = pageList.map(v => v + 1 - pageList[0]);
+    else if (pageList[pageList.length - 1] >= lastPage) pageList = pageList.map(v => v + (lastPage - pageList[pageList.length - 1]));
+    // 되긴 되네;
+
+    const prev = parseInt(currentPage) - 1;
+    const next = parseInt(currentPage) + 1;
 
     return (
         <div className={styles['paging']}>
-            <LinkItem to={baseURL + '?page=0'}>
+            {onClick ?
+            <LinkItem onClick={() => prev > 0 && onClick(prev)}>
                 <Prev />
             </LinkItem>
+            : <LinkItem to={(prev > 0) && (baseURL + '?page=' + prev)}>
+                <Prev />
+            </LinkItem>}
             <ul className={styles['list']}>
-                <li className={cn('number', { active: currentPage })}>
-                    <LinkItem to={baseURL + '?page=1'}>
-                        1
-                    </LinkItem>
-                </li>
+                {pageList.map(value => (
+                    <li key={value} className={cn('number', { active: currentPage === value })}>
+                        {onClick ?
+                        <LinkItem onClick={() => onClick(value)}>
+                            {value}
+                        </LinkItem>
+                        : <LinkItem to={baseURL + '?page=' + value}>
+                            {value}
+                        </LinkItem>}
+                    </li>
+                ))}
             </ul>
-            <LinkItem to={baseURL + '?page=2'}>
+            {onClick ?
+            <LinkItem onClick={() => next <= lastPage && onClick(next)}>
                 <Next />
             </LinkItem>
+            : <LinkItem to={(next <= lastPage) && (baseURL + '?page=' + next)}>
+                <Next />
+            </LinkItem>}
         </div>
     );
 };
 
-const LinkItem = ({ children, to }) => (
-    <IconButton className={styles['button']}>
+const LinkItem = ({ children, to, onClick }) => (
+    <IconButton className={styles['button']} onClick={onClick}>
         {to ? <Link className={styles['link']} to={to}>
             {children}
         </Link> : children}

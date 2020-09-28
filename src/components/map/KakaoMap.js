@@ -2,13 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Map from './Map';
 import styles from './Map.module.scss';
 import { searchIcon } from '../svg/header';
-import { getStroeList } from '../../api/store/store';
+import { getStoreList } from '../../api/store/store';
 import { stringToTel } from '../../lib/formatter';
 
 import { ButtonBase, IconButton } from '@material-ui/core';
 import { useModal } from '../../hooks/useModal';
 import Loading from '../assets/Loading';
 import Message from '../assets/Message';
+import ListPaging from '../sidebar/ListPaging';
+import { Paths } from '../../paths';
+
+const PAGE_PER_VIEW = 10;
 
 function KakaoMap() {
 
@@ -17,13 +21,21 @@ function KakaoMap() {
     const [search, setSearch] = useState('');
     const [storeList, setStoreList] = useState([]);
     const [selectStore, setSelectStore] = useState(0);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [count, setCount] = useState(0);
+
     const onChangeSearch = (e) => setSearch(e.target.value);
+    const onClickPage = useCallback(page => setCurrentPage(page), []);
 
     const onClickSearch = async () => {
         setLoading(true);
         try {
-            const res = await getStroeList(search);
+            const res = await getStoreList(search, PAGE_PER_VIEW, (currentPage - 1) * PAGE_PER_VIEW);
             const store_list = res.data.query;
+            if (count !== res.data.query.count) {
+                setCount(res.data.query.length);
+            }
             const select_store = store_list.length ? store_list[0].shop_id : 0;
             setStoreList(store_list);
             setSelectStore(select_store);
@@ -76,6 +88,12 @@ function KakaoMap() {
                                         : <Message msg="찾으시는 지점이 없습니다" size={200} />
                                     }
                                 </div>
+                                <ListPaging
+                                    onClick={onClickPage}
+                                    currentPage={currentPage}
+                                    pagePerView={PAGE_PER_VIEW}
+                                    totalCount={count}
+                                />
                             </div>
                         </div>
                     </div>
