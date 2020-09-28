@@ -53,7 +53,7 @@ const OrderListContainer = () => {
             const res = await getOrderList(
                 user_token,
                 0,
-                10,
+                100,
                 startDate,
                 endDate,
             );

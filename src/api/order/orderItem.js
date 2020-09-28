@@ -3,8 +3,8 @@ import { Paths } from '../../paths';
 
 export const getOrderList = async (
     token,
-    offset,
-    limit,
+    offset=0,
+    limit=10,
     start_date,
     end_date,
 ) => {
