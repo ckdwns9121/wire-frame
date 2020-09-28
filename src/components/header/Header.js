@@ -35,6 +35,10 @@ const Header = () => {
     useEffect(() => {
         setLogon(user);
     }, [user]);
+    useEffect(()=>{
+        console.log("헤더 주소 확인");
+        console.log(addr1);
+    },[])
 
     const onClickHome = () => history.push(Paths.index);
     const onClickAddr = () => history.push(Paths.ajoonamu.address);

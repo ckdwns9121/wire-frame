@@ -60,10 +60,7 @@ const AddressContainer = () => {
         }
     }, [user_token]);
 
-    useEffect(() => {
-        callDeliveryList();
-    }, [callDeliveryList]);
-
+ 
     //검색버튼 클릭
     const onClickSearch = useCallback(async () => {
         if (searchAddr !== '') {
@@ -96,8 +93,9 @@ const AddressContainer = () => {
 
     //모달창 닫기
     const handleClose = useCallback(() => {
-        setOpen(false);
+        setOpen(false)
     }, []);
+
 
     //엔터키 추가
     const handleKeyPress = useCallback(
@@ -109,28 +107,23 @@ const AddressContainer = () => {
         [handleOpen],
     );
 
-    const onClickInsertAddr = useCallback(() => {
-        setOpen(false);
-        setDetailAddr('');
-    }, []);
-
     //검색어 변경
     const onChangeSearchAddr = useCallback((e) => {
         serSearch(e.target.value);
     }, []);
 
     //상세주소 변경
-    const onChangeDetail = (e) => {
+    const onChangeDetailAddr = (e) => {
         setDetailAddr(e.target.value);
     };
 
-    const onKeyPress = (e) => {
+    const onKeyPressDeliveryAddr = (e) => {
         if (e.key === 'Enter') {
             onClickDeliveryAddrInsert();
         }
     };
 
-    //선택한 주소지로 설정
+    //선택한 주소지로 설정 하기
     const onClickDeliveyAddr = useCallback(
         (delivery_id, addr1,addr2) => {
             openMessage(
@@ -230,7 +223,7 @@ const AddressContainer = () => {
         [user_token, delivery_list],
     );
 
-    // 검색리스트에 나오는 주소를 클릭했을때
+    // 검색리스트(모달)에 나오는 주소를 클릭했을때 배달지 주소로 설정.
     const onClickAddrItem = useCallback(
         (data, index) => {
             setSelectAddr(data);
@@ -250,13 +243,22 @@ const AddressContainer = () => {
 
     //최근 주소지에 추가
     const onClickDeliveryAddrInsert = async () => {
-        if (detailAddr === '') {
+        if( selectAddr ===''){
+            openMessage(
+                false,
+                '주소가 선택되지 않았습니다.',
+                '주소를 선택해주세요.',
+            );
+        }
+        else if (detailAddr === '') {
             openMessage(
                 false,
                 '상세 주소를 입력해주세요',
                 '상세주소가 입력되지 않았습니다.',
             );
-        } else {
+        } 
+
+        else {
             openMessage(
                 true,
                 '이 주소로 배달지를 설정하시겠습니까?',
@@ -325,6 +327,15 @@ const AddressContainer = () => {
         }
     };
 
+    useEffect(() => {
+        callDeliveryList();
+    }, [callDeliveryList]);
+
+    useEffect(()=>{
+        setDetailAddr('');
+        setSelectAddr('');
+    },[open])
+
     return (
         <>
             <div className={styles['input-banner']}>
@@ -365,20 +376,18 @@ const AddressContainer = () => {
                 </div>
             </div>
             <AddressModal
-                open={open}
-                handleClose={handleClose}
-                onClickSearch={onClickSearch}
-                onClick={onClickDeliveryAddrInsert}
-                searchAddr={searchAddr}
-                onChangeAddr={onChangeSearchAddr}
-                handleKeyPress={handleKeyPress}
-                addrs={search_list}
-                onClickAddrItem={onClickAddrItem}
-                selectAddr={selectAddr}
-                detailAddr={detailAddr}
-                onChangeDetail={onChangeDetail}
-                onInsertAddr={onClickInsertAddr}
-                onKeyPress ={onKeyPress}
+                open={open} //핸들창 오픈여부
+                handleClose={handleClose} //핸들 닫기
+                onClickSearch={onClickSearch} //검색 버튼 
+                onClickDeliveryAddrInsert={onClickDeliveryAddrInsert} //최근배송지 추가
+                searchAddr={searchAddr} //검색어 
+                onChangeSearchAddr={onChangeSearchAddr} //검색어 변경
+                detailAddr={detailAddr} //상세주소
+                onChangeDetail={onChangeDetailAddr} //상세주소 변경
+                handleKeyPress={onClickSearch} //
+                addrs={search_list}// 검색리스트
+                onClickAddrItem={onClickAddrItem} //검색 주소지 클릭
+                onKeyPressDeliveryAddr ={onKeyPressDeliveryAddr}
             />
         </>
     );

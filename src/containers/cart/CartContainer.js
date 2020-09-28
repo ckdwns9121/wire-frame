@@ -154,6 +154,7 @@ const CartContainer = () => {
 
             // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
             setTimeout(() => {
+                  setLoading(true);
                 if (addr1) {
                     geocoder.addressSearch(addr1, async function (
                         result,
@@ -164,7 +165,6 @@ const CartContainer = () => {
                             lat = result[0].y;
                             lng = result[0].x;
                             try {
-                                setLoading(true);
                                 const cart_id = JSON.parse(
                                     localStorage.getItem('noAuthCartId'),
                                 );
@@ -195,6 +195,9 @@ const CartContainer = () => {
                             setLoading(false);
                         }
                     });
+                }
+                else{
+                    setLoading(false);
                 }
             }, 500);
         }
@@ -382,6 +385,17 @@ const CartContainer = () => {
         history,
     ]);
 
+
+    useEffect(()=>{
+        console.log("gd");
+        if(addr1){
+        console.log('주소 존재')
+        }
+        else{
+            console.log('주소 없음');
+        }
+    },[addr1])
+
     useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
 
     useEffect(() => {
@@ -391,6 +405,8 @@ const CartContainer = () => {
     useEffect(() => {
         onCompareAllChecked();
     }, [onCompareAllChecked]);
+    
+
 
     const render = () => {
         return (
