@@ -19,14 +19,13 @@ import Message from '../../components/assets/Message';
 import { useModal } from '../../hooks/useModal';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import CntModal from '../../components/modal/QunaityModal';
-import {noAuthGetCartList} from '../../api/noAuth/cart';
+import { noAuthGetCartList } from '../../api/noAuth/cart';
 
 import produce from 'immer';
 
 const cx = cn.bind(styles);
 
 const CartContainer = () => {
-
     const history = useHistory();
     const openModal = useModal();
 
@@ -38,7 +37,6 @@ const CartContainer = () => {
     const [total, setTotal] = useState(0); //총 주문금액
     const [delivery_cost, setCost] = useState(0); // 배달비
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
     const [cntOpen, setCntOpen] = useState(false);
 
     const [count, setCount] = useState(0); //모달 수량
@@ -141,12 +139,14 @@ const CartContainer = () => {
             } catch (e) {
                 console.log(e);
             }
-        }
-        else{
-
+        } else {
             try {
-                const cart_id = JSON.parse(localStorage.getItem('noAuthCartId'));
-                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                const cart_id = JSON.parse(
+                    localStorage.getItem('noAuthCartId'),
+                );
+                const noAuthAddrs = JSON.parse(
+                    localStorage.getItem('noAuthAddrs'),
+                );
 
                 const res = await noAuthGetCartList();
                 console.log(res);

@@ -2,43 +2,43 @@
 
 .additional-item {
     font-size: $font-size;
-    border: 0px solid black;
-}
+    padding: 5px 0;
 
-.check {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px 0;
+    .label {
+        cursor: pointer;
+        vertical-align: middle;
+        margin: 5px 0;
+        font-size: 1.5rem;
+        color: #222;
+
+        transition: font-weight .15s ease-in-out;
+        span {
+            padding-left: 15px;
+            font-size: 1.667rem;
+            font-weight: bold;
+            color: #222;
+        }
+        span,
+        svg {
+            vertical-align: middle;
+        }
+        &:hover {
+            font-weight:bold;
+        }
+    }
+
+    input[type='checkbox'] + label svg {
+        margin-right: 20px;
+    }
+
+    .sub-text {
+        font-size: 1.5rem;
+        color: #999999;
+        line-height: 1.2;
+        position: relative;
+        cursor: pointer;
+    }
 }
 input[type='checkbox'] {
     display: none;
-}
-
-.label {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin: 5px 0;
-    font-size: 1.5rem;
-    color: #222;
-    span {
-        display: flex;
-        align-items: center;
-        padding-left: 15px;
-        font-size: 1.667rem;
-        font-weight: bold;
-        color: #222;
-    }
-}
-
-input[type='checkbox'] + label svg {
-    margin-right: 20px;
-}
-
-.sub-text {
-    font-size: 1.5rem;
-    color: #999999;
-    line-height: 1.2;
-    position: relative;
-    cursor: pointer;
 }

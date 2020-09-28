@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Addr.module.scss';
 import RemoveIcon from '../svg/addr/RemoveIcon';
 import cn from 'classnames/bind';
+import { ButtonBase, IconButton } from '@material-ui/core';
 const cx = cn.bind(styles);
 
 const DeliveryrItem = (props) => {
@@ -14,13 +15,13 @@ const DeliveryrItem = (props) => {
     };
 
     return (
-        <div
+        <ButtonBase
             className={cx('address-item', { active: active })}
             onClick={props.onClick}
         >
             <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
             <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
-            <div
+            <IconButton
                 className={styles['delete']}
                 onClick={(e) => {
                     e.stopPropagation();
@@ -28,8 +29,8 @@ const DeliveryrItem = (props) => {
                 }}
             >
                 <RemoveIcon />
-            </div>
-        </div>
+            </IconButton>
+        </ButtonBase>
     );
 };
 const JibunAddrBox = ({ jibunAddr }) => {

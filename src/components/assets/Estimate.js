@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 
@@ -13,7 +13,7 @@ const EstimateArea = styled.div`
     box-sizing: border-box;
     position: relative;
     &::after {
-        // content: '견적서 미리보기';
+        content: '견적서 미리보기';
         display: flex;
         justify-content: center;
         align-items: center;
@@ -114,8 +114,6 @@ const Footer = styled.h3`
     margin: 0;
 `;
 
-const ref = React.createRef();
-
 export default ({
     onDownload,
     company = '아주나무',
@@ -148,6 +146,7 @@ export default ({
         },
     ],
 }) => {
+    const ref = useRef(null);
     return (
         <EstimateArea onClick={() => onDownload(ref)}>
             <Estimate id="estimate" ref={ref}>
