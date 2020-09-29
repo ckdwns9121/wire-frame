@@ -1,6 +1,65 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
+const initReview = [
+
+    {
+        created_at: '2020-09-29 01:04:08',
+        deleted: 0,
+        email: 'cuzi.kbg@gmail.com',
+        order_id: '1600994163-6096051',
+        review_body: '테스트리뷰',
+        review_id: 1,
+        review_images: null,
+        review_rating: '4.5',
+        updated_at: '2020-09-29 01:04:08',
+    },
+    {
+        created_at: '2020-09-29 01:04:08',
+        deleted: 0,
+        email: 'cuzi.kbg@gmail.com',
+        order_id: '1600994163-6096051',
+        review_body: '테스트리뷰',
+        review_id: 2,
+        review_images: null,
+        review_rating: '4.5',
+        updated_at: '2020-09-29 01:04:08',
+    },
+    {
+        created_at: '2020-09-29 01:04:08',
+        deleted: 0,
+        email: 'cuzi.kbg@gmail.com',
+        order_id: '1600994163-6096051',
+        review_body: '테스트리뷰',
+        review_id: 3,
+        review_images: null,
+        review_rating: '4.5',
+        updated_at: '2020-09-29 01:04:08',
+    },
+    {
+        created_at: '2020-09-29 01:04:08',
+        deleted: 0,
+        email: 'cuzi.kbg@gmail.com',
+        order_id: '1600994163-6096051',
+        review_body: '테스트리뷰',
+        review_id: 4,
+        review_images: null,
+        review_rating: '4.5',
+        updated_at: '2020-09-29 01:04:08',
+    },
+    {
+        created_at: '2020-09-29 01:04:08',
+        deleted: 0,
+        email: 'cuzi.kbg@gmail.com',
+        order_id: '1600994163-6096051',
+        review_body: '테스트리뷰',
+        review_id: 5,
+        review_images: null,
+        review_rating: '4.5',
+        updated_at: '2020-09-29 01:04:08',
+    },
+];
+
 export const requestGetReviewList = async (offset, limit) => {
     const req = Paths.api + 'user/review/list';
 
@@ -13,7 +72,16 @@ export const requestGetReviewList = async (offset, limit) => {
 
     const res = await axios.get(req, config);
     console.log(res);
-    return res;
+    const result = {
+        data: {
+            query: {
+                reviews: initReview
+            },
+            msg: '성공'
+        }
+    }
+    console.log(result);
+    return result;
 };
 
 export const requestGetReviewMyList = async (token, offset, limit) => {

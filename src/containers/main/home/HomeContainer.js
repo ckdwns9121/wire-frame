@@ -23,7 +23,8 @@ import { getCategory } from '../../../api/category/category';
 import { get_catergory, get_menulist } from '../../../store/product/product';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestGetReviewList } from '../../../api/review/review';
-import ReviewListView from '../../../components/item/ReviewListView';
+import ReviewListView from '../../../components/review/ReviewListView';
+import ReviewModal from '../../../components/modal/ReviewModal';
 
 const cx = cn.bind(styles);
 
@@ -32,21 +33,17 @@ const HomeContainer = () => {
     const [useCate, setUseCate] = useState(0);
     const dispatch = useDispatch();
     const { categorys, items } = useSelector((state) => state.product);
-
+    const [reviewOpen ,setReviewOpen] =useState(false);
     const [reviewList, setReviewList] = useState([]);
 
     const [loading, setLoading] = useState(false);
 
-    // const getMainMenu = useCallback(async () => {
-    //     setLoading(true);
-    //     try {
-    //         const res = await getMainMenuList();
-    //         setMenuList(res);
-    //     } catch (e) {
-    //         alert('error!');
-    //     }
-    //     setLoading(false);
-    // }, []);
+    const handleOpen =()=>{
+        setReviewOpen(true);
+    }
+    const handleClose =()=>{
+        setReviewOpen(false);
+    }
 
     const getProductList = useCallback(async () => {
         setLoading(true);
@@ -122,7 +119,7 @@ const HomeContainer = () => {
                             </li>
                         ))}
                     </ul>
-                    { items !== null && <MenuListView menuList={items[useCate].items} onClick={onClickDetailItem}/>}
+                    { items !== null &&  <MenuListView menuList={items[useCate].items} onClick={onClickDetailItem}/> }
                 </div>
                 <div className={styles['banner-img']} onClick ={()=>{   history.push(`${Paths.ajoonamu.shop}?tab=${0}`) ; window.scrollTo(0,0)}}>
                     <img src={bannerImg} alt="배너" />
@@ -190,11 +187,12 @@ const HomeContainer = () => {
                 </div>
                 <Banner title={'포토 리뷰'} subtitle={'샌달을 이용해 주셨던 분들의 소중한 후기입니다.'} />
                 <div className={styles['photo-review']}>
-                    <ReviewListView reviewList={reviewList} onClick={() => {}} />
+                    <ReviewListView reviewList={reviewList} onClick={handleOpen} />
                 </div>
                 <KakaoMap />
             </div>
             <Loading open={loading}/>
+            <ReviewModal open ={reviewOpen} handleClose={handleClose}/>
         </>
     );
 };
