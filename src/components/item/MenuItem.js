@@ -9,7 +9,7 @@ import { numberFormat,DBImageFormat } from "../../lib/formatter";
 const MenuItem = (props) => {
     return (
         <div className={styles['menu-item']}
-            data-aos='fade-up' data-aos-delay={200 * ((props.index % 4))}
+            // data-aos='fade-up' data-aos-delay={200 * ((props.index % 4))}
             onClick={props.onClick}>
             <MenuImg src={props.item_img} />
             <div className={styles['pd-box']}>
