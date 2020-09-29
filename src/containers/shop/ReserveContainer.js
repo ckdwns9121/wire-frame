@@ -21,19 +21,7 @@ import { getCategory } from '../../api/category/category';
 import { get_catergory, get_menulist } from '../../store/product/product';
 import { stringNumberToInt } from '../../lib/formatter';
 
-function TabPanel(props) {
-    const { children, value, index } = props;
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-        >
-            {value === index && <>{children}</>}
-        </div>
-    );
-}
+
 const OFFSET = 0;
 const LIMIT = 8;
 
@@ -68,20 +56,22 @@ const ReserveContainer = ({ tab = '0' }) => {
         setOrderType(e.target.value);
     };
 
+    //추천메뉴 설정
     const onClickCustomOrder = () => {
         setOpen(false);
         getCustomList();
     };
 
+    // 사용자 추천 메뉴들고오기
     const getCustomList = async () => {
         setLoading(true);
         try {
-            const res = await getCustomMenuList();
-            const test = await getPreferMenuList();
+            // const res = await getCustomMenuList(); 임시데이터
+            const res = await getPreferMenuList();
             console.log('추천메뉴');
-            console.log(test);
+            console.log(res);
             // console.log(res);
-            setPreferMenuList(res);
+            setPreferMenuList(res.items_prefer);
         } catch {
             alert('오류!');
         }
@@ -93,6 +83,7 @@ const ReserveContainer = ({ tab = '0' }) => {
         const value = stringNumberToInt(e.target.value);
         setBudget(value);
     }, []);
+
     const onChangeEndBudget = useCallback(e => {
         const value = stringNumberToInt(e.target.value);
         setEndBudget(value);
@@ -112,8 +103,7 @@ const ReserveContainer = ({ tab = '0' }) => {
             const res = await getCategory();
             res.sort((a, b) => a.ca_id - b.ca_id);
             // 카테고리를 분류 순서로 정렬.
-            const ca_list = res.filter((item) => item.ca_id !== 12);
-
+            let ca_list = res.filter((item) => item.ca_id !== 12); //
             dispatch(get_catergory(ca_list));
             let arr = [];
             for (let i = 0; i < ca_list.length; i++) {
@@ -230,7 +220,7 @@ const ReserveContainer = ({ tab = '0' }) => {
                         {tabIndex === 0 ? (
                             <>
                                 {preferMenuList.length !== 0 ? (
-                                    <CustomItemList menuList={preferMenuList} />
+                                    <MenuItemList menuList={preferMenuList} />
                                 ) : (
                                     <Message
                                         msg="전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."

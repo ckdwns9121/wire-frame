@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Paths } from 'paths';
 import styles from './BreakfastMenu.module.scss';
@@ -20,13 +21,14 @@ import SampleMenu from '../../components/svg/breakfast/sandal_menu.png';
 import CategoryMenu from '../../components/tab/CategoryMenu';
 import Configure from '../../components/breakfast/Configure';
 import { getBreakCategory,getBreakMenu } from '../../api/break_fast/break_fast';
+import { get_catergory, get_menulist } from '../../store/product/braekfast';
 
 
 
 const BreakfastMenuContainer = ({ menu = '0' }) => {
-    const [menu_list, setMenuList] = useState([]);
+    const { categorys, items } = useSelector((state) => state.breakfast);
+    const dispatch = useDispatch();
 
-    const [break_categorys, setCategorys] = useState([]);
     const titleTab = [
         { name: '메뉴소개', url: `${Paths.ajoonamu.breakfast}/menu?tab=0` },
         { name: '조식구성', url: `${Paths.ajoonamu.breakfast}/configure` },
@@ -48,44 +50,50 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         setTitleIndex(index);
     };
 
+
+    //카테고리를 받아와서 디스패치.
     const callBreakCategoryApi = async () => {
         try {
+            if(categorys.length ===0){
             const res = await getBreakCategory();
             console.log(res);
-            setCategorys(res.data.query.categorys);
+            dispatch(get_catergory(res.data.query.categorys));
+            }
+
         } catch (e) {
             console.error(e);
         }
     };
 
-    //임의로 설정한 ca_id (메뉴분류 값) 을 가지고 실제 메뉴 불러오기
+    //카테고리가 있으면 메뉴 불러와서 스토어에 저장
     const callBreakMenuList = useCallback(async () => {
         setLoading(true);
         let arr = [];
         try {
-            for (let i = 0; i < break_categorys.length; i++) {
-                const res = await getBreakMenu(break_categorys[i].ca_id);
+        if (!items && categorys.length!==0) {
+            for (let i = 0; i < categorys.length; i++) {
+                const res = await getBreakMenu(categorys[i].ca_id);
                 const {query} = res.data;
-                console.log(query.items)
                 const temp = {
-                    ca_id: break_categorys[i].ca_id,
+                    ca_id: categorys[i].ca_id,
                     items: query.items
                 };
                 arr.push(temp);
             }
-            setMenuList(arr);
+            dispatch(get_menulist(arr));
+        }
         } catch (e) {
             console.error(e);
         }
         setLoading(false);
-    }, [break_categorys]);
+    }, [categorys,items]);
 
     //메뉴 아이템을 클릭했을 시 상세보기 페이지로 푸쉬
     const onClickMenuItem = useCallback(
         (item_id) => {
             history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
         },
-        [history,menu_list],
+        [history],
     );
 
     //마운트 되었을 시 메뉴 리스트 받아오기
@@ -102,10 +110,10 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
     }, [tabIndex, history]);
 
     useEffect(()=>{
-        if(menu_list.length> 0){
-            setPosts(menu_list[tabIndex].items);
+        if(items){
+            setPosts(items[tabIndex].items);
         }
-    },[tabIndex,menu_list])
+    },[tabIndex,items])
 
 
     return (
@@ -127,11 +135,14 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
             {titleIndex === 0 ? (
                 <div className={styles['container']}>
                     <div className={styles['content']}>
-                        <TabMenu
-                            tabs={break_categorys}
-                            index={tabIndex}
-                            onChange={onChangeTabIndex}
-                        />
+                        {categorys.length !== 0 && (
+                            <TabMenu
+                                tabs={categorys}
+                                index={tabIndex}
+                                onChange={onChangeTabIndex}
+                            />
+                        )}
+
                         <div className={styles['shop']}>
                             {
                                 <>

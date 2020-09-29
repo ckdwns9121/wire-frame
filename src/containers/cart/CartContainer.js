@@ -525,6 +525,7 @@ const CartContainer = () => {
                         <Message
                             msg={'장바구니가 비었습니다.'}
                             buttonName={'주문하러 가기'}
+                            size={600}
                             isButton={true}
                             onClick={() => history.push(Paths.ajoonamu.shop)}
                         />

@@ -47,6 +47,8 @@ const DetailContainer = ({ item_id }) => {
         }
         setLoading(false);
     };
+
+    //다른사람이 본 메뉴
     const getOtherUserMenuApi = async () => {
         try{
         const res = await getOtherUserMenu();
