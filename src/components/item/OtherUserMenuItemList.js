@@ -5,7 +5,7 @@ import OtherUserMenuItem from './OtherUserMenuItem';
 
 
 // 슬릭추가
-const OtherUserMenuItemList = ({ menu_list }) => {
+const OtherUserMenuItemList = ({ menu_list ,onClick}) => {
     /*
         슬릭 추가시 <slider>가 태그를 생성시킴
         그래서 따로 list를 렌더 해야함 

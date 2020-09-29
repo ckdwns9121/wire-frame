@@ -24,10 +24,8 @@ import ScrollTop from '../../components/scrollTop/ScrollToTop';
 const DetailContainer = ({ item_id }) => {
     const user_token = useStore(false);
     const openModal = useModal();
-
     const history = useHistory();
     const { addr1, addr2, lat, lng } = useSelector((state) => state.address);
-
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
     const [quanity, setQuanity] = useState(1);
@@ -49,13 +47,15 @@ const DetailContainer = ({ item_id }) => {
         }
         setLoading(false);
     };
-
-    //임의로 넣어준 다른사람이 본 메뉴
     const getOtherUserMenuApi = async () => {
+        try{
         const res = await getOtherUserMenu();
         setOtherMenuList(res.data.query.items);
+        }
+        catch(e){
+            console.error(e);
+        }
     };
-
     //장바구니 담기
     const onClickCart = useCallback(async () => {
         setLoading(true);
@@ -173,7 +173,7 @@ const DetailContainer = ({ item_id }) => {
 
     useEffect(() => {
         getDetailMenu();
-    }, []);
+    }, [item_id]);
 
     useEffect(() => {
         getOtherUserMenuApi();

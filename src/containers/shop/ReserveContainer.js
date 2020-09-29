@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback,useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Paths } from 'paths';
@@ -34,6 +34,8 @@ function TabPanel(props) {
         </div>
     );
 }
+const OFFSET = 0;
+const LIMIT = 8;
 
 const ReserveContainer = ({ tab = '0' }) => {
     const { categorys, items } = useSelector((state) => state.product);
@@ -45,10 +47,17 @@ const ReserveContainer = ({ tab = '0' }) => {
     const [endBudget, setEndBudget] = useState(0); // 맞춤 가격 끝
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
-    const [tab_index, setTab] = useState(parseInt(tab));
+    const [tabIndex, setTab] = useState(parseInt(tab));
     const [loading, setLoading] = useState(false);
-    const [preferMenuList, setPreferMenuList] = useState([]);
-    const handleOpen = () => setOpen(true);
+    const [preferMenuList, setPreferMenuList] = useState([]); //추천메뉴 리스트
+
+    const [posts ,setPosts] = useState([]); //보여줄 배열
+    const [isPaging ,setIsPaging] = useState(false); //페이징중인지
+    const [offset , setOffset] = useState(8);
+    const [isEndPage ,setIsEndPage] = useState(false);
+
+
+    const handleOpen = () => setOpen(true); //test
     const handleClose = () => setOpen(false);
 
     const onChangeIndex = (e, index) => {
@@ -89,20 +98,7 @@ const ReserveContainer = ({ tab = '0' }) => {
         setEndBudget(value);
     }, []);
 
-    useEffect(() => {
-        if (budget > endBudget) {
-            setEndBudget(budget);
-        }
-    }, [budget, endBudget])
 
-    const getCategoryList = useCallback(async () => {
-        setLoading(true);
-        if (categorys.length === 1) {
-
-        }
-        setLoading(false);
-    }, []);
-    
     const onClickMenuItem = useCallback(
         (item_id) => {
             console.log(item_id);
@@ -121,7 +117,7 @@ const ReserveContainer = ({ tab = '0' }) => {
             dispatch(get_catergory(ca_list));
             let arr = [];
             for (let i = 0; i < ca_list.length; i++) {
-                const result = await getMenuList(ca_list[i].ca_id);
+                const result = await getMenuList(ca_list[i].ca_id , 0, LIMIT);
                 const temp = { ca_id: ca_list[i].ca_id, items: result };
                 arr.push(temp);
             }
@@ -129,72 +125,85 @@ const ReserveContainer = ({ tab = '0' }) => {
             dispatch(get_menulist(arr));
         }
         setLoading(false);
-    }, [categorys, dispatch]);
+    }, [categorys, dispatch, offset]);
 
-    const renderContent = useCallback(() => {
-        const list = categorys.map((category, index) => (
-            <TabPanel
-                key={category.ca_id}
-                value={tab_index}
-                index={index}
-                children={
-                    <span>
-                        {category.ca_id === 0 ? (
-                            <>
-                                {preferMenuList.length !== 0 ? (
-                                    <CustomItemList menuList={preferMenuList} />
-                                ) : (
-                                    <Message
-                                        msg="전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."
-                                        isButton={true}
-                                        buttonName={'맞춤주문 설정하기'}
-                                        onClick={handleOpen}
-                                        src={false}
-                                    />
-                                )}
-                            </>
-                        ) : (
-                            <>{renderMenuList(category.ca_id)}</>
-                        )}
-                    </span>
-                }
-            />
-        ));
+    const getMenuListApi = useCallback(async()=>{
+        console.log('페이징 시작',tabIndex);
+       
+        try{
+            if(tabIndex!==0 && categorys.length!==1){
+            setIsPaging(true);
+            const res = await getMenuList(categorys[tabIndex].ca_id , offset, LIMIT);
+            console.log(res);
+         
+            if(res.length!==0){
+                setOffset(offset+LIMIT) 
+                const newState = posts.concat(res);
+                console.log(newState);
+                setPosts(newState);
+            }
+            setTimeout(() => {
+                setIsPaging(false);
+            }, 2000);
+            }
+        }  
+        catch(e){
+            console.error(e);
 
-        return <>{list}</>;
-    }, [categorys, preferMenuList, tab_index, renderMenuList, items]);
+        }
+    },[tabIndex,categorys,offset,posts]);
 
-    const renderMenuList = useCallback(
-        (ca_id) => {
-            const index = items.findIndex((item) => item.ca_id === ca_id);
-            return (
-                <>
-                    {index !== -1 ? (
-                        <MenuItemList
-                            menuList={items[index].items}
-                            onClick={onClickMenuItem}
-                        />
-                    ) : (
-                        <Message
-                            msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
-                            src={true}
-                            isButton={false}
-                        />
-                    )}
-                </>
-            );
-        },
-        [items, onClickMenuItem],
-    );
+    const onScorll = () => {
+        let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+        let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+        let clientHeight = document.documentElement.clientHeight;
+        // console.log(scrollHeight);
+        // console.log(scrollTop + clientHeight);
+        let height = Math.round(scrollTop + clientHeight);
+        if (height >= scrollHeight) {
+            console.log('페이지 끝');
+            setIsEndPage(true);
+        }
+        else{
+            setIsEndPage(false);
+        }
+    };
 
+    useEffect(()=>{
+        history.replace(`${Paths.ajoonamu.shop}?tab=${tabIndex}`);
+    },[history,tabIndex])
+    useEffect(()=>{
+        (items && tabIndex!==0) && setPosts(items[tabIndex-1].items);
+    },[items,tabIndex])
+    useEffect(()=>{
+        setOffset(8);
+    },[tabIndex])
 
     useEffect(() => {
         getProductList();
+        window.addEventListener('scroll', onScorll, true);
+        return () =>{
+            console.log('언마운트');
+            window.removeEventListener('scroll', onScorll);
+        }
     }, []);
 
+    useEffect(()=>{
+        if(isEndPage && !isPaging){
+            console.log(isEndPage);
+            getMenuListApi();
+        }
+    },[isEndPage,tabIndex,isPaging])
+
+    useEffect(()=>{
+    console.log('오프셋 갱신', offset);
+    },[offset])
+
     useEffect(() => {
-        history.replace(`${Paths.ajoonamu.shop}?tab=${tab_index}`);
-    }, [tab_index, history]);
+        if (budget > endBudget) {
+            setEndBudget(budget);
+        }
+    }, [budget, endBudget])
 
     return (
         <>
@@ -212,13 +221,31 @@ const ReserveContainer = ({ tab = '0' }) => {
                     {categorys.length !== 1 && (
                         <TabMenu
                             tabs={categorys}
-                            index={tab_index}
+                            index={tabIndex}
                             onChange={onChangeIndex}
                         />
                     )}
 
                     <div className={styles['shop']}>
-                        {items && renderContent()}
+                        {tabIndex === 0 ? (
+                            <>
+                                {preferMenuList.length !== 0 ? (
+                                    <CustomItemList menuList={preferMenuList} />
+                                ) : (
+                                    <Message
+                                        msg="전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."
+                                        isButton={true}
+                                        buttonName={'맞춤주문 설정하기'}
+                                        onClick={handleOpen}
+                                        src={false}
+                                    />
+                                )}
+                            </>
+                        ) : (
+                            <>
+                            { posts && <MenuItemList menuList={posts} onClick ={onClickMenuItem}/>}
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

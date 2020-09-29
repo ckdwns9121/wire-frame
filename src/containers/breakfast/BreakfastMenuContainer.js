@@ -10,7 +10,6 @@ import ShopBanner from '../../components/svg/shop/shop_banner.png';
 import Loading from '../../components/assets/Loading';
 import bottomBanner from '../../components/svg/breakfast/bottomBanner.png';
 import { ButtonBase } from '@material-ui/core';
-import { getMenuList } from '../../api/menu/menu';
 
 import basicBanner from '../../components/svg/breakfast/basic.png';
 import plusBanner from '../../components/svg/breakfast/plus.png';
@@ -20,33 +19,14 @@ import SampleMenu from '../../components/svg/breakfast/sandal_menu.png';
 
 import CategoryMenu from '../../components/tab/CategoryMenu';
 import Configure from '../../components/breakfast/Configure';
-import { getBreakCategory } from '../../api/break_fast/break_fast';
+import { getBreakCategory,getBreakMenu } from '../../api/break_fast/break_fast';
 
-function TabPanel(props) {
-    const { children, value, index } = props;
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-        >
-            {value === index && <>{children}</>}
-        </div>
-    );
-}
+
 
 const BreakfastMenuContainer = ({ menu = '0' }) => {
     const [menu_list, setMenuList] = useState([]);
 
     const [break_categorys, setCategorys] = useState([]);
-
-    const new_category = [
-        { ca_id: 1, ca_name: '샐러드', ca_order: 0, ca_use: 1 },
-        { ca_id: 2, ca_name: '샌드위치', ca_order: 0, ca_use: 1 },
-        { ca_id: 3, ca_name: '주먹밥', ca_order: 0, ca_use: 1 },
-    ];
-
     const titleTab = [
         { name: '메뉴소개', url: `${Paths.ajoonamu.breakfast}/menu?tab=0` },
         { name: '조식구성', url: `${Paths.ajoonamu.breakfast}/configure` },
@@ -54,8 +34,9 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
     const history = useHistory();
     const [titleIndex, setTitleIndex] = useState(0);
 
-    const [tab_index, setTab] = useState(parseInt(menu));
+    const [tabIndex, setTab] = useState(parseInt(menu));
     const [loading, setLoading] = useState(false);
+    const [posts ,setPosts] = useState([]);
 
     //메뉴 카테고리에 대한 탭
     const onChangeTabIndex = (e, index) => {
@@ -83,11 +64,12 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         let arr = [];
         try {
             for (let i = 0; i < break_categorys.length; i++) {
-                const result = await getMenuList(break_categorys[i].ca_id);
-                console.log(result);
+                const res = await getBreakMenu(break_categorys[i].ca_id);
+                const {query} = res.data;
+                console.log(query.items)
                 const temp = {
                     ca_id: break_categorys[i].ca_id,
-                    items: result,
+                    items: query.items
                 };
                 arr.push(temp);
             }
@@ -103,45 +85,8 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         (item_id) => {
             history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
         },
-        [history],
+        [history,menu_list],
     );
-
-    //메뉴 리스트가 있으면 렌더 없으면 메시지 렌더
-    const renderMenuList = useCallback(
-        (ca_id) => {
-            const index = menu_list.findIndex((item) => item.ca_id === ca_id);
-            return (
-                <>
-                    {index !== -1 ? (
-                        <MenuItemList
-                            menuList={menu_list[index].items}
-                            onClick={onClickMenuItem}
-                        />
-                    ) : (
-                        <Message
-                            msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
-                            src={true}
-                            isButton={false}
-                        />
-                    )}
-                </>
-            );
-        },
-        [menu_list, onClickMenuItem],
-    );
-
-    // 아이템 카테고리가 존재하면 그 갯수만큼 패널 생성
-    const renderContent = useCallback(() => {
-        const list = break_categorys.map((category, index) => (
-            <TabPanel
-                key={category.ca_id}
-                value={tab_index}
-                index={index}
-                children={<span>{renderMenuList(category.ca_id)}</span>}
-            />
-        ));
-        return <>{list}</>;
-    }, [break_categorys, tab_index, renderMenuList]);
 
     //마운트 되었을 시 메뉴 리스트 받아오기
     useEffect(() => {
@@ -153,8 +98,15 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
 
     //탭이 바뀌면 url 변경
     useEffect(() => {
-        history.replace(`${Paths.ajoonamu.breakfast}/menu?tab=${tab_index}`);
-    }, [tab_index, history]);
+        history.replace(`${Paths.ajoonamu.breakfast}/menu?tab=${tabIndex}`);
+    }, [tabIndex, history]);
+
+    useEffect(()=>{
+        if(menu_list.length> 0){
+            setPosts(menu_list[tabIndex].items);
+        }
+    },[tabIndex,menu_list])
+
 
     return (
         <>
@@ -177,10 +129,29 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
                     <div className={styles['content']}>
                         <TabMenu
                             tabs={break_categorys}
-                            index={tab_index}
+                            index={tabIndex}
                             onChange={onChangeTabIndex}
                         />
-                        <div className={styles['shop']}>{renderContent()}</div>
+                        <div className={styles['shop']}>
+                            {
+                                <>
+                                    {posts.length !== 0 ? (
+                                        <MenuItemList
+                                            menuList={posts}
+                                            onClick={onClickMenuItem}
+                                        />
+                                    ) : (
+                                        <Message
+                                            msg={
+                                                '추천드릴 메뉴 구성이 존재하지 않습니다.'
+                                            }
+                                            src={true}
+                                            isButton={false}
+                                        />
+                                    )}
+                                </>
+                            }
+                        </div>
 
                         <div
                             className={styles['bottom-banner']}

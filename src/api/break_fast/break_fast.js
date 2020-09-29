@@ -11,11 +11,17 @@ export const getBreakCategory = async()=>{
     return res;
 }
 
-export const getBreakMenu =async(ca_id)=>{
+export const getBreakMenu =async(ca_id,offset=0,limit=100)=>{
     const req= Paths.api + `user/item/breakfast?offset=0&limit=20&ca_id=${ca_id}`;
-    axios.defaults.baseURL=req;
-    const res= await axios.get();
-    console.log(res);
-    return res;
+    axios.defaults.headers.get['Context-Type'] = 'application/json';
+    const config = {
+        params: {
+            ca_id,
+            limit,
+            offset,
+        }
+    }
+    const result = await axios.get(req, config);
+    return result;
 
 }

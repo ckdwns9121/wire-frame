@@ -10,14 +10,14 @@ const OtherUserMenuItem = (props) => {
     // item_id 로 경로 줘야함
     return (
         <Link to={Paths.ajoonamu.product + '?item_id=' + props.item_id}>
-            <div className={styles['menu-item']}>
+            <div className={styles['menu-item']} >
                 <MenuImg src={IMG} />
                 <div className={styles['menu-info']}>
                     <MenuTitle menuTitle={props.item_name} />
                     <MenuPrice menuPrice={props.item_price} />
                 </div>
             </div>
-        </Link>
+     </Link>
     );
 };
 

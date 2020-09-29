@@ -173,28 +173,21 @@ export const getPreferMenuList = async () => {
 }
 
 
-export const getMenuList = async (id) => {
-    const req = Paths.api + `user/item/list?offset&limit=100&ca_id=${id}`;
+export const getMenuList = async (ca_id,offset=0, limit=8) => {
+    const req = Paths.api + 'user/item/list';
+    axios.defaults.headers.get['Context-Type'] = 'application/json';
+
     const config = {
-        headers: {
-            'content-type': 'application/json',
-        },
-    };
+        params: {
+            ca_id,
+            limit,
+            offset,
+        }
+    }
     const result = await axios.get(req, config);
     return result.data.query.items;
 };
 
-export const getMainMenuList = async (token) => {
-    const req = Paths.api + 'user/item/main?offset&limit&';
-    const config = {
-        headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const result = await axios.get(req, config);
-    return result.data.query.items;
-};
 
 export const getMenuInfo = async (item_id) => {
     const req = Paths.api + `user/item/view?offset&limit&item_id=${item_id}`;

@@ -73,6 +73,7 @@ const HomeContainer = () => {
         history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
     },[history]);
 
+    
     useEffect(() => {
         // getMainMenu();
         getProductList();
