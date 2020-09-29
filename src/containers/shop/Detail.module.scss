@@ -120,6 +120,9 @@
             padding-bottom: 120px;
         }
         .detail-info {
+            button{
+                max-width: 100% !important;;
+            }
             .detail-img {
                 display: flex;
                 justify-content: center;
@@ -127,6 +130,7 @@
                 img {
                     width: 100%;
                 }
+           
             }
             .detail-text {
                 display: flex;
