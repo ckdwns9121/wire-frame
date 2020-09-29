@@ -33,7 +33,6 @@ const Estimate = styled.div`
     margin: 0 auto;
     padding: 90px;
     background: #fff;
-    /* opacity: 0.4; */
     transform: scale(0.3);
 `;
 const Title = styled.h2`

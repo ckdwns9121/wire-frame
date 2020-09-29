@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import {Paths} from 'paths';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -23,6 +23,8 @@ const EstmModal = (props) => {
     const [loading, setLoading] = useState(false);
     const [fullWidth] = React.useState(true);
     const [maxWidth] = React.useState('sm');
+
+    const receiverInput = useRef(null);
 
     const [state, dispatch] = useReducer(reducer, {
         receiver: '',
@@ -99,6 +101,13 @@ const EstmModal = (props) => {
         });
     };
 
+    useEffect(() => {
+        if(props.open) {
+            console.log(receiverInput);
+            // receiverInput.current.focus();
+        }
+    }, [props.open]);
+
     return (
         <>
             <Dialog
@@ -117,7 +126,7 @@ const EstmModal = (props) => {
                 <div className={styles['modal-content']}>
                     <div className={styles['modal-input-box']}>
                         <div className={styles['label']}>수신자</div>
-                        <input type="text" name="receiver" value={state.receiver} onChange={onStateChange}/>
+                        <input ref={receiverInput} type="text" name="receiver" value={state.receiver} onChange={onStateChange}/>
                     </div>
                     <div className={styles['modal-input-box']}>
                         <div className={styles['label']}>받을 이메일 주소</div>
