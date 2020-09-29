@@ -33,15 +33,10 @@ const OrderDetailContainer = (props) => {
         if (user_token) {
             setLoading(true);
             const res = await getDetailOrderView(user_token, order_id);
-            console.log(res);
-            console.log("나오나");
-            console.log(res.orders.info);
             setOrders(res.orders);
             setPayInfo(res.payinfo);
             const temp = JSON.parse(res.payinfo.pp_result);
             setPaypleInfo(temp);
-            console.log(temp);
-            
             setLoading(false);
         } else {
             history.replace('/');
@@ -112,11 +107,11 @@ const OrderDetailContainer = (props) => {
                             value={orders && orders.info.delivery_req_time}
                         />
                         <UserInfoBox
-                            text={'배달 주소'}
+                            text={'배달주소'}
                             value={orders && `${orders.s_addr1} ${orders.s_addr2}`}
                         />
                         <UserInfoBox
-                            text={'요청 사항'}
+                            text={'요청사항'}
                             value={orders && orders.info.delivery_memo}
                         />
                     </div>
@@ -136,11 +131,11 @@ const OrderDetailContainer = (props) => {
                             value={user && user.email}
                         />
                         <UserInfoBox
-                            text={'주문 종류'}
+                            text={'주문종류'}
                             value={orders && orders.info.order_type ==='reserve' ? '배달주문' : '예약주문'}
                         />
                         <UserInfoBox
-                            text={'요청 사항'}
+                            text={'요청사항'}
                             value={orders && orders.info.order_memo}
                         />
                     </div>
