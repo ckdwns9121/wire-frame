@@ -31,7 +31,7 @@ export default ({ location }) => {
     const getSearchResult = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await getSearchMenu(q, PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
+            const res = await getSearchMenu(q, (page - 1) * PAGE_PER_VIEW, PAGE_PER_VIEW);
             if (res.data.msg === 'success') {
                 if (count !== res.data.query.count) {
                     setCount(res.data.query.count);

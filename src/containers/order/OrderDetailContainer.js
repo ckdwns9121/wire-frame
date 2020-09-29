@@ -34,6 +34,8 @@ const OrderDetailContainer = (props) => {
             setLoading(true);
             const res = await getDetailOrderView(user_token, order_id);
             console.log(res);
+            console.log("나오나");
+            console.log(res.orders.info);
             setOrders(res.orders);
             setPayInfo(res.payinfo);
             const temp = JSON.parse(res.payinfo.pp_result);
@@ -74,12 +76,13 @@ const OrderDetailContainer = (props) => {
                                 주문번호 : {orders && orders.order_id}
                             </div>
                             <div className={styles['order-type']}>
-                                배달완료
+                            {orders && orders.info.od_status ==="order_cancel" && '주문취소'}
+                            {orders && orders.info.od_status ==="order_apply" && '배달완료'}
                             </div>
                         </div>
                         <div className={styles['bottom']}>
                             <div className={styles['req-date']}>
-                                배달 요청 시간 : 2020-06-02 09:30:00
+                                배달 요청 시간 : {orders && orders.info.delivery_req_time}
                             </div>
                         </div>
                     </div>
@@ -106,7 +109,7 @@ const OrderDetailContainer = (props) => {
                         />
                         <UserInfoBox
                             text={'배달 요청 시간'}
-                            value={'2020년 05월 17일 오전 9시 30분'}
+                            value={orders && orders.info.delivery_req_time}
                         />
                         <UserInfoBox
                             text={'배달 주소'}
@@ -114,7 +117,7 @@ const OrderDetailContainer = (props) => {
                         />
                         <UserInfoBox
                             text={'요청 사항'}
-                            value={'빨리 배달 해주세요~~'}
+                            value={orders && orders.info.delivery_memo}
                         />
                     </div>
                 </div>
@@ -134,11 +137,11 @@ const OrderDetailContainer = (props) => {
                         />
                         <UserInfoBox
                             text={'주문 종류'}
-                            value={'배달주문'}
+                            value={orders && orders.info.order_type ==='reserve' ? '배달주문' : '예약주문'}
                         />
                         <UserInfoBox
                             text={'요청 사항'}
-                            value={'빨리 배달 해주세요~~'}
+                            value={orders && orders.info.order_memo}
                         />
                     </div>
                 </div>

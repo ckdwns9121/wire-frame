@@ -65,20 +65,16 @@ $header-height: 100px;
         height: $header-height;
         @include wireframe;
 
-        .header-logo {
-            height: $header-height;
-            cursor: pointer;
-            .logo {
-                width: 120px;
-            }
-        }
-
         .header-menu {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
             height: $header-height;
+            .logo{
+            cursor: pointer;
+
+            }
         }
 
         .header-input {

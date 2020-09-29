@@ -183,7 +183,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                     text={'입금자명'}
                                                     value={user && user.name}
                                                 />
-                                                <OrderInfoBox
+                                                {/* <OrderInfoBox
                                                     text={'입금계좌'}
                                                     value={'국민은행'}
                                                     paddingBottom={'10px'}
@@ -200,7 +200,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                     value={
                                                         '2020년 06월 09일 00시 00분 00초'
                                                     }
-                                                />
+                                                /> */}
                                             </div>
                                         </div>
                                     </div>
@@ -226,7 +226,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 <UserInfoBox
                                                     text={'배달 요청 시간'}
                                                     value={
-                                                        '2020년 05월 17일 오전 9시 30분'
+                                                        orders && orders.info.delivery_req_time
                                                     }
                                                 />
                                                 <UserInfoBox
@@ -235,7 +235,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 />
                                                 <UserInfoBox
                                                     text={'요청 사항'}
-                                                    value={'빨리 배달 해주세요~~'}
+                                                    value={orders && orders.info.delivery_memo}
                                                 />
                                             </div>
                                         </div>
@@ -258,11 +258,11 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 />
                                                 <UserInfoBox
                                                     text={'주문 종류'}
-                                                    value={'예약주문'}
+                                                    value={orders && orders.info.order_type ==='reserve' ? '배달주문' : '예약주문'}
                                                 />
                                                 <UserInfoBox
                                                     text={'요청 사항'}
-                                                    value={'빨리 배달 해주세요~~'}
+                                                    value={orders && orders.info.order_memo}
                                                 />
                                             </div>
                                         </div>
@@ -290,8 +290,8 @@ const OrderCompleteContainer = ({ order_number }) => {
 
                                         <div className={styles['order-cancle']}>
                                             <ButtonBase className={styles['btn']} onClick={userOrderCancle}>
-                                                주문취소하기
-                                        </ButtonBase>
+                                            {orders && orders.info.od_status ==="order_cancel" ? '주문취소 완료' :'주문취소'}
+                                            </ButtonBase>
                                         </div>
                                     </div>
                                 </div>
