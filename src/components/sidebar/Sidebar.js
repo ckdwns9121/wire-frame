@@ -13,7 +13,7 @@ export default ({ title, linkList, active }) => (
                 <li key={item.url} className={styles['item']}>
                     <Link
                         className={cn('link', {
-                            active: active.indexOf(item.url) !== -1,
+                            active: item.name === active,
                         })}
                         to={item.url}
                     >
