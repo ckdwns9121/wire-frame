@@ -264,7 +264,7 @@ const OrderContainer = () => {
         else{
             const cart_ids = JSON.parse(localStorage.getItem('noAuthCartId'));
             console.log(cart_ids);
-            const res = await noAuth_order(cart_ids,firstPhoneNumber,16546,addr1,addr2,lat,lng,'reserve',orderMemo,dlvMemo,delivery_req_time);
+            const res = await noAuth_order(cart_ids,noAuthName,firstPhoneNumber,16546,addr1,addr2,lat,lng,'reserve',orderMemo,dlvMemo,delivery_req_time);
             console.log(res);
             order_id.current = res.data.query;
             //장바구니 삭제

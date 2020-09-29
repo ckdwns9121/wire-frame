@@ -231,7 +231,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             <div className={styles['context']}>
                                                 <UserInfoBox
                                                     text={'받는분'}
-                                                    value={user && user.name}
+                                                    value={ user && user.name ? user.name  : orders && orders.info.s_name }
                                                 />
                                                 <UserInfoBox
                                                     text={'연락처'}

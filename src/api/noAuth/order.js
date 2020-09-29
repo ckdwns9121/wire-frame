@@ -3,6 +3,7 @@ import {Paths} from '../../paths';
 
 export const noAuth_order = async (
     cart_ids,
+    s_name,
     s_hp,
     post_num,
     addr1,
@@ -21,6 +22,7 @@ export const noAuth_order = async (
 
     const form_data = {
         cart_ids,
+        s_name,
         s_hp,
         post_num,
         addr1,
