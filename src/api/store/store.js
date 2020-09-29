@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
-export const getStoreList = async (search, limit, offset) => {
+export const getStoreList = async (search, offset, limit) => {
     const req = Paths.api + 'user/shop/list';
     axios.defaults.headers.get['Context-Type'] = 'application/json';
 

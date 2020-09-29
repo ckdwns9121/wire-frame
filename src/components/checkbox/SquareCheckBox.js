@@ -31,7 +31,7 @@ function SquareBox({ on }) {
                     transform="translate(360 788)"
                     fill="#fff"
                     stroke="#ccc"
-                    strokeWidth="1"
+                    strokeWidth="2"
                 >
                     <rect width="20" height="20" stroke="none" />
                     <rect x="0.5" y="0.5" width="19" height="19" fill="none" />
@@ -42,7 +42,9 @@ function SquareBox({ on }) {
                         transform="translate(18186 2321)"
                         fill="none"
                         stroke="#555"
-                        strokeWidth="1"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                     />
                 )}
             </g>

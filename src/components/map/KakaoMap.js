@@ -10,9 +10,8 @@ import { useModal } from '../../hooks/useModal';
 import Loading from '../assets/Loading';
 import Message from '../assets/Message';
 import ListPaging from '../sidebar/ListPaging';
-import { Paths } from '../../paths';
 
-const PAGE_PER_VIEW = 10;
+const PAGE_PER_VIEW = 5;
 
 function KakaoMap() {
 
@@ -31,14 +30,16 @@ function KakaoMap() {
     const onClickSearch = async () => {
         setLoading(true);
         try {
-            const res = await getStoreList(search, PAGE_PER_VIEW, (currentPage - 1) * PAGE_PER_VIEW);
+            const res = await getStoreList(search, (currentPage - 1) * PAGE_PER_VIEW, PAGE_PER_VIEW);
             const store_list = res.data.query;
             if (count !== res.data.query.count) {
                 setCount(res.data.query.length);
             }
+            // 처음꺼 선택하기
             const select_store = store_list.length ? store_list[0].shop_id : 0;
             setStoreList(store_list);
             setSelectStore(select_store);
+            setCurrentPage(1);
         } catch (e) {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
         }
@@ -84,7 +85,7 @@ function KakaoMap() {
                                 <div className={styles['list']}>
                                     <Loading open={loading} />
                                     {storeList.length !== 0 ?
-                                        <StoreList storeList={storeList} handleClick={handleChangeSelect}/>
+                                        <StoreList storeList={storeList.slice((currentPage - 1) * PAGE_PER_VIEW, currentPage * PAGE_PER_VIEW)} handleClick={handleChangeSelect}/>
                                         : <Message msg="찾으시는 지점이 없습니다" size={200} />
                                     }
                                 </div>
