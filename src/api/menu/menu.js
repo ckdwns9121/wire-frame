@@ -174,7 +174,7 @@ export const getPreferMenuList = async () => {
 
 
 export const getMenuList = async (id) => {
-    const req = Paths.api + `user/item/list?offset&limit&ca_id=${id}`;
+    const req = Paths.api + `user/item/list?offset&limit=100&ca_id=${id}`;
     const config = {
         headers: {
             'content-type': 'application/json',

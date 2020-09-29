@@ -192,8 +192,6 @@ const OrderDetailContainer = (props) => {
                             {payple_info &&  payple_info.PCD_PAY_CARDNUM} 일시불
                             </div>
                             </div>
-                
-                
                         </div>
                     </div>
                 </div>

@@ -257,6 +257,8 @@ const OrderContainer = () => {
              const res = await user_order(user_token ,'reserve',orderMemo,dlvMemo ,delivery_req_time);
              console.log(res);
              order_id.current = res.data.query;
+
+             //장바구니 삭제
         }
         //비회원 주문
         else{
@@ -265,7 +267,7 @@ const OrderContainer = () => {
             const res = await noAuth_order(cart_ids,firstPhoneNumber,16546,addr1,addr2,lat,lng,'reserve',orderMemo,dlvMemo,delivery_req_time);
             console.log(res);
             order_id.current = res.data.query;
-
+            //장바구니 삭제
         }
         $script(payple_url, () => {
 
@@ -343,7 +345,7 @@ const OrderContainer = () => {
                 'http://devapi.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
 
-        //    PaypleCpayAuthCheck(obj);
+           PaypleCpayAuthCheck(obj);
         });
     };
 

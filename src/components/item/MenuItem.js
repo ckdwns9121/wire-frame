@@ -3,7 +3,7 @@ import React from 'react';
 import IMG from '../svg/menu/menu1.png';
 
 import styles from './Menu.module.scss';
-import { numberFormat } from "../../lib/formatter";
+import { numberFormat,DBImageFormat } from "../../lib/formatter";
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = (props) => {
@@ -11,7 +11,7 @@ const MenuItem = (props) => {
         <div className={styles['menu-item']}
             data-aos='fade-up' data-aos-delay={200 * ((props.index % 4))}
             onClick={props.onClick}>
-            <MenuImg src={IMG} />
+            <MenuImg src={props.item_img} />
             <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>
                     <MenuTitle menuTitle={props.item_name} />
@@ -25,9 +25,10 @@ const MenuItem = (props) => {
 
 //홈 메뉴 이미지 컴포넌트
 function MenuImg({ src }) {
+
     return (
         <div className={styles['menu-img']}>
-            <img className={styles['img']} src={IMG} alt={"메뉴 이미지"} />
+            <img className={styles['img']} src={src === '[]' ? IMG : DBImageFormat(src)} alt={"메뉴 이미지"} />
         </div>
     );
 }

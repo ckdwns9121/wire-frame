@@ -8,6 +8,7 @@ import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 import StickerModal from '../../components/modal/StickerModal';
 import { getDetailOrderView } from '../../api/order/orderItem';
+import {noAuthOrderView ,noAutuOrderCancle} from '../../api/noAuth/order';
 import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
 import { numberFormat, stringToTel } from '../../lib/formatter';
@@ -43,52 +44,69 @@ const OrderCompleteContainer = ({ order_number }) => {
 
     const getOrderInfo = useCallback(async () => {
         setLoading(true);
-        if (user_token) {
-            try {
-                const res = await getDetailOrderView(user_token, order_number);
-                console.log(res);
-                setOrders(res.orders);
-                setPayInfo(res.payinfo);
-                const payment_info = JSON.parse(res.payinfo.pp_result);
-                setPaypleInfo(payment_info);
-                setLoading(false);
-                setSuccess(true);
-            } catch (e) {
-                console.log(e);
-                setError(true);
-                openMessage(
-                    false,
-                    '주문번호가 존재하지 않습니다.',
-                    '주문번호를 확인해주세요',
-                    () => history.goBack()
-                );
+        try {
+            let res = null;
+            if (user_token) 
+            {
+                console.log('회원');
+                res = await getDetailOrderView(user_token, order_number);
+            } 
+            else {
+                console.log('비회원')
+                res = await noAuthOrderView(order_number);
             }
-        }
-        else{
-            console.log('비회원');
+
+            const {orders } = res;
+            console.log(orders);
+            setOrders(orders);
+            setSuccess(true);
+     
+        } catch (e) {
+            console.log(e);
+            setError(true);
+            openMessage(
+                false,
+                '주문번호가 존재하지 않습니다.',
+                '주문번호를 확인해주세요',
+                () => history.goBack(),
+            );
         }
         setLoading(false);
     }, [order_number, user_token]);
 
 
     const userOrderCancle = async () => {
-        if (user_token) {
-            openMessage(true, '해당 상품을 취소하시겠습니까?', '취소를 원하시면 예를 눌러주세요', async () => {
+        openMessage(
+            true,
+            '해당 상품을 취소하시겠습니까?',
+            '취소를 원하시면 예를 눌러주세요',
+            async () => {
                 try {
-                    const res = await order_cancle(user_token, order_number);
-                    if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.')) {
-                        openMessage(false, '이미 취소된 거래건 입니다.');
-                    }
-                    else {
-                        openMessage(false, '정삭적으로 취소되었습니다.');
-                    }
-                }
+                    let res =null;
+                    if(user_token){
+                     res = await order_cancle(user_token, order_number);
+                   }
+                   else{
+                    res = await noAutuOrderCancle(order_number,orders.info.s_hp);
+                   }
+
+                   if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.')) 
+                   {
+                       openMessage(false, '이미 취소된 거래건 입니다.');
+                   } 
+                   else 
+                   {
+                       openMessage(false, '정삭적으로 취소되었습니다.');
+                   }
+             
+                } 
                 catch (e) {
                     console.error(e);
                 }
-            })
-        }
-    }
+            },
+        );
+    };
+    
 
     useEffect(() => {
         if (!order_number) {
@@ -114,7 +132,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             </div>
                                             <div className={styles['msg']}>
                                                 <>
-                                                    {user && user.name} 님 저희 아주나무 딜리버리 서비스를 이용해주셔서 감사합니다.
+                                                    {user && `${user.name}님`}  저희 아주나무 딜리버리 서비스를 이용해주셔서 감사합니다.
                                                      <br />
                                                       아래 주문상세내역서는 주문내역에서 다시 확인 가능합니다.
                                                     <br />
@@ -168,20 +186,20 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 />
                                                 <OrderInfoBox
                                                     text={'결제방식'}
-                                                    value={payinfo && payinfo.pp_pg}
+                                                    value={orders && orders.info.pg}
                                                 />
                                                 <OrderInfoBox
                                                     text={'결제금액'}
                                                     value={
-                                                        payinfo &&
+                                                        orders &&
                                                         `${numberFormat(
-                                                            payinfo.pp_price,
+                                                            orders.info.receipt_price,
                                                         )}원`
                                                     }
                                                 />
                                                 <OrderInfoBox
                                                     text={'입금자명'}
-                                                    value={user && user.name}
+                                                    value={ user && user.name }
                                                 />
                                                 {/* <OrderInfoBox
                                                     text={'입금계좌'}
@@ -217,11 +235,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 />
                                                 <UserInfoBox
                                                     text={'연락처'}
-                                                    value={
-                                                        user &&
-                                                        user.hp &&
-                                                        stringToTel(user.hp)
-                                                    }
+                                                    value={user && user.hp ? stringToTel(user.hp) : orders && stringToTel(orders.info.s_hp) }
                                                 />
                                                 <UserInfoBox
                                                     text={'배달 요청 시간'}
@@ -289,7 +303,10 @@ const OrderCompleteContainer = ({ order_number }) => {
                                         </div>
 
                                         <div className={styles['order-cancle']}>
-                                            <ButtonBase className={styles['btn']} onClick={userOrderCancle}>
+                                            <ButtonBase className={styles['btn']} onClick={
+                                                orders && orders.info.od_status !=="order_cancel" ? userOrderCancle : ()=>{} }
+                                                disableRipple ={!(orders && orders.info.od_status !=="order_cancel")}
+                                                >
                                             {orders && orders.info.od_status ==="order_cancel" ? '주문취소 완료' :'주문취소'}
                                             </ButtonBase>
                                         </div>

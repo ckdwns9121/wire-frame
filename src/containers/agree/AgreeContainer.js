@@ -26,7 +26,7 @@ export default ({ pathname }) => {
     return (
         <ScrollTop>
         <div className={styles['container']}>
-            <Sidebar title={"약관 및 정책"} linkList={LinkList} active={pathname} />
+            <Sidebar title={"약관 및 정책"} linkList={LinkList} active={getTitle(pathname)} />
             <div className={styles['content']}>
                 <h2 className={styles['title']}>{getTitle(pathname)}</h2>
                 <Switch>

@@ -21,7 +21,6 @@ const cn = classnames.bind(styles);
 
 const PAGE_PER_VIEW = 5;
 
-const URL = 'http://devapi.ajoonamu.com/storage/';
 
 export default ({ match, location }) => {
     const search = location.search.replace('?', '');
@@ -114,7 +113,7 @@ export default ({ match, location }) => {
                             </div>
                             <div className={styles['e-content']}>
                                 {item && item.images === '[]' ? <img src={defaultImage} alt="기본 이미지" />
-                                : <img src={URL + DBImageFormat(item.images)} alt="이벤트 이미지" />}
+                                : <img src={DBImageFormat(item.images)} alt="이벤트 이미지" />}
                             </div>
                         </>
                     ) : list.length > 0 ? (
@@ -127,7 +126,7 @@ export default ({ match, location }) => {
                                 >
                                     <div className={styles['image']}>
                                         {images === '[]' ? <img src={defaultImage} alt="기본 이미지"/>
-                                        : <img src={URL + DBImageFormat(images)} alt="이벤트 이미지" />}
+                                        : <img src={DBImageFormat(images)} alt="이벤트 이미지" />}
                                     </div>
                                     <div className={styles['text']}>
                                         <p className={styles['warn']}>{warn}</p>

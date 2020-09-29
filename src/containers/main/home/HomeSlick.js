@@ -8,7 +8,6 @@ import { DBImageFormat } from '../../../lib/formatter';
 
 
 
-const URL = 'http://devapi.ajoonamu.com/storage/';
 
 const settings = {
     dots: true,
@@ -44,7 +43,7 @@ const HomeSlick = () => {
             <Slider {...settings}>
                 {list.map(item => (
                     <Link key={item.id} to={item.bn_url}>
-                        <div className={styles['item']} style={{ backgroundImage: "url('" + URL + DBImageFormat(item.bn_img) + "')" }}/>
+                        <div className={styles['item']} style={{ backgroundImage: "url('"+DBImageFormat(item.bn_img) + "')" }}/>
                     </Link>
                 ))}
             </Slider>
