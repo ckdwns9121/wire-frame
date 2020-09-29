@@ -17,7 +17,7 @@
         display: flex;
         align-items: center;
         height: 64px;
-        padding-top: 80px;
+        margin-top: 80px;
         position: relative;
         .text {
             width: 220px;
@@ -40,6 +40,7 @@
         .btn {
             cursor: pointer;
             position: absolute;
+            top: 50%; transform: translateY(-50%);
             right: 40px;
             font-size: 18px;
             color: #222;

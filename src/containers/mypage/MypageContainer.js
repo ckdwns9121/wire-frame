@@ -34,7 +34,7 @@ const MypageContainer = ({ pathname }) => {
 
     return (
         <div className={styles['container']}>
-            <Sidebar title={"나의정보"} linkList={LinkList} active={'/mypage' + pathname} />
+            <Sidebar title={"나의정보"} linkList={LinkList} active={getTitle(pathname)} />
             <div className={styles['content']}>
                 <h2 className={styles['title']}>{getTitle(pathname)}</h2>
                 <Switch>
@@ -42,6 +42,7 @@ const MypageContainer = ({ pathname }) => {
                     <Route path={`${Paths.ajoonamu.mypage}/coupon/:id?`} component={CouponConatainer} />
                     <Route path={`${Paths.ajoonamu.mypage}/account`} component={AccountContainer} />
                     <Route path={`${Paths.ajoonamu.mypage}/order_detail`} component={OrderDetailContainer} />
+                    <Route path={`${Paths.ajoonamu.mypage}/review`} render={() => alert('준비중입니다.')} />
                     <Route path={`${Paths.ajoonamu.mypage}/secession`} component={SecessionContainer} />
                     <Route render={() => <Redirect to={`${Paths.ajoonamu.mypage}/order_list`}/>} />
                 </Switch>
