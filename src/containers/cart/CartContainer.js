@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import CartItemList from '../../components/cart/CartItemList';
-import CartModal from 'components/modal/EstmModal';
+import EstmModal from 'components/modal/EstmModal';
 import PlusIcon from '../../components/svg/cart/PlusIcon';
 import EqualsIcon from '../../components/svg/cart/EqualsIcon';
 import CheckBox from '../../components/checkbox/CheckBox';
@@ -514,7 +514,8 @@ const CartContainer = () => {
                                     title={'주문하기'}
                                 ></Button>
                             </div>
-                            <CartModal
+                            <EstmModal
+                                cartList={cartList}
                                 open={estmOpen}
                                 handleClose={handleClose}
                                 order={onClickOrder}

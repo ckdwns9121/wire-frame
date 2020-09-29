@@ -98,9 +98,20 @@
                         display: none;
                     }
                     .file-finder {
+                        font-size: 1.5rem;
+                        font-weight: 500;
                         width: 240px; height: 40px;
                         background-color: #F9F9F9;
                         border: solid 1px #DBDBDB;
+                        .file-setter {
+                            display: table;
+                            width: 100%; height: 100%;
+                            text-align: center;
+                            .font {
+                                display: table-cell;
+                                vertical-align: middle;
+                            }
+                        }
                     }
                 }
             }

@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import classnames from 'classnames/bind';
 
 import styles from './StickerModal.module.scss';
 import Dialog from '@material-ui/core/Dialog';
 import CloseIcon from '../svg/modal/CloseIcon';
+import DefaultLogo from '../svg/modal/Logo.svg'
 import PhraseTemplateList from '../assets/PhraseTemplateList';
 import { requestPostPhraseSerive } from '../../api/order/sticker';
 
@@ -17,17 +18,26 @@ const InputLogo = ({ handleChange }) => {
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
-            setFile(e.target.files[0].name);
-            handleChange(e.target.files[0]);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                // 2. 읽기가 완료되면 아래코드가 실행됩니다.
+                const base64 = reader.result;
+                if (base64) {
+                    handleChange(base64.toString()); // 파일 base64 상태 업데이트
+                }
+            }
+            reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
+            setFile(e.target.files[0].name); // 파일 상태 업데이트
         }
     };
     return (
         <div className={styles['input-area']}>
-            <ButtonBase className={cn('input-logo', 'input-box')}>
+            <ButtonBase component="div" className={cn('input-logo', 'input-box')}>
                 <input
                     id="import-logo"
                     className={styles['filebox']}
                     type="file"
+                    accept="image/gif, image/jpeg, image/png, image/svg"
                     multiple
                     onChange={handleImageChange}
                 />
@@ -52,12 +62,37 @@ const InputPhrase = ({ handleChange }) => {
         </div>
     );
 };
-const InputPreview = () => {
+const InputPreview = ({ template, logo, phrase }) => {
+    const state = {};
+    switch (template) {
+        case 0:
+            state.image = 'top'; state.text = 'bottom';
+            break;
+        case 1:
+            state.image = 'bottom'; state.text = 'top'; 
+            break;
+        case 2:
+            state.image = 'left'; state.text = 'right'; 
+            break;
+        default:
+            state.image = 'right'; state.text = 'left'; 
+            break;
+    }
     return (
         <div className={styles['preview']}>
-            <ButtonBase
-                className={cn('input-preview', 'input-box')}
-            ></ButtonBase>
+            <ButtonBase disabled className={cn('input-preview', 'input-box')}>
+                <div className={cn('circle', 'preview_out')}>
+                    <div className={cn('circle', 'preview_in')}>
+                        <div className={cn('box', 'image', state.image)}>
+                            <img className={styles['logo']} src={logo ? logo : DefaultLogo} alt="미리보기 로고" />
+                            <p className={styles['name']}>아주나무 드림</p>
+                        </div>
+                        <div className={cn('box', 'text', state.text)}>
+                            <p className={styles['phrase']}>{phrase}</p>
+                        </div>
+                    </div>
+                </div>
+            </ButtonBase>
         </div>
     );
 };
@@ -127,6 +162,15 @@ const StickerModal = ({ open, handleClose, order_number, token }) => {
             }
         }
     }, [logo, phrase, order_number, token, openModal, handleClose]);
+
+    useEffect(() => {
+        if (open) {
+            // 껏다 켜지면 초기화
+            setTemplate(0);
+            setLogo(null);
+            setPhrase('');
+        }
+    }, [open])
 
     return (
         <Dialog

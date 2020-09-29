@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import {Paths} from 'paths';
+import React, { useCallback, useReducer, useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import styles from './Asset.module.scss';
@@ -24,8 +23,6 @@ const EstmModal = (props) => {
     const [fullWidth] = React.useState(true);
     const [maxWidth] = React.useState('sm');
 
-    const receiverInput = useRef(null);
-
     const [state, dispatch] = useReducer(reducer, {
         receiver: '',
         receiver_email: '',
@@ -45,7 +42,6 @@ const EstmModal = (props) => {
                         estm_username: receiver,
                         estm_file: estmFile,
                     });
-                    console.log(res);
                     if (res.data.msg === "성공") {
                         openModal('성공적으로 전송되었습니다!', '이메일을 확인해 주세요!');    
                         props.order();
@@ -76,22 +72,15 @@ const EstmModal = (props) => {
             let heightLeft = imgHeight;
             console.log(canvas.width, canvas.height);
             console.log(imgWidth, imgHeight);
-            doc.addImage(imageData, 'PNG', 0, 0, 210, 297);
-            // doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
-            // heightLeft -= pageHeight;
-            // while (heightLeft >= 20) {
-            //     position = heightLeft - imgHeight;
-            //     doc.addPage();
-            //     doc.addImage(
-            //         imageData,
-            //         'PNG',
-            //         0,
-            //         position,
-            //         imgWidth,
-            //         imgHeight,
-            //     );
-            //     heightLeft -= pageHeight;
-            // }
+            // doc.addImage(imageData, 'PNG', 0, 0, 210, 297);
+            doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+            while (heightLeft >= 20) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
             const blob = doc.output('blob');
             const makeFile = new File([blob], '아주나무 견적서.pdf', {
                 type: blob.type,
@@ -100,13 +89,6 @@ const EstmModal = (props) => {
             setEstmFile(makeFile);
         });
     };
-
-    useEffect(() => {
-        if(props.open) {
-            console.log(receiverInput);
-            // receiverInput.current.focus();
-        }
-    }, [props.open]);
 
     return (
         <>
@@ -126,15 +108,15 @@ const EstmModal = (props) => {
                 <div className={styles['modal-content']}>
                     <div className={styles['modal-input-box']}>
                         <div className={styles['label']}>수신자</div>
-                        <input ref={receiverInput} type="text" name="receiver" value={state.receiver} onChange={onStateChange}/>
+                        <input type="text" name="receiver" value={state.receiver} onChange={onStateChange}/>
                     </div>
                     <div className={styles['modal-input-box']}>
                         <div className={styles['label']}>받을 이메일 주소</div>
                         <input type="text" name="receiver_email" value={state.receiver_email} onChange={onStateChange}/>
                     </div>
-                    <ButtonBase className={styles['estimate']}>
-                        <Estimate onDownload={onDownload} />
-                    </ButtonBase>
+                    <div className={styles['estimate']}>
+                        <Estimate onDownload={onDownload} products={props.cartList} />
+                    </div>
                     <div className={styles['box']}>
                         <ButtonBase className={styles['btn']} onClick={props.order}>
                             건너뛰기

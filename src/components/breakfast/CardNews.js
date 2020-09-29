@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './CardNews.module.scss';
 
 import profileImage from '../svg/breakfast/card_image.png';
-import Star from '../svg/breakfast/Star';
+import Star from '../svg/home/Star';
 
 
 export default ({ delay }) => {
