@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from './MenuList.module.scss';
+import styles from './Review.module.scss';
 import Slider from 'react-slick';
-import MainMenuItem from './MainMenuItem';
+import { IconButton } from '@material-ui/core';
+import ReviewItem from './ReviewItem';
 
 import Prev from '../svg/menu/prev.svg';
 import Next from '../svg/menu/next.svg';
-import { IconButton } from '@material-ui/core';
 
 const SampleNextArrow = ({ style, onClick }) => (
     <IconButton
@@ -27,7 +27,11 @@ const SampleNextArrow = ({ style, onClick }) => (
         }}
         onClick={onClick}
     >
-        <img style={{ display: 'block', width: '32px', height: '32px' }} src={Next} alt="next" />
+        <img
+            style={{ display: 'block', width: '32px', height: '32px' }}
+            src={Next}
+            alt="next"
+        />
     </IconButton>
 );
 
@@ -51,21 +55,16 @@ const SamplePrevArrow = ({ style, onClick }) => (
         }}
         onClick={onClick}
     >
-        <img style={{ display: 'block', width: '32px', height: '32px' }} src={Prev} alt="prev" />
+        <img
+            style={{ display: 'block', width: '32px', height: '32px' }}
+            src={Prev}
+            alt="prev"
+        />
     </IconButton>
 );
+
 // 슬릭추가
-const MeunListView = ({menuList,onClick}) => {
-    const list = menuList.map((menu) => (
-        <MainMenuItem
-            key={menu.item_id}
-            item_name={menu.item_name}
-            item_price={menu.item_price}
-            ca_id={menu.ca_id}
-            src={menu.item_img}
-            onClick={()=>onClick(menu.item_id)}
-        />
-    ));
+export default ({ reviewList, onClick }) => {
     const settings = {
         infinite: true,
         autoplay: true,
@@ -78,9 +77,26 @@ const MeunListView = ({menuList,onClick}) => {
 
     return (
         <div className={styles['container']}>
-            <Slider {...settings}>{list}</Slider>
+            <Slider {...settings}>
+                {reviewList.map(
+                    ({
+                        email,
+                        review_id,
+                        review_body,
+                        review_images,
+                        review_rating,
+                    }) => (
+                        <ReviewItem
+                            key={review_id}
+                            email={email}
+                            body={review_body}
+                            images={review_images}
+                            rating={review_rating}
+                            onClick={() => onClick(review_id)}
+                        />
+                    ),
+                )}
+            </Slider>
         </div>
     );
 };
-
-export default MeunListView;

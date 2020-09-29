@@ -230,9 +230,11 @@ const QNAWrite = ({ token, id }) => {
                             <div className={styles['unknown-area']}></div>
                             <div style={{ display: 'table-cell', textAlign: 'right' }}>
                                 <input className={styles['q-files']} multiple="multiple" type="file" onChange={onChangeFiles} id="file-setter" accept="image/gif, image/jpeg, image/png, image/svg" />
-                                <ButtonBase className={styles['file-finder']}>
-                                    <label htmlFor="file-setter">
-                                        찾아보기
+                                <ButtonBase component="div" className={styles['file-finder']}>
+                                    <label className={styles['file-setter']} htmlFor="file-setter">
+                                        <div className={styles['font']}>
+                                            찾아보기
+                                        </div>
                                     </label> 
                                 </ButtonBase>
                             </div>

@@ -1,3 +1,4 @@
+import { ButtonBase } from '@material-ui/core';
 import React, { Fragment, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { dateToYYYYMMDD } from '../../lib/formatter';
@@ -12,7 +13,13 @@ const EstimateArea = styled.div`
     overflow: hidden;
     box-sizing: border-box;
     position: relative;
+    &:hover {        
+        &::after {
+            opacity: 0
+        }
+    }
     &::after {
+        transition: opacity .2s ease-in-out;
         content: '견적서 미리보기';
         display: flex;
         justify-content: center;
@@ -20,9 +27,8 @@ const EstimateArea = styled.div`
         position: absolute;
         color: #222;
         font-size: 16px;
-        background-color: rgba(0, 0, 0, 0.05);
-        width: 100%;
-        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        width: 100%; height: 100%;
     }
 `;
 const Estimate = styled.div`
@@ -47,6 +53,8 @@ const CompanyName = styled.p`
     float: left;
 `;
 const CreatedDate = styled.p`
+    margin: 0;
+    margin-bottom: 5px;
     float: right;
 `;
 const Table = styled.table`
@@ -114,9 +122,7 @@ const Footer = styled.h3`
 `;
 
 export default ({
-    onDownload,
-    company = '아주나무',
-    created = new Date(),
+    onDownload, company = '아주나무', created = new Date(),
     products = [
         {
             id: 101,
@@ -146,111 +152,111 @@ export default ({
     ],
 }) => {
     const ref = useRef(null);
+    console.log(products);
     return (
-        <EstimateArea onClick={() => onDownload(ref)}>
-            <Estimate id="estimate" ref={ref}>
-                <Title>견적서</Title>
-                <SubTitle>
-                    <CompanyName>업체명: {company}</CompanyName>
-                    <CreatedDate>
-                        작성일: {dateToYYYYMMDD(created, '/')}
-                    </CreatedDate>
-                </SubTitle>
-                <Table id="estimate-table">
-                    <colgroup>
-                        <col style={{ width: '100px' }} />
-                        <col style={{ width: '150px' }} />
-                        <col style={{ width: '150px' }} />
-                        <col style={{ width: '50px' }} />
-                        <col style={{ width: '50px' }} />
-                        <col style={{}} />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <TableHead></TableHead>
-                            <TableHead>항목</TableHead>
-                            <TableHead>이름</TableHead>
-                            <TableHead></TableHead>
-                            <TableHead></TableHead>
-                            <TableHead>총액</TableHead>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map((product, index) => {
-                            let totalValue = 0;
-                            const {
-                                id: productId,
-                                name: productName,
-                                list,
-                            } = product;
-                            const components = list.map((listItem) => {
+        <ButtonBase style={{ width: '100%', }} onClick={() => onDownload(ref)}>
+            <EstimateArea>
+                <Estimate id="estimate" ref={ref}>
+                    <Title>견적서</Title>
+                    <SubTitle>
+                        <CompanyName>업체명: {company}</CompanyName>
+                        <CreatedDate>
+                            작성일: {dateToYYYYMMDD(created, '/')}
+                        </CreatedDate>
+                    </SubTitle>
+                    <Table id="estimate-table">
+                        <colgroup>
+                            <col style={{ width: '100px' }} />
+                            <col style={{ width: '150px' }} />
+                            <col style={{ width: '150px' }} />
+                            <col style={{ width: '50px' }} />
+                            <col style={{ width: '50px' }} />
+                            <col style={{}} />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <TableHead></TableHead>
+                                <TableHead>항목</TableHead>
+                                <TableHead>이름</TableHead>
+                                <TableHead></TableHead>
+                                <TableHead></TableHead>
+                                <TableHead>총액</TableHead>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products.map((product, index) => {
                                 const {
-                                    id: itemId,
                                     item,
-                                    name,
-                                    value,
-                                } = listItem;
-                                totalValue += value;
+                                    options,
+                                } = product;
+                                const components = options.map((option) => {
+                                    const {
+                                        option_id: itemId,
+                                        item,
+                                        option_name,
+                                        option_price,
+                                    } = option;
+                                    return (
+                                        <TableRow key={itemId}>
+                                            <TableColumn name="true"></TableColumn>
+                                            <TableColumn
+                                                name="true"
+                                                endpoint={true}
+                                            >
+                                                {item}
+                                            </TableColumn>
+                                            <TableColumn>{option_name}</TableColumn>
+                                            <TableColumn></TableColumn>
+                                            <TableColumn></TableColumn>
+                                            <TableColumn value={true}>
+                                                {option_price}
+                                            </TableColumn>
+                                        </TableRow>
+                                    );
+                                });
                                 return (
-                                    <TableRow key={itemId}>
-                                        <TableColumn name="true"></TableColumn>
-                                        <TableColumn
-                                            name="true"
-                                            endpoint={true}
-                                        >
-                                            {item}
-                                        </TableColumn>
-                                        <TableColumn>{name}</TableColumn>
-                                        <TableColumn></TableColumn>
-                                        <TableColumn></TableColumn>
-                                        <TableColumn value={true}>
-                                            {value}
-                                        </TableColumn>
-                                    </TableRow>
+                                    <Fragment key={index}>
+                                        <TableHeadRow>
+                                            <TableColumn>
+                                                {index === 0 && <Tag>이름:</Tag>}
+                                                <Total>▼ {item.item_name}</Total>
+                                            </TableColumn>
+                                            <TableColumn></TableColumn>
+                                            <TableColumn></TableColumn>
+                                            <TableColumn></TableColumn>
+                                            <TableColumn></TableColumn>
+                                            <TableColumn value={true}>
+                                                {index === 0 && <Tag>소계:</Tag>}
+                                                <Total>{item.item_price}</Total>
+                                            </TableColumn>
+                                        </TableHeadRow>
+                                        {components}
+                                    </Fragment>
                                 );
-                            });
-                            return (
-                                <Fragment key={productId}>
-                                    <TableHeadRow>
-                                        <TableColumn>
-                                            {index === 0 && <Tag>이름:</Tag>}
-                                            <Total>▼ {productName}</Total>
-                                        </TableColumn>
-                                        <TableColumn></TableColumn>
-                                        <TableColumn></TableColumn>
-                                        <TableColumn></TableColumn>
-                                        <TableColumn></TableColumn>
-                                        <TableColumn value={true}>
-                                            {index === 0 && <Tag>소계:</Tag>}
-                                            <Total>{totalValue}</Total>
-                                        </TableColumn>
-                                    </TableHeadRow>
-                                    {components}
-                                </Fragment>
-                            );
-                        })}
-                    </tbody>
-                </Table>
-                <Cautions>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.Lorem ipsum dolor sit
-                    amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris nisi
-                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                    reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id
-                    est laborum.
-                </Cautions>
-                <Footer>{company} 드림</Footer>
-            </Estimate>
-        </EstimateArea>
+                            })}
+                        </tbody>
+                    </Table>
+                    <Cautions>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                        do eiusmod tempor incididunt ut labore et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit
+                        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                        occaecat cupidatat non proident, sunt in culpa qui officia
+                        deserunt mollit anim id est laborum.Lorem ipsum dolor sit
+                        amet, consectetur adipiscing elit, sed do eiusmod tempor
+                        incididunt ut labore et dolore magna aliqua. Ut enim ad
+                        minim veniam, quis nostrud exercitation ullamco laboris nisi
+                        ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id
+                        est laborum.
+                    </Cautions>
+                    <Footer>{company} 드림</Footer>
+                </Estimate>
+            </EstimateArea>
+        </ButtonBase>
     );
 };

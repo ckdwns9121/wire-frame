@@ -52,7 +52,7 @@ export default ({ baseURL, currentPage, pagePerView, totalCount, onClick }) => {
 };
 
 const LinkItem = ({ children, to, onClick }) => (
-    <IconButton className={styles['button']} onClick={onClick}>
+    <IconButton component='div' className={styles['button']} onClick={onClick}>
         {to ? <Link className={styles['link']} to={to}>
             {children}
         </Link> : children}

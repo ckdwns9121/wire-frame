@@ -22,6 +22,8 @@ import Loading from 'components/assets/Loading';
 import { getCategory } from '../../../api/category/category';
 import { get_catergory, get_menulist } from '../../../store/product/product';
 import { useDispatch, useSelector } from 'react-redux';
+import { requestGetReviewList } from '../../../api/review/review';
+import ReviewListView from '../../../components/item/ReviewListView';
 
 const cx = cn.bind(styles);
 
@@ -30,6 +32,8 @@ const HomeContainer = () => {
     const [useCate, setUseCate] = useState(0);
     const dispatch = useDispatch();
     const { categorys, items } = useSelector((state) => state.product);
+
+    const [reviewList, setReviewList] = useState([]);
 
     const [loading, setLoading] = useState(false);
 
@@ -44,30 +48,47 @@ const HomeContainer = () => {
     //     setLoading(false);
     // }, []);
 
-
     const getProductList = useCallback(async () => {
         setLoading(true);
         if (categorys.length === 1) {
-            const res = await getCategory();
-            res.sort((a, b) => a.ca_id - b.ca_id);
-            // 카테고리를 분류 순서로 정렬.
-            const ca_list = res.filter((item) => item.ca_id !== 12);
-
-            dispatch(get_catergory(ca_list));
-            let arr = [];
-            for (let i = 0; i < ca_list.length; i++) {
-                const result = await getMenuList(ca_list[i].ca_id);
-                const temp = { ca_id: ca_list[i].ca_id, items: result };
-                arr.push(temp);
+            try {
+                const res = await getCategory();
+                res.sort((a, b) => a.ca_id - b.ca_id);
+                // 카테고리를 분류 순서로 정렬.
+                const ca_list = res.filter((item) => item.ca_id !== 12);
+    
+                dispatch(get_catergory(ca_list));
+                let arr = [];
+                for (let i = 0; i < ca_list.length; i++) {
+                    const result = await getMenuList(ca_list[i].ca_id);
+                    const temp = { ca_id: ca_list[i].ca_id, items: result };
+                    arr.push(temp);
+                }
+                arr.sort((a, b) => a.ca_id - b.ca_id);
+                dispatch(get_menulist(arr));
+            } catch (e) {
+                console.error(e);
             }
-            arr.sort((a, b) => a.ca_id - b.ca_id);
-            dispatch(get_menulist(arr));
         }
         if (categorys[1]) {
             setUseCate(categorys[1].ca_id);
         }
         setLoading(false);
     }, [categorys, dispatch]);
+
+    const getReviewList = useCallback(async () => {
+        try {
+            const res = await requestGetReviewList();
+            if (res.data.msg === "성공") {
+                setReviewList(res.data.query.reviews);
+            } else {
+                // 실패했을 때
+            }
+        } catch (e) {
+            // 오류났을 때
+            console.error(e);
+        }
+    }, []);
 
     const onClickDetailItem = useCallback((item_id)=>{
         history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
@@ -78,6 +99,10 @@ const HomeContainer = () => {
         // getMainMenu();
         getProductList();
     }, [getProductList]);
+
+    useEffect(() => {
+        getReviewList();
+    }, [getReviewList])
 
     return (
         <>
@@ -97,7 +122,6 @@ const HomeContainer = () => {
                             </li>
                         ))}
                     </ul>
-                    <Loading open={loading}/>
                     { items !== null && <MenuListView menuList={items[useCate].items} onClick={onClickDetailItem}/>}
                 </div>
                 <div className={styles['banner-img']} onClick ={()=>{   history.push(`${Paths.ajoonamu.shop}?tab=${0}`) ; window.scrollTo(0,0)}}>
@@ -164,8 +188,13 @@ const HomeContainer = () => {
                         </div>
                     </div>
                 </div>
+                <Banner title={'포토 리뷰'} subtitle={'샌달을 이용해 주셨던 분들의 소중한 후기입니다.'} />
+                <div className={styles['photo-review']}>
+                    <ReviewListView reviewList={reviewList} onClick={() => {}} />
+                </div>
                 <KakaoMap />
             </div>
+            <Loading open={loading}/>
         </>
     );
 };

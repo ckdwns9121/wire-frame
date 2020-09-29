@@ -95,13 +95,25 @@ export const stringToTel = (str) => str.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9
 // string을 전화번호 표현(구분자 '-' 추가)으로 변경
 export const telToString = (tel) => tel.replace('-', "");
 // 전화번호 표현을 string으로 변경
-const STORAGE_URL = 'http://devapi.ajoonamu.com/storage/'
+
+const STORAGE_URL = 'http://devapi.ajoonamu.com/storage/';
 export const DBImageFormat = (url) => {
-    try{
-    const IMAGE = url.replace(/\\/g, '').replace(/\[/g, '').replace(/\]/g, '').replace(/"/g, '');
-    return STORAGE_URL + IMAGE;
+    if (typeof url === 'string') {
+        try {
+            const IMAGE = url
+                .replace(/\\/g, '')
+                .replace(/\[/g, '')
+                .replace(/\]/g, '')
+                .replace(/"/g, '');
+            return STORAGE_URL + IMAGE;
+        } catch (e) {
+            console.error(e);
+        }
     }
-    catch(e){
-        console.error(e);
-    }
+    return '';
+};
+
+export const hideEmail = (email) => {
+    const s = email.indexOf('@');
+    return email.substr(0, s - 2) + '**';
 }

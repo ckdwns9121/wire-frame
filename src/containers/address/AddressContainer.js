@@ -19,6 +19,7 @@ import { modalOpen } from '../../store/modal';
 import Message from '../../components/assets/Message';
 import produce from 'immer';
 import { IconButton } from '@material-ui/core';
+import Loading from '../../components/assets/Loading';
 
 const AddressContainer = () => {
     const modalDispatch = useDispatch();
@@ -44,6 +45,7 @@ const AddressContainer = () => {
     //최근 선택한 주소지 들고오기
     const callDeliveryList = useCallback(async () => {
         //회원 주소 설정
+        setLoading(true);
         if (user_token) {
             console.log('회원');
             try {
@@ -60,6 +62,7 @@ const AddressContainer = () => {
                 setDeliveryList(noAuthAddrs);
             }
         }
+        setLoading(false);
     }, [user_token]);
 
     //검색버튼 클릭
@@ -257,63 +260,69 @@ const AddressContainer = () => {
                 async () => {
                     if (user_token) {
                         try {
-
-                        var geocoder = new kakao.maps.services.Geocoder();
-                        var temp_lat, temp_lng;
-                        //선택한 주소의 좌표정보 받아오기
-                        geocoder.addressSearch(selectAddr, async function (result,status) {
-                            // 정상적으로 검색이 완료됐으면
-                            if (status === kakao.maps.services.Status.OK) {
-                                console.log(selectAddr);
-                                console.log(temp_lat);
-                                console.log(temp_lng);
-                                try {
-                                    const res = await insertAddress(
-                                        user_token,
-                                        post_num,
-                                        selectAddr,
-                                        detailAddr,
-                                        0,
-                                        temp_lat,
-                                        temp_lng,
-                                    );
-                                    if (res.data.msg === '성공') {
-                                        dispatch( get_address(
-                                            {addr1: selectAddr,
-                                            addr2: detailAddr,
-                                            lat:temp_lat, 
-                                            lng:temp_lng,
-                                            post_num : post_num
-                                        }));
-                                        callDeliveryList();
-                                        setOpen(false);
-                                    } else {
-                                        openMessage( false, res.data.msg,'주변 매장정보를 확인해 주세요.');
+                            var geocoder = new kakao.maps.services.Geocoder();
+                            var temp_lat, temp_lng;
+                            //선택한 주소의 좌표정보 받아오기
+                            geocoder.addressSearch(selectAddr, async function (
+                                result,
+                                status,
+                            ) {
+                                // 정상적으로 검색이 완료됐으면
+                                if (status === kakao.maps.services.Status.OK) {
+                                    console.log(selectAddr);
+                                    console.log(temp_lat);
+                                    console.log(temp_lng);
+                                    try {
+                                        const res = await insertAddress(
+                                            user_token,
+                                            post_num,
+                                            selectAddr,
+                                            detailAddr,
+                                            0,
+                                            temp_lat,
+                                            temp_lng,
+                                        );
+                                        if (res.data.msg === '성공') {
+                                            dispatch(
+                                                get_address({
+                                                    addr1: selectAddr,
+                                                    addr2: detailAddr,
+                                                    lat: temp_lat,
+                                                    lng: temp_lng,
+                                                    post_num: post_num,
+                                                }),
+                                            );
+                                            callDeliveryList();
+                                            setOpen(false);
+                                        } else {
+                                            openMessage(
+                                                false,
+                                                res.data.msg,
+                                                '주변 매장정보를 확인해 주세요.',
+                                            );
+                                        }
+                                    } catch (e) {
+                                        console.error(e);
+                                        setLoading(false);
                                     }
-                                } catch (e) {
-                                    console.error(e);
+                                }
+                                //검색이 완료되지 않앗으면.
+                                else {
+                                    console.log('검색 실패');
                                     setLoading(false);
                                 }
-                            }
-                            //검색이 완료되지 않앗으면.
-                            else {
-                                console.log('검색 실패');
-                                setLoading(false);
-                            }
-                        });
-
-                        } 
-                        catch (e) {
+                            });
+                        } catch (e) {
                             console.error(e);
                         }
                     } else {
-
-
-
                         var geocoder = new kakao.maps.services.Geocoder();
                         var temp_lat, temp_lng;
                         //선택한 주소의 좌표정보 받아오기
-                        geocoder.addressSearch(selectAddr, async function (result,status) {
+                        geocoder.addressSearch(selectAddr, async function (
+                            result,
+                            status,
+                        ) {
                             // 정상적으로 검색이 완료됐으면
                             if (status === kakao.maps.services.Status.OK) {
                                 temp_lat = result[0].y;
@@ -323,45 +332,63 @@ const AddressContainer = () => {
                                 console.log(temp_lng);
                                 try {
                                     //비회원일시 로컬스토리지에서 아이템을 들고온다.
-                                    const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                                    const noAuthAddrs = JSON.parse(
+                                        localStorage.getItem('noAuthAddrs'),
+                                    );
                                     //로컬 스토리지에 아이템이 있을시.
                                     if (noAuthAddrs) {
                                         //모든 활성화를 0으로 초기화
-                                        noAuthAddrs.map((item) => (item.active = 0));
+                                        noAuthAddrs.map(
+                                            (item) => (item.active = 0),
+                                        );
                                         //새로운 주소를 푸쉬
                                         noAuthAddrs.push({
                                             addr1: selectAddr,
                                             addr2: detailAddr,
-                                            lat:temp_lat,
-                                            lng :temp_lng,
-                                            post_num:post_num,
+                                            lat: temp_lat,
+                                            lng: temp_lng,
+                                            post_num: post_num,
                                             active: 1,
                                         });
-                                        localStorage.setItem('noAuthAddrs',JSON.stringify(noAuthAddrs.reverse()));
+                                        localStorage.setItem(
+                                            'noAuthAddrs',
+                                            JSON.stringify(
+                                                noAuthAddrs.reverse(),
+                                            ),
+                                        );
                                     }
                                     //로컬스토리지에 아이템이 없을시.
                                     else {
-                                        localStorage.setItem('noAuthAddrs',JSON.stringify([
-                                            {
+                                        localStorage.setItem(
+                                            'noAuthAddrs',
+                                            JSON.stringify([
+                                                {
                                                     addr1: selectAddr,
                                                     addr2: detailAddr,
-                                                    lat:temp_lat,
-                                                    lng :temp_lng,
-                                                    post_num:post_num,
+                                                    lat: temp_lat,
+                                                    lng: temp_lng,
+                                                    post_num: post_num,
                                                     active: 1,
                                                 },
                                             ]),
                                         );
                                     }
                                     //모든 작업이 완료 되었다면. 리덕스에 좌표정보저장, 추가된 배열로 상태 업데이트
-                                    const test2 = JSON.parse(localStorage.getItem('noAuthAddrs'),);
-                                    dispatch( get_address({addr1: selectAddr, addr2: detailAddr,lat:temp_lat, lng:temp_lng ,post_num:post_num}));
+                                    const test2 = JSON.parse(
+                                        localStorage.getItem('noAuthAddrs'),
+                                    );
+                                    dispatch(
+                                        get_address({
+                                            addr1: selectAddr,
+                                            addr2: detailAddr,
+                                            lat: temp_lat,
+                                            lng: temp_lng,
+                                            post_num: post_num,
+                                        }),
+                                    );
                                     setDeliveryList(test2);
                                     setOpen(false);
-                                } 
-                                catch (e) {
-                                  
-                                }
+                                } catch (e) {}
                             }
                             //검색이 완료되지 않앗으면.
                             else {
@@ -404,7 +431,8 @@ const AddressContainer = () => {
             <div className={styles['container']}>
                 <div className={styles['content']}>
                     <div className={styles['addr-title']}>최근 배달 주소</div>
-                    <div className={styles['addr-list']}>
+                    {loading ? <Loading open={loading} />
+                    : <div className={styles['addr-list']}>
                         {delivery_list.length === 0 ? (
                             <Message
                                 msg={'최근 배달 주소가 없습니다.'}
@@ -418,7 +446,7 @@ const AddressContainer = () => {
                                 user_token={user_token}
                             />
                         )}
-                    </div>
+                    </div>}
                 </div>
             </div>
             <AddressModal

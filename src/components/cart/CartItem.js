@@ -47,8 +47,8 @@ const CartItem = (props) => {
                     <div className={styles['menu-option']}>
                         추가선택:
                         {options.length !== 0
-                            ? options.map((op) => op.option_name)
-                            : '없음'}
+                            ? options.map((op) => op.option_name).join(', ')
+                            : ' 없음'}
                     </div>
                     <div className={styles['box']}>
                         <div className={styles['box-item']}>
@@ -65,8 +65,7 @@ const CartItem = (props) => {
                 </div>
             </div>
             <div className={styles['menu-price']}>
-            {numberFormat(total_price())} 원
-
+                {numberFormat(total_price())} 원
             </div>
             <div className={styles['close-box']}  onClick={() => props.handleDelete([cart_id])}>
                 <CloseIcon black={true} />

@@ -2,7 +2,8 @@ import React from 'react';
 import styles from './Preview.module.scss';
 import menu1 from '../svg/menu/menu1.png';
 import Arrow from '../svg/arrow/Arrow';
-import { dateToYYYYMMDDHHMMSS, numberFormat } from "../../lib/formatter";
+import { numberFormat } from "../../lib/formatter";
+import { ButtonBase } from '@material-ui/core';
 
 const PreviewOrderItem = (props) => {
     const {
@@ -13,6 +14,7 @@ const PreviewOrderItem = (props) => {
         point_price,
         receipt_time,
         receipt_price,
+        review_id,
         send_cost,
         total_price,
     } = props;
@@ -35,6 +37,9 @@ const PreviewOrderItem = (props) => {
                             {info.od_status ==="order_cancel" && '주문취소'}
                             {info.od_status ==="order_apply" && '배달완료'}
                         </div>
+                        <ButtonBase className={styles['review-button']}>
+                            {review_id === null ? '리뷰작성' : '리뷰수정'}
+                        </ButtonBase>
                     </div>
                     <div className={styles['bottom']}>
                         <div className={styles['req-date']}>

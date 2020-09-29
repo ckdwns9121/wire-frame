@@ -57,8 +57,14 @@
                         border: solid 1px #DBDBDB;
                         border-radius: 2px;
                         .filelabel {
+                            width: 100%; height: 100%;
+                            display: table;
                             font-size: 1.333rem;
-                            display: block;
+                            .text {
+                                display: table-cell;
+                                vertical-align: middle;
+                                text-align: center;
+                            }
                         }
                         .filebox {
                             display: none;
@@ -96,6 +102,73 @@
                     background-color: rgba(0, 0, 0, 0.05);
                     border-radius: 2px;
                     border: solid 1px #EBEBEB;
+                    .input-preview {
+                        width: 100%; height: 100%;
+                        position: relative;
+                        .circle {
+                            position: absolute;
+                            display: table;
+                            top: 50%; left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: #fff;
+                            border-radius: 50%;
+                            box-sizing: border-box;
+                            border: solid 1px #f9f9f9;
+                            .box {
+                                display: table-cell;
+                                vertical-align: middle;
+                                color: #dbdbdb;
+                                position: absolute;
+                                &.image {
+                                    .name {
+                                        font-size: 1.167rem;
+                                        font-weight: bold;
+                                    }
+                                    .logo {
+                                        max-width: 60px;
+                                        max-height: 60px;
+                                    }
+                                }
+                                &.text {
+                                    .phrase {
+                                        margin-top: 6px;
+                                        font-size: 0.667rem;
+                                        white-space: normal;
+                                        word-break: normal;
+                                        box-sizing: border-box;
+                                        width: 100%;
+                                        padding: 0 10px;
+                                    }
+                                }
+                                &.left {
+                                    top: 50%; right: 50%;
+                                    transform: translateY(-50%);
+                                }
+                                &.right {
+                                    top: 50%; left: 50%;
+                                    transform: translateY(-50%);
+                                }
+                                &.top {
+                                    width: 100%;
+                                    left: 50%; bottom: 50%;
+                                    transform: translateX(-50%);
+                                }
+                                &.bottom {
+                                    width: 100%;
+                                    left: 50%; top: 50%;
+                                    transform: translateX(-50%);
+                                }
+                            }
+                        }
+                        .preview_out {
+                            width: 160px; height: 160px;
+                            .preview_in {
+                                padding: 15px;
+                                width: 152px; height: 152px;
+                                border-color: #dbdbdb;
+                            }
+                        }
+                    }
                 }
             }
         }
