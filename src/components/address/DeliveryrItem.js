@@ -15,12 +15,14 @@ const DeliveryrItem = (props) => {
     };
 
     return (
-        <ButtonBase
-            className={cx('address-item', { active: active })}
-            onClick={props.onClick}
-        >
-            <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
-            <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
+        <div className={styles['address-area']}>
+            <ButtonBase
+                className={cx('address-item', { active: active })}
+                onClick={props.onClick}
+            >
+                <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
+                <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
+            </ButtonBase>
             <IconButton
                 className={styles['delete']}
                 onClick={(e) => {
@@ -30,7 +32,7 @@ const DeliveryrItem = (props) => {
             >
                 <RemoveIcon />
             </IconButton>
-        </ButtonBase>
+        </div>
     );
 };
 const JibunAddrBox = ({ jibunAddr }) => {

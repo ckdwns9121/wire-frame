@@ -34,40 +34,21 @@ const OrderListContainer = () => {
     const [order_list, setOrderList] = useState([]); //전체 데이터.
     const [loading, setLoading] = useState(false); //로딩
 
-
-    // const [currentPage, setCurrentPage] = useState(page); //현재 페이지
-    // const [postsPerPage] = useState(2); //한페이지에서 보여줄 POST의 수
-
-    // const indexOfLastPost = currentPage * postsPerPage; // 현재 포스트에서 마지막 인덱스
-    // const indexOfFirstPost = indexOfLastPost - postsPerPage; //현재 포스트에서 첫번째 인덱스
-    // const currentPosts = order_list.slice(indexOfFirstPost, indexOfLastPost); //현재 포스트에서 보여줄 리스트
-
-    // const paginate = (pageNumber) => {
-    //     setCurrentPage(pageNumber);
-    //     history.push({
-    //         pathname: `${Paths.ajoonamu.mypage}/order_list`,
-    //         search: `?page=${pageNumber}`,
-    //         // state: { isOTP: isOTP },
-    //     });
-    //     window.scrollTo(0, 0);
-    // }; //페이지를 이동시킬 함수.
-
     const callOrderListApi = useCallback(async () => {
         setLoading(true);
         if (user_token) {
             const res = await getOrderList(
                 user_token,
-                // PAGE_PER_VIEW,
+                0, 100,
                 // (page - 1) * PAGE_PER_VIEW,
-                100, 0,
+                // PAGE_PER_VIEW,
                 startDate,
                 endDate,
             );
-            console.log(res);
             setOrderList(res.orders ? res.orders : []);
         }
         setLoading(false);
-    }, [user_token, startDate, endDate, page]);
+    }, [user_token, startDate, endDate, /*page*/]);
 
     const onClickOrderItem = useCallback(
         (order_id) => {
@@ -102,7 +83,7 @@ const OrderListContainer = () => {
                         {order_list.legnth !== 0 ? (
                             <>
                                 <PreviewOrderList
-                                    order_list={order_list}
+                                    order_list={order_list.slice((page - 1) * PAGE_PER_VIEW, page * PAGE_PER_VIEW)}
                                     onClick={onClickOrderItem}
                                 />
                                 <ListPaging

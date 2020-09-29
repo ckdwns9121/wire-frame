@@ -108,6 +108,12 @@ const Header = () => {
                                     </TabLink>
                                     <TabLink
                                         className={styles['box']}
+                                        to={Paths.ajoonamu.cart}
+                                    >
+                                        장바구니
+                                    </TabLink>
+                                    <TabLink
+                                        className={styles['box']}
                                         to={Paths.ajoonamu.signup}
                                     >
                                         회원가입
