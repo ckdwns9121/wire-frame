@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Review.module.scss';
 import PROFILE_IMG from '../svg/sign/profile.png';
-import MENU from '../svg/menu/menu1.png';
 import Slider from 'react-slick';
-import { Backdrop, Dialog, IconButton, Menu } from '@material-ui/core';
+import { Backdrop, Dialog, IconButton } from '@material-ui/core';
 import Prev from '../svg/review/prev.svg';
 import Next from '../svg/review/next.svg';
 import CloseIcon from '../svg/modal/CloseIcon';
@@ -43,7 +42,6 @@ const ReviewModal = (props) => {
             setLoading(true);
             try {
                 const res = await requestGetReviewView(props.id);
-                console.log(res);
                 if (res.data.msg === '성공') {
                     const { email, review_body, review_rating, review_images, created_at } = res.data.query.review;
                     setUserEmail(email);

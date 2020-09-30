@@ -243,34 +243,49 @@ const OrderContainer = () => {
     };
 
     const onClickOrder = async () => {
-        console.log("주문 시작");
         const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
 
-        console.log(date.getFullYear());
         const year = date.getFullYear();
         const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
         const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
 
         const delivery_req_time = `${year}-${month}-${day} ${hours}:${minite}:00`
         //회원 주문
-        if(user_token){
-             const res = await user_order(user_token ,'reserve',orderMemo,dlvMemo ,delivery_req_time);
-             console.log(res);
-             order_id.current = res.data.query;
+        setLoading(true);
+        if (user_token) {
+            const res = await user_order(
+                user_token,
+                'reserve',
+                orderMemo,
+                dlvMemo,
+                delivery_req_time,
+            );
+            order_id.current = res.data.query;
 
-             //장바구니 삭제
+            //장바구니 삭제
         }
         //비회원 주문
-        else{
+        else {
             const cart_ids = JSON.parse(localStorage.getItem('noAuthCartId'));
-            console.log(cart_ids);
-            const res = await noAuth_order(cart_ids,noAuthName,firstPhoneNumber,16546,addr1,addr2,lat,lng,'reserve',orderMemo,dlvMemo,delivery_req_time);
-            console.log(res);
+            const res = await noAuth_order(
+                cart_ids,
+                noAuthName,
+                firstPhoneNumber,
+                16546,
+                addr1,
+                addr2,
+                lat,
+                lng,
+                'reserve',
+                orderMemo,
+                dlvMemo,
+                delivery_req_time,
+            );
             order_id.current = res.data.query;
             //장바구니 삭제
         }
         $script(payple_url, () => {
-
+            
             /*global PaypleCpayAuthCheck*/
             const getResult = function (res) {
                 alert('callback : ' + res.PCD_PAY_MSG);
@@ -295,11 +310,6 @@ const OrderContainer = () => {
             let is_taxsave = 'N';
             let simple_flag = 'N';
             let card_ver = '01';
-
-            console.log(buyer_name);
-            console.log(buyer_hp);
-            console.log(buyer_email);
-            console.log(order_num);
 
             if (PCD_PAYER_ID !== null) {
                 payple_payer_id = PCD_PAYER_ID;
@@ -347,6 +357,7 @@ const OrderContainer = () => {
 
            PaypleCpayAuthCheck(obj);
         });
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -423,7 +434,6 @@ const OrderContainer = () => {
 
     return (
         <ScrollTop>
-            {loading && <Loading open={true} />}
             <div className={styles['container']}>
                 <div className={styles['content']}>
                     <div className={styles['title']}>주문하기</div>
@@ -754,6 +764,7 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
+            <Loading open={loading} />
         </ScrollTop>
     );
 };

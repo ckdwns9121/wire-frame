@@ -94,12 +94,14 @@
             }
         }
         .file-list {
-            margin-top: 10px;
+            margin-left: -20px;
             margin-bottom: 40px;
             padding-left: 110px;
-            height: 30px;
+            min-height: 40px;
             .file-item {
                 display: inline-block;
+                margin-top: 10px;
+                margin-left: 20px;
                 padding: 5px 20px;
                 border-radius: 16px;
                 border: solid 1px #ccc;
@@ -126,11 +128,5 @@
             border: solid 1px #007240;
             border-radius: 36px;
         }
-    }
-}
-
-.file-item {
-    & + & {
-        margin-left: 20px;
     }
 }
