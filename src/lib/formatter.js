@@ -100,12 +100,14 @@ const STORAGE_URL = 'http://devapi.ajoonamu.com/storage/';
 export const DBImageFormat = (url) => {
     if (typeof url === 'string') {
         try {
-            const IMAGE = url
+            const URL_FORMAT = url
                 .replace(/\\/g, '')
                 .replace(/\[/g, '')
                 .replace(/\]/g, '')
-                .replace(/"/g, '');
-            return STORAGE_URL + IMAGE;
+                .replace(/"/g, '')
+                .replace(/ /g, '');
+            const IMAGES = URL_FORMAT.split(',');
+            return IMAGES.map(IMAGE =>STORAGE_URL + IMAGE);
         } catch (e) {
             console.error(e);
         }

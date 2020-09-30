@@ -29,7 +29,6 @@ const faq_list = [
 
 const PAGE_PER_VIEW = 5;
 
-
 export default ({ location }) => {
 
     const search = location.search.replace('?', '');
@@ -89,33 +88,31 @@ export default ({ location }) => {
                     </div>
                     <div className={cn('embed', { open: selectOpen })}>
                         {faq_list.map((item) => item.id !== quesCategory
-                            &&(<div key={item.id} className={styles['s-area']}
-                                    onClick={() => onChangeCategory(item.id)}>
-                                    <div className={cn('selector')}>
-                                        {item.value}
-                                    </div>
-                                </div>))}
+                        &&  (<div key={item.id} className={styles['s-area']}
+                                onClick={() => onChangeCategory(item.id)}>
+                                <div className={cn('selector')}>
+                                    {item.value}
+                                </div>
+                            </div>))}
                     </div>
                 </div>
             </div> 
-            {loading ? <Loading open={loading} />
-            :<>
-                <div className={styles['table']}>
-                    {list.length > 0 ? (
-                        list.map((item, index) => (
-                            <div key={item.id} className={cn('column', { open: openIndex === index })}>
-                                <ButtonBase onClick={() => handleChange(index)} className={styles['row']}>
-                                    <div className={styles['question']}>{item.question}</div>
-                                    <div className={styles['created']}>{dateToYYYYMMDD(item.created_at, '/')}</div>
-                                    <div className={styles['opener']}><img className={styles['direct']} src={DownArrow} alt="더보기" /></div>
-                                </ButtonBase>
-                                <div className={styles['answer']} dangerouslySetInnerHTML={{ __html: item.answer}} />
-                            </div>
-                        )) 
-                    ) : (<Message src={false} msg={'등록된 자주 묻는 질문이 없습니다.'} size={260} />)}
-                </div>
-                <ListPaging baseURL={Paths.ajoonamu.support + '/faq'} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={list.length}  />
-            </>}
+            <div className={styles['table']}>
+                {list.length > 0 ? (
+                    list.slice((page - 1) * PAGE_PER_VIEW, page * PAGE_PER_VIEW).map((item, index) => (
+                        <div key={item.id} className={cn('column', { open: openIndex === index })}>
+                            <ButtonBase onClick={() => handleChange(index)} className={styles['row']}>
+                                <div className={styles['question']}>{item.question}</div>
+                                <div className={styles['created']}>{dateToYYYYMMDD(item.created_at, '/')}</div>
+                                <div className={styles['opener']}><img className={styles['direct']} src={DownArrow} alt="더보기" /></div>
+                            </ButtonBase>
+                            <div className={styles['answer']} dangerouslySetInnerHTML={{ __html: item.answer}} />
+                        </div>
+                    )) 
+                ) : (<Message src={false} msg={'등록된 자주 묻는 질문이 없습니다.'} size={260} />)}
+            </div>
+            <ListPaging baseURL={Paths.ajoonamu.support + '/faq'} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={list.length} />
+            <Loading open={loading} />
         </div>
     );
 };

@@ -31,7 +31,7 @@ export default ({ match, location }) => {
 
     const page = query.page ? parseInt(query.page) : 1;
     
-    const [count, setCount] = useState(0);
+    // const [count, setCount] = useState(0);
 
     const openModal = useModal();
     const [loading, setLoading] = useState(false);
@@ -44,17 +44,19 @@ export default ({ match, location }) => {
     const getNoticeList = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await requestNoticeList(PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
-            if (!count || count !== res.count) {
-                setCount(res.count);
-            }
+            // const res = await requestNoticeList((page - 1) * PAGE_PER_VIEW, PAGE_PER_VIEW);
+            const res = await requestNoticeList(0, 1000);
+            // if (count !== res.count) {
+            //     setCount(res.count);
+            // }
             setNoticeList(res.notices);
         } catch (e) {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
             history.replace(Paths.index);
         }
         setLoading(false);
-    }, [history, openModal, count, page]);
+    // }, [history, openModal, count, page]);
+    }, [history, openModal]);
 
     const getNoticeItem = useCallback(async () => {
         setLoading(true);
@@ -85,18 +87,18 @@ export default ({ match, location }) => {
 
     return (
         <div className={styles['box']}>
-            {loading ? <Loading open={loading}/>
-            : <div className={styles['table']}>
+            <div className={styles['table']}>
                 { params.id !== null && params.id !== undefined ? 
                 <NoticeContent item={noticeItem} />
                 : noticeList.length > 0 ?
-                <NoticeList list={noticeList} />
+                <NoticeList list={noticeList.slice((page - 1) * PAGE_PER_VIEW, page * PAGE_PER_VIEW)} />
                 : <Message src={false} msg={"등록된 공지사항이 없습니다."} size={260} />}
-            </div>}
+            </div>
             { params.id !== null && params.id !== undefined ?
-            <DetailPaging baseURL={Paths.ajoonamu.support + '/notice'} />
+            <DetailPaging baseURL={Paths.ajoonamu.support + '/notice'} idList={noticeList.map(item => item.id)} currentId={parseInt(params.id)} />
             : noticeList.length > 0 &&
-            <ListPaging baseURL={Paths.ajoonamu.support + '/notice'} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={count} />}
+            <ListPaging baseURL={Paths.ajoonamu.support + '/notice'} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={noticeList.length} />}
+            <Loading open={loading} />
         </div>
     );
 };

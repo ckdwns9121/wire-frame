@@ -143,6 +143,7 @@
     }
 
     .question {
+        margin-bottom: 40px;
         .q-content {
             padding: 40px;
             font-size: 1.333rem;
@@ -150,7 +151,6 @@
         }
         .interaction {
             text-align: right;
-            margin-bottom: 40px;
             .btn {
                 width: 96px; height: 40px;
                 border: solid 1px #ccc;
@@ -161,6 +161,7 @@
     }
     .answer {
         border: solid 2px #555;
+        margin-bottom: 40px;
         .info {
             box-sizing: border-box;
             padding: 20px 40px;

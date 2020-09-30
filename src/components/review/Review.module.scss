@@ -58,21 +58,21 @@ $value2: 71px;
                 color: #333;
             }
         }
-        .rating {
-            text-align: right;
-            display: table-cell;
-            vertical-align: middle;
-            .rate {
-                color: #777;
-                font-size: 1.5rem;
-                font-weight: bold;
-                margin-left: 5px;
-            }
-            svg,
-            .rate {
-                vertical-align: middle;
-            }
-        }
+    }
+}
+
+.rating {
+    display: table-cell;
+    vertical-align: middle;
+    .rate {
+        color: #777;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-left: 5px;
+    }
+    svg,
+    .rate {
+        vertical-align: middle;
     }
 }
 

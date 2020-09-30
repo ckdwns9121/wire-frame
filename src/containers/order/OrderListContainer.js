@@ -7,7 +7,6 @@ import Loading from '../../components/assets/Loading';
 import { getOrderList } from '../../api/order/orderItem';
 import { useStore } from '../../hooks/useStore';
 import PreviewOrderList from '../../components/order/PreviewOrderItemList';
-// import Pagination from '../../components/pagenation/Pagenation';
 import DateRangePicker from '../../components/mypage/DateRangePicker';
 import { calculateDate } from '../../lib/calculateDate';
 import qs from 'qs';
