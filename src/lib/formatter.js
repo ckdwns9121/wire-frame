@@ -47,7 +47,7 @@ export const dateToYYYYMMDD = (date, join = '-') => {
     let setDate = null;
     if (typeof date === 'string') {
         // IE 에서 YYYY-MM-DD HH:MM:SS 를 생성자로 사용할 수 없기 때문에 예외 처리.
-        setDate = date.replace(/-/g, '/');
+        setDate = date.replace(/-/g, '/').split(' ')[0];
         // YYYY/MM/DD HH:MM:SS로 변경해줌
     }  else setDate = date;
     const absolute = new Date(setDate); // 만약에 Date 객체가 넘어오지 않을 것을 대비

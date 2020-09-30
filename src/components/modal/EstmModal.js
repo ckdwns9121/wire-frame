@@ -1,5 +1,5 @@
 import React, { useCallback, useReducer, useState } from 'react';
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import styles from './Asset.module.scss';
 import Dialog from '@material-ui/core/Dialog';
@@ -63,19 +63,20 @@ const EstmModal = (props) => {
     const onDownload = (ref) => {
         let position = 0;
         const doc = new jsPDF('p', 'mm');
-
         html2canvas(ref.current).then((canvas) => {
+            console.log(ref.current);
             const imageData = canvas.toDataURL('image/png');
             const imgWidth = 210; // 이미지 가로 길이(mm) A4 기준
             const pageHeight = imgWidth * 1.414; // 출력 페이지 세로 길이 계산 A4 기준
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             let heightLeft = imgHeight;
             console.log(position);
+            console.log(canvas);
             console.log(canvas.width, canvas.height);
             console.log(imgWidth, imgHeight);
             // doc.addImage(imageData, 'PNG', 0, 0, 210, 297);
-            // doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
-            doc.addImage(imageData, 'PNG', 0, position, canvas.width, canvas.height);
+            doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
+            // doc.addImage(imageData, 'PNG', 0, position, canvas.width, canvas.height);
             heightLeft -= pageHeight;
             while (heightLeft >= 20) {
                 position = heightLeft - imgHeight;
