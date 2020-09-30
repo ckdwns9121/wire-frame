@@ -12,7 +12,8 @@ export const getBreakCategory = async()=>{
 }
 
 export const getBreakMenu =async(ca_id,offset=0,limit=100)=>{
-    const req= Paths.api + `user/item/breakfast?offset=0&limit=20&ca_id=${ca_id}`;
+    // const req= Paths.api + `user/item/breakfast?offset=${offset}&limit=${limit}&ca_id=${ca_id}`;
+    const req= Paths.api + `user/item/breakfast`;
     axios.defaults.headers.get['Context-Type'] = 'application/json';
     const config = {
         params: {

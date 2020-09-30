@@ -168,11 +168,15 @@ const ReserveContainer = ({ tab = '0' }) => {
         setLoading(true);
         setTimeout(()=>{
             const url = JSON.parse(sessionStorage.getItem('url'));
+            if(url){
             //이전 페이지가 상품페이지라면 오프셋 유지.
             if(url.prev ==='/product'){
               const OS = sessionStorage.getItem('offset');
+              if(OS){
                 setOffset(parseInt(OS));
+              }
             }
+        }
             setLoading(false);
         },100)
     },[])
@@ -181,11 +185,13 @@ const ReserveContainer = ({ tab = '0' }) => {
     useEffect(() => {
         const scrollTop = sessionStorage.getItem('scrollTop');
         const url = JSON.parse(sessionStorage.getItem('url'));
+        if(url){
         //이전 주소가 상품페이지라면 스크롤 유지
         if(url.prev ==='/product'){
               console.log('스크롤 이동');
             window.scrollTo(0,scrollTop);
         }
+    }
     }, [loading]);
 
     // 탭 인덱스로 URL 이동
