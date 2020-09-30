@@ -24,8 +24,12 @@ import {
 import { Home, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderComplete } from 'pages';
 import { Route, Switch } from 'react-router-dom';
-import { get_address } from './store/address/address';
-import { getActiveAddr } from './api/address/address';
+import { get_address} from './store/address/address';
+import {get_near_store} from './store/address/store';
+import { getActiveAddr  } from './api/address/address';
+import {getNearStore} from './api/store/store';
+import {get_menulist} from  './store/product/product';
+import {noAuthGetNearStore} from './api/noAuth/store';
 import ModalContainer from './containers/assets/ModalContainer';
 
 import AOS from 'aos';
@@ -43,12 +47,21 @@ export default function App() {
         if (token) {
             dispatch(get_user_info(token));
             const res = await getActiveAddr(token);
+            console.log(res);
             if(res){
                 dispatch(get_address(res))
+                const {lat,lng,addr1} = res;
+                const near_store = await getNearStore(lat,lng,addr1);
+                console.log(near_store);
+                dispatch(get_near_store(near_store.data.query));
+                dispatch(get_menulist(null));
             }
             else{
                 console.log('배달정보 없음');
                 dispatch(get_address({addr1:null, addr2:null,lat:null,lng:null,post_num:null}));
+                dispatch(get_near_store(null));
+                dispatch(get_menulist(null));
+
             }
         
         } else {
@@ -58,9 +71,20 @@ export default function App() {
                 if (index !== -1) {
                     const {addr1, addr2,lat,lng,post_num} = noAuth[index];
                     dispatch(get_address({addr1,addr2,lat,lng,post_num}));
+                    const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                    console.log('비회원 가장 가까운 곳');
+                    console.log(near_store);
+                    dispatch(get_near_store(near_store.data.query));
+                    dispatch(get_menulist(null));
+
+
                 }
                 else{
                     console.log("비회원 배달정보 없음");
+                    dispatch(get_address({addr1:null,addr2:null,lat:null,lng:null,post_num:null}));
+                    dispatch(get_near_store(null));
+                    dispatch(get_menulist(null));
+
                 }
             }
         }

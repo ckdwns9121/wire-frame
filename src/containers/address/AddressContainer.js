@@ -14,12 +14,18 @@ import {
     getDeliveryList,
 } from '../../api/address/address';
 import { useStore } from '../../hooks/useStore';
-import { get_address } from '../../store/address/address';
 import { modalOpen } from '../../store/modal';
 import Message from '../../components/assets/Message';
 import produce from 'immer';
 import { IconButton } from '@material-ui/core';
 import Loading from '../../components/assets/Loading';
+
+import { get_address } from '../../store/address/address';
+import {get_near_store} from '../../store/address/store';
+
+import {getNearStore} from '../../api/store/store';
+import {noAuthGetNearStore} from '../../api/noAuth/store';
+import {get_menulist} from  '../../store/product/product';
 
 const AddressContainer = () => {
     const modalDispatch = useDispatch();
@@ -141,6 +147,11 @@ const AddressContainer = () => {
                             );
                             console.log(res);
                             dispatch(get_address({addr1,addr2,lat,lng,post_num}));
+                            const near_store = await getNearStore(lat,lng,addr1);
+                            console.log(near_store);
+                            dispatch(get_near_store(near_store.data.query));
+                             dispatch(get_menulist(null));
+
                             callDeliveryList();
                         } catch (e) {
                             console.error(e);
@@ -170,6 +181,14 @@ const AddressContainer = () => {
                         const temp = JSON.parse(localStorage.getItem('noAuthAddrs'));
                         setDeliveryList(temp);
                         dispatch(get_address({addr1,addr2,lat,lng,post_num}));
+
+                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                        console.log('비회원 가장 가까운 곳');
+                        console.log(near_store);
+                        dispatch(get_near_store(near_store.data.query));
+                dispatch(get_menulist(null));
+
+    
                     }
                 },
             );
@@ -189,6 +208,9 @@ const AddressContainer = () => {
                         //삭제하려는 주소가 활성화 주소라면 배달지 설정 초기화
                         if (delivery_list[index].active === 1) {
                             dispatch(get_address({addr1:null, addr2:null,lat:null,lng:null ,post_num:null}));
+                            dispatch(get_near_store(null));
+                dispatch(get_menulist(null));
+                            
                         }
                         setDeliveryList((list) =>list.filter((item) => item.delivery_id !== delivery_id));
                     } catch (e) {
@@ -205,6 +227,9 @@ const AddressContainer = () => {
                             if (noAuthAddrs[delivery_id].active === 1) {
                                 //배달지 없음으로 설정
                                 dispatch(get_address({ addr1: null, addr2: null,lat:null,lng:null ,post_num:null}));
+                                dispatch(get_near_store(null));
+                                dispatch(get_menulist(null));
+
                             }
                             //선택한 주소를 제일 위로 올리기.
                             noAuthAddrs.splice(delivery_id, 1);
@@ -294,6 +319,12 @@ const AddressContainer = () => {
                                                     post_num: post_num,
                                                 }),
                                             );
+
+                                            const near_store = await getNearStore(temp_lat,temp_lng,selectAddr);
+                                            console.log(near_store);
+                                            dispatch(get_near_store(near_store.data.query));
+                dispatch(get_menulist(null));
+                                            
                                             callDeliveryList();
                                             setOpen(false);
                                         } else {
@@ -317,7 +348,9 @@ const AddressContainer = () => {
                         } catch (e) {
                             console.error(e);
                         }
-                    } else {
+                    }
+                    //비회원 
+                    else {
                         var geocoder = new kakao.maps.services.Geocoder();
                         var temp_lat, temp_lng;
                         //선택한 주소의 좌표정보 받아오기
@@ -388,6 +421,13 @@ const AddressContainer = () => {
                                             post_num: post_num,
                                         }),
                                     );
+
+                                    const near_store = await noAuthGetNearStore(temp_lat,temp_lng,selectAddr);
+                                    console.log('비회원 가장 가까운 곳');
+                                    console.log(near_store);
+                                    dispatch(get_near_store(near_store.data.query));
+                                    dispatch(get_menulist(null));
+
                                     setDeliveryList(test2);
                                     setOpen(false);
                                 } catch (e) {}
