@@ -18,15 +18,7 @@ const InputLogo = ({ handleChange }) => {
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                // 2. 읽기가 완료되면 아래코드가 실행됩니다.
-                const base64 = reader.result;
-                if (base64) {
-                    handleChange(base64.toString()); // 파일 base64 상태 업데이트
-                }
-            }
-            reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
+            handleChange(e.target.files);
             setFile(e.target.files[0].name); // 파일 상태 업데이트
         }
     };
@@ -38,7 +30,6 @@ const InputLogo = ({ handleChange }) => {
                     className={styles['filebox']}
                     type="file"
                     accept="image/gif, image/jpeg, image/png, image/svg"
-                    multiple
                     onChange={handleImageChange}
                 />
                 <label
@@ -63,6 +54,7 @@ const InputPhrase = ({ handleChange }) => {
     );
 };
 const InputPreview = ({ template, logo, phrase }) => {
+    const [preview, setPreview] = useState(null);
     const state = {};
     switch (template) {
         case 0:
@@ -78,13 +70,27 @@ const InputPreview = ({ template, logo, phrase }) => {
             state.image = 'right'; state.text = 'left'; 
             break;
     }
+    
+    useEffect(() => {
+        if (logo) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                // 2. 읽기가 완료되면 아래코드가 실행됩니다.
+                const base64 = reader.result;
+                if (base64) {
+                    setPreview(base64.toString()); // 파일 base64 상태 업데이트
+                }
+            }
+            reader.readAsDataURL(logo[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
+        }
+    }, [logo])
     return (
         <div className={styles['preview']}>
             <ButtonBase disabled className={cn('input-preview', 'input-box')}>
                 <div className={cn('circle', 'preview_out')}>
                     <div className={cn('circle', 'preview_in')}>
                         <div className={cn('box', 'image', state.image)}>
-                            <img className={styles['logo']} src={logo ? logo : DefaultLogo} alt="미리보기 로고" />
+                            <img className={styles['logo']} src={preview ? preview : DefaultLogo} alt="미리보기 로고" />
                             <p className={styles['name']}>아주나무 드림</p>
                         </div>
                         <div className={cn('box', 'text', state.text)}>

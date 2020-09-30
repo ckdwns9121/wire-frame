@@ -19,7 +19,6 @@ const newURL = (type, baseURL, newId) => {
 export default ({ baseURL, idList, currentId, type, listViewURL }) => {
     const history = useHistory();
     const findIdIndex = idList.findIndex(id => id === currentId);
-    
     return (
         <div className={styles['paging']}>
             <div className={styles['move']}>

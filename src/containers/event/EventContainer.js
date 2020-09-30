@@ -19,7 +19,7 @@ import DetailPaging from '../../components/sidebar/DetailPaging';
 const cn = classnames.bind(styles);
 
 
-const PAGE_PER_VIEW = 5;
+const PAGE_PER_VIEW = 6;
 
 
 export default ({ match, location }) => {
@@ -31,7 +31,7 @@ export default ({ match, location }) => {
     const history = useHistory();
     const openModal = useModal();
 
-    const [count, setCount] = useState(0);
+    // const [count, setCount] = useState(0);
 
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
@@ -45,16 +45,19 @@ export default ({ match, location }) => {
     const getEventList = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await requestEventList(PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
-            if (count !== res.count) {
-                setCount(res.count);
-            }
+            const res = await requestEventList(0, 1000);
+            // const res = await requestEventList(PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
+            // if (count !== res.count) {
+            //     setCount(res.count);
+            // }
             setList(res.events);
+            console.log(res.events);
         } catch (e) {
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
         }
         setLoading(false);
-    }, [openModal, page, count]);
+    //}, [openModal, page, count]);
+    }, [openModal]);
 
     const getEventShow = useCallback(async () => {
         setLoading(true);
@@ -72,8 +75,7 @@ export default ({ match, location }) => {
         setLoading(false);
     }, [match, openModal, history]);
 
-    const onClickDetail = useCallback(id =>
-        history.push(`${Paths.ajoonamu.event}/${id}`), [history]);
+    const onClickDetail = useCallback(id => history.push(`${Paths.ajoonamu.event}/${id}`), [history]);
 
     useEffect(() => {
         getEventList();
@@ -99,51 +101,48 @@ export default ({ match, location }) => {
                     >종료된 이벤트</span>
                 </div>
             </div>
-            {loading ? <Loading open={loading} />
-            :
-            <>
                 <div className={styles['content']}>
-                    {detail ? (
-                        <>
-                            <div className={styles['c-title-area']}>
-                                <h3 className={styles['c-title']}>{item.warn}</h3>
-                                <p className={styles['c-enddate']}>
-                                    {dateToYYYYMMDD(item.end_date, '/')}까지
-                                </p>
-                            </div>
-                            <div className={styles['e-content']}>
-                                {item && item.images === '[]' ? <img src={defaultImage} alt="기본 이미지" />
-                                : <img src={DBImageFormat(item.images)} alt="이벤트 이미지" />}
-                            </div>
-                        </>
-                    ) : list.length > 0 ? (
-                        list.map(({ id, images, warn, end_date }) => {
-                            return (
-                                <ButtonBase
-                                    onClick={() => onClickDetail(id)}
-                                    key={id}
-                                    className={styles['item']}
-                                >
-                                    <div className={styles['image']}>
-                                        {images === '[]' ? <img src={defaultImage} alt="기본 이미지"/>
-                                        : <img src={DBImageFormat(images)} alt="이벤트 이미지" />}
-                                    </div>
-                                    <div className={styles['text']}>
-                                        <p className={styles['warn']}>{warn}</p>
-                                        <p className={styles['enddate']}>
-                                            {dateToYYYYMMDD(end_date, '/')}까지
-                                        </p>
-                                    </div>
-                                </ButtonBase>
-                            );
-                        })
-                    ) : (
-                        <Message src={false} msg={'조회 결과가 없습니다 '} size={260} />
-                    )}
-                </div>
-                {detail ? <DetailPaging baseURL={Paths.ajoonamu.event} />
-                : <ListPaging baseURL={Paths.ajoonamu.event} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={count} />}
-            </>}
+                {detail ? (
+                    <>
+                        <div className={styles['c-title-area']}>
+                            <h3 className={styles['c-title']}>{item.warn}</h3>
+                            <p className={styles['c-enddate']}>
+                                {dateToYYYYMMDD(item.end_date, '/')}까지
+                            </p>
+                        </div>
+                        <div className={styles['e-content']}>
+                            {item && item.images === '[]' ? <img src={defaultImage} alt="기본 이미지" />
+                            : <img src={DBImageFormat(item.images)[0]} alt="이벤트 이미지" />}
+                        </div>
+                    </>
+                ) : list.length > 0 ? (
+                    list.slice((page - 1) * PAGE_PER_VIEW, page * PAGE_PER_VIEW).map(({ id, images, warn, end_date }) => {
+                        return (
+                            <ButtonBase
+                                onClick={() => onClickDetail(id)}
+                                key={id}
+                                className={styles['item']}
+                            >
+                                <div className={styles['image']}>
+                                    {images === '[]' ? <img src={defaultImage} alt="기본 이미지"/>
+                                    : <img src={DBImageFormat(images)} alt="이벤트 이미지" />}
+                                </div>
+                                <div className={styles['text']}>
+                                    <p className={styles['warn']}>{warn}</p>
+                                    <p className={styles['enddate']}>
+                                        {dateToYYYYMMDD(end_date, '/')}까지
+                                    </p>
+                                </div>
+                            </ButtonBase>
+                        );
+                    })
+                ) : (
+                    <Message src={false} msg={'조회 결과가 없습니다 '} size={260} />
+                )}
+            </div>
+            {detail ? <DetailPaging baseURL={Paths.ajoonamu.event} idList={list.map(item => item.id)} currentId={parseInt(match.params.id)} />
+            : <ListPaging baseURL={Paths.ajoonamu.event} pagePerView={PAGE_PER_VIEW} currentPage={page} totalCount={list.length} />}
+            <Loading open={loading} />
         </div>
     );
 };

@@ -73,7 +73,7 @@ const OrderListContainer = () => {
             setLoading(true);
             try {
                 const res = await requestPostReviewStore(user_token, {
-                    orderId,
+                    order_id: orderId,
                     review_body: content,
                     review_rating: rate,
                     review_images: files

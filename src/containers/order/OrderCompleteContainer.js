@@ -56,8 +56,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                 res = await noAuthOrderView(order_number);
             }
 
-            const {orders } = res;
-            console.log(orders);
+            const { orders } = res;
             setOrders(orders);
             setSuccess(true);
      
@@ -72,7 +71,7 @@ const OrderCompleteContainer = ({ order_number }) => {
             );
         }
         setLoading(false);
-    }, [order_number, user_token]);
+    }, [history, openMessage, order_number, user_token]);
 
 
     const userOrderCancle = async () => {
@@ -81,28 +80,26 @@ const OrderCompleteContainer = ({ order_number }) => {
             '해당 상품을 취소하시겠습니까?',
             '취소를 원하시면 예를 눌러주세요',
             async () => {
+                setLoading(true);
                 try {
-                    let res =null;
-                    if(user_token){
-                     res = await order_cancle(user_token, order_number);
-                   }
-                   else{
-                    res = await noAutuOrderCancle(order_number,orders.info.s_hp);
-                   }
-
-                   if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.')) 
-                   {
-                       openMessage(false, '이미 취소된 거래건 입니다.');
-                   } 
-                   else 
-                   {
-                       openMessage(false, '정삭적으로 취소되었습니다.');
-                   }
-             
-                } 
-                catch (e) {
+                    let res = null;
+                    if (user_token) {
+                        res = await order_cancle(user_token, order_number);
+                    } else {
+                        res = await noAutuOrderCancle(
+                            order_number,
+                            orders.info.s_hp,
+                        );
+                    }
+                    if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.') !== -1) {
+                        openMessage(false, '이미 취소된 거래건 입니다.');
+                    } else {
+                        openMessage(false, '정삭적으로 취소되었습니다.');
+                    }
+                } catch (e) {
                     console.error(e);
                 }
+                setLoading(false);
             },
         );
     };

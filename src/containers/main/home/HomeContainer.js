@@ -125,12 +125,14 @@ const HomeContainer = () => {
                             </li>
                         ))}
                     </ul>
+                    <div className={styles['list-box']}>
                     {items !== null && (
                         <MenuListView
                             menuList={items[useCate].items}
                             onClick={onClickDetailItem}
                         />
                     )}
+                    </div>
                 </div>
                 <div className={styles['banner-img']}
                     onClick={() => {
