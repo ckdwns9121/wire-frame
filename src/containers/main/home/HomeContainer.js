@@ -14,9 +14,9 @@ import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 
 import KakaoMap from '../../../components/map/KakaoMap';
-import { getMenuList } from '../../../api/menu/menu';
+import { getMainMenuList } from '../../../api/menu/menu';
 import Loading from 'components/assets/Loading';
-import { getCategory } from '../../../api/category/category';
+import { getMainCategory } from '../../../api/category/category';
 import { get_catergory, get_menulist } from '../../../store/product/product';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestGetReviewList } from '../../../api/review/review';
@@ -42,7 +42,8 @@ const HomeContainer = () => {
         setLoading(true);
         if (categorys.length === 1) {
             try {
-                const res = await getCategory();
+                const res = await getMainCategory();
+                
                 res.sort((a, b) => a.ca_id - b.ca_id);
                 // 카테고리를 분류 순서로 정렬.
                 const ca_list = res.filter((item) => item.ca_id !== 12);
@@ -50,7 +51,7 @@ const HomeContainer = () => {
                 dispatch(get_catergory(ca_list));
                 let arr = [];
                 for (let i = 0; i < ca_list.length; i++) {
-                    const result = await getMenuList(ca_list[i].ca_id);
+                    const result = await getMainMenuList(ca_list[i].ca_id);
                     const temp = { ca_id: ca_list[i].ca_id, items: result };
                     arr.push(temp);
                 }

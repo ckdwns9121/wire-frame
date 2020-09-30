@@ -11,3 +11,14 @@ export const getCategory = async () => {
     const result = await axios.get(req, config);
     return result.data.query.categorys;
 };
+
+export const getMainCategory = async () => {
+    const req = Paths.api + 'user/category/list';
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+        }
+    };
+    const result = await axios.get(req, config);
+    return result.data.query.categorys;
+}

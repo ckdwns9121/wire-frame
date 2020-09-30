@@ -14,7 +14,6 @@ import Loading from '../../components/assets/Loading';
 
 import {
     getPreferMenuList,
-    getCustomMenuList,
     getMenuList,
 } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
@@ -32,7 +31,7 @@ const ReserveContainer = ({ tab = '0' }) => {
     const history = useHistory();
     const [open, setOpen] = useState(false);
     const [budget, setBudget] = useState(0); // 맞춤 가격
-    const [endBudget, setEndBudget] = useState(0); // 맞춤 가격 끝
+    // const [endBudget, setEndBudget] = useState(0); // 맞춤 가격 끝
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [tabIndex, setTab] = useState(parseInt(tab));
@@ -67,9 +66,6 @@ const ReserveContainer = ({ tab = '0' }) => {
         try {
             // const res = await getCustomMenuList(); 임시데이터
             const res = await getPreferMenuList();
-            console.log('추천메뉴');
-            console.log(res);
-            // console.log(res);
             setPreferMenuList(res.items_prefer);
         } catch {
             alert('오류!');
@@ -83,10 +79,10 @@ const ReserveContainer = ({ tab = '0' }) => {
         setBudget(value);
     }, []);
 
-    const onChangeEndBudget = useCallback((e) => {
-        const value = stringNumberToInt(e.target.value);
-        setEndBudget(value);
-    }, []);
+    // const onChangeEndBudget = useCallback((e) => {
+    //     const value = stringNumberToInt(e.target.value);
+    //     setEndBudget(value);
+    // }, []);
 
     const onClickMenuItem = useCallback(
         (item_id) => {
@@ -118,39 +114,38 @@ const ReserveContainer = ({ tab = '0' }) => {
             dispatch(get_menulist(arr));
         }
         setLoading(false);
-    }, [categorys, dispatch, offset]);
+    }, [categorys, dispatch]);
 
     const getMenuListApi = useCallback(async () => {
-        if(!loading){
-        try {
-
-            //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템이 있으면 실행
-            if (tabIndex !== 0 && categorys.length !== 1 && items) {
-                setIsPaging(true);
-                const res = await getMenuList(
-                    categorys[tabIndex].ca_id,
-                    offset,
-                    LIMIT,
-                );
-
-                if (res.length !== 0) {
-                    setOffset(offset + LIMIT);
-                    dispatch(
-                        add_menuitem({
-                            ca_id: categorys[tabIndex].ca_id,
-                            items: res,
-                        }),
+        if (!loading) {
+            try {
+                //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템이 있으면 실행
+                if (tabIndex !== 0 && categorys.length !== 1 && items) {
+                    setIsPaging(true);
+                    const res = await getMenuList(
+                        categorys[tabIndex].ca_id,
+                        offset,
+                        LIMIT,
                     );
+
+                    if (res.length !== 0) {
+                        setOffset(offset + LIMIT);
+                        dispatch(
+                            add_menuitem({
+                                ca_id: categorys[tabIndex].ca_id,
+                                items: res,
+                            }),
+                        );
+                    }
+                    setTimeout(() => {
+                        setIsPaging(false);
+                    }, 1000);
                 }
-                setTimeout(() => {
-                    setIsPaging(false);
-                }, 1000);
+            } catch (e) {
+                console.error(e);
             }
-        } catch (e) {
-            console.error(e);
         }
-    }
-    }, [tabIndex, categorys, offset, items, posts,loading]);
+    }, [loading, tabIndex, categorys, items, offset, dispatch]);
 
     //첫 로딩시 아이템 셋팅
     useEffect(() => {
@@ -158,40 +153,39 @@ const ReserveContainer = ({ tab = '0' }) => {
         window.scrollTo(0,0);
     }, []);
 
-
     //탭 바뀌었을때 오프셋 갱신
-    useEffect(()=>{
+    useEffect(() => {
         setOffset(OFFSET);
-    },[tabIndex])
+    }, [tabIndex]);
   
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(true);
-        setTimeout(()=>{
+        setTimeout(() => {
             const url = JSON.parse(sessionStorage.getItem('url'));
-            if(url){
-            //이전 페이지가 상품페이지라면 오프셋 유지.
-            if(url.prev ==='/product'){
-              const OS = sessionStorage.getItem('offset');
-              if(OS){
-                setOffset(parseInt(OS));
-              }
+            if (url) {
+                //이전 페이지가 상품페이지라면 오프셋 유지.
+                if (url.prev === '/product') {
+                    const OS = sessionStorage.getItem('offset');
+                    if (OS) {
+                        setOffset(parseInt(OS));
+                    }
+                }
             }
-        }
             setLoading(false);
-        },100)
-    },[])
+        }, 100);
+    }, []);
 
     //로딩 완료 되었을 때 스크롤 위치로 이동.
     useEffect(() => {
         const scrollTop = sessionStorage.getItem('scrollTop');
         const url = JSON.parse(sessionStorage.getItem('url'));
         if(url){
-        //이전 주소가 상품페이지라면 스크롤 유지
-        if(url.prev ==='/product'){
-              console.log('스크롤 이동');
-            window.scrollTo(0,scrollTop);
+            //이전 주소가 상품페이지라면 스크롤 유지
+            if (url.prev === '/product') {
+                console.log('스크롤 이동');
+                window.scrollTo(0, scrollTop);
+            }
         }
-    }
     }, [loading]);
 
     // 탭 인덱스로 URL 이동
@@ -207,30 +201,29 @@ const ReserveContainer = ({ tab = '0' }) => {
     //스크롤 끝과 페이징중인지 확인후 페이지네이션 실행.
     useEffect(() => {
         if (isScrollEnd && !isPaging) {
-            console.log(isScrollEnd);
             getMenuListApi();
         }
-    }, [isScrollEnd, isPaging]);
+    }, [isScrollEnd, isPaging, getMenuListApi]);
 
-    useEffect(() => {
-        if (budget > endBudget) {
-            setEndBudget(budget);
-        }
-    }, [budget, endBudget]);
+    // useEffect(() => {
+    //     if (budget > endBudget) {
+    //         setEndBudget(budget);
+    //     }
+    // }, [budget, endBudget]);
 
-    const renderPost =useCallback(()=>{
+    const renderPost = useCallback(() => {
         // console.log(offset +'으로 렌더');
-        return(
+        return (
             <>
-            {posts && (
-                <MenuItemList
-                    menuList={posts.slice(0, offset)}
-                    onClick={onClickMenuItem}
-                />
-            )}
+                {posts && (
+                    <MenuItemList
+                        menuList={posts.slice(0, offset)}
+                        onClick={onClickMenuItem}
+                    />
+                )}
             </>
-        )
-    },[posts,offset,onClickMenuItem])
+        );
+    }, [posts, offset, onClickMenuItem]);
 
     return (
         <>
@@ -282,9 +275,9 @@ const ReserveContainer = ({ tab = '0' }) => {
                 itemType={orderType}
                 onChangeType={onChangeOrderType}
                 budget={budget}
-                endBudget={endBudget}
+                // endBudget={endBudget}
                 onChangeBudget={onChangeBudget}
-                onChangeEndBudget={onChangeEndBudget}
+                // onChangeEndBudget={onChangeEndBudget}
                 desireQuan={desireQuan}
                 onClickCustomOrder={onClickCustomOrder}
             />
