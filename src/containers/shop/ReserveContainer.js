@@ -26,6 +26,7 @@ const LIMIT = 8;
 
 const ReserveContainer = ({ tab = '0' }) => {
     const { categorys, items } = useSelector((state) => state.product);
+    const { addr1 } = useSelector((state) => state.address);
     const { store } = useSelector((state) => state.store);
     const dispatch = useDispatch();
 
@@ -37,7 +38,8 @@ const ReserveContainer = ({ tab = '0' }) => {
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [tabIndex, setTab] = useState(parseInt(tab));
     const [loading, setLoading] = useState(false);
-    const [preferMenuList, setPreferMenuList] = useState([]); //추천메뉴 리스트
+    const [preferList, setPreferMenuList] = useState([]); //추천메뉴 리스트
+    const [generalList, setGeneralMenuList] = useState([]); //추천메뉴 리스트
 
     const { isScrollEnd } = useScroll(loading);
     const [posts, setPosts] = useState([]); //보여줄 배열
@@ -61,17 +63,18 @@ const ReserveContainer = ({ tab = '0' }) => {
     };
 
     // 사용자 추천 메뉴들고오기
-    const getCustomList = async () => {
+    const getCustomList = useCallback(async () => {
         setLoading(true);
         try {
             // const res = await getCustomMenuList(); 임시데이터
-            const res = await getPreferMenuList();
+            const res = await getPreferMenuList(0, 100, 0, 100, 1, budget, desireQuan, addr1, store.shop_id);
             setPreferMenuList(res.items_prefer);
+            setGeneralMenuList(res.items_general);
         } catch {
             alert('오류!');
         }
         setLoading(false);
-    };
+    }, [budget, desireQuan, addr1, store]);
 
     //전체 예산 입력
     const onChangeBudget = useCallback((e) => {
@@ -86,6 +89,7 @@ const ReserveContainer = ({ tab = '0' }) => {
 
     const onClickMenuItem = useCallback(
         (item_id) => {
+            console.log(item_id);
             history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
             sessionStorage.setItem('offset', offset);
         },
@@ -286,8 +290,11 @@ const ReserveContainer = ({ tab = '0' }) => {
                         <div className={styles['shop']}>
                             {tabIndex === 0 ? (
                                 <>
-                                    {preferMenuList.length !== 0 ? (
-                                        <MenuItemList menuList={preferMenuList} />
+                                    {preferList.length !== 0 ? (
+                                        <>
+                                         <MenuItemList menuList={preferList} onClick={onClickMenuItem} />
+                                         <MenuItemList menuList={generalList} onClick={onClickMenuItem} />
+                                        </>
                                     ) : (
                                             <Message
                                                 msg="전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."

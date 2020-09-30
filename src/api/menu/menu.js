@@ -8,11 +8,22 @@ export const getOtherUserMenu = async () => {
     return res;
 };
 
-export const getPreferMenuList = async () => {
-    const req = Paths.api + `user/item/prefer?item_type=1&general_offset&general_limit&prefer_offset&prefer_limit&budget=15000&desire_quan=1000&addr1=부산`;
+export const getPreferMenuList = async (general_offset=0,general_limit=100,prefer_offset=0,prefer_limit=100 ,item_type=1,budget,desire_quan,addr1,shop_id) => {
+    const req = Paths.api + `user/item/prefer`;
+    axios.defaults.headers.get['Context-Type'] = 'application/json';
+
+ 
     const config = {
-        headers: {
-            'content-type': 'application/json',
+        params: {
+            general_offset,
+            general_limit,
+            prefer_offset,
+            prefer_limit,
+            item_type,
+            budget,
+            desire_quan,
+            addr1,
+            shop_id,
         },
     };
     const result = await axios.get(req, config);
