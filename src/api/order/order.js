@@ -6,19 +6,32 @@ export const user_order = async (
     order_type,
     order_memo,
     delivery_memo,
-    delivery_req_time
-     // cp_id,
-    // point_price,
+    delivery_req_time,
+    cp_id,
+    point_price=0,
     
 ) => {
     const req = Paths.api + 'user/order';
-
-    const form_data = {
-        order_type: 'reserve',
-        order_memo: order_memo,
-        delivery_memo: delivery_memo,
-        delivery_req_time: delivery_req_time,
-    };
+    let form_data ;
+    if (cp_id === null) {
+        form_data = {
+            order_type: 'reserve',
+            order_memo: order_memo,
+            delivery_memo: delivery_memo,
+            delivery_req_time: delivery_req_time,
+            point_price:point_price,
+        };
+    }
+    else{
+        form_data = {
+            order_type: 'reserve',
+            order_memo: order_memo,
+            delivery_memo: delivery_memo,
+            delivery_req_time: delivery_req_time,
+            cp_id :cp_id,
+            point_price:point_price,
+        };
+    }
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post(req, form_data);
