@@ -27,7 +27,6 @@ export const requestQNADetail = async (token, id) => {
         params: { id }
     };
     const res = await axios.get(req, config);
-    console.log(res);
     return res;
 }
 

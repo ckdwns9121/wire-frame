@@ -89,5 +89,25 @@
                 }
             }
         }
+        .tags {
+            margin-top: 10px;
+            margin-left: -10px;
+
+            .tag {
+                font-size: 1.167rem;
+                color: #333;
+                padding: 8px 20px;
+                margin-left: 10px;
+                margin-top: 10px;
+                border: solid 1px #EBEBEB;
+                border-radius: 21px;
+                span, img {
+                    vertical-align: middle;
+                }
+                img {
+                    margin-left: 20px;
+                }
+            }
+        }
     }
 }

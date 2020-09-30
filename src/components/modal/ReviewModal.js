@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Review.module.scss';
 import PROFILE_IMG from '../svg/sign/profile.png';
 import Slider from 'react-slick';
-import { Backdrop, Dialog, IconButton } from '@material-ui/core';
+import { Backdrop, ButtonBase, Dialog, IconButton } from '@material-ui/core';
 import Prev from '../svg/review/prev.svg';
 import Next from '../svg/review/next.svg';
 import CloseIcon from '../svg/modal/CloseIcon';
@@ -12,6 +12,8 @@ import Loading from '../assets/Loading';
 import ReviewRating from '../review/ReviewRating';
 import { dateToYYYYMMDD, DBImageFormat, hideEmail } from '../../lib/formatter';
 import { useModal } from '../../hooks/useModal';
+import TAG from '../svg/review/tag.svg';
+
 const cx = cn.bind(styles);
 
 const arrowStyle = {
@@ -35,6 +37,7 @@ const ReviewModal = (props) => {
     const [files, setFiles] = useState([]);
     const [rate, setRate] = useState(5.0);
     const [craetedAt, setCreatedAt] = useState(new Date());
+    const [tags, setTags] = useState([]);
     const [loading, setLoading] = useState(false);
     
     const getReviewContent = useCallback(async () => {
@@ -49,6 +52,8 @@ const ReviewModal = (props) => {
                     setRate(parseFloat(review_rating));
                     setCreatedAt(created_at);
                     setFiles(DBImageFormat(review_images));
+                    setTags(res.data.query.items);
+                    console.log(res.data.query.items);
                 } else {
                     openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
                 }
@@ -94,6 +99,16 @@ const ReviewModal = (props) => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className={styles['tags']}>
+                        {tags.map(({ item_name, item_id }) => {
+                            return (
+                                <ButtonBase key={item_id} className={styles['tag']}>
+                                    <span>{item_name}</span>
+                                    <img src={TAG} alt="바로가기" />
+                                </ButtonBase>
+                            );
+                        })}
                     </div>
                 </div>
                 <Backdrop open={props.open} onClick={props.handleClose} />
