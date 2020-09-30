@@ -269,6 +269,8 @@ const AddressContainer = () => {
                             ) {
                                 // 정상적으로 검색이 완료됐으면
                                 if (status === kakao.maps.services.Status.OK) {
+                                    temp_lat = result[0].y;
+                                    temp_lng = result[0].x;
                                     console.log(selectAddr);
                                     console.log(temp_lat);
                                     console.log(temp_lng);
