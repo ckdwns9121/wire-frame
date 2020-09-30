@@ -124,7 +124,6 @@ const CartContainer = () => {
             setLoading(true);
             try {
                 const res = await getCartList(user_token);
-                console.log(res);
                 if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
                     openModal(res.data.msg, '주소지 설정을 해주세요.', () => {
                         history.push(Paths.ajoonamu.address);
@@ -141,7 +140,7 @@ const CartContainer = () => {
                     setCartList(list);
                 }
             } catch (e) {
-                console.log(e);
+
             }
             setLoading(false);
         } else {
@@ -149,14 +148,18 @@ const CartContainer = () => {
      
             // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
             setTimeout( async() => {
-                  setLoading(true);
+                setLoading(true);
                 if (addr1) {
                      try {
-                        console.log("비회원 장바구니");
-                        console.log(addr1);
-                        console.log()
-                         const cart_id = JSON.parse(localStorage.getItem('noAuthCartId'));
-                         const res = await noAuthGetCartList(cart_id,lat,lng,addr1);
+                         const cart_id = JSON.parse(
+                             localStorage.getItem('noAuthCartId'),
+                         );
+                         const res = await noAuthGetCartList(
+                             cart_id,
+                             lat,
+                             lng,
+                             addr1,
+                         );
                          const { query } = res.data;
                          let len = Object.keys(query).length;
                          let list = [];
@@ -166,13 +169,12 @@ const CartContainer = () => {
                          }
                          setCost(query.delivery_cost);
                          setCartList(list);
-                         setLoading(false);
                      } catch (e) {
-                         console.error(e);
-                         setLoading(false);
+
                      }
+                     setLoading(false);
                 }
-                else{
+                else {
                     setLoading(false);
                 }
             }, 500);
@@ -192,7 +194,6 @@ const CartContainer = () => {
                                 user_token,
                                 cart_id,
                             );
-                            console.log(res);
                             setCartList((list) =>
                                 list.filter(
                                     ({ item }) =>
@@ -200,20 +201,17 @@ const CartContainer = () => {
                                 ),
                             );
                         } catch (e) {
-                            console.error(e);
+
                         }
                     } else {
                         try {
                             const res = await noAuthRemoveCartItem(cart_id);
-                            console.log(res);
-                            console.log(`카트 id = ${cart_id}`);
                             const cart_ids = JSON.parse(
                                 localStorage.getItem('noAuthCartId'),
                             );
                             const newState = cart_ids.filter(
                                 (v) => parseInt(v) !== parseInt(cart_id),
                             );
-                            console.log(newState);
                             localStorage.setItem(
                                 'noAuthCartId',
                                 JSON.stringify(newState),
@@ -224,9 +222,8 @@ const CartContainer = () => {
                                         cart_id.indexOf(item.cart_id) === -1,
                                 ),
                             );
-                            console.log(cart_ids);
                         } catch (e) {
-                            console.error(e);
+
                         }
                     }
                 },
@@ -269,7 +266,7 @@ const CartContainer = () => {
                     );
                 }
             } catch (e) {
-                console.error(e);
+                
             }
         } else {
             //선택된 아이템이 없을시
@@ -284,7 +281,6 @@ const CartContainer = () => {
                     async () => {
                         const cart_ids = JSON.parse( localStorage.getItem('noAuthCartId'));
                         const newState = cart_ids.filter(c => !obj.filter(o => o === c).length);
-                        console.log(newState);
 
 
                         localStorage.setItem(
@@ -367,41 +363,26 @@ const CartContainer = () => {
                         item.cart_id,
                         item.item_quanity,
                     );
-                    console.log(res);
                 }
             } catch (e) {
-                console.error(e);
+
             }
         } else {
             try {
                 for (let i = 0; i < cartList.length; i++) {
                     const { item } = cartList[i];
-                    console.log(item.cart_id);
-                    console.log(item.item_quanity);
                     const res = await noAuthUpdateCartQunaity(
                         item.cart_id,
                         item.item_quanity,
                     );
-                    console.log(res);
                 }
             } catch (e) {
-                console.error(e);
+
             }
         }
         setLoading(false);
         history.push(Paths.ajoonamu.order);
     }, [user_token, cartList, history]);
-
-
-    useEffect(()=>{
-        console.log("gd");
-        if(addr1){
-        console.log('주소 존재')
-        }
-        else{
-            console.log('주소 없음');
-        }
-    },[addr1])
 
     useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
 

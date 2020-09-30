@@ -62,6 +62,5 @@ export const couponInput =async (token,cp_id) =>{
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
     const res = await axios.put(req, form_data);
-    console.log(res);
     return res;
 }

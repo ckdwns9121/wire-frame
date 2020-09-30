@@ -152,7 +152,6 @@ export default ({
     ],
 }) => {
     const ref = useRef(null);
-    console.log(products);
     return (
         <ButtonBase style={{ width: '100%', }} onClick={() => onDownload(ref)}>
             <EstimateArea>

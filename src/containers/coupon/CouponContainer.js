@@ -81,7 +81,6 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             const res = await getMyCoupons(user_token);
-            console.log(res);
             setCpList(res);
         }
         setLoading(false);
@@ -118,7 +117,7 @@ const CouponConatiner = (props) => {
                     }),
                 );
             } catch (e) {
-                console.error(e);
+
             }
             setLoading(false);
         },
@@ -136,7 +135,7 @@ const CouponConatiner = (props) => {
                 openModal('쿠폰 등록이 완료되었습니다.');
             }
         } catch (e) {
-            console.error(e);
+            
         }
 
         setLoading(false);

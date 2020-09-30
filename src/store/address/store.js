@@ -5,20 +5,15 @@ const GET_NEAR_STORE = 'store/GET_NEAR_STORE';
 export const get_near_store = createAction(GET_NEAR_STORE);
 
 const initState = {
-    store:null
+    store: null,
 };
-
 
 const store = handleActions(
     {
-        [GET_NEAR_STORE]: (state, action) => { 
-            console.log(action);
-         return { 
-                ...state,
-                store : action.payload
-            }
-     },
-
+        [GET_NEAR_STORE]: (state, action) => ({
+            ...state,
+            store: action.payload,
+        }),
     },
     initState,
 );

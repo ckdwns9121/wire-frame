@@ -40,8 +40,6 @@ export default ({ history }) => {
                             const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
                             dispatch(get_address({addr1,addr2,lat,lng,post_num}));
                             const near_store = await noAuthGetNearStore(lat,lng,addr1);
-                            console.log('비회원 가장 가까운 곳');
-                            console.log(near_store);
                             dispatch(get_near_store(near_store.data.query));
                         }
                     }

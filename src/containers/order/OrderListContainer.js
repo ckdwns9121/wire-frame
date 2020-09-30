@@ -44,7 +44,6 @@ const OrderListContainer = () => {
                 startDate,
                 endDate,
             );
-            console.log(res);
             setOrderList(res.orders ? res.orders : []);
         }
         setLoading(false);

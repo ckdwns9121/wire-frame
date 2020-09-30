@@ -150,12 +150,9 @@ const OrderContainer = () => {
                     let price = 0;
                     const { query } = res.data;
                     let len = Object.keys(query).length;
-                    console.log("길이");
-                    console.log(len);
-
                     for (let i = 0; i < len - 2; i++) {
                         const { item, options } = query[i];
-                        console.log(query[i]);
+                        
                         price +=
                             parseInt(item.item_price) *
                             parseInt(item.item_quanity);
@@ -169,7 +166,7 @@ const OrderContainer = () => {
                     }
 
                     if (query.PCD_PAYER_ID === null) {
-                        console.log(query.PCD_PAYER_ID);
+                        
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID);
                     } else {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID.pp_tno);
@@ -178,25 +175,22 @@ const OrderContainer = () => {
                     setDlvCost(query.delivery_cost);
                 }
             } catch (e) {
-                console.log(e);
+                
             }
         }
         else {
-            console.log('비회원 장바구니  주문조회');
             try {
                 if(addr1){
                 const cart_id = JSON.parse(
                     localStorage.getItem('noAuthCartId'),
                 );
-                const res = await noAuthGetCartList(cart_id, lat, lng, addr1);
-                console.log(res);
+                const res = await noAuthGetCartList(cart_id, lat, lng, addr1);                
                 const { query } = res.data;
                 let len = Object.keys(query).length;
                 let price = 0;
 
                 for (let i = 0; i < len - 1; i++) {
                     const { item, options } = query[i];
-                    console.log(query[i]);
                     price +=
                         parseInt(item.item_price) * parseInt(item.item_quanity);
 
@@ -207,12 +201,11 @@ const OrderContainer = () => {
                             parseInt(item.item_quanity);
                     }
                 }
-                console.log(query.delivery_cost);
                 setDlvCost(query.delivery_cost);
                 setTotalPrice(price);
             }
             } catch (e) {
-                console.error(e);
+                
             }
 
         }
@@ -296,8 +289,6 @@ const OrderContainer = () => {
             const getResult = function (res) {
                 alert('callback : ' + res.PCD_PAY_MSG);
             };
-
-            console.log('결제 시작 테스트');
 
             let pay_type = 'card'; //결제 수단
             let pay_work = 'CERT'; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
@@ -847,7 +838,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
             openModal('휴대폰 형식에 맞지 않습니다!', '휴대폰 번호를 확인해 주세요.');
         }
     }, [secondValue, thirdValue, openModal]);
-    
+
     const onClickResendAuth = useCallback(() => {
         openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
             setAuth(false);

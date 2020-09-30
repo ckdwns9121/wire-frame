@@ -31,14 +31,13 @@ export const useUrl =()=>{
 
 
     useEffect(()=>{
-        // console.log(location);
         setCurrent(location.pathname);
         setPrev(current);
         const obj = {
             current : location.pathname,
             prev : current,
         }
-        sessionStorage.setItem('url' ,JSON.stringify(obj));
+        sessionStorage.setItem('url', JSON.stringify(obj));
 
     },[location.pathname])
 

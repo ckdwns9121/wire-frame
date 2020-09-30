@@ -9,7 +9,7 @@ const DeliveryrItem = (props) => {
     /* 
         최근 배달 주소를 보여줄 컴포넌트
     */
-    const { addr1, addr2, lat, lan, active } = props;
+    const { addr1, addr2, active } = props;
     const onRemove = (id) => {
         props.onRemove(id);
     };

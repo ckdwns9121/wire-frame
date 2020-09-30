@@ -56,7 +56,7 @@ const HomeContainer = () => {
             setCategories(ca_list);
             setItems(arr);
         } catch (e) {
-            console.error(e);
+
         }
         setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +72,6 @@ const HomeContainer = () => {
             }
         } catch (e) {
             // 오류났을 때
-            console.error(e);
         }
     }, []);
 

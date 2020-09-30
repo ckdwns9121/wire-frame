@@ -8,7 +8,7 @@ import Null_Item from 'components/svg/item/null_item.png';
 const Message = ({ msg,src, onClick, isButton, buttonName, size = 500 }) => {
     return (
         <div className={styles['msg']} style={{ height: size + 'px' }}>
-        {src && (
+            {src && (
                 <div className={styles['icon']}>
                     <img src={Null_Item} alt={''}></img>
                 </div>

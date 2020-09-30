@@ -1,7 +1,6 @@
 import React from 'react';
 import PropsTypes from 'prop-types';
 import styles from './Cart.module.scss';
-import Counter from 'components/counter/Counter';
 import Menu1 from '../svg/menu/menu1.png';
 import CloseIcon from '../svg/modal/CloseIcon';
 import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
@@ -18,8 +17,8 @@ const CartItem = (props) => {
     const options = props.options;
 
     const total_price =()=>{
-        let total= parseInt(item_price) * parseInt(item_quanity);
-        for(let i=0 ; i<options.length;i++){
+        let total = parseInt(item_price) * parseInt(item_quanity);
+        for (let i = 0; i < options.length; i++) {
             total += parseInt(options[i].option_price) * parseInt(item_quanity);
         }
         return total;

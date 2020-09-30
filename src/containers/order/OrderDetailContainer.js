@@ -51,8 +51,6 @@ const OrderDetailContainer = (props) => {
             getOrderInfo();
         }
     }, [order_id, getOrderInfo, history]);
-
-    console.log(query);
     return (
         <>
         {loading ? <Loading open ={true}/> :

@@ -54,12 +54,11 @@ const AddressContainer = () => {
         //회원 주소 설정
         setLoading(true);
         if (user_token) {
-            console.log('회원');
             try {
                 const res = await getDeliveryList(user_token);
                 setDeliveryList(res.data.query);
             } catch (e) {
-                console.log(e);
+                
             }
         }
         //비회원
@@ -146,17 +145,16 @@ const AddressContainer = () => {
                                 user_token,
                                 delivery_id,
                             );
-                            console.log(res);
                             dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
                             const near_store = await getNearStore(lat, lng, addr1);
-                            console.log(near_store);
+                            
                             dispatch(get_near_store(near_store.data.query));
                             dispatch(get_menulist(null));
                             dispatch(get_breakMenuList(null));
 
                             callDeliveryList();
                         } catch (e) {
-                            console.error(e);
+                            
                         }
                     }
                     else {
@@ -185,8 +183,7 @@ const AddressContainer = () => {
                         dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
 
                         const near_store = await noAuthGetNearStore(lat, lng, addr1);
-                        console.log('비회원 가장 가까운 곳');
-                        console.log(near_store);
+                        
                         dispatch(get_near_store(near_store.data.query));
                         dispatch(get_menulist(null));
                         dispatch(get_breakMenuList(null));
@@ -220,10 +217,9 @@ const AddressContainer = () => {
                         }
                         setDeliveryList((list) => list.filter((item) => item.delivery_id !== delivery_id));
                     } catch (e) {
-                        console.error(e);
+                        
                     }
                 } else {
-                    console.log(delivery_id);
                     const noAuthAddrs = JSON.parse(
                         localStorage.getItem('noAuthAddrs'),
                     );
@@ -266,7 +262,6 @@ const AddressContainer = () => {
                     draft[index].active = true;
                 }),
             );
-            console.log(search_list);
         },
         [search_list],
     );
@@ -304,9 +299,6 @@ const AddressContainer = () => {
                                 if (status === kakao.maps.services.Status.OK) {
                                     temp_lat = result[0].y;
                                     temp_lng = result[0].x;
-                                    console.log(selectAddr);
-                                    console.log(temp_lat);
-                                    console.log(temp_lng);
                                     try {
                                         const res = await insertAddress(
                                             user_token,
@@ -329,7 +321,6 @@ const AddressContainer = () => {
                                             );
 
                                             const near_store = await getNearStore(temp_lat, temp_lng, selectAddr);
-                                            console.log(near_store);
                                             dispatch(get_near_store(near_store.data.query));
                                             dispatch(get_menulist(null));
                                             dispatch(get_breakMenuList(null));
@@ -345,24 +336,22 @@ const AddressContainer = () => {
                                             );
                                         }
                                     } catch (e) {
-                                        console.error(e);
                                         setLoading(false);
                                     }
                                 }
                                 //검색이 완료되지 않앗으면.
                                 else {
-                                    console.log('검색 실패');
                                     setLoading(false);
                                 }
                             });
                         } catch (e) {
-                            console.error(e);
+                            
                         }
                     }
                     //비회원 
                     else {
-                        var geocoder = new kakao.maps.services.Geocoder();
-                        var temp_lat, temp_lng;
+                        let geocoder = new kakao.maps.services.Geocoder();
+                        let temp_lat, temp_lng;
                         //선택한 주소의 좌표정보 받아오기
                         geocoder.addressSearch(selectAddr, async function (
                             result,
@@ -372,9 +361,6 @@ const AddressContainer = () => {
                             if (status === kakao.maps.services.Status.OK) {
                                 temp_lat = result[0].y;
                                 temp_lng = result[0].x;
-                                console.log(selectAddr);
-                                console.log(temp_lat);
-                                console.log(temp_lng);
                                 try {
                                     //비회원일시 로컬스토리지에서 아이템을 들고온다.
                                     const noAuthAddrs = JSON.parse(
@@ -433,8 +419,6 @@ const AddressContainer = () => {
                                     );
 
                                     const near_store = await noAuthGetNearStore(temp_lat, temp_lng, selectAddr);
-                                    console.log('비회원 가장 가까운 곳');
-                                    console.log(near_store);
                                     dispatch(get_near_store(near_store.data.query));
                                     dispatch(get_menulist(null));
                                     dispatch(get_breakMenuList(null));
@@ -445,7 +429,6 @@ const AddressContainer = () => {
                             }
                             //검색이 완료되지 않앗으면.
                             else {
-                                console.log('검색 실패');
                                 setLoading(false);
                             }
                         });

@@ -48,7 +48,6 @@ export default function App() {
         if (token) {
             dispatch(get_user_info(token));
             const res = await getActiveAddr(token);
-            console.log(res);
             if(res){
                 dispatch(get_address(res))
                 const {lat,lng,addr1} = res;
@@ -58,7 +57,6 @@ export default function App() {
                 dispatch(get_breakMenuList(null));
             }
             else{
-                console.log('배달정보 없음');
                 dispatch(get_address({addr1:null, addr2:null,lat:null,lng:null,post_num:null}));
                 dispatch(get_near_store(null));
                 dispatch(get_menulist(null));
@@ -72,14 +70,11 @@ export default function App() {
                     const {addr1, addr2,lat,lng,post_num} = noAuth[index];
                     dispatch(get_address({addr1,addr2,lat,lng,post_num}));
                     const near_store = await noAuthGetNearStore(lat,lng,addr1);
-                    console.log('비회원 가장 가까운 곳');
-                    console.log(near_store);
                     dispatch(get_near_store(near_store.data.query));
                     dispatch(get_menulist(null));
                     dispatch(get_breakMenuList(null));
                 }
                 else{
-                    console.log("비회원 배달정보 없음");
                     dispatch(get_address({addr1:null,addr2:null,lat:null,lng:null,post_num:null}));
                     dispatch(get_near_store(null));
                     dispatch(get_menulist(null));

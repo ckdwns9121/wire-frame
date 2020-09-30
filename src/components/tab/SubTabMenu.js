@@ -28,7 +28,7 @@ SubTabMenu.defaultProps = {
     tabs: null,
     index: 0,
     isPush: false,
-    onChange: () => console.warn(null),
+    onChange: () => {},
 };
 
 export default SubTabMenu;

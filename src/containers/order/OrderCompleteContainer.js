@@ -47,13 +47,10 @@ const OrderCompleteContainer = ({ order_number }) => {
         setLoading(true);
         try {
             let res = null;
-            if (user_token) 
-            {
-                console.log('회원');
+            if (user_token) {
                 res = await getDetailOrderView(user_token, order_number);
             } 
             else {
-                console.log('비회원')
                 res = await noAuthOrderView(order_number);
             }
 
@@ -62,7 +59,6 @@ const OrderCompleteContainer = ({ order_number }) => {
             setSuccess(true);
      
         } catch (e) {
-            console.log(e);
             setError(true);
             openMessage(
                 false,
@@ -99,7 +95,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                         history.push(Paths.index);
                     }
                 } catch (e) {
-                    console.error(e);
+                    
                 }
                 setLoading(false);
             },

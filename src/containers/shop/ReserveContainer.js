@@ -89,7 +89,6 @@ const ReserveContainer = ({ tab = '0' }) => {
 
     const onClickMenuItem = useCallback(
         (item_id) => {
-            console.log(item_id);
             history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
             sessionStorage.setItem('offset', offset);
         },
@@ -135,7 +134,7 @@ const ReserveContainer = ({ tab = '0' }) => {
             }
         }
         catch (e) {
-            console.error(e);
+            
         }
         setLoading(false);
     }, [categorys, store, items]);
@@ -144,10 +143,8 @@ const ReserveContainer = ({ tab = '0' }) => {
 
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
-        console.log('페이지 네이션');
         if (!loading) {
             try {
-                console.log('들어옴');
 
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
                 if (tabIndex !== 0 && categorys.length !== 1 && items && store) {
@@ -158,7 +155,6 @@ const ReserveContainer = ({ tab = '0' }) => {
                         LIMIT,
                         store.shop_id
                     );
-                    // console.log(res);
 
                     const get_list = res.data.query.items;
                     if (get_list.length !== 0) {
@@ -176,7 +172,7 @@ const ReserveContainer = ({ tab = '0' }) => {
                 }
             }
             catch (e) {
-                console.error(e);
+                
             }
         }
     }, [tabIndex, categorys, offset, items, loading, store, dispatch]);
@@ -222,7 +218,6 @@ const ReserveContainer = ({ tab = '0' }) => {
         if (url) {
             //이전 주소가 상품페이지라면 스크롤 유지
             if (url.prev === '/product') {
-                console.log('스크롤 이동');
                 window.scrollTo(0, scrollTop);
             }
         }
@@ -252,7 +247,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     // }, [budget, endBudget]);
 
     const renderPost = useCallback(() => {
-        // console.log(offset +'으로 렌더');
         return (
             <>
                 {posts && (

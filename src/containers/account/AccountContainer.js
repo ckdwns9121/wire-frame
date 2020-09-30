@@ -94,7 +94,6 @@ const AccountContainer = () => {
                                     pw,
                                     pw_c,
                                 );
-                                console.log(res);
                                 if (res.data.msg !== '성공') {
                                     errorList.push('비밀번호');
                                 }

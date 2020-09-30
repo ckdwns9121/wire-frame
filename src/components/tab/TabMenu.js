@@ -17,13 +17,6 @@ const useStyles = makeStyles((theme) => ({
 const TabMenu = ({ tabs, index, onChange }) => {
     const classes = useStyles();
 
-    const settings = {
-        infinite: true,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 5,
-    };
-
     const tabList = tabs.map((tab) => (
         <Tab
             label={tab.name ? tab.name : tab.ca_name}
@@ -56,7 +49,7 @@ TabMenu.defaultProps = {
     tabs: null,
     index: 0,
     href: false,
-    onChange: () => console.warn(null),
+    onChange: () => {},
 };
 
 export default TabMenu;

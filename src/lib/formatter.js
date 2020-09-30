@@ -109,7 +109,7 @@ export const DBImageFormat = (url) => {
             const IMAGES = URL_FORMAT.split(',');
             return IMAGES.map(IMAGE =>STORAGE_URL + IMAGE);
         } catch (e) {
-            console.error(e);
+            
         }
     }
     return '';

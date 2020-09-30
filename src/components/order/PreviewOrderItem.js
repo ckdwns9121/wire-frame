@@ -9,16 +9,16 @@ import { Paths } from '../../paths';
 
 const PreviewOrderItem = (props) => {
     const {
-        cp_price,
+        // cp_price,
         items,
         info,
         order_id,
-        point_price,
+        // point_price,
         receipt_time,
-        receipt_price,
+        // receipt_price,
         review_id,
-        send_cost,
-        total_price,
+        // send_cost,
+        // total_price,
     } = props;
 
     const history = useHistory();

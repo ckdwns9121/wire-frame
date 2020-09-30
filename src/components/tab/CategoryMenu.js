@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CategoryMenu = ({ tabs, index, onChange,isPush }) => {
-    const classes = useStyles();
     const history = useHistory();
 
     const onClickTab = (url) => {
@@ -61,7 +60,7 @@ CategoryMenu.defaultProps = {
     tabs: null,
     index: 0,
     isPush : false,
-    onChange: () => console.warn(null),
+    onChange: () => {},
 };
 
 export default CategoryMenu;

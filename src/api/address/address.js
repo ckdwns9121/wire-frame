@@ -10,7 +10,6 @@ export const getDeliveryList = async (token) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.get['Context-Type'] = 'application/json';
     const res = await axios.get();
-    console.log(res);
     return res;
 };
 
@@ -72,7 +71,6 @@ export const selectAddress = async (token, delivery_id) => {
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
     const res = await axios.put(req, form_data);
-    console.log(res);
     return res;
 };
 
@@ -94,7 +92,6 @@ export const getActiveAddr = async (token) => {
     axios.defaults.headers.get['Context-Type'] = 'application/json';
     const res = await axios.get();
 
-    console.log(res);
     const { query } = res.data;
     let len = Object.keys(query).length;
     for (let i = 0; i < len; i++) {

@@ -37,7 +37,6 @@ export default ({ location }) => {
         try {
             if (store) {
                 const res = await getSearchMenu(q, (page - 1) * PAGE_PER_VIEW, PAGE_PER_VIEW, store.shop_id);
-                console.log(res);
                 if (res.data.msg === 'success') {
                     if (count !== res.data.query.count) {
                         setCount(res.data.query.count);
@@ -49,7 +48,7 @@ export default ({ location }) => {
                 }
             }
         } catch (e) {
-            console.error(e);
+
         }
         setLoading(false);
     }, [q, count, page, store]);

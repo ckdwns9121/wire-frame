@@ -96,7 +96,6 @@ const SignInContainer = () => {
                             dispatch(get_address(active_addr))
                             const {lat,lng,addr1} = active_addr;
                             const near_store = await getNearStore(lat,lng,addr1);
-                            console.log(near_store);
                             dispatch(get_near_store(near_store.data.query));
                             dispatch(get_menulist(null));
                             dispatch(get_breakMenuList(null));

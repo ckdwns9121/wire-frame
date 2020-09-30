@@ -59,8 +59,6 @@ export const requestPostReviewStore = async (token, {
     axios.defaults.headers['Context-Type'] = 'multipart/form-data';
 
     const res = await axios.post(req, formData);
-    console.log(order_id, review_body, review_rating, review_images);
-    console.log(res);
     return res;
 }
 

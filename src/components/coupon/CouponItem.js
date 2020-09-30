@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './Coupon.module.scss';
-import DownCoupon from '../svg/coupon/down.svg';
 import { numberFormat } from "../../lib/formatter";
 
 const CouponItem = (props) => {
     const {
-        cp_datetime,
+        // cp_datetime,
         cp_end,
-        cp_id,
+        // cp_id,
         // cp_minimum,
         cp_price,
         cp_start,

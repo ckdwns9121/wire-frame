@@ -8,11 +8,20 @@ export const getOtherUserMenu = async () => {
     return res;
 };
 
-export const getPreferMenuList = async (general_offset=0,general_limit=100,prefer_offset=0,prefer_limit=100 ,item_type=1,budget,desire_quan,addr1,shop_id) => {
+export const getPreferMenuList = async (
+    general_offset = 0,
+    general_limit = 100,
+    prefer_offset = 0,
+    prefer_limit = 100,
+    item_type = 1,
+    budget,
+    desire_quan,
+    addr1,
+    shop_id,
+) => {
     const req = Paths.api + `user/item/prefer`;
     axios.defaults.headers.get['Context-Type'] = 'application/json';
 
- 
     const config = {
         params: {
             general_offset,
@@ -27,7 +36,6 @@ export const getPreferMenuList = async (general_offset=0,general_limit=100,prefe
         },
     };
     const result = await axios.get(req, config);
-    console.log(result);
     return result.data.query;
 };
 
@@ -60,7 +68,6 @@ export const getMenuList = async (ca_id,offset=0, limit=8,shop_id) => {
         }
     }
     const result = await axios.get(req, config);
-    // console.log(result);
     return result;
 };
 

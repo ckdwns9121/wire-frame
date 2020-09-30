@@ -60,7 +60,7 @@ const DetailContainer = ({ item_id }) => {
             const res = await getOtherUserMenu();
             setOtherMenuList(res.data.query.items);
         } catch (e) {
-            console.error(e);
+            
         }
     };
     //장바구니 담기
@@ -92,7 +92,6 @@ const DetailContainer = ({ item_id }) => {
                 //주소가 존재할 때
                 if (addr1) {
                     try {
-                        console.log('비회원 장바구니 담기');
                         const res = await noAuthAddCart(
                             item_id,
                             options,
@@ -129,7 +128,7 @@ const DetailContainer = ({ item_id }) => {
                             );
                         }
                     } catch (e) {
-                        console.error(e);
+                        
                     }
                 } else {
                     openModal('배달지 주소가 설정되지 않았습니다.', '배달지 주소를 설정하시려면 예를 눌러주세요',
