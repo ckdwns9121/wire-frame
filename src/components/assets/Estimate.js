@@ -42,8 +42,7 @@ const Estimate = styled.div`
     padding: 90px;
     background: #fff;
     ${props => !props.view && `
-        bottom: 100%; left: 0;
-        
+        bottom: 1000%;
     `}
     ${props => props.view && `
         top: 50%; left: 50%;

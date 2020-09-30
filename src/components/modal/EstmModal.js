@@ -63,7 +63,7 @@ const EstmModal = (props) => {
     const onDownload = (ref) => {
         let position = 0;
         const doc = new jsPDF('p', 'mm');
-        html2canvas(ref.current).then((canvas) => {
+        html2canvas(ref.current, { windowHeight: 1200 }).then((canvas) => {
             const imageData = canvas.toDataURL('image/png');
             const imgWidth = 210; // 이미지 가로 길이(mm) A4 기준
             const pageHeight = imgWidth * 1.414; // 출력 페이지 세로 길이 계산 A4 기준
