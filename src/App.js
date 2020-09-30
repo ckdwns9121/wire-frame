@@ -32,8 +32,10 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Search } from './pages';
+import {useUrl} from './hooks/useStore';
 
 export default function App() {
+    useUrl();
 
     const dispatch = useDispatch();
     const getInfo = async () => {
@@ -68,6 +70,8 @@ export default function App() {
         getInfo();
         AOS.init({ duration: 1500, once: true });
     }, []);
+
+
 
 
     return (

@@ -20,12 +20,17 @@ import SampleMenu from '../../components/svg/breakfast/sandal_menu.png';
 
 import CategoryMenu from '../../components/tab/CategoryMenu';
 import Configure from '../../components/breakfast/Configure';
-import { getBreakCategory,getBreakMenu } from '../../api/break_fast/break_fast';
+import {
+    getBreakCategory,
+    getBreakMenu,
+} from '../../api/break_fast/break_fast';
 import { get_catergory, get_menulist } from '../../store/product/braekfast';
+import { useScroll } from '../../hooks/useScroll';
 
+const OFFSET = 8;
+const LIMIT = 8;
 
-
-const BreakfastMenuContainer = ({ menu = '0' }) => {
+const BreakfastMenuContainer = ({ tab = '0' }) => {
     const { categorys, items } = useSelector((state) => state.breakfast);
     const dispatch = useDispatch();
 
@@ -34,11 +39,16 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         { name: '조식구성', url: `${Paths.ajoonamu.breakfast}/configure` },
     ];
     const history = useHistory();
+
+    const { isScrollEnd } = useScroll(loading);
+    const [isPaging, setIsPaging] = useState(false); //페이징중인지
+    const [offset, setOffset] = useState(8);
+
     const [titleIndex, setTitleIndex] = useState(0);
 
-    const [tabIndex, setTab] = useState(parseInt(menu));
+    const [tabIndex, setTab] = useState(parseInt(tab));
     const [loading, setLoading] = useState(false);
-    const [posts ,setPosts] = useState([]);
+    const [posts, setPosts] = useState([]);
 
     //메뉴 카테고리에 대한 탭
     const onChangeTabIndex = (e, index) => {
@@ -50,19 +60,19 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         setTitleIndex(index);
     };
 
-
     //카테고리를 받아와서 디스패치.
     const callBreakCategoryApi = async () => {
+        setLoading(true);
         try {
-            if(categorys.length ===0){
-            const res = await getBreakCategory();
-            console.log(res);
-            dispatch(get_catergory(res.data.query.categorys));
+            if (categorys.length === 0) {
+                const res = await getBreakCategory();
+                console.log(res);
+                dispatch(get_catergory(res.data.query.categorys));
             }
-
         } catch (e) {
             console.error(e);
         }
+        setLoading(false);
     };
 
     //카테고리가 있으면 메뉴 불러와서 스토어에 저장
@@ -70,55 +80,95 @@ const BreakfastMenuContainer = ({ menu = '0' }) => {
         setLoading(true);
         let arr = [];
         try {
-        if (!items && categorys.length!==0) {
-            for (let i = 0; i < categorys.length; i++) {
-                const res = await getBreakMenu(categorys[i].ca_id);
-                const {query} = res.data;
-                const temp = {
-                    ca_id: categorys[i].ca_id,
-                    items: query.items
-                };
-                arr.push(temp);
+            if (!items && categorys.length !== 0) {
+                for (let i = 0; i < categorys.length; i++) {
+                    const res = await getBreakMenu(categorys[i].ca_id);
+                    const { query } = res.data;
+                    const temp = {
+                        ca_id: categorys[i].ca_id,
+                        items: query.items,
+                    };
+                    arr.push(temp);
+                }
+                dispatch(get_menulist(arr));
             }
-            dispatch(get_menulist(arr));
-        }
         } catch (e) {
             console.error(e);
         }
         setLoading(false);
-    }, [categorys,items]);
+    }, [categorys, items]);
 
     //메뉴 아이템을 클릭했을 시 상세보기 페이지로 푸쉬
     const onClickMenuItem = useCallback(
         (item_id) => {
             history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
+            sessionStorage.setItem('offset', offset);
         },
-        [history],
+        [history, offset],
     );
 
-    //마운트 되었을 시 메뉴 리스트 받아오기
+    //첫 로딩 되었을 시 메뉴 리스트 받아오기
     useEffect(() => {
         callBreakCategoryApi();
+        window.scrollTo(0, 0);
     }, []);
-    useEffect(()=>{
+
+    //탭 바뀌었을때 오프셋 갱신
+    useEffect(() => {
+        setOffset(OFFSET);
+    }, [tabIndex]);
+
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            const url = JSON.parse(sessionStorage.getItem('url'));
+            console.log(url);
+            if (url) {
+                //이전 페이지가 상품페이지라면 오프셋 유지.
+                if (url.prev === '/product') {
+                    const OS = sessionStorage.getItem('offset');
+                    if (OS) {
+                        setOffset(parseInt(OS));
+                    }
+                }
+            }
+            setLoading(false);
+        }, 100);
+    }, []);
+
+    //로딩 완료 되었을 때 스크롤 위치로 이동.
+    useEffect(() => {
+        const scrollTop = sessionStorage.getItem('scrollTop');
+        const url = JSON.parse(sessionStorage.getItem('url'));
+        if (url) {
+            //이전 주소가 상품페이지라면 스크롤 유지
+            if (url.prev === '/product') {
+                console.log('스크롤 이동');
+                console.log(scrollTop);
+                window.scrollTo(0, scrollTop);
+            }
+        }
+    }, [loading]);
+
+    useEffect(() => {
         callBreakMenuList();
-    },[callBreakMenuList]);
+    }, [callBreakMenuList]);
 
     //탭이 바뀌면 url 변경
     useEffect(() => {
         history.replace(`${Paths.ajoonamu.breakfast}/menu?tab=${tabIndex}`);
     }, [tabIndex, history]);
 
-    useEffect(()=>{
-        if(items){
+    useEffect(() => {
+        if (items) {
             setPosts(items[tabIndex].items);
         }
-    },[tabIndex,items])
-
+    }, [tabIndex, items]);
 
     return (
         <>
-            {loading && <Loading open={loading} />}
+                       {loading && <Loading open={loading} />}
+
             <div className={styles['banner']}>
                 <img
                     className={styles['shop-banner']}

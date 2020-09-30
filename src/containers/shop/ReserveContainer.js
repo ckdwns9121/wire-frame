@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback,useRef } from 'react';
+import React, { useEffect, useState, useCallback,useRef, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Paths } from 'paths';
@@ -18,11 +18,11 @@ import {
     getMenuList,
 } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
-import { get_catergory, get_menulist } from '../../store/product/product';
+import { get_catergory, get_menulist,add_menuitem } from '../../store/product/product';
 import { stringNumberToInt } from '../../lib/formatter';
+import {useScroll} from '../../hooks/useScroll';
 
-
-const OFFSET = 0;
+const OFFSET = 8;
 const LIMIT = 8;
 
 const ReserveContainer = ({ tab = '0' }) => {
@@ -39,12 +39,11 @@ const ReserveContainer = ({ tab = '0' }) => {
     const [loading, setLoading] = useState(false);
     const [preferMenuList, setPreferMenuList] = useState([]); //추천메뉴 리스트
 
-    const [posts ,setPosts] = useState([]); //보여줄 배열
-    const [isPaging ,setIsPaging] = useState(false); //페이징중인지
-    const [offset , setOffset] = useState(8);
-    const [isEndPage ,setIsEndPage] = useState(false);
+    const { isScrollEnd } = useScroll( loading);
 
-
+    const [posts, setPosts] = useState([]); //보여줄 배열
+    const [isPaging, setIsPaging] = useState(false); //페이징중인지
+    const [offset, setOffset] = useState(8);
     const handleOpen = () => setOpen(true); //test
     const handleClose = () => setOpen(false);
 
@@ -79,37 +78,41 @@ const ReserveContainer = ({ tab = '0' }) => {
     };
 
     //전체 예산 입력
-    const onChangeBudget = useCallback(e => {
+    const onChangeBudget = useCallback((e) => {
         const value = stringNumberToInt(e.target.value);
         setBudget(value);
     }, []);
 
-    const onChangeEndBudget = useCallback(e => {
+    const onChangeEndBudget = useCallback((e) => {
         const value = stringNumberToInt(e.target.value);
         setEndBudget(value);
     }, []);
 
-
     const onClickMenuItem = useCallback(
         (item_id) => {
-            console.log(item_id);
             history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
+            sessionStorage.setItem('offset', offset);
         },
-        [history],
+        [history, offset],
     );
+
+    //첫 로딩시 메뉴 받아오기
     const getProductList = useCallback(async () => {
         setLoading(true);
+
+        //카테고리 길이가 1이면 받아오기.
         if (categorys.length === 1) {
             const res = await getCategory();
             res.sort((a, b) => a.ca_id - b.ca_id);
             // 카테고리를 분류 순서로 정렬.
-            let ca_list = res.filter((item) => item.ca_id !== 12); //
+            let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
             dispatch(get_catergory(ca_list));
             let arr = [];
+            //카테고리별로 메뉴 리스트 받아오기.
             for (let i = 0; i < ca_list.length; i++) {
-                const result = await getMenuList(ca_list[i].ca_id , 0, LIMIT);
-                const temp = { ca_id: ca_list[i].ca_id, items: result };
-                arr.push(temp);
+                    const result = await getMenuList(ca_list[i].ca_id, 0, LIMIT);
+                    const temp = { ca_id: ca_list[i].ca_id, items: result };
+                    arr.push(temp);
             }
             arr.sort((a, b) => a.ca_id - b.ca_id);
             dispatch(get_menulist(arr));
@@ -117,83 +120,117 @@ const ReserveContainer = ({ tab = '0' }) => {
         setLoading(false);
     }, [categorys, dispatch, offset]);
 
-    const getMenuListApi = useCallback(async()=>{
-        console.log('페이징 시작',tabIndex);
-       
-        try{
-            if(tabIndex!==0 && categorys.length!==1){
-            setIsPaging(true);
-            const res = await getMenuList(categorys[tabIndex].ca_id , offset, LIMIT);
-            console.log(res);
-         
-            if(res.length!==0){
-                setOffset(offset+LIMIT) 
-                const newState = posts.concat(res);
-                console.log(newState);
-                setPosts(newState);
+    const getMenuListApi = useCallback(async () => {
+        if(!loading){
+        try {
+
+            //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템이 있으면 실행
+            if (tabIndex !== 0 && categorys.length !== 1 && items) {
+                setIsPaging(true);
+                const res = await getMenuList(
+                    categorys[tabIndex].ca_id,
+                    offset,
+                    LIMIT,
+                );
+
+                if (res.length !== 0) {
+                    setOffset(offset + LIMIT);
+                    dispatch(
+                        add_menuitem({
+                            ca_id: categorys[tabIndex].ca_id,
+                            items: res,
+                        }),
+                    );
+                }
+                setTimeout(() => {
+                    setIsPaging(false);
+                }, 1000);
             }
-            setTimeout(() => {
-                setIsPaging(false);
-            }, 2000);
-            }
-        }  
-        catch(e){
+        } catch (e) {
             console.error(e);
-
         }
-    },[tabIndex,categorys,offset,posts]);
+    }
+    }, [tabIndex, categorys, offset, items, posts,loading]);
 
-    const onScorll = () => {
-        let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-        let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-        let clientHeight = document.documentElement.clientHeight;
-        // console.log(scrollHeight);
-        // console.log(scrollTop + clientHeight);
-        let height = Math.round(scrollTop + clientHeight);
-        if (height >= scrollHeight) {
-            console.log('페이지 끝');
-            setIsEndPage(true);
-        }
-        else{
-            setIsEndPage(false);
-        }
-    };
-
-    useEffect(()=>{
-        history.replace(`${Paths.ajoonamu.shop}?tab=${tabIndex}`);
-    },[history,tabIndex])
-    useEffect(()=>{
-        (items && tabIndex!==0) && setPosts(items[tabIndex-1].items);
-    },[items,tabIndex])
-    useEffect(()=>{
-        setOffset(8);
-    },[tabIndex])
-
+    //첫 로딩시 아이템 셋팅
     useEffect(() => {
         getProductList();
-        window.addEventListener('scroll', onScorll, true);
-        return () =>{
-            console.log('언마운트');
-            window.removeEventListener('scroll', onScorll);
-        }
+        window.scrollTo(0,0);
     }, []);
 
+
+    //탭 바뀌었을때 오프셋 갱신
     useEffect(()=>{
-        if(isEndPage && !isPaging){
-            console.log(isEndPage);
+        setOffset(OFFSET);
+    },[tabIndex])
+  
+    useEffect(()=>{
+        setLoading(true);
+        setTimeout(()=>{
+            const url = JSON.parse(sessionStorage.getItem('url'));
+            if(url){
+            //이전 페이지가 상품페이지라면 오프셋 유지.
+            if(url.prev ==='/product'){
+              const OS = sessionStorage.getItem('offset');
+              if(OS){
+                setOffset(parseInt(OS));
+              }
+            }
+        }
+            setLoading(false);
+        },100)
+    },[])
+
+    //로딩 완료 되었을 때 스크롤 위치로 이동.
+    useEffect(() => {
+        const scrollTop = sessionStorage.getItem('scrollTop');
+        const url = JSON.parse(sessionStorage.getItem('url'));
+        if(url){
+        //이전 주소가 상품페이지라면 스크롤 유지
+        if(url.prev ==='/product'){
+              console.log('스크롤 이동');
+            window.scrollTo(0,scrollTop);
+        }
+    }
+    }, [loading]);
+
+    // 탭 인덱스로 URL 이동
+    useEffect(() => {
+        history.replace(`${Paths.ajoonamu.shop}?tab=${tabIndex}`);
+    }, [history, tabIndex]);
+
+    //아이템과 인덱스가 변했을 시 보여줄 리스트 갱신.
+    useEffect(() => {
+        items && tabIndex !== 0 && setPosts(items[tabIndex - 1].items);
+    }, [items, tabIndex]);
+
+    //스크롤 끝과 페이징중인지 확인후 페이지네이션 실행.
+    useEffect(() => {
+        if (isScrollEnd && !isPaging) {
+            console.log(isScrollEnd);
             getMenuListApi();
         }
-    },[isEndPage,tabIndex,isPaging])
-
-    useEffect(()=>{
-    console.log('오프셋 갱신', offset);
-    },[offset])
+    }, [isScrollEnd, isPaging]);
 
     useEffect(() => {
         if (budget > endBudget) {
             setEndBudget(budget);
         }
-    }, [budget, endBudget])
+    }, [budget, endBudget]);
+
+    const renderPost =useCallback(()=>{
+        // console.log(offset +'으로 렌더');
+        return(
+            <>
+            {posts && (
+                <MenuItemList
+                    menuList={posts.slice(0, offset)}
+                    onClick={onClickMenuItem}
+                />
+            )}
+            </>
+        )
+    },[posts,offset,onClickMenuItem])
 
     return (
         <>
@@ -233,7 +270,7 @@ const ReserveContainer = ({ tab = '0' }) => {
                             </>
                         ) : (
                             <>
-                            { posts && <MenuItemList menuList={posts} onClick ={onClickMenuItem}/>}
+                               {renderPost()}
                             </>
                         )}
                     </div>
