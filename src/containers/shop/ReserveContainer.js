@@ -100,8 +100,9 @@ const ReserveContainer = ({ tab = '0' }) => {
         console.log('시작');
         //카테고리 길이가 1이면 받아오기.   
         if (categorys.length === 1) {
-            console.log('받아오기');
+            console.log('카테고리 받아오기');
             const res = await getCategory();
+            console.log(res);
             // res.sort((a, b) => a.ca_id - b.ca_id);
             // 카테고리를 분류 순서로 정렬.
             let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
@@ -123,8 +124,7 @@ const ReserveContainer = ({ tab = '0' }) => {
             if(categorys.length!==1 && store){
             for (let i = 1; i < categorys.length; i++) {
                 const {ca_id} = categorys[i];
-                    const result = await getMenuList(ca_id, 0, LIMIT ,store.ca_id);
-                    console.log(result);
+                    const result = await getMenuList(ca_id, 0, LIMIT ,store.shop_id);
                     const temp = { ca_id:ca_id, items: result.data.query.items};
                     arr.push(temp);
             }
@@ -155,7 +155,7 @@ const ReserveContainer = ({ tab = '0' }) => {
                     LIMIT,
                     store.shop_id
                 );
-                console.log(res);
+                // console.log(res);
 
                 const get_list = res.data.query.items;
                 if (get_list.length !== 0) {
@@ -166,11 +166,10 @@ const ReserveContainer = ({ tab = '0' }) => {
                             items: get_list,
                         }),
                     );
-
-                    setTimeout(() => {
-                        setIsPaging(false);
-                    }, 1000);
                 }
+                setTimeout(() => {
+                    setIsPaging(false);
+                }, 1000);
             }
         }
         catch (e) {
@@ -238,11 +237,13 @@ const ReserveContainer = ({ tab = '0' }) => {
 
     //스크롤 끝과 페이징중인지 확인후 페이지네이션 실행.
     useEffect(() => {
+        console.log(isScrollEnd);
         if (isScrollEnd && !isPaging) {
+            console.log('페이지의 끝');
             console.log(isScrollEnd);
             PageNationMenuList();
         }
-    }, [isScrollEnd,isPaging,PageNationMenuList]);
+    }, [isScrollEnd,isPaging]);
 
     // useEffect(() => {
     //     if (budget > endBudget) {

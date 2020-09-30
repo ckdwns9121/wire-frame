@@ -36,7 +36,6 @@ export const getMainMenuList = async (ca_id, offset = 0, limit = 8) => {
 };
 
 export const getMenuList = async (ca_id,offset=0, limit=8,shop_id) => {
-    console.log(shop_id);
     const req = Paths.api + 'user/item/list';
     axios.defaults.headers.get['Context-Type'] = 'application/json';
 
