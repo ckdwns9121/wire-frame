@@ -6,8 +6,9 @@
     padding-bottom: 170px;
 
     .title-area {
+        border-bottom: solid 2px #222;
         position: relative;
-        margin-bottom: 40px;
+        padding-bottom: 40px;
         .title {
             font-size: 3rem;
             font-weight: bold;
@@ -16,7 +17,7 @@
         }
         .mini-nav {
             position: absolute;
-            bottom: 0; right: 0;
+            bottom: 40px; right: 0;
             .mnav-item {
                 font-size: 1.5rem;
                 color: #999;
@@ -31,14 +32,15 @@
     }
 
     .content {
+        margin-left: -40px;
         clear: both;
-        border-top: solid 2px #222;
         border-bottom: solid 1px #EBEBEB;
         overflow: hidden;
         margin-bottom: 50px;;
 
         .item {
             margin: 40px 0;
+            margin-left: 40px;
             display: block;
             text-align: left;
             float: left;
