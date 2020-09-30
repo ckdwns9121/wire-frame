@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
-export const requestQNAList = async (token, limit, offset) => {
+export const requestQNAList = async (token, offset, limit) => {
     const req = Paths.api + 'user/qna/list';
     const config = {
         headers: {
@@ -9,11 +9,10 @@ export const requestQNAList = async (token, limit, offset) => {
             Authorization: `Bearer ${token}`,
         },
         params: {
-            limit, offset
+            offset, limit
         }
     };
     const result = await axios.get(req, config);
-    console.log(result);
     return result.data.query;
 };
 
@@ -54,11 +53,11 @@ export const requestQNAUpdate = async (token, {
     formData.append('id', id);
     formData.append('subject', subject);
     formData.append('question', question);
-    formData.append('q_files[]', q_files);
+    q_files.forEach(image => formData.append('q_files[]', image, image.name));
     formData.append('_method', 'put');
     
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    axios.defaults.headers['Context-Type'] = 'multipart/form-data';
 
     const res = await axios.post(req, formData);
     return res;
@@ -69,17 +68,16 @@ export const requestQNAStore = async (token, {
     content: question,
     files: q_files
 }) => {
-    console.log(q_files);
     const req = Paths.api + 'user/qna';
     
     const formData = new FormData();
     
     formData.append('subject', subject);
     formData.append('question', question);
-    formData.append('q_files[]', q_files);
+    q_files.forEach(image => formData.append('q_files[]', image, image.name));
     
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    axios.defaults.headers['Context-Type'] = 'multipart/form-data';
 
     const res = await axios.post(req, formData);
     return res;

@@ -53,17 +53,16 @@ export const searchAddress = (searchAddr) => {
         .catch((err) => console.log(err));
 };
 
-export const getPostNum = (addr1) =>{
+export const getPostNum = (addr1) => {
     return fetch(
         `${URL}?confmKey=${KEY}&currentPage=1&countPerPage=10&keyword=${addr1}&resultType=json`,
     )
         .then((res) => res.json())
         .then((json) => json.results.juso)
         .catch((err) => console.log(err));
-}
+};
 
-export const selectAddress =async (token,delivery_id) =>{
-
+export const selectAddress = async (token, delivery_id) => {
     const req = Paths.api + 'user/delivery/update';
     const form_data = {
         delivery_id: delivery_id,
@@ -96,11 +95,10 @@ export const getActiveAddr = async (token) => {
 
     const { query } = res.data;
     let len = Object.keys(query).length;
-    for(let i=0 ;i<len;i++){
-        console.log(query[i].active);
-        if(query[i].active===1){
-              const {addr1, addr2,lat,lng,post_num} = query[i];
-                return {addr1,addr2,lat,lng,post_num};
+    for (let i = 0; i < len; i++) {
+        if (query[i].active === 1) {
+            const { addr1, addr2, lat, lng, post_num } = query[i];
+            return { addr1, addr2, lat, lng, post_num };
         }
     }
     return null;

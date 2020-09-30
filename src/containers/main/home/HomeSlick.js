@@ -6,11 +6,7 @@ import { requestBannerList } from '../../../api/event/banner';
 import { useModal } from '../../../hooks/useModal';
 import { DBImageFormat } from '../../../lib/formatter';
 
-
-
-
 const settings = {
-    dots: true,
     infinite: true,
     autoplay: true,
     speed: 1000,
@@ -43,7 +39,7 @@ const HomeSlick = () => {
             <Slider {...settings}>
                 {list.map(item => (
                     <Link key={item.id} to={item.bn_url}>
-                        <div className={styles['item']} style={{ backgroundImage: "url('"+DBImageFormat(item.bn_img) + "')" }}/>
+                        <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "')" }}/>
                     </Link>
                 ))}
             </Slider>

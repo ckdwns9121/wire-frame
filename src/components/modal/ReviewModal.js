@@ -1,109 +1,145 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Review.module.scss';
 import PROFILE_IMG from '../svg/sign/profile.png';
 import MENU from '../svg/menu/menu1.png';
 import Slider from 'react-slick';
-import { IconButton } from '@material-ui/core';
+import { Backdrop, Dialog, IconButton, Menu } from '@material-ui/core';
 import Prev from '../svg/review/prev.svg';
 import Next from '../svg/review/next.svg';
 import CloseIcon from '../svg/modal/CloseIcon';
 import cn from 'classnames/bind';
+import { requestGetReviewView } from '../../api/review/review';
+import Loading from '../assets/Loading';
+import ReviewRating from '../review/ReviewRating';
+import { dateToYYYYMMDD, DBImageFormat, hideEmail } from '../../lib/formatter';
+import { useModal } from '../../hooks/useModal';
 const cx = cn.bind(styles);
 
+const arrowStyle = {
+    cursor: 'pointer',
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '64px',
+    height: '64px',
+    top: '40%',
+    borderRadius: '50%',
+    zIndex: 1000,
+};
+
 const ReviewModal = (props) => {
+    const openModal = useModal();
+
+    const [userEmail ,setUserEmail] = useState('');
+    const [content, setContent] = useState('');
+    const [files, setFiles] = useState([]);
+    const [rate, setRate] = useState(5.0);
+    const [craetedAt, setCreatedAt] = useState(new Date());
+    const [loading, setLoading] = useState(false);
+    
+    const getReviewContent = useCallback(async () => {
+        if (props.id !== -1) {
+            setLoading(true);
+            try {
+                const res = await requestGetReviewView(props.id);
+                console.log(res);
+                if (res.data.msg === '성공') {
+                    const { email, review_body, review_rating, review_images, created_at } = res.data.query.review;
+                    setUserEmail(email);
+                    setContent(review_body);
+                    setRate(parseFloat(review_rating));
+                    setCreatedAt(created_at);
+                    setFiles(DBImageFormat(review_images));
+                } else {
+                    openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
+            }
+            setLoading(false);
+        }
+    }, [openModal, props.id]);
+
+    useEffect(() => {
+        getReviewContent();
+    }, [getReviewContent]);
+
+
     return (
-        <>
-        <div className={cx('dialog', {open: props.open})} >
-                <ReviewImgList/>
-            <div className={styles['content']}>
-                 <div className={styles['close']}>
-                    <CloseIcon onClick={props.handleClose} black={true}/>
-                </div>
-                <div className={styles['user-info']}>
-                <UserProfile src ={PROFILE_IMG}/>
-                <UserEmail mail={"gdgd"} />
-                </div>
-                <div className ={styles['review-info']}>
-                    <div className={styles['review-box']}>
-                        <div className={styles['review']}>
-                        모임 준비할 시 간이 없어서 샌달에서 구매했는데 받아보고 완
-                    전 만족했습니다~~! 다음에 또 구매하려구요!    
+        <Dialog
+            open={props.open}
+            onClose={props.handleClose}
+            maxWidth={"xl"}
+            aria-labelledby="form-dialog-title"
+        >
+            { loading ? <Loading open={loading} />
+            : <div className={cx('dialog')}>
+                <ReviewImgList images={files} />
+                <div className={styles['content']}>
+                    <div className={styles['close']}>
+                        <CloseIcon onClick={props.handleClose} black={true} />
+                    </div>
+                    <div className={styles['user-info']}>
+                        <UserProfile src={PROFILE_IMG} />
+                        <UserEmail mail={userEmail} />
+                    </div>
+                    <div className={styles['review-info']}>
+                        <div className={styles['review-box']}>
+                            <div className={styles['review']}>
+                                {content}
+                                <div className={styles['info']}>
+                                    <ReviewRating rating={rate} />
+                                    <p className={styles['created-at']}>
+                                        {dateToYYYYMMDD(craetedAt, '/')}에 작성된 글입니다.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-               
                     </div>
                 </div>
-            </div>
-            </div>
-            <div className={cx('dim',{dimopen : props.open})} onClick={props.handleClose} />
-         </>
-
+                <Backdrop open={props.open} onClick={props.handleClose} />
+            </div>}
+        </Dialog>
     );
 };
 
-function UserProfile({src}) {
-    return (
-        <div className={styles['user-profile']}>
-            <img src={src} alt="profile" />
-        </div>
-    );
-}
+const UserProfile = ({ src }) => (
+    <div className={styles['user-profile']}>
+        <img src={src} alt="profile" />
+    </div>
+);
 
-function UserEmail({mail}) {
-    return (
-        <div className={styles['user-email']}>
-            <span className={styles['email']}>{mail}</span>
-            <span>님</span>
-        </div>
-    );
-}
+const UserEmail = ({ mail }) => (
+    <div className={styles['user-email']}>
+        <span className={styles['email']}>{hideEmail(mail)}</span>
+        <span>님</span>
+    </div>
+);
 
-function MenuImg ({src}) {
-    return(
-        <img  className={styles['img']} src={src} alt='메뉴'/>
-    )
-}
+const MenuImg = ({ src }) => (
+    <img className={styles['img']} src={src} alt="메뉴" />
+);
 
-
-const SamplePrevArrow = ({ style, onClick }) => (
+const PrevArrow = ({ style, onClick }) => (
     <IconButton
         style={{
             ...style,
-            cursor: 'pointer',
-            position: 'absolute',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '64px',
-            height: '64px',
-            top: '40%',
+            ...arrowStyle,
             left: '0px',
-            boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',
-            zIndex: 1000,
         }}
         onClick={onClick}
     >
         <img style={{ display: 'block' }} src={Prev} alt="prev" />
-
     </IconButton>
 );
 
-
-
-const SampleNextArrow = ({ style, onClick }) => (
+const NextArrow = ({ style, onClick }) => (
     <IconButton
         style={{
             ...style,
-            cursor: 'pointer',
-            position: 'absolute',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '64px',
-            height: '64px',
-            top: '40%',
+            ...arrowStyle,
             right: '0px',
-            borderRadius: '50%',
-            zIndex: 1000,
         }}
         onClick={onClick}
     >
@@ -111,9 +147,7 @@ const SampleNextArrow = ({ style, onClick }) => (
     </IconButton>
 );
 
-
-const ReviewImgList = ({menuList,onClick}) => {
-
+const ReviewImgList = ({ images }) => {
     const settings = {
         infinite: true,
         autoplay: false,
@@ -121,18 +155,14 @@ const ReviewImgList = ({menuList,onClick}) => {
         speed: 1000,
         slidesToShow: 1,
         slidesToScroll: 1,
-        nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
     };
 
     return (
         <div className={styles['slick-img']}>
             <Slider {...settings}>
-            <MenuImg src={MENU}/>
-            <MenuImg src={MENU}/>
-            <MenuImg src={MENU}/>
-            <MenuImg src={MENU}/>
-            <MenuImg src={MENU}/>
+                {images.map(image => (<MenuImg key={image} src={image} />))}
             </Slider>
         </div>
     );

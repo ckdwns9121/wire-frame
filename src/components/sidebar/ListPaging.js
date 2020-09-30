@@ -19,35 +19,37 @@ export default ({ baseURL, currentPage, pagePerView, totalCount, onClick }) => {
     const next = parseInt(currentPage) + 1;
 
     return (
-        <div className={styles['paging']}>
-            {onClick ?
-            <LinkItem onClick={() => prev > 0 && onClick(prev)}>
-                <Prev />
-            </LinkItem>
-            : <LinkItem to={(prev > 0) && (baseURL + '?page=' + prev)}>
-                <Prev />
-            </LinkItem>}
-            <ul className={styles['list']}>
-                {pageList.map(value => (
-                    <li key={value} className={cn('number', { active: currentPage === value })}>
-                        {onClick ?
-                        <LinkItem onClick={() => onClick(value)}>
-                            {value}
-                        </LinkItem>
-                        : <LinkItem to={baseURL + '?page=' + value}>
-                            {value}
-                        </LinkItem>}
-                    </li>
-                ))}
-            </ul>
-            {onClick ?
-            <LinkItem onClick={() => next <= lastPage && onClick(next)}>
-                <Next />
-            </LinkItem>
-            : <LinkItem to={(next <= lastPage) && (baseURL + '?page=' + next)}>
-                <Next />
-            </LinkItem>}
-        </div>
+        <>
+            {totalCount !== 0 && <div className={styles['paging']}>
+                {onClick ?
+                <LinkItem onClick={() => prev > 0 && onClick(prev)}>
+                    <Prev />
+                </LinkItem>
+                : <LinkItem to={(prev > 0) && (baseURL + '?page=' + prev)}>
+                    <Prev />
+                </LinkItem>}
+                <ul className={styles['list']}>
+                    {pageList.map(value => (
+                        <li key={value} className={cn('number', { active: currentPage === value })}>
+                            {onClick ?
+                            <LinkItem onClick={() => onClick(value)}>
+                                {value}
+                            </LinkItem>
+                            : <LinkItem to={baseURL + '?page=' + value}>
+                                {value}
+                            </LinkItem>}
+                        </li>
+                    ))}
+                </ul>
+                {onClick ?
+                <LinkItem onClick={() => next <= lastPage && onClick(next)}>
+                    <Next />
+                </LinkItem>
+                : <LinkItem to={(next <= lastPage) && (baseURL + '?page=' + next)}>
+                    <Next />
+                </LinkItem>}
+            </div>}
+        </>
     );
 };
 

@@ -4,6 +4,8 @@ import menu1 from '../svg/menu/menu1.png';
 import Arrow from '../svg/arrow/Arrow';
 import { numberFormat } from "../../lib/formatter";
 import { ButtonBase } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 const PreviewOrderItem = (props) => {
     const {
@@ -19,6 +21,7 @@ const PreviewOrderItem = (props) => {
         total_price,
     } = props;
 
+    const history = useHistory();
 
 
     return (
@@ -27,17 +30,22 @@ const PreviewOrderItem = (props) => {
                 <div className={styles['order-info']}>
                     <div className={styles['top']}>
                         <div className={styles['order-date']}>
-                            {/* {dateToYYYYMMDDHHMMSS(receipt_time, '/')} */}
-                            {receipt_time.replace(/-/g, '/')}
+                            {receipt_time ? receipt_time.replace(/-/g, '/')
+                            : "주문 시간이 없습니다."}
                         </div>
                         <div className={styles['order-id']}>
                             주문번호 : {order_id}
                         </div>
                         <div className={styles['order-type']}>
-                            {info.od_status ==="order_cancel" && '주문취소'}
-                            {info.od_status ==="order_apply" && '배달완료'}
+                            {info.od_status === "order_cancel" && '주문취소'}
+                            {info.od_status === "order_apply" && '배달완료'}
+                            {!info.od_status && "상태없음"}
                         </div>
-                        <ButtonBase className={styles['review-button']}>
+                        <ButtonBase className={styles['review-button']}
+                            onClick={() => history.push(
+                                Paths.ajoonamu.mypage + '/order_review?' + (review_id === null ? 'order_id=' + order_id : 'review_id=' + review_id)
+                            )}
+                        >
                             {review_id === null ? '리뷰작성' : '리뷰수정'}
                         </ButtonBase>
                     </div>
@@ -64,10 +72,10 @@ const PreviewOrderItem = (props) => {
 function MenuList ({items}){
     const list =items.map( (item,index) =>(
         <MenuItem  
-        key={index} 
-        item_name={item.item_name} 
-        item_option={item.item_option}
-        item_price={item.item_price}
+            key={index} 
+            item_name={item.item_name} 
+            item_option={item.item_option}
+            item_price={item.item_price}
         />
     ));
     return(

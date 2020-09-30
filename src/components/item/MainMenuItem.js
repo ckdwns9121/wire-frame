@@ -2,10 +2,11 @@ import React from 'react';
 import styles from './MainMenu.module.scss';
 import menu1 from '../svg/menu/menu1.png';
 import { numberFormat } from '../../lib/formatter';
+import { ButtonBase } from '@material-ui/core';
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = ({ item_name, item_price, item_img, onClick }) => (
-    <div className={styles['menu-item']} onClick={onClick}>
+    <ButtonBase component='div' className={styles['menu-item']} onClick={onClick}>
         <MenuImg src={menu1} />
         <div className={styles['pd-box']}>
             <div className={styles['menu-info']}>
@@ -13,7 +14,7 @@ const MenuItem = ({ item_name, item_price, item_img, onClick }) => (
                 <MenuPrice menuPrice={item_price} />
             </div>
         </div>
-    </div>
+    </ButtonBase>
 );
 
 //홈 메뉴 이미지 컴포넌트

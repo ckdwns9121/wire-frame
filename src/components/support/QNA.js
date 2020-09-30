@@ -27,7 +27,7 @@ export default ({ match, location }) => {
     const [loading, setLoading] = useState(false);
 
     const [list, setList] = useState([]);
-    const [count, setCount] = useState(0);
+    // const [count, setCount] = useState(0);
     const history = useHistory();
 
     const writeMode = match.params.id === 'write';
@@ -42,10 +42,11 @@ export default ({ match, location }) => {
         setLoading(true);
         if (token) {
             try {
-                const res = await requestQNAList(token, PAGE_PER_VIEW, (page - 1) * PAGE_PER_VIEW);
-                if (count !== res.count) {
-                    setCount(res.count);
-                }
+                // const res = await requestQNAList(token, (page - 1) * PAGE_PER_VIEW, PAGE_PER_VIEW);
+                const res = await requestQNAList(token, 0, 1000);
+                // if (count !== res.count) {
+                //     setCount(res.count);
+                // }
                 setList(res.qnas);
             } catch (e) {
                 openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -53,7 +54,8 @@ export default ({ match, location }) => {
             }
         }
         setLoading(false);
-    }, [history, openModal, token, count, page]);
+        // }, [history, openModal, token, count, page]);
+    }, [history, openModal, token]);
 
     const onRemoveList = useCallback(id => setList(list => list.filter(item => item.id !== id)), []);
 
@@ -67,7 +69,6 @@ export default ({ match, location }) => {
 
     return (
         <>
-            {loading ? <Loading open={loading} /> :
             <div className={styles['box']}>
                 {!writeMode && !viewMode && <ButtonBase
                     className={styles['qna-button']}
@@ -75,11 +76,11 @@ export default ({ match, location }) => {
                 >
                     문의하기
                 </ButtonBase>}
-                {writeMode ? <QNAWrite token={token} id={query.id} />
-                    : viewMode ? <QNADetail token={token} id={query.id} onRemove={onRemoveList} />
-                        : <QNATable total={count} page={page} list={list} handleClick={handleClickDetail} />}
-                
-            </div>}
+                {writeMode ? <QNAWrite token={token} id={query.id}  />
+                    : viewMode ? <QNADetail token={token} id={query.id} onRemove={onRemoveList} idList={list.map(item => item.id)} />
+                        : <QNATable total={list.length} page={page} list={list.slice((page - 1) * PAGE_PER_VIEW, page * PAGE_PER_VIEW)} handleClick={handleClickDetail} />}
+            </div>
+            <Loading open={loading} />
         </>
     );
 };
@@ -116,8 +117,8 @@ const QNAWrite = ({ token, id }) => {
     const [loading, setLoading] = useState(false);
     const history = useHistory();
 
-    const onChangeTitle = useCallback(e => setTitle(e.target.value), [])
-    const onChangeContent = useCallback(e => setContent(e.target.value), [])
+    const onChangeTitle = useCallback(e => setTitle(e.target.value), []);
+    const onChangeContent = useCallback(e => setContent(e.target.value), []);
     const onChangeFiles = useCallback(e => {
         const { files: f } = e.target;
         const fileArray = [];
@@ -138,7 +139,6 @@ const QNAWrite = ({ token, id }) => {
                     const { subject, question, q_files } = data;
                     setTitle(subject);
                     setContent(question);
-                    console.log(q_files);
                     // setFiles(q_files);
                 } else {
                     openModal('없는 게시물입니다.', '게시글을 확인해 주세요.');
@@ -208,8 +208,6 @@ const QNAWrite = ({ token, id }) => {
 
     return (
         <>
-            {loading ? <Loading open={loading} />
-            : <>
             <div className={styles['table']}>
                 <div className={cn('input-area')}>
                     <div className={styles['area-name']}>문의 제목</div>
@@ -257,11 +255,11 @@ const QNAWrite = ({ token, id }) => {
                     {id ? '수정' : '등록'}
                 </ButtonBase>
             </div>
-            </>}
+            <Loading open={loading} />
         </>
     )
 }
-const QNADetail = ({ id, token, onRemove }) => {
+const QNADetail = ({ id, token, onRemove, idList }) => {
     const openModal = useModal();
     const history = useHistory();
 
@@ -322,35 +320,33 @@ const QNADetail = ({ id, token, onRemove }) => {
 
     return (
         <>
-            {loading ? <Loading open={loading} />
-            : <>
-                <div style={{ marginBottom: '0' }} className={styles['table']}>
-                    <div className={styles['column']}>
-                        <div className={styles['row']}>
-                            <QNAState status={status} />
-                            <div className={styles['subject']}>{subject}</div>
-                            <div className={styles['datetime']}>
-                                {dateToYYYYMMDD(q_datetime, '/')}
-                            </div>
+            <div style={{ marginBottom: '0' }} className={styles['table']}>
+                <div className={styles['column']}>
+                    <div className={styles['row']}>
+                        <QNAState status={status} />
+                        <div className={styles['subject']}>{subject}</div>
+                        <div className={styles['datetime']}>
+                            {dateToYYYYMMDD(q_datetime, '/')}
                         </div>
                     </div>
                 </div>
-                <div className={styles['question']}>
-                    <div className={styles['q-content']}>{question}</div>
-                    <div className={styles['interaction']}>
-                        <ButtonBase className={styles['btn']} onClick={() => history.push(`${Paths.ajoonamu.support}/qna/write?id=${id}`)}>수정</ButtonBase>
-                        <ButtonBase className={styles['btn']} onClick={deleteQNA}>삭제</ButtonBase>
-                    </div>
+            </div>
+            <div className={styles['question']}>
+                <div className={styles['q-content']}>{question}</div>
+                <div className={styles['interaction']}>
+                    <ButtonBase className={styles['btn']} onClick={() => history.push(`${Paths.ajoonamu.support}/qna/write?id=${id}`)}>수정</ButtonBase>
+                    <ButtonBase className={styles['btn']} onClick={deleteQNA}>삭제</ButtonBase>
                 </div>
-                {status === 1 && <div className={styles['answer']}>
-                    <div className={styles['info']}>
-                        <span className={styles['a-name']}>답변</span>
-                        <span className={styles['a-date']}>{dateToYYYYMMDD(a_datetime, '/')}</span>
-                    </div>
-                    <div className={styles['a-content']} dangerouslySetInnerHTML={{ __html: answer}} />
-                </div>}
-                <DetailPaging baseURL={Paths.ajoonamu.support + '/qna'} />
-            </>}
+            </div>
+            {status === 1 && <div className={styles['answer']}>
+                <div className={styles['info']}>
+                    <span className={styles['a-name']}>답변</span>
+                    <span className={styles['a-date']}>{dateToYYYYMMDD(a_datetime, '/')}</span>
+                </div>
+                <div className={styles['a-content']} dangerouslySetInnerHTML={{ __html: answer}} />
+            </div>}
+            <DetailPaging baseURL={Paths.ajoonamu.support + '/qna/view'} listViewURL={Paths.ajoonamu.support + '/qna'} idList={idList} currentId={parseInt(id)} type="QUERY" />
+            <Loading open={loading} />
         </>
     );
 };

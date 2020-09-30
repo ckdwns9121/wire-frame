@@ -2,7 +2,7 @@ import { useEffect,useState } from 'react';
 import { useHistory,useLocation } from 'react-router-dom';
 import { useModal } from './useModal';
 
-export const useStore = (isReplace =true) => {
+export const useStore = (isReplace = true) => {
     const user_token = sessionStorage.getItem('access_token');
     const history = useHistory();
     const openModal = useModal();
@@ -17,7 +17,7 @@ export const useStore = (isReplace =true) => {
                 },
             );
         }
-    }, [user_token, history, openModal]);
+    }, [user_token, history, openModal, isReplace]);
 
     return user_token;
 };
@@ -45,3 +45,7 @@ export const useUrl =()=>{
     
     return {prev,current}
 }
+export const useAddr = () => {
+    const user_addr = sessionStorage.getItem('user_addr');
+    return user_addr;
+};
