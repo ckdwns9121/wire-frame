@@ -86,13 +86,13 @@ const SignInContainer = () => {
                         }
                         dispatch(get_user_info(res.data.access_token));
                         response ? dispatch(get_address(response)) :dispatch(get_address({addr1:null,addr2:null ,lat:null,lng:null,post_num:null}));
-                        history.replace(Paths.index);
+                        const url = JSON.parse(sessionStorage.getItem('url'));
+                        history.replace(url.prev);
                     }
                 } else {
                     openModal('로그인에 실패하였습니다.', '이메일 혹은 패스워드를 확인해주세요.');
                 }
             } catch (e) {
-                console.log("여기서 터지나?");
                 openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
                 history.replace(Paths.index);
             }

@@ -119,7 +119,14 @@ const HomeContainer = () => {
                             </li>
                         ))}
                     </ul>
-                    { items !== null &&  <MenuListView menuList={items[useCate].items} onClick={onClickDetailItem}/> }
+                    <div className={styles['list']}>
+                    { items !== null ?  
+                    <MenuListView menuList={items[useCate].items} onClick={onClickDetailItem} empty={false} /> :
+                   
+                    <MenuListView empty={true} /> 
+                    }
+
+                    </div>
                 </div>
                 <div className={styles['banner-img']} onClick ={()=>{   history.push(`${Paths.ajoonamu.shop}?tab=${0}`) ; window.scrollTo(0,0)}}>
                     <img src={bannerImg} alt="배너" />

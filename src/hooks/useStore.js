@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useEffect,useState } from 'react';
+import { useHistory,useLocation } from 'react-router-dom';
 import { useModal } from './useModal';
 
 export const useStore = (isReplace =true) => {
@@ -22,8 +22,26 @@ export const useStore = (isReplace =true) => {
     return user_token;
 };
 
-export const useAddr = () => {
-    const user_addr = sessionStorage.getItem('user_addr');
-    return user_addr;
-};
 
+export const useUrl =()=>{
+    const history = useHistory();
+    const location = useLocation();
+    const [current,setCurrent] = useState('/');
+    const [prev ,setPrev] = useState('');
+
+
+    useEffect(()=>{
+        // console.log(location);
+        setCurrent(location.pathname);
+        setPrev(current);
+        const obj = {
+            current : location.pathname,
+            prev : current,
+        }
+        sessionStorage.setItem('url' ,JSON.stringify(obj));
+
+    },[location.pathname])
+
+    
+    return {prev,current}
+}

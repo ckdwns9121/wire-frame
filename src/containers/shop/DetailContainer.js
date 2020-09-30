@@ -185,6 +185,7 @@ const DetailContainer = ({ item_id }) => {
         menu && setOptionItem();
     }, [menu, setOptionItem]);
 
+
     return (
         <ScrollTop>
             <div className={styles['min-height']}>
