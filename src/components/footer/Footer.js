@@ -63,7 +63,8 @@ const Footer = () => (
 
 const Icon = ({ src, alt, href }) => (
     // eslint-disable-next-line react/jsx-no-target-blank
-    <a className={styles['asset']} href={href} target="_blank">
+    // <a className={styles['asset']} href={href} target="_blank">
+    <a className={styles['asset']} href={href}>
         <IconButton>
             <img src={src} alt={alt} />
         </IconButton>

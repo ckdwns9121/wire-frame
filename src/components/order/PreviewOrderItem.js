@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Preview.module.scss';
-import NO_IMAGE from '../svg/NO_IMAGE.png';
+import Noimage from '../svg/noimage.png';
 import Arrow from '../svg/arrow/Arrow';
 import { DBImageFormat, numberFormat } from "../../lib/formatter";
 import { ButtonBase } from '@material-ui/core';
@@ -87,7 +87,7 @@ function MenuItem({ src, item_name, item_option, item_price }) {
     return (
         <div className={styles['menu-item']}>
             <div className={styles['menu-img']}>
-                <img src={src !== "[]" && src !== undefined ? DBImageFormat(src)[0] : NO_IMAGE} alt="메뉴" />
+                <img src={( src !== undefined && src !== "[]") ? DBImageFormat(src)[0] : Noimage} alt="메뉴" />
             </div>
             <div className={styles['menu-name']}>{item_name}</div>
             <div className={styles['menu-price']}>

@@ -4,7 +4,7 @@ import qs from 'querystring';
 import { useHistory } from 'react-router-dom';
 import styles from './EventContainer.module.scss';
 
-import NO_IMAGE from '../../components/svg/NO_IMAGE.png';
+import Noimage from '../../components/svg/noimage.png';
 
 import { Paths } from '../../paths';
 import { requestEventList, requestEventShow } from '../../api/event/event';
@@ -110,7 +110,7 @@ export default ({ match, location }) => {
                             </p>
                         </div>
                         <div className={styles['e-content']}>
-                            {item && item.images === '[]' ? <img src={NO_IMAGE} alt="기본 이미지" />
+                            {(item && item.images === '[]') ? <img src={Noimage} alt="기본 이미지" />
                             : <img src={DBImageFormat(item.images)[0]} alt="이벤트 이미지" />}
                         </div>
                     </>
@@ -123,8 +123,8 @@ export default ({ match, location }) => {
                                 className={styles['item']}
                             >
                                 <div className={styles['image']}>
-                                    {images === '[]' ? <img src={NO_IMAGE} alt="기본 이미지"/>
-                                    : <img src={DBImageFormat(images)} alt="이벤트 이미지" />}
+                                    {(images === '[]') ? <img src={Noimage} alt="기본 이미지"/>
+                                    : <img src={DBImageFormat(images)[0]} alt="이벤트 이미지" />}
                                 </div>
                                 <div className={styles['text']}>
                                     <p className={styles['warn']}>{warn}</p>

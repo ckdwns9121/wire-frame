@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Review.module.scss';
-import PROFILE_IMG from '../svg/sign/profile.png';
+import ProfileImg from '../svg/sign/profile.png';
 import Slider from 'react-slick';
 import { Backdrop, ButtonBase, Dialog, IconButton } from '@material-ui/core';
 import Prev from '../svg/review/prev.svg';
@@ -86,7 +86,7 @@ const ReviewModal = (props) => {
                         <CloseIcon onClick={props.handleClose} black={true} />
                     </div>
                     <div className={styles['user-info']}>
-                        <UserProfile src={PROFILE_IMG} />
+                        <UserProfile src={ProfileImg} />
                         <UserEmail mail={userEmail} />
                     </div>
                     <div className={styles['review-info']}>
