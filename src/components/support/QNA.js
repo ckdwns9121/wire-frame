@@ -9,7 +9,7 @@ import Message from '../assets/Message';
 
 import styles from './QNA.module.scss';
 import { ButtonBase, IconButton } from '@material-ui/core';
-import { dateToYYYYMMDD } from '../../lib/formatter';
+import { dateToRelative } from '../../lib/formatter';
 import Delete from '../svg/support/Delete';
 import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
@@ -96,7 +96,7 @@ const QNATable = ({ list, handleClick, total, page }) => (
                             <QNAState status={status} />
                             <div className={styles['subject']}>{subject}</div>
                             <div className={styles['datetime']}>
-                                {dateToYYYYMMDD(q_datetime, '/')}
+                                {dateToRelative(q_datetime, '/')}
                             </div>
                         </div>
                     </ButtonBase>
@@ -327,7 +327,7 @@ const QNADetail = ({ id, token, onRemove, idList }) => {
                         <QNAState status={status} />
                         <div className={styles['subject']}>{subject}</div>
                         <div className={styles['datetime']}>
-                            {dateToYYYYMMDD(q_datetime, '/')}
+                            {dateToRelative(q_datetime, '/')}
                         </div>
                     </div>
                 </div>
@@ -342,7 +342,7 @@ const QNADetail = ({ id, token, onRemove, idList }) => {
             {status === 1 && <div className={styles['answer']}>
                 <div className={styles['info']}>
                     <span className={styles['a-name']}>답변</span>
-                    <span className={styles['a-date']}>{dateToYYYYMMDD(a_datetime, '/')}</span>
+                    <span className={styles['a-date']}>{dateToRelative(a_datetime, '/')}</span>
                 </div>
                 <div className={styles['a-content']} dangerouslySetInnerHTML={{ __html: answer}} />
             </div>}

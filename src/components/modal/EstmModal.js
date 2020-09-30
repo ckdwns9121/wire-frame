@@ -70,10 +70,12 @@ const EstmModal = (props) => {
             const pageHeight = imgWidth * 1.414; // 출력 페이지 세로 길이 계산 A4 기준
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             let heightLeft = imgHeight;
+            console.log(position);
             console.log(canvas.width, canvas.height);
             console.log(imgWidth, imgHeight);
             // doc.addImage(imageData, 'PNG', 0, 0, 210, 297);
-            doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
+            // doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
+            doc.addImage(imageData, 'PNG', 0, position, canvas.width, canvas.height);
             heightLeft -= pageHeight;
             while (heightLeft >= 20) {
                 position = heightLeft - imgHeight;

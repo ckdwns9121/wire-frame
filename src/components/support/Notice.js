@@ -6,7 +6,7 @@ import Message from '../assets/Message';
 import { requestNoticeItem, requestNoticeList } from '../../api/support/notice';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
-import { dateToYYYYMMDD } from '../../lib/formatter';
+import { dateToRelative } from '../../lib/formatter';
 import Loading from '../assets/Loading';
 import { useModal } from '../../hooks/useModal';
 import ListPaging from '../sidebar/ListPaging';
@@ -49,7 +49,6 @@ export default ({ match, location }) => {
             // if (count !== res.count) {
             //     setCount(res.count);
             // }
-            console.log(res);
             setNoticeList(res.notices);
         } catch (e) {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -114,7 +113,7 @@ const NoticeList = ({ list }) => list.map(item => (
                 {item.title} 
             </div>
             <div className={styles['created']}>
-                {dateToYYYYMMDD(item.created_at, '/')}
+                {dateToRelative(item.created_at, '/')}
             </div>
         </Link>
     </div>
@@ -130,7 +129,7 @@ const NoticeContent = ({ item }) => (
                 {item.title}
             </div>
             <div className={styles['created']}>
-                {dateToYYYYMMDD(item.created_at, '/')}
+                {dateToRelative(item.created_at, '/')}
             </div>
         </div>
         <div className={styles['content']} dangerouslySetInnerHTML={{ __html: item.body}} />

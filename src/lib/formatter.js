@@ -31,8 +31,7 @@ export function numberToKorean(number) {
     }
     for (let i = 0; i < resultArray.length; i++) {
         if (!resultArray[i]) continue;
-        resultString =
-            String(numberFormat(resultArray[i])) + unitWords[i] + resultString;
+        resultString = String(numberFormat(resultArray[i])) + unitWords[i] + resultString;
     }
     return resultString;
 }
@@ -47,7 +46,9 @@ export const dateToYYYYMMDD = (date, join = '-') => {
     // Javascript Date 객체를 형식에 맞게 변환하여 표현함.
     let setDate = null;
     if (typeof date === 'string') {
-        setDate = date.split(' ')[0];
+        // IE 에서 YYYY-MM-DD HH:MM:SS 를 생성자로 사용할 수 없기 때문에 예외 처리.
+        setDate = date.replace(/-/g, '/');
+        // YYYY/MM/DD HH:MM:SS로 변경해줌
     }  else setDate = date;
     const absolute = new Date(setDate); // 만약에 Date 객체가 넘어오지 않을 것을 대비
     const monthFormatting = dateFormatting(absolute.getMonth() + 1); // 월을 두 자리로 변환

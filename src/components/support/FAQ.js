@@ -10,7 +10,7 @@ import DownArrow from '../svg/support/down.svg';
 import { requestFAQList } from '../../api/support/faq';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
-import { dateToYYYYMMDD } from '../../lib/formatter';
+import { dateToRelative } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
 import Loading from '../assets/Loading';
 import { useModal } from '../../hooks/useModal';
@@ -64,7 +64,6 @@ export default ({ location }) => {
         setLoading(true);
         try {
             const res = await requestFAQList(quesCategory);
-            console.log(res);
             setList(res);
         } catch (e) {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
@@ -104,7 +103,7 @@ export default ({ location }) => {
                         <div key={item.id} className={cn('column', { open: openIndex === index })}>
                             <ButtonBase onClick={() => handleChange(index)} className={styles['row']}>
                                 <div className={styles['question']}>{item.question}</div>
-                                <div className={styles['created']}>{dateToYYYYMMDD(item.created_at, '/')}</div>
+                                <div className={styles['created']}>{dateToRelative(item.created_at, '/')}</div>
                                 <div className={styles['opener']}><img className={styles['direct']} src={DownArrow} alt="더보기" /></div>
                             </ButtonBase>
                             <div className={styles['answer']} dangerouslySetInnerHTML={{ __html: item.answer}} />
