@@ -183,6 +183,7 @@ const ReserveContainer = ({ tab = '0' }) => {
         const url = JSON.parse(sessionStorage.getItem('url'));
         //이전 주소가 상품페이지라면 스크롤 유지
         if(url.prev ==='/product'){
+              console.log('스크롤 이동');
             window.scrollTo(0,scrollTop);
         }
     }, [loading]);
