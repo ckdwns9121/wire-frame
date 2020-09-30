@@ -10,6 +10,7 @@ export const getDeliveryList = async (token) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.get['Context-Type'] = 'application/json';
     const res = await axios.get();
+    console.log(res);
     return res;
 };
 
