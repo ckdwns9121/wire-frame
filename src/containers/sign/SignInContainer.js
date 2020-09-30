@@ -173,7 +173,7 @@ const SignInContainer = () => {
                 <Button title={'회원가입'} onClick={onClickSignUp}></Button>
 
                 <div className={styles['sns-box']}>
-                    <div className={styles['social-login']}>
+                    {/* <div className={styles['social-login']}>
                         <div className={styles['text']}>간편 로그인</div>
                         <div className={styles['line']}></div>
                     </div>
@@ -188,7 +188,7 @@ const SignInContainer = () => {
                         <div className={styles.sns}>
                             <img src={FacebookLogo} alt="facebook"></img>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

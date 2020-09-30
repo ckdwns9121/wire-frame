@@ -14,7 +14,6 @@ import Loading from '../../components/assets/Loading';
 
 import {
     getPreferMenuList,
-    getCustomMenuList,
     getMenuList,
 } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
@@ -33,7 +32,7 @@ const ReserveContainer = ({ tab = '0' }) => {
     const history = useHistory();
     const [open, setOpen] = useState(false);
     const [budget, setBudget] = useState(0); // 맞춤 가격
-    const [endBudget, setEndBudget] = useState(0); // 맞춤 가격 끝
+    // const [endBudget, setEndBudget] = useState(0); // 맞춤 가격 끝
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [tabIndex, setTab] = useState(parseInt(tab));
@@ -68,9 +67,6 @@ const ReserveContainer = ({ tab = '0' }) => {
         try {
             // const res = await getCustomMenuList(); 임시데이터
             const res = await getPreferMenuList();
-            console.log('추천메뉴');
-            console.log(res);
-            // console.log(res);
             setPreferMenuList(res.items_prefer);
         } catch {
             alert('오류!');
@@ -84,10 +80,10 @@ const ReserveContainer = ({ tab = '0' }) => {
         setBudget(value);
     }, []);
 
-    const onChangeEndBudget = useCallback((e) => {
-        const value = stringNumberToInt(e.target.value);
-        setEndBudget(value);
-    }, []);
+    // const onChangeEndBudget = useCallback((e) => {
+    //     const value = stringNumberToInt(e.target.value);
+    //     setEndBudget(value);
+    // }, []);
 
     const onClickMenuItem = useCallback(
         (item_id) => {
@@ -122,11 +118,13 @@ const ReserveContainer = ({ tab = '0' }) => {
     const getProductList = useCallback(async()=>{
         try{
             // 카테고리별로 메뉴 리스트 받아오기.
+            console.log('리스트 받아오기');
             let arr = [];
             if(categorys.length!==1 && store){
             for (let i = 1; i < categorys.length; i++) {
                 const {ca_id} = categorys[i];
                     const result = await getMenuList(ca_id, 0, LIMIT ,store.ca_id);
+                    console.log(result);
                     const temp = { ca_id:ca_id, items: result.data.query.items};
                     arr.push(temp);
             }
@@ -142,8 +140,11 @@ const ReserveContainer = ({ tab = '0' }) => {
 
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
+        console.log('페이지 네이션');
+
         if(!loading){
         try {
+            console.log('들어옴');
 
             //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
             if (tabIndex !== 0 && categorys.length !== 1 && items && store) {
@@ -154,6 +155,7 @@ const ReserveContainer = ({ tab = '0' }) => {
                     LIMIT,
                     store.shop_id
                 );
+                console.log(res);
 
                 const get_list = res.data.query.items;
                 if (get_list.length !== 0) {
@@ -164,16 +166,18 @@ const ReserveContainer = ({ tab = '0' }) => {
                             items: get_list,
                         }),
                     );
+
+                    setTimeout(() => {
+                        setIsPaging(false);
+                    }, 1000);
                 }
-                setTimeout(() => {
-                    setIsPaging(false);
-                }, 1000);
             }
-        } catch (e) {
-            console.error(e);
         }
-    }
-    }, [tabIndex, categorys, offset, items, posts,loading,store]);
+        catch (e) {
+                console.error(e);
+        }
+      }
+    }, [tabIndex, categorys, offset, items,loading,store,dispatch]);
 
  
     //첫 로딩시 카테고리 셋팅
@@ -187,40 +191,39 @@ const ReserveContainer = ({ tab = '0' }) => {
         getProductList();
     },[getProductList])
 
-
     //탭 바뀌었을때 오프셋 갱신
-    useEffect(()=>{
+    useEffect(() => {
         setOffset(OFFSET);
-    },[tabIndex])
+    }, [tabIndex]);
   
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(true);
-        setTimeout(()=>{
+        setTimeout(() => {
             const url = JSON.parse(sessionStorage.getItem('url'));
-            if(url){
-            //이전 페이지가 상품페이지라면 오프셋 유지.
-            if(url.prev ==='/product'){
-              const OS = sessionStorage.getItem('offset');
-              if(OS){
-                setOffset(parseInt(OS));
-              }
+            if (url) {
+                //이전 페이지가 상품페이지라면 오프셋 유지.
+                if (url.prev === '/product') {
+                    const OS = sessionStorage.getItem('offset');
+                    if (OS) {
+                        setOffset(parseInt(OS));
+                    }
+                }
             }
-        }
             setLoading(false);
-        },100)
-    },[])
+        }, 100);
+    }, []);
 
     //로딩 완료 되었을 때 스크롤 위치로 이동.
     useEffect(() => {
         const scrollTop = sessionStorage.getItem('scrollTop');
         const url = JSON.parse(sessionStorage.getItem('url'));
         if(url){
-        //이전 주소가 상품페이지라면 스크롤 유지
-        if(url.prev ==='/product'){
-              console.log('스크롤 이동');
-            window.scrollTo(0,scrollTop);
+            //이전 주소가 상품페이지라면 스크롤 유지
+            if (url.prev === '/product') {
+                console.log('스크롤 이동');
+                window.scrollTo(0, scrollTop);
+            }
         }
-    }
     }, [loading]);
 
     // 탭 인덱스로 URL 이동
@@ -239,27 +242,27 @@ const ReserveContainer = ({ tab = '0' }) => {
             console.log(isScrollEnd);
             PageNationMenuList();
         }
-    }, [isScrollEnd, isPaging]);
+    }, [isScrollEnd,isPaging,PageNationMenuList]);
 
-    useEffect(() => {
-        if (budget > endBudget) {
-            setEndBudget(budget);
-        }
-    }, [budget, endBudget]);
+    // useEffect(() => {
+    //     if (budget > endBudget) {
+    //         setEndBudget(budget);
+    //     }
+    // }, [budget, endBudget]);
 
-    const renderPost =useCallback(()=>{
+    const renderPost = useCallback(() => {
         // console.log(offset +'으로 렌더');
-        return(
+        return (
             <>
-            {posts && (
-                <MenuItemList
-                    menuList={posts.slice(0, offset)}
-                    onClick={onClickMenuItem}
-                />
-            )}
+                {posts && (
+                    <MenuItemList
+                        menuList={posts.slice(0, offset)}
+                        onClick={onClickMenuItem}
+                    />
+                )}
             </>
-        )
-    },[posts,offset,onClickMenuItem])
+        );
+    }, [posts, offset, onClickMenuItem]);
 
     return (
         <>
@@ -311,9 +314,9 @@ const ReserveContainer = ({ tab = '0' }) => {
                 itemType={orderType}
                 onChangeType={onChangeOrderType}
                 budget={budget}
-                endBudget={endBudget}
+                // endBudget={endBudget}
                 onChangeBudget={onChangeBudget}
-                onChangeEndBudget={onChangeEndBudget}
+                // onChangeEndBudget={onChangeEndBudget}
                 desireQuan={desireQuan}
                 onClickCustomOrder={onClickCustomOrder}
             />

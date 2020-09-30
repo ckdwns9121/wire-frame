@@ -52,13 +52,13 @@ const ReserveModal = (props) => {
                         value={numberFormat(props.budget)}
                         onChange={props.onChangeBudget}
                     />
-                    <span>원 부터</span>
-                    <input
+                    <span>원</span>
+                    {/* <input
                         className={styles['value-input']}
                         onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
                         value={numberFormat(props.endBudget)}
                         onChange={props.onChangeEndBudget}
-                    />
+                    /> */}
                     <span>원 까지</span>
                 </div>
 
