@@ -17,8 +17,6 @@ import KakaoMap from '../../../components/map/KakaoMap';
 import { getMainMenuList } from '../../../api/menu/menu';
 import Loading from 'components/assets/Loading';
 import { getMainCategory } from '../../../api/category/category';
-import { get_catergory, get_menulist } from '../../../store/product/product';
-import { useDispatch, useSelector } from 'react-redux';
 import { requestGetReviewList } from '../../../api/review/review';
 import ReviewListView from '../../../components/review/ReviewListView';
 import ReviewModal from '../../../components/modal/ReviewModal';
@@ -28,8 +26,8 @@ const cx = cn.bind(styles);
 const HomeContainer = () => {
     const history = useHistory();
     const [useCate, setUseCate] = useState(0);
-    const dispatch = useDispatch();
-    const { categorys, items } = useSelector((state) => state.product);
+    const [categories, setCategories] = useState([]);
+    const [items, setItems] = useState([]);
     const [reviewId, setReviewId] = useState(-1);
     const [reviewList, setReviewList] = useState([]);
 
@@ -40,15 +38,11 @@ const HomeContainer = () => {
 
     const getProductList = useCallback(async () => {
         setLoading(true);
-        if (categorys.length === 1) {
             try {
                 const res = await getMainCategory();
-                
-                res.sort((a, b) => a.ca_id - b.ca_id);
                 // 카테고리를 분류 순서로 정렬.
-                const ca_list = res.filter((item) => item.ca_id !== 12);
+                const ca_list = res.slice(0, 5).sort((a, b) => a.ca_id - b.ca_id);
 
-                dispatch(get_catergory(ca_list));
                 let arr = [];
                 for (let i = 0; i < ca_list.length; i++) {
                     const result = await getMainMenuList(ca_list[i].ca_id);
@@ -56,16 +50,17 @@ const HomeContainer = () => {
                     arr.push(temp);
                 }
                 arr.sort((a, b) => a.ca_id - b.ca_id);
-                dispatch(get_menulist(arr));
+                setCategories(ca_list);
+                setItems(arr);
             } catch (e) {
                 console.error(e);
             }
-        }
-        if (categorys[1]) {
-            setUseCate(categorys[1].ca_id);
+        if (categories[0]) {
+            setUseCate(categories[0].ca_id);
         }
         setLoading(false);
-    }, [categorys, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const getReviewList = useCallback(async () => {
         try {
@@ -103,7 +98,7 @@ const HomeContainer = () => {
                 />
                 <div className={styles['menu-list']}>
                     <ul className={styles['category']}>
-                        {categorys.slice(1, 6).map((category) => (
+                        {categories.map((category) => (
                             <li
                                 key={category.ca_id}
                                 onClick={() => setUseCate(category.ca_id)}
@@ -127,7 +122,7 @@ const HomeContainer = () => {
                         ))}
                     </ul>
                     <div className={styles['list-box']}>
-                    {items !== null && (
+                    {items.length && (
                         <MenuListView
                             menuList={items[useCate].items}
                             onClick={onClickDetailItem}

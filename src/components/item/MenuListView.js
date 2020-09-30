@@ -24,12 +24,4 @@ const MeunListView = ({ menuList, onClick }) => {
     );
 };
 
-function Empty (){
-    return(
-        <div className={styles['empty']}>
-            
-        </div>
-    )
-}
-
 export default MeunListView;
