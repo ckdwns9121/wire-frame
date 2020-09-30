@@ -17,6 +17,12 @@ input[type='checkbox'] {
 input {
     outline: none;
     box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+input[type='text']::-ms-clear {
+    display: none;
 }
 
 select {
