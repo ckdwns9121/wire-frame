@@ -8,11 +8,10 @@ import OtherUserMenuItemList from '../../components/item/OtherUserMenuItemList';
 import { getOtherUserMenu } from '../../api/menu/menu';
 import TabMenu from '../../components/tab/TabMenu';
 import Count from '../../components/svg/counter/Count';
-import CartMenuImg from '../../components/svg/cart/cart_menu.png';
-import DetailImg from '../../components/svg/cart/detail_img.png';
+import NO_IMAGE from '../../components/svg/NO_IMAGE.png';
 import { ButtonBase } from '@material-ui/core';
 import Loading from '../../components/assets/Loading';
-import { numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import { addCartItem } from '../../api/cart/cart';
 import { noAuthAddCart } from '../../api/noAuth/cart';
 import { useStore } from '../../hooks/useStore';
@@ -196,7 +195,7 @@ const DetailContainer = ({ item_id }) => {
                 <div className={styles['container']}>
                     <div className={styles['menu-info']}>
                         <div className={styles['menu-view']}>
-                            <img src={CartMenuImg} alt={'메뉴'} />
+                            <img src={menu && menu.item.item_img !== "[]" ? DBImageFormat(menu.item.item_img)[0] : NO_IMAGE} alt={'메뉴'} />
                         </div>
                         <div className={styles['item-info']}>
                             <div className={styles['item-name']}>
@@ -274,7 +273,7 @@ const DetailContainer = ({ item_id }) => {
                             {index === 0 && (
                             <div className={styles['detail-menu-view']}>
                                 <div className={styles['detail-img']}>
-                                    <img src={DetailImg} alt="상세 이미지" />
+                                    <img src={menu && menu.item.item_img !== "[]" ? DBImageFormat(menu.item.item_img)[0] : NO_IMAGE} alt="상세 이미지" />
                                 </div>
                                 <div className={styles['detail-text']}>
                                     <div className={styles['title']}>

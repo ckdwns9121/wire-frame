@@ -10,6 +10,7 @@ const MeunListView = ({ menuList, onClick }) => {
             key={menu.item_id}
             item_name={menu.item_name}
             item_price={menu.item_price}
+            item_img={menu.item_img}
             ca_id={menu.ca_id}
             src={menu.item_img}
             onClick={() => onClick(menu.item_id)}

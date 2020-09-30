@@ -1,6 +1,6 @@
 import React from 'react';
 
-import IMG from '../svg/menu/menu1.png';
+import NO_IMAGE from '../svg/NO_IMAGE.png';
 
 import styles from './Menu.module.scss';
 import { numberFormat,DBImageFormat } from "../../lib/formatter";
@@ -28,7 +28,7 @@ function MenuImg({ src }) {
 
     return (
         <div className={styles['menu-img']}>
-            <img className={styles['img']} src={src === '[]' ? IMG : DBImageFormat(src)} alt={"메뉴 이미지"} />
+            <img className={styles['img']} src={src !== "[]" ? DBImageFormat(src)[0] : NO_IMAGE} alt={"메뉴 이미지"} />
         </div>
     );
 }

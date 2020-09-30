@@ -9,6 +9,7 @@ export const getOrderList = async (
     end_date,
 ) => {
     const req = Paths.api + 'user/order/list';
+    end_date.setHours(23, 59, 59);
     const config = {
         headers: {
             'content-type': 'application/json',

@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './Order.module.scss';
 import cn from 'classnames/bind';
-import menu1 from '../svg/order/menu1.png';
-import {numberFormat} from '../../lib/formatter';
+import NO_IMAGE from '../svg/NO_IMAGE.png';
+import {DBImageFormat, numberFormat} from '../../lib/formatter';
 const cx = cn.bind(styles);
 
 const OrderItem = (props) => {
@@ -12,12 +12,13 @@ const OrderItem = (props) => {
         item_name,
         item_option,
         item_price,
+        item_img
     } = props;
 
     return (
         <div className={cx('order-item', { space: center })}>
             <div className={styles['menu-img']}>
-                <img src={menu1} alt="menu" />
+                <img src={item_img !== "[]" && item_img !== undefined ? DBImageFormat(item_img)[0] : NO_IMAGE} alt="menu" />
             </div>
             <div className={styles['menu-info']}>
                 <div className={styles['name']}>{item_name}</div>

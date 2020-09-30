@@ -16,6 +16,9 @@
     .menu-img {
         float: left;
         padding-right: 40px;
+        img {
+            width: 100px; height: 100px;
+        }
     }
     .menu-info {
         position: relative;

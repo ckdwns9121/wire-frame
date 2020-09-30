@@ -56,7 +56,6 @@ const ReviewModal = (props) => {
                     setCreatedAt(created_at);
                     setFiles(DBImageFormat(review_images));
                     setTags(res.data.query.items);
-                    console.log(res.data.query.items);
                 } else {
                     openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
                 }

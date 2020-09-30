@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './OtherMenu.module.scss';
-import IMG from '../svg/menu/menu1.png';
-import { numberFormat } from "../../lib/formatter";
+import NO_IMAGE from '../svg/NO_IMAGE.png';
+import { DBImageFormat, numberFormat } from "../../lib/formatter";
 import { Link } from 'react-router-dom';
 import { Paths } from '../../paths';
 
@@ -11,7 +11,7 @@ const OtherUserMenuItem = (props) => {
     return (
         <Link to={Paths.ajoonamu.product + '?item_id=' + props.item_id}>
             <div className={styles['menu-item']} >
-                <MenuImg src={IMG} />
+                <MenuImg src={props.item_img !== "[]" ? DBImageFormat(props.item_img)[0] : NO_IMAGE} />
                 <div className={styles['menu-info']}>
                     <MenuTitle menuTitle={props.item_name} />
                     <MenuPrice menuPrice={props.item_price} />

@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './Preview.module.scss';
-import menu1 from '../svg/menu/menu1.png';
+import NO_IMAGE from '../svg/NO_IMAGE.png';
 import Arrow from '../svg/arrow/Arrow';
-import { numberFormat } from "../../lib/formatter";
+import { DBImageFormat, numberFormat } from "../../lib/formatter";
 import { ButtonBase } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
@@ -20,7 +20,6 @@ const PreviewOrderItem = (props) => {
         // send_cost,
         // total_price,
     } = props;
-
     const history = useHistory();
 
 
@@ -57,7 +56,7 @@ const PreviewOrderItem = (props) => {
                 </div>
             </div>
             <div className={styles['menu-list']}>
-                <MenuList items= {items}/>
+                <MenuList items={items}/>
             </div>
             <div className={styles['href-detail']} onClick={props.onClick}>
                 <div className={styles['text']}>주문 상세보기</div>
@@ -70,12 +69,13 @@ const PreviewOrderItem = (props) => {
 };
 
 function MenuList ({items}){
-    const list =items.map( (item,index) =>(
-        <MenuItem  
-            key={index} 
-            item_name={item.item_name} 
+    const list = items.map((item, index) => (
+        <MenuItem
+            key={index}
+            item_name={item.item_name}
             item_option={item.item_option}
             item_price={item.item_price}
+            src={item.item_img}
         />
     ));
     return(
@@ -87,7 +87,7 @@ function MenuItem({ src, item_name, item_option, item_price }) {
     return (
         <div className={styles['menu-item']}>
             <div className={styles['menu-img']}>
-                <img src={menu1} alt="메뉴" />
+                <img src={src !== "[]" && src !== undefined ? DBImageFormat(src)[0] : NO_IMAGE} alt="메뉴" />
             </div>
             <div className={styles['menu-name']}>{item_name}</div>
             <div className={styles['menu-price']}>

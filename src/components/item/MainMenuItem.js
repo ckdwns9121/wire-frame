@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from './MainMenu.module.scss';
-import menu1 from '../svg/menu/menu1.png';
-import { numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
+import NO_IMAGE from '../svg/NO_IMAGE.png';
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = ({ item_name, item_price, item_img, onClick }) => (
     <ButtonBase component='div' className={styles['menu-item']} onClick={onClick}>
-        <MenuImg src={menu1} />
+        <MenuImg src={item_img !== "[]" ? DBImageFormat(item_img)[0] : NO_IMAGE} />
         <div className={styles['pd-box']}>
             <div className={styles['menu-info']}>
                 <MenuTitle menuTitle={item_name} />

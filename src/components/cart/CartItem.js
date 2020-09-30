@@ -1,19 +1,19 @@
 import React from 'react';
 import PropsTypes from 'prop-types';
 import styles from './Cart.module.scss';
-import Menu1 from '../svg/menu/menu1.png';
+import NO_IMAGE from '../svg/NO_IMAGE.png';
 import CloseIcon from '../svg/modal/CloseIcon';
 import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
 import Count from '../../components/svg/counter/Count';
 import { IconButton } from '@material-ui/core';
-import { numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
 
 // 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
 
 const CartItem = (props) => {
     const { id } = props;
-    const { item_name, item_price, item_quanity ,cart_id} = props.item;
+    const { item_name, item_price, item_quanity, cart_id, item_img } = props.item;
     const options = props.options;
 
     const total_price =()=>{
@@ -29,15 +29,15 @@ const CartItem = (props) => {
             <div className={styles['check-box']}>
                 <div className={styles['check']}>
                     <SquareCheckBox 
-                    check={props.checked}
-                    onChange={()=>props.handleCheckChild(id)}
-                    id={id}
+                        check={props.checked}
+                        onChange={()=>props.handleCheckChild(id)}
+                        id={id}
                     />
                 </div>
             </div>
             <div className={styles['menu-info']}>
                 <div className={styles['menu-img']}>
-                    <img src={Menu1} alt="menu" />
+                    <img src={item_img !== "[]" ? DBImageFormat(item_img)[0] : NO_IMAGE} alt="menu" />
                 </div>
                 <div className={styles['menu-value']}>
                     <div className={styles['menu-name-price']}>
