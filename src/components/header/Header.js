@@ -71,7 +71,7 @@ const Header = () => {
                             <img src={storeIcon} alt="배달"></img>
                             <div
                                 className={styles['text']}
-                                onClick={() => alert('준비중입니다.')}
+                                onClick={() => { history.push(Paths.index); window.scrollTo(5000, 5000)}}
                             >
                                 아주나무 지점 미설정
                             </div>

@@ -58,8 +58,8 @@ const ReserveModal = (props) => {
                         onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
                         value={numberFormat(props.endBudget)}
                         onChange={props.onChangeEndBudget}
-                    /> */}
-                    <span>원 까지</span>
+                    />
+                    <span>원 까지</span> */}
                 </div>
 
                 <div className={styles['box']}>
