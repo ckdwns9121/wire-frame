@@ -37,24 +37,29 @@ const DetailContainer = ({ item_id }) => {
     const onChangeIndex = (e, index) => setIndex(index);
 
     //메뉴 디테일 정보 가져오기
-    const getDetailMenu = async () => {
+    const getDetailMenu = useCallback(async () => {
         setLoading(true);
         try {
             const res = await getMenuInfo(item_id);
-            setMenu(res);
+            if (res.item) {
+                setMenu(res);
+            } else {
+                openModal('삭제되거나 없는 상품입니다.', '상품 번호를 다시 한 번 확인해 주세요.');
+                history.push(Paths.ajoonamu.index);
+            }
         } catch (e) {
-            alert('Error!');
+            openModal('잘못된 접근입니다.', '잠시 후 다시 시도해 주세요.');
+            history.push(Paths.ajoonamu.index);
         }
         setLoading(false);
-    };
+    }, [item_id, openModal, history]);
 
     //다른사람이 본 메뉴
     const getOtherUserMenuApi = async () => {
-        try{
-        const res = await getOtherUserMenu();
-        setOtherMenuList(res.data.query.items);
-        }
-        catch(e){
+        try {
+            const res = await getOtherUserMenu();
+            setOtherMenuList(res.data.query.items);
+        } catch (e) {
             console.error(e);
         }
     };
@@ -175,7 +180,7 @@ const DetailContainer = ({ item_id }) => {
 
     useEffect(() => {
         getDetailMenu();
-    }, [item_id]);
+    }, [getDetailMenu, item_id]);
 
     useEffect(() => {
         getOtherUserMenuApi();

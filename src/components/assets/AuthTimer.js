@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { useModal } from '../../hooks/useModal';
 import styles from './Timer.module.scss';
 
-const AuthTimer = ({ start }) => {
+const AuthTimer = ({ start, setStart }) => {
     const [time, setTime] = useState(60 * 3);
+    const openModal = useModal();
 
     useEffect(() => {
         if (start) {
-            if (time > 0) {
-                const Counter = setInterval(() => {
-                    const temp = time - 1;
+            const Counter = setInterval(() => {
+                const temp = time - 1;
+                if (temp === -1) {
+                    setStart(false);
+                    openModal('인증 제한 시간이 초과되었습니다.', '다시 시도해두세요!');
+                    clearInterval(Counter);
+                } else {
                     setTime(temp);
-                }, 1000);
-                return () => clearInterval(Counter);
-            }
+                }
+            }, 1000);
+            return () => clearInterval(Counter);
         } else if (!start) {
-            setTime(60 * 3);
+            setTime(1 * 3);
         }
-    }, [start, time]);
+    }, [start, setStart, time, openModal]);
 
     const timeFormat = (time) => {
         const m = Math.floor(time / 60).toString();

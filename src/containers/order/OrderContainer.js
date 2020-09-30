@@ -1,6 +1,12 @@
 /*global kakao*/
 
-import React, {useState,useEffect, useReducer, useCallback,useRef} from 'react';
+import React, {
+    useState,
+    useEffect,
+    useReducer,
+    useCallback,
+    useRef,
+} from 'react';
 import { Paths } from 'paths';
 import { useSelector } from 'react-redux';
 import styles from './Order.module.scss';
@@ -500,7 +506,7 @@ const OrderContainer = () => {
                                         <select name="hours"onChange ={(e) => {setHours(e.target.value)}}>
                                             {[...new Array(22).keys()].splice(9, 13).map(item => (
                                                 <option value={item} key={item}>
-                                                    {(item >= 12 ? '오후 ' : '오전 ') + (item % 12) + '시'}
+                                                    {(item >= 12 ? '오후 ' : '오전 ') + (item > 12 ? item - 12: item) + '시'}
                                                 </option>
                                             ))}
                                         </select>
@@ -535,9 +541,7 @@ const OrderContainer = () => {
                                                     id={'order'}
                                                     text={'자동저장'}
                                                     check={orderMemoCheck}
-                                                    onChange={
-                                                        onChangeOrderCheck
-                                                    }
+                                                    onChange={onChangeOrderCheck}
                                                 />
                                             </div>
                                         </div>
@@ -843,11 +847,14 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
             openModal('휴대폰 형식에 맞지 않습니다!', '휴대폰 번호를 확인해 주세요.');
         }
     }, [secondValue, thirdValue, openModal]);
+    
     const onClickResendAuth = useCallback(() => {
         openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
-            alert('499996');
+            setAuth(false);
+            onClickStartAuth();
         }, true);
-    }, [openModal]);
+    }, [onClickStartAuth, openModal, setAuth]);
+
     const onClickConfirmAuth = useCallback(() => {
         if (authNumber === '499996') {
             openModal('성공적으로 인증되었습니다!', '주문하기를 계속 진행하세요.');
@@ -930,7 +937,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
                     onKeyDown={onlyNumberListener}
                     className={styles['auth-input']}
                 />
-                <AuthTimer start={start} />
+                <AuthTimer start={start} setStart={setStart} />
             </div>
             <div className={styles['button-area']}>
                 <ButtonBase

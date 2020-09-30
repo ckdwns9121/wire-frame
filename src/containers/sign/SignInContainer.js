@@ -7,11 +7,11 @@ import Button from 'components/button/Button';
 import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
 import cn from 'classnames/bind';
-import {
-    KakaoLogo,
-    NaverLogo,
-    FacebookLogo,
-} from '../../components/svg/sign/social';
+// import {
+//     KakaoLogo,
+//     NaverLogo,
+//     FacebookLogo,
+// } from '../../components/svg/sign/social';
 import CheckBox from 'components/checkbox/CheckBox';
 import { get_address } from '../../store/address/address';
 import { getActiveAddr } from '../../api/address/address';

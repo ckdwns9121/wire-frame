@@ -38,25 +38,25 @@ const HomeContainer = () => {
 
     const getProductList = useCallback(async () => {
         setLoading(true);
-            try {
-                const res = await getMainCategory();
-                // 카테고리를 분류 순서로 정렬.
-                const ca_list = res.slice(0, 5).sort((a, b) => a.ca_id - b.ca_id);
+        try {
+            const res = await getMainCategory();
+            // 카테고리를 분류 순서로 정렬.
+            const ca_list = res.slice(0, 5).sort((a, b) => a.ca_id - b.ca_id);
 
-                let arr = [];
-                for (let i = 0; i < ca_list.length; i++) {
-                    const result = await getMainMenuList(ca_list[i].ca_id);
-                    const temp = { ca_id: ca_list[i].ca_id, items: result };
-                    arr.push(temp);
-                }
-                arr.sort((a, b) => a.ca_id - b.ca_id);
-                setCategories(ca_list);
-                setItems(arr);
-            } catch (e) {
-                console.error(e);
+            if (ca_list[0]) {
+                setUseCate(ca_list[0].ca_id);
             }
-        if (categories[0]) {
-            setUseCate(categories[0].ca_id);
+            let arr = [];
+            for (let i = 0; i < ca_list.length; i++) {
+                const result = await getMainMenuList(ca_list[i].ca_id);
+                const temp = { ca_id: ca_list[i].ca_id, items: result };
+                arr.push(temp);
+            }
+            arr.sort((a, b) => a.ca_id - b.ca_id);
+            setCategories(ca_list);
+            setItems(arr);
+        } catch (e) {
+            console.error(e);
         }
         setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,7 +124,7 @@ const HomeContainer = () => {
                     <div className={styles['list-box']}>
                     {items.length && (
                         <MenuListView
-                            menuList={items[useCate].items}
+                            menuList={items.find(item => item.ca_id === useCate).items}
                             onClick={onClickDetailItem}
                         />
                     )}
