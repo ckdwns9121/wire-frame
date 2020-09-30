@@ -64,6 +64,7 @@ export default ({ location }) => {
         setLoading(true);
         try {
             const res = await requestFAQList(quesCategory);
+            console.log(res);
             setList(res);
         } catch (e) {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');

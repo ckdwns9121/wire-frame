@@ -49,6 +49,7 @@ export default ({ match, location }) => {
             // if (count !== res.count) {
             //     setCount(res.count);
             // }
+            console.log(res);
             setNoticeList(res.notices);
         } catch (e) {
             openModal('잘못된 접근입니다', '정상적으로 다시 접근해 주세요.');
