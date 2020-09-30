@@ -30,6 +30,7 @@ const Header = () => {
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
     const { addr1 } = useSelector((state) => state.address);
+    const {store} = useSelector((state)=>state.store);
 
     const [logon, setLogon] = useState(false);
     const [search, setSearch] = useState('');
@@ -73,7 +74,7 @@ const Header = () => {
                                 className={styles['text']}
                                 onClick={() => alert('준비중입니다.')}
                             >
-                                아주나무 지점 미설정
+                                {store ? store.shop_name : '아주나무 지점 미설정'}
                             </div>
                         </div>
                         <div className={styles['auth']}>

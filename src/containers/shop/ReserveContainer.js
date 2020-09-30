@@ -27,6 +27,7 @@ const LIMIT = 8;
 
 const ReserveContainer = ({ tab = '0' }) => {
     const { categorys, items } = useSelector((state) => state.product);
+    const {store} = useSelector((state)=>state.store);
     const dispatch = useDispatch();
 
     const history = useHistory();
@@ -97,48 +98,70 @@ const ReserveContainer = ({ tab = '0' }) => {
     );
 
     //첫 로딩시 메뉴 받아오기
-    const getProductList = useCallback(async () => {
+    const getCategoryList = useCallback(async () => {
         setLoading(true);
 
-        //카테고리 길이가 1이면 받아오기.
+        console.log('시작');
+        //카테고리 길이가 1이면 받아오기.   
         if (categorys.length === 1) {
+            console.log('받아오기');
             const res = await getCategory();
-            res.sort((a, b) => a.ca_id - b.ca_id);
+            // res.sort((a, b) => a.ca_id - b.ca_id);
             // 카테고리를 분류 순서로 정렬.
             let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
             dispatch(get_catergory(ca_list));
-            let arr = [];
-            //카테고리별로 메뉴 리스트 받아오기.
-            for (let i = 0; i < ca_list.length; i++) {
-                    const result = await getMenuList(ca_list[i].ca_id, 0, LIMIT);
-                    const temp = { ca_id: ca_list[i].ca_id, items: result };
-                    arr.push(temp);
-            }
-            arr.sort((a, b) => a.ca_id - b.ca_id);
-            dispatch(get_menulist(arr));
+
+
+            // arr.sort((a, b) => a.ca_id - b.ca_id);
+            // dispatch(get_menulist(arr));
         }
         setLoading(false);
-    }, [categorys, dispatch, offset]);
+    }, []);
 
-    const getMenuListApi = useCallback(async () => {
+
+    const getProductList = useCallback(async()=>{
+        try{
+            // 카테고리별로 메뉴 리스트 받아오기.
+            let arr = [];
+            if(categorys.length!==1 && store){
+            for (let i = 1; i < categorys.length; i++) {
+                const {ca_id} = categorys[i];
+                    const result = await getMenuList(ca_id, 0, LIMIT ,store.ca_id);
+                    const temp = { ca_id:ca_id, items: result.data.query.items};
+                    arr.push(temp);
+            }
+            dispatch(get_menulist(arr));
+          }
+        }
+        catch(e){
+
+        }
+    },[categorys,store]);
+
+
+
+    //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
+    const PageNationMenuList = useCallback(async () => {
         if(!loading){
         try {
 
-            //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템이 있으면 실행
-            if (tabIndex !== 0 && categorys.length !== 1 && items) {
+            //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
+            if (tabIndex !== 0 && categorys.length !== 1 && items && store) {
                 setIsPaging(true);
                 const res = await getMenuList(
                     categorys[tabIndex].ca_id,
                     offset,
                     LIMIT,
+                    store.shop_id
                 );
 
-                if (res.length !== 0) {
+                const get_list = res.data.query.items;
+                if (get_list.length !== 0) {
                     setOffset(offset + LIMIT);
                     dispatch(
                         add_menuitem({
                             ca_id: categorys[tabIndex].ca_id,
-                            items: res,
+                            items: get_list,
                         }),
                     );
                 }
@@ -150,13 +173,19 @@ const ReserveContainer = ({ tab = '0' }) => {
             console.error(e);
         }
     }
-    }, [tabIndex, categorys, offset, items, posts,loading]);
+    }, [tabIndex, categorys, offset, items, posts,loading,store]);
 
-    //첫 로딩시 아이템 셋팅
+ 
+    //첫 로딩시 카테고리 셋팅
     useEffect(() => {
-        getProductList();
+        getCategoryList();
         window.scrollTo(0,0);
-    }, []);
+    }, [getCategoryList]);
+
+    // 첫 로딩시 메뉴 셋팅
+    useEffect(()=>{
+        getProductList();
+    },[getProductList])
 
 
     //탭 바뀌었을때 오프셋 갱신
@@ -208,7 +237,7 @@ const ReserveContainer = ({ tab = '0' }) => {
     useEffect(() => {
         if (isScrollEnd && !isPaging) {
             console.log(isScrollEnd);
-            getMenuListApi();
+            PageNationMenuList();
         }
     }, [isScrollEnd, isPaging]);
 
