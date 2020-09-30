@@ -14,6 +14,7 @@ import Loading from '../../components/assets/Loading';
 import { numberFormat, stringToTel } from '../../lib/formatter';
 import { modalOpen } from '../../store/modal';
 import { order_cancle } from '../../api/order/order';
+import { Paths } from '../../paths';
 
 const cx = cn.bind(styles);
 
@@ -94,7 +95,8 @@ const OrderCompleteContainer = ({ order_number }) => {
                     if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.') !== -1) {
                         openMessage(false, '이미 취소된 거래건 입니다.');
                     } else {
-                        openMessage(false, '정삭적으로 취소되었습니다.');
+                        openMessage(false, '정상적으로 취소되었습니다.');
+                        history.push(Paths.index);
                     }
                 } catch (e) {
                     console.error(e);
