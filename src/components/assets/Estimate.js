@@ -24,6 +24,7 @@ const EstimateArea = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+        left: 0; top: 0;
         position: absolute;
         color: #222;
         font-size: 16px;
@@ -35,11 +36,13 @@ const Estimate = styled.div`
     box-sizing: border-box;
     min-width: 800px;
     max-width: 800px;
+    position: absolute;
+    top: 50%; left: 50%;
     text-align: left;
     margin: 0 auto;
     padding: 90px;
     background: #fff;
-    transform: scale(0.3);
+    transform: translate(-50%, -50%) scale(0.3);
 `;
 const Title = styled.h2`
     text-align: center;

@@ -84,10 +84,10 @@ const AddressContainer = () => {
                 const result = await callSearchApi();
                 setSearchList(result);
             } catch (e) {
-                alert('에러');
+                openMessage(false, '주소를 검색하는 도중 오류가 발생했습니다.', '다시 시도해 주세요.');
             }
         }
-    }, [callSearchApi, searchAddr]); //search 혹은 addrs 가 바뀌었을때만 함수생성
+    }, [callSearchApi, searchAddr, openMessage]); //search 혹은 addrs 가 바뀌었을때만 함수생성
 
     //검색 모달 오픈
     const handleOpen = useCallback(() => {
