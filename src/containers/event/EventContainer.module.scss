@@ -32,7 +32,6 @@
     }
 
     .content {
-        margin-left: -40px;
         clear: both;
         border-bottom: solid 1px #EBEBEB;
         overflow: hidden;
@@ -84,6 +83,9 @@
             img {
                 width: 100%;
             }
+        }
+        &.margin {
+            margin-left: -40px;
         }
     }
 }

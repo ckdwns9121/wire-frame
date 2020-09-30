@@ -87,6 +87,7 @@ export default function App() {
     useEffect(() => {
         getInfo();
         AOS.init({ duration: 1500, once: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

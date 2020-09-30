@@ -95,12 +95,12 @@ export default ({ match, location }) => {
                         진행 중인 이벤트
                     </span>
                     <span
-                        onClick={() => alert('종료된 이벤트가 없습니다!')}
+                        onClick={() => openModal('종료된 이벤트가 없습니다!', '')}
                         className={cn('mnav-item', { active: mode === 1 })}
                     >종료된 이벤트</span>
                 </div>
             </div>
-                <div className={styles['content']}>
+                <div className={cn('content', { margin: !detail })}>
                 {detail ? (
                     <>
                         <div className={styles['c-title-area']}>

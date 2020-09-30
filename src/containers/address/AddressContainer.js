@@ -71,6 +71,12 @@ const AddressContainer = () => {
         setLoading(false);
     }, [user_token]);
 
+    //검색 api 호출
+    const callSearchApi = useCallback(async () => {
+        const res = await searchAddress(searchAddr);
+        return res;
+    }, [searchAddr]);
+
     //검색버튼 클릭
     const onClickSearch = useCallback(async () => {
         if (searchAddr !== '') {
@@ -81,13 +87,7 @@ const AddressContainer = () => {
                 alert('에러');
             }
         }
-    }, [searchAddr]); //search 혹은 addrs 가 바뀌었을때만 함수생성
-
-    //검색 api 호출
-    const callSearchApi = async () => {
-        const res = await searchAddress(searchAddr);
-        return res;
-    };
+    }, [callSearchApi, searchAddr]); //search 혹은 addrs 가 바뀌었을때만 함수생성
 
     //검색 모달 오픈
     const handleOpen = useCallback(() => {
@@ -98,7 +98,7 @@ const AddressContainer = () => {
             setOpen(true);
             onClickSearch();
         }
-    }, [searchAddr, onClickSearch]);
+    }, [searchAddr, openMessage, onClickSearch]);
 
     //모달창 닫기
     const handleClose = useCallback(() => {
@@ -141,10 +141,8 @@ const AddressContainer = () => {
                 async () => {
                     if (user_token) {
                         try {
-                            const res = await selectAddress(
-                                user_token,
-                                delivery_id,
-                            );
+                            // const res = await selectAddress(user_token, delivery_id);
+                            await selectAddress(user_token, delivery_id);
                             dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
                             const near_store = await getNearStore(lat, lng, addr1);
                             
@@ -194,7 +192,7 @@ const AddressContainer = () => {
                 },
             );
         },
-        [callDeliveryList, user_token],
+        [callDeliveryList, dispatch, openMessage, user_token],
     );
 
     //주소지 삭제
@@ -245,7 +243,7 @@ const AddressContainer = () => {
                 }
             });
         },
-        [user_token, delivery_list],
+        [openMessage, user_token, delivery_list, dispatch],
     );
 
     // 검색리스트(모달)에 나오는 주소를 클릭했을때 active 활성

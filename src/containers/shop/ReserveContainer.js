@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Paths } from 'paths';
@@ -6,7 +6,7 @@ import styles from './Reserve.module.scss';
 import TabMenu from '../../components/tab/TabMenu';
 import MenuItemList from '../../components/item/MenuItemList';
 import Message from 'components/assets/Message';
-import CustomItemList from '../../components/item/CustomItemList';
+// import CustomItemList from '../../components/item/CustomItemList';
 import PreferModal from '../../components/modal/PreferModal';
 import { useHistory } from 'react-router';
 import ShopBanner from '../../components/svg/shop/shop_banner.png';
@@ -137,7 +137,7 @@ const ReserveContainer = ({ tab = '0' }) => {
             
         }
         setLoading(false);
-    }, [categorys, store, items]);
+    }, [categorys, store, items, dispatch]);
 
 
 
@@ -238,6 +238,7 @@ const ReserveContainer = ({ tab = '0' }) => {
         if (isScrollEnd && !isPaging) {
             PageNationMenuList();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isScrollEnd]);
 
     // useEffect(() => {

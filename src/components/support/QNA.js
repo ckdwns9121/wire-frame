@@ -136,7 +136,8 @@ const QNAWrite = ({ token, id }) => {
                 const res = await requestQNADetail(token, id);
                 const { query: data } = res.data;
                 if (data !== null) {
-                    const { subject, question, q_files } = data;
+                    const { subject, question } = data;
+                    // const { subject, question, q_files } = data;
                     setTitle(subject);
                     setContent(question);
                     // setFiles(q_files);

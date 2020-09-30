@@ -36,10 +36,10 @@ export default function Map(props) {
             position: map.getCenter(),
             image: markerImage,
         });
-        const ClickMarker = new kakao.maps.Marker({
-            position: map.getCenter(),
-            image: markerImage,
-        });
+        // const ClickMarker = new kakao.maps.Marker({
+        //     position: map.getCenter(),
+        //     image: markerImage,
+        // });
         storeList.forEach((el) => {
             // 마커를 생성합니다
             new kakao.maps.Marker({
@@ -87,12 +87,12 @@ export default function Map(props) {
             };
         }
 
-        const infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+        // const infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
         
-        function searchDetailAddrFromCoords(coords, callback) {
-            // 좌표로 법정동 상세 주소 정보를 요청합니다
-            geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-        }
+        // function searchDetailAddrFromCoords(coords, callback) {
+        //     // 좌표로 법정동 상세 주소 정보를 요청합니다
+        //     geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+        // }
 
         /* 단일 마커 표시 */
     }, [selectStore, storeList]);

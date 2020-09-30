@@ -1,5 +1,3 @@
-/*global kakao*/
-
 import React, {
     useState,
     useEffect,
@@ -211,6 +209,7 @@ const OrderContainer = () => {
 
         }
         setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[user_token,addr1]);
 
     // 유저의 쿠폰 가져오기

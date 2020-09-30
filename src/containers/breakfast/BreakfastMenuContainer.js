@@ -42,14 +42,14 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
     const history = useHistory();
 
 
-    const { isScrollEnd } = useScroll( loading);
+    const [loading, setLoading] = useState(false);
+    const { isScrollEnd } = useScroll(loading);
     const [posts, setPosts] = useState([]); //보여줄 배열
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(8);
     const [titleIndex, setTitleIndex] = useState(0);
 
     const [tabIndex, setTab] = useState(parseInt(tab));
-    const [loading, setLoading] = useState(false);
 
     //메뉴 카테고리에 대한 탭
     const onChangeTabIndex = (e, index) => {
@@ -98,7 +98,7 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
 
         }
         setLoading(false);
-    }, [categorys, items,store]);
+    }, [categorys, dispatch, items, store]);
 
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
@@ -207,6 +207,7 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
         if (isScrollEnd && !isPaging) {
             PageNationMenuList();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isScrollEnd]);
 
     return (

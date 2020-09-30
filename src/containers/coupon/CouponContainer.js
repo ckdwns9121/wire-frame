@@ -143,6 +143,7 @@ const CouponConatiner = (props) => {
     useEffect(() => {
         getMyCouponList();
         getDownCouponList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

@@ -152,7 +152,8 @@ const SignUpContainer = () => {
     const onClickSignUp = useCallback(async () => {
         if (isPasswordForm(password)) {
             try {
-                const res = await localRegister(email, password, password_confirm, check3);
+                // const res = await localRegister(email, password, password_confirm, check3);
+                await localRegister(email, password, password_confirm, check3);
                 history.push(`${Paths.ajoonamu.complete}/${email}`);
             } catch (e) {
                 openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');

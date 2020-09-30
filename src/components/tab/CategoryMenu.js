@@ -3,20 +3,7 @@ import { useHistory } from 'react-router-dom';
 import styles from './CategoryMenu.module.scss';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-    tabs: {
-        width: '100%',
-        minHeight: '70px',
-        margin: '0 auto',
-        backgroundColor: '#fff',
-        paddingLeft:"24px",
-        paddingRight:"24px",
-        marginBottom:"60px",
-        border :"1px soild red",
-    },
-}));
 
 const CategoryMenu = ({ tabs, index, onChange,isPush }) => {
     const history = useHistory();
@@ -47,7 +34,6 @@ const CategoryMenu = ({ tabs, index, onChange,isPush }) => {
                     borderRadius:'100px'
                 },
             }}
-            // className={classes.tabs}
             className={styles['tabs']}
             centered={true}
         >
