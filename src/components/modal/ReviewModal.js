@@ -13,6 +13,8 @@ import ReviewRating from '../review/ReviewRating';
 import { dateToYYYYMMDD, DBImageFormat, hideEmail } from '../../lib/formatter';
 import { useModal } from '../../hooks/useModal';
 import TAG from '../svg/review/tag.svg';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 const cx = cn.bind(styles);
 
@@ -30,6 +32,7 @@ const arrowStyle = {
 };
 
 const ReviewModal = (props) => {
+    const history = useHistory();
     const openModal = useModal();
 
     const [userEmail ,setUserEmail] = useState('');
@@ -103,7 +106,7 @@ const ReviewModal = (props) => {
                     <div className={styles['tags']}>
                         {tags.map(({ item_name, item_id }) => {
                             return (
-                                <ButtonBase key={item_id} className={styles['tag']}>
+                                <ButtonBase key={item_id} className={styles['tag']} onClick={() => history.push(Paths.ajoonamu.product + '?item_id=' + item_id)}>
                                     <span>{item_name}</span>
                                     <img src={TAG} alt="바로가기" />
                                 </ButtonBase>

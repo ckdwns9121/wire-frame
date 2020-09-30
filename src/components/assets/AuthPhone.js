@@ -17,8 +17,7 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
 
     const openModal = useModal();
     const [authNumber, setAuthNumber] = useState('');
-    const [auth_start, setAuth] = useState(false);
-    const [start_timer, setStartTimer] = useState(false);
+    const [auth, setAuth] = useState(false);
 
     const history = useHistory();
 
@@ -29,11 +28,8 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                 if (res.data.msg === '실패!') {
                     // openModal('인증번호 발송에 실패했습니다.', '잠시 후 다시 시도해 주세요!');
                     alert('499996');
-                    setStartTimer(true);
                     setAuth(true);
-                    
                 } else {
-                    setStartTimer(true);
                     setAuth(true);
                     openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
                 }
@@ -47,8 +43,8 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
     }, [phoneNumber, openModal, history]);
     // 인증번호 재발송
     const onClickReSendAuth = () => {
-        setStartTimer(false);
-        setTimeout(() => setStartTimer(true), 0);
+        setAuth(false);
+        getMobileAuthNumber();
     };
 
     const sendMobileAuthNumber = useCallback(async () => {
@@ -82,14 +78,14 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                 initValue={phoneNumber}
                 onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
                 onChange={e => setPhoneNumber(e.target.value)}
-                onClick={phoneAuth ? () => {} : auth_start ? onClickReSendAuth : getMobileAuthNumber}
+                onClick={phoneAuth ? () => {} : auth ? onClickReSendAuth : getMobileAuthNumber}
                 placeholder={'숫자만 입력해 주세요.'}
-                buttonTitle={phoneAuth ? '인증 완료' : auth_start ? '인증번호 재발송' : '인증번호 발송'}
-                input_disabled={auth_start || phoneAuth}
+                buttonTitle={phoneAuth ? '인증 완료' : auth ? '인증번호 재발송' : '인증번호 발송'}
+                input_disabled={auth || phoneAuth}
                 noLabel={noLabel}
-                button_disabled={auth_start || phoneAuth}
+                button_disabled={auth || phoneAuth}
             />
-            <div className={cn('auth-btn', { not_view: !auth_start })}>
+            <div className={cn('auth-btn', { not_view: !auth })}>
                 <SignAuthInput
                     inputType={'text'}
                     initValue={authNumber}
@@ -99,9 +95,11 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                     onChange={e => setAuthNumber(e.target.value)}
                     buttonTitle={'인증하기'}
                     noLabel={noLabel}
+                    input_disabled={!auth}
+                    button_disabled={!auth}
                 />
                 <div className={styles['timer']}>
-                    {phoneAuth ? (<Check on={true} />) : (<AuthTimer start={start_timer} />)}
+                    {phoneAuth ? (<Check on={true} />) : (<AuthTimer start={auth} setStart={setAuth} />)}
                 </div>
             </div>
         </>

@@ -48,7 +48,7 @@ const ReserveModal = (props) => {
                 <div className={styles['modal-input-box']}>
                     <input
                         className={styles['value-input']}
-                        onKeyDown={e => !onlyNumber(e.key) && e.preventDefault()}
+                        onKeyDown={e => e.key === 'Enter' ? props.onClickCustomOrder() : !onlyNumber(e.key) && e.preventDefault()}
                         value={numberFormat(props.budget)}
                         onChange={props.onChangeBudget}
                     />

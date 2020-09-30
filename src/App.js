@@ -24,20 +24,20 @@ import {
 import { Home, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderComplete } from 'pages';
 import { Route, Switch } from 'react-router-dom';
-import { get_address} from './store/address/address';
-import {get_near_store} from './store/address/store';
-import { getActiveAddr  } from './api/address/address';
-import {getNearStore} from './api/store/store';
-import {get_menulist} from  './store/product/product';
-import {get_breakMenuList} from './store/product/braekfast';
-import {noAuthGetNearStore} from './api/noAuth/store';
+import { get_address } from './store/address/address';
+import { get_near_store } from './store/address/store';
+import { getActiveAddr } from './api/address/address';
+import { getNearStore } from './api/store/store';
+import { get_menulist } from './store/product/product';
+import { get_breakMenuList } from './store/product/braekfast';
+import { noAuthGetNearStore } from './api/noAuth/store';
 import ModalContainer from './containers/assets/ModalContainer';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Search } from './pages';
-import {useUrl} from './hooks/useStore';
+import { useUrl } from './hooks/useStore';
 
 export default function App() {
     useUrl();
@@ -52,8 +52,7 @@ export default function App() {
             if(res){
                 dispatch(get_address(res))
                 const {lat,lng,addr1} = res;
-                const near_store = await getNearStore(lat,lng,addr1);
-                console.log(near_store);
+                const near_store = await getNearStore(lat, lng, addr1);
                 dispatch(get_near_store(near_store.data.query));
                 dispatch(get_menulist(null));
                 dispatch(get_breakMenuList(null));
@@ -64,9 +63,7 @@ export default function App() {
                 dispatch(get_near_store(null));
                 dispatch(get_menulist(null));
                 dispatch(get_breakMenuList(null));
-
             }
-        
         } else {
             const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
             if (noAuth) {
@@ -98,9 +95,6 @@ export default function App() {
         getInfo();
         AOS.init({ duration: 1500, once: true });
     }, []);
-
-
-
 
     return (
         <div className="App">
