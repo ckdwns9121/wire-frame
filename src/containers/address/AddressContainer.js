@@ -21,17 +21,18 @@ import { IconButton } from '@material-ui/core';
 import Loading from '../../components/assets/Loading';
 
 import { get_address } from '../../store/address/address';
-import {get_near_store} from '../../store/address/store';
+import { get_near_store } from '../../store/address/store';
 
-import {getNearStore} from '../../api/store/store';
-import {noAuthGetNearStore} from '../../api/noAuth/store';
-import {get_menulist} from  '../../store/product/product';
+import { getNearStore } from '../../api/store/store';
+import { noAuthGetNearStore } from '../../api/noAuth/store';
+import { get_menulist } from '../../store/product/product';
+import { get_breakMenuList } from '../../store/product/braekfast';
 
 const AddressContainer = () => {
     const modalDispatch = useDispatch();
 
     const openMessage = useCallback(
-        (isConfirm, title, text, handleClick = () => {}) => {
+        (isConfirm, title, text, handleClick = () => { }) => {
             modalDispatch(modalOpen(isConfirm, title, text, handleClick));
         },
         [modalDispatch],
@@ -45,7 +46,7 @@ const AddressContainer = () => {
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
     const [search_list, setSearchList] = useState(''); // 검색 리스트
     const [delivery_list, setDeliveryList] = useState([]);
-    const [post_num ,setPostNum] = useState('');
+    const [post_num, setPostNum] = useState('');
     const [open, setOpen] = React.useState(false);
 
     //최근 선택한 주소지 들고오기
@@ -133,7 +134,7 @@ const AddressContainer = () => {
 
     //선택한 주소지로 설정 하기
     const onClickDeliveyAddr = useCallback(
-        (delivery_id, addr1,addr2,lat,lng,post_num) => {
+        (delivery_id, addr1, addr2, lat, lng, post_num) => {
             openMessage(
                 true,
                 '선택한 주소지로 설정하시겠습니까?',
@@ -146,22 +147,23 @@ const AddressContainer = () => {
                                 delivery_id,
                             );
                             console.log(res);
-                            dispatch(get_address({addr1,addr2,lat,lng,post_num}));
-                            const near_store = await getNearStore(lat,lng,addr1);
+                            dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
+                            const near_store = await getNearStore(lat, lng, addr1);
                             console.log(near_store);
                             dispatch(get_near_store(near_store.data.query));
-                             dispatch(get_menulist(null));
+                            dispatch(get_menulist(null));
+                            dispatch(get_breakMenuList(null));
 
                             callDeliveryList();
                         } catch (e) {
                             console.error(e);
                         }
-                    } 
+                    }
                     else {
 
                         //로컬 스토리지에 있는 아이템을 들고온다.
                         //선택한 주소지가 있다는 것은 로컬스토리지에 아이템이 있다고 판단하고 조건을 뺀다.
-                        const noAuthAddrs = JSON.parse( localStorage.getItem('noAuthAddrs'));
+                        const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
 
                         //모든 활성화를 0으로 초기화
                         noAuthAddrs.map((item) => (item.active = 0));
@@ -175,20 +177,22 @@ const AddressContainer = () => {
                         noAuthAddrs.unshift(tmp);
 
                         //활성화된 정보를 갱신
-                        localStorage.setItem('noAuthAddrs',JSON.stringify(noAuthAddrs) );
+                        localStorage.setItem('noAuthAddrs', JSON.stringify(noAuthAddrs));
 
                         //갱신한 뒤 상태 업데이트 및 리덕스 업데이트
                         const temp = JSON.parse(localStorage.getItem('noAuthAddrs'));
                         setDeliveryList(temp);
-                        dispatch(get_address({addr1,addr2,lat,lng,post_num}));
+                        dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
 
-                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                        const near_store = await noAuthGetNearStore(lat, lng, addr1);
                         console.log('비회원 가장 가까운 곳');
                         console.log(near_store);
                         dispatch(get_near_store(near_store.data.query));
-                dispatch(get_menulist(null));
+                        dispatch(get_menulist(null));
+                        dispatch(get_breakMenuList(null));
 
-    
+
+
                     }
                 },
             );
@@ -203,16 +207,18 @@ const AddressContainer = () => {
                 if (user_token) {
                     try {
                         await deleteAddr(user_token, delivery_id);
-                        const index = delivery_list.findIndex((item) => item.delivery_id === delivery_id );
+                        const index = delivery_list.findIndex((item) => item.delivery_id === delivery_id);
 
                         //삭제하려는 주소가 활성화 주소라면 배달지 설정 초기화
                         if (delivery_list[index].active === 1) {
-                            dispatch(get_address({addr1:null, addr2:null,lat:null,lng:null ,post_num:null}));
+                            dispatch(get_address({ addr1: null, addr2: null, lat: null, lng: null, post_num: null }));
                             dispatch(get_near_store(null));
-                dispatch(get_menulist(null));
-                            
+                            dispatch(get_menulist(null));
+                            dispatch(get_breakMenuList(null));
+
+
                         }
-                        setDeliveryList((list) =>list.filter((item) => item.delivery_id !== delivery_id));
+                        setDeliveryList((list) => list.filter((item) => item.delivery_id !== delivery_id));
                     } catch (e) {
                         console.error(e);
                     }
@@ -226,15 +232,17 @@ const AddressContainer = () => {
                         if (noAuthAddrs.length !== 0) {
                             if (noAuthAddrs[delivery_id].active === 1) {
                                 //배달지 없음으로 설정
-                                dispatch(get_address({ addr1: null, addr2: null,lat:null,lng:null ,post_num:null}));
+                                dispatch(get_address({ addr1: null, addr2: null, lat: null, lng: null, post_num: null }));
                                 dispatch(get_near_store(null));
                                 dispatch(get_menulist(null));
+                                dispatch(get_breakMenuList(null));
+
 
                             }
                             //선택한 주소를 제일 위로 올리기.
                             noAuthAddrs.splice(delivery_id, 1);
                             localStorage.setItem('noAuthAddrs', JSON.stringify(noAuthAddrs));
-                            const temp = JSON.parse( localStorage.getItem('noAuthAddrs'));
+                            const temp = JSON.parse(localStorage.getItem('noAuthAddrs'));
                             setDeliveryList(temp);
                         }
                     }
@@ -246,7 +254,7 @@ const AddressContainer = () => {
 
     // 검색리스트(모달)에 나오는 주소를 클릭했을때 active 활성
     const onClickAddrItem = useCallback(
-        (data,zipNo,index) => {
+        (data, zipNo, index) => {
             setSelectAddr(data);
             setPostNum(zipNo);
             const new_list = search_list.map((item) => ({
@@ -320,11 +328,13 @@ const AddressContainer = () => {
                                                 }),
                                             );
 
-                                            const near_store = await getNearStore(temp_lat,temp_lng,selectAddr);
+                                            const near_store = await getNearStore(temp_lat, temp_lng, selectAddr);
                                             console.log(near_store);
                                             dispatch(get_near_store(near_store.data.query));
-                dispatch(get_menulist(null));
-                                            
+                                            dispatch(get_menulist(null));
+                                            dispatch(get_breakMenuList(null));
+
+
                                             callDeliveryList();
                                             setOpen(false);
                                         } else {
@@ -422,15 +432,16 @@ const AddressContainer = () => {
                                         }),
                                     );
 
-                                    const near_store = await noAuthGetNearStore(temp_lat,temp_lng,selectAddr);
+                                    const near_store = await noAuthGetNearStore(temp_lat, temp_lng, selectAddr);
                                     console.log('비회원 가장 가까운 곳');
                                     console.log(near_store);
                                     dispatch(get_near_store(near_store.data.query));
                                     dispatch(get_menulist(null));
+                                    dispatch(get_breakMenuList(null));
 
                                     setDeliveryList(test2);
                                     setOpen(false);
-                                } catch (e) {}
+                                } catch (e) { }
                             }
                             //검색이 완료되지 않앗으면.
                             else {
@@ -443,9 +454,9 @@ const AddressContainer = () => {
             );
         }
     };
-    useEffect(()=>{
-        window.scrollTo(0,0);
-    },[])
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     useEffect(() => {
         callDeliveryList();
@@ -455,7 +466,7 @@ const AddressContainer = () => {
         setDetailAddr('');
         setSelectAddr('');
         setPostNum('');
-    },[open])
+    }, [open])
 
     return (
         <>
@@ -477,21 +488,21 @@ const AddressContainer = () => {
                 <div className={styles['content']}>
                     <div className={styles['addr-title']}>최근 배달 주소</div>
                     {loading ? <Loading open={loading} />
-                    : <div className={styles['addr-list']}>
-                        {delivery_list.length === 0 ? (
-                            <Message
-                                msg={'최근 배달 주소가 없습니다.'}
-                                size={350}
-                            />
-                        ) : (
-                            <DeliveryItemList
-                                addrs={delivery_list}
-                                onRemove={onRemoveAddr}
-                                onClick={onClickDeliveyAddr}
-                                user_token={user_token}
-                            />
-                        )}
-                    </div>}
+                        : <div className={styles['addr-list']}>
+                            {delivery_list.length === 0 ? (
+                                <Message
+                                    msg={'최근 배달 주소가 없습니다.'}
+                                    size={350}
+                                />
+                            ) : (
+                                    <DeliveryItemList
+                                        addrs={delivery_list}
+                                        onRemove={onRemoveAddr}
+                                        onClick={onClickDeliveyAddr}
+                                        user_token={user_token}
+                                    />
+                                )}
+                        </div>}
                 </div>
             </div>
             <AddressModal

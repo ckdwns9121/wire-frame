@@ -29,6 +29,7 @@ import {get_near_store} from './store/address/store';
 import { getActiveAddr  } from './api/address/address';
 import {getNearStore} from './api/store/store';
 import {get_menulist} from  './store/product/product';
+import {get_breakMenuList} from './store/product/braekfast';
 import {noAuthGetNearStore} from './api/noAuth/store';
 import ModalContainer from './containers/assets/ModalContainer';
 
@@ -55,12 +56,14 @@ export default function App() {
                 console.log(near_store);
                 dispatch(get_near_store(near_store.data.query));
                 dispatch(get_menulist(null));
+                dispatch(get_breakMenuList(null));
             }
             else{
                 console.log('배달정보 없음');
                 dispatch(get_address({addr1:null, addr2:null,lat:null,lng:null,post_num:null}));
                 dispatch(get_near_store(null));
                 dispatch(get_menulist(null));
+                dispatch(get_breakMenuList(null));
 
             }
         
@@ -76,14 +79,15 @@ export default function App() {
                     console.log(near_store);
                     dispatch(get_near_store(near_store.data.query));
                     dispatch(get_menulist(null));
-
-
+                    dispatch(get_breakMenuList(null));
                 }
                 else{
                     console.log("비회원 배달정보 없음");
                     dispatch(get_address({addr1:null,addr2:null,lat:null,lng:null,post_num:null}));
                     dispatch(get_near_store(null));
                     dispatch(get_menulist(null));
+                    dispatch(get_breakMenuList(null));
+
 
                 }
             }

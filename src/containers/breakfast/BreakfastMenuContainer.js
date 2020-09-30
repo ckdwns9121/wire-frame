@@ -5,7 +5,7 @@ import { Paths } from 'paths';
 import styles from './BreakfastMenu.module.scss';
 import TabMenu from '../../components/tab/TabMenu';
 import MenuItemList from '../../components/item/MenuItemList';
-import Message from 'components/assets/Message';
+import Message from '../../components/assets/Message';
 import { useHistory } from 'react-router';
 import ShopBanner from '../../components/svg/shop/shop_banner.png';
 import Loading from '../../components/assets/Loading';
@@ -24,7 +24,7 @@ import {
     getBreakCategory,
     getBreakMenu,
 } from '../../api/break_fast/break_fast';
-import { get_catergory, get_menulist } from '../../store/product/braekfast';
+import { get_break_catergory, get_breakMenuList ,add_breakMenuitem } from '../../store/product/braekfast';
 import { useScroll } from '../../hooks/useScroll';
 
 const OFFSET = 8;
@@ -32,6 +32,7 @@ const LIMIT = 8;
 
 const BreakfastMenuContainer = ({ tab = '0' }) => {
     const { categorys, items } = useSelector((state) => state.breakfast);
+    const {store} = useSelector((state)=> state.store);
     const dispatch = useDispatch();
 
     const titleTab = [
@@ -40,15 +41,15 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
     ];
     const history = useHistory();
 
-    const { isScrollEnd } = useScroll(loading);
+
+    const { isScrollEnd } = useScroll( loading);
+    const [posts, setPosts] = useState([]); //보여줄 배열
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(8);
-
     const [titleIndex, setTitleIndex] = useState(0);
 
     const [tabIndex, setTab] = useState(parseInt(tab));
     const [loading, setLoading] = useState(false);
-    const [posts, setPosts] = useState([]);
 
     //메뉴 카테고리에 대한 탭
     const onChangeTabIndex = (e, index) => {
@@ -61,28 +62,31 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
     };
 
     //카테고리를 받아와서 디스패치.
-    const callBreakCategoryApi = async () => {
+    const callBreakCategoryApi = useCallback(async () => {
         setLoading(true);
         try {
+            //카테고리가 없으면 카테고리 받아오기
             if (categorys.length === 0) {
                 const res = await getBreakCategory();
                 console.log(res);
-                dispatch(get_catergory(res.data.query.categorys));
+                dispatch(get_break_catergory(res.data.query.categorys));
             }
         } catch (e) {
             console.error(e);
         }
         setLoading(false);
-    };
+    },[categorys,dispatch]);
 
     //카테고리가 있으면 메뉴 불러와서 스토어에 저장
-    const callBreakMenuList = useCallback(async () => {
+    const getBreakMenuList = useCallback(async () => {
         setLoading(true);
         let arr = [];
         try {
-            if (!items && categorys.length !== 0) {
+            //아이템이 없고 카테고리
+            if (!items && categorys.length !== 0 && store) {
                 for (let i = 0; i < categorys.length; i++) {
-                    const res = await getBreakMenu(categorys[i].ca_id);
+                    const res = await getBreakMenu(categorys[i].ca_id , 0, 8 , store.shop_id);
+                    // console.log(res);
                     const { query } = res.data;
                     const temp = {
                         ca_id: categorys[i].ca_id,
@@ -90,13 +94,52 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
                     };
                     arr.push(temp);
                 }
-                dispatch(get_menulist(arr));
+                dispatch(get_breakMenuList(arr));
             }
         } catch (e) {
             console.error(e);
         }
         setLoading(false);
-    }, [categorys, items]);
+    }, [categorys, items,store]);
+
+    //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
+    const PageNationMenuList = useCallback(async () => {
+        console.log('페이지 네이션');
+        if (!loading) {
+            try {
+                console.log('들어옴');
+
+                //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
+                if (tabIndex !== 0 && categorys.length !== 0 && items && store) {
+                    setIsPaging(true);
+                    const res = await getBreakMenu(
+                        categorys[tabIndex].ca_id,
+                        offset,
+                        LIMIT,
+                        store.shop_id
+                    );
+                    // console.log(res);
+
+                    const get_list = res.data.query.items;
+                    if (get_list.length !== 0) {
+                        setOffset(offset + LIMIT);
+                        dispatch(
+                            add_breakMenuitem({
+                                ca_id: categorys[tabIndex].ca_id,
+                                items: get_list,
+                            }),
+                        );
+                    }
+                    setTimeout(() => {
+                        setIsPaging(false);
+                    }, 1000);
+                }
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+    }, [tabIndex, categorys, offset, items, loading, store, dispatch]);
 
     //메뉴 아이템을 클릭했을 시 상세보기 페이지로 푸쉬
     const onClickMenuItem = useCallback(
@@ -111,7 +154,11 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
     useEffect(() => {
         callBreakCategoryApi();
         window.scrollTo(0, 0);
-    }, []);
+    }, [callBreakCategoryApi]);
+
+    useEffect(() => {
+        getBreakMenuList();
+    }, [getBreakMenuList]);
 
     //탭 바뀌었을때 오프셋 갱신
     useEffect(() => {
@@ -140,7 +187,10 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
     useEffect(() => {
         const scrollTop = sessionStorage.getItem('scrollTop');
         const url = JSON.parse(sessionStorage.getItem('url'));
+        console.log(url)
+        console.log('확인');
         if (url) {
+            console.log(url.prev);
             //이전 주소가 상품페이지라면 스크롤 유지
             if (url.prev === '/product') {
                 console.log('스크롤 이동');
@@ -150,24 +200,31 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
         }
     }, [loading]);
 
+ 
+    // 탭 인덱스로 URL 이동c
     useEffect(() => {
-        callBreakMenuList();
-    }, [callBreakMenuList]);
-
-    //탭이 바뀌면 url 변경
-    useEffect(() => {
+        console.log(tabIndex,'로 이동');
         history.replace(`${Paths.ajoonamu.breakfast}/menu?tab=${tabIndex}`);
     }, [tabIndex, history]);
 
+
+    //아이템과 인덱스가 변했을 시 보여줄 리스트 갱신.
     useEffect(() => {
         if (items) {
             setPosts(items[tabIndex].items);
         }
     }, [tabIndex, items]);
 
+    //스크롤 끝과 페이징중인지 확인후 페이지네이션 실행.
+    useEffect(() => {
+        if (isScrollEnd && !isPaging) {
+            PageNationMenuList();
+        }
+    }, [isScrollEnd]);
+
     return (
         <>
-                       {loading && <Loading open={loading} />}
+            {loading && <Loading open={loading} />}
 
             <div className={styles['banner']}>
                 <img
@@ -185,34 +242,50 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
             {titleIndex === 0 ? (
                 <div className={styles['container']}>
                     <div className={styles['content']}>
-                        {categorys.length !== 0 && (
-                            <TabMenu
-                                tabs={categorys}
-                                index={tabIndex}
-                                onChange={onChangeTabIndex}
-                            />
-                        )}
+                        {store ?
+                            <>
+                                {categorys.length !== 0 && (
+                                    <TabMenu
+                                        tabs={categorys}
+                                        index={tabIndex}
+                                        onChange={onChangeTabIndex}
+                                    />
+                                )}
 
-                        <div className={styles['shop']}>
-                            {
-                                <>
-                                    {posts.length !== 0 ? (
-                                        <MenuItemList
-                                            menuList={posts}
-                                            onClick={onClickMenuItem}
-                                        />
-                                    ) : (
-                                        <Message
-                                            msg={
-                                                '추천드릴 메뉴 구성이 존재하지 않습니다.'
-                                            }
-                                            src={true}
-                                            isButton={false}
-                                        />
-                                    )}
-                                </>
+                                <div className={styles['shop']}>
+                                    {
+                                        <>
+                                            {posts.length !== 0 ? (
+                                                <MenuItemList
+                                                    menuList={posts}
+                                                    onClick={onClickMenuItem}
+                                                />
+                                            ) : (
+                                                    <Message
+                                                        msg={
+                                                            '추천드릴 메뉴 구성이 존재하지 않습니다.'
+                                                        }
+                                                        src={true}
+                                                        isButton={false}
+                                                    />
+                                                )}
+                                        </>
+                                    }
+                                </div>
+
+                            </>
+                            :
+                            <Message
+                            msg={
+                                '주소지가 설정되지 않았습니다.'
                             }
-                        </div>
+                            src={true}
+                            isButton={true}
+                            buttonName={'주소지 설정하기'}
+                            onClick={()=> history.push(Paths.ajoonamu.address)}
+                        />
+                        }
+                        
 
                         <div
                             className={styles['bottom-banner']}
