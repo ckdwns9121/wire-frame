@@ -5,6 +5,10 @@ import { logout } from '../../store/auth/auth';
 import { get_address } from '../../store/address/address';
 import { useDispatch } from 'react-redux';
 import { modalOpen } from '../../store/modal';
+import {get_menulist} from  '../../store/product/product';
+import {get_breakMenuList} from '../../store/product/braekfast';
+import {get_near_store} from '../../store/address/store';
+import {noAuthGetNearStore} from '../../api/noAuth/store';
 
 export default ({ history }) => {
     const dispatch = useDispatch();
@@ -21,7 +25,12 @@ export default ({ history }) => {
                 const res = await localLogout(token);
                 if (res.status === 'success') {
                     dispatch(logout());
+
+                    //모든 리덕스 초기화
                     dispatch(get_address({addr1:null,addr2:null ,lat:null,lng:null}));
+                    dispatch(get_near_store(null));
+                    dispatch(get_menulist(null));
+                    dispatch(get_breakMenuList(null))
                     openMessage(false, '로그아웃 성공!', '성공적으로 로그아웃 되었습니다.');
                     sessionStorage.removeItem('access_token');
                     const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
@@ -30,6 +39,10 @@ export default ({ history }) => {
                         if(index!==-1){
                             const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
                             dispatch(get_address({addr1,addr2,lat,lng,post_num}));
+                            const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                            console.log('비회원 가장 가까운 곳');
+                            console.log(near_store);
+                            dispatch(get_near_store(near_store.data.query));
                         }
                     }
                 } else {

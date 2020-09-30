@@ -74,9 +74,9 @@ const OrderContainer = () => {
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
     const [orderMemo, setOrderMemo] = useState(''); //주문메모
     const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
-    const [usePoint, setUsePoint] = useState(0);
+    const [usePoint, setUsePoint] = useState(0); //포인트 할인
     const order_id = useRef(null);
-    const [cp_price, setCpPrice] = useState(0);
+    const [cp_price, setCpPrice] = useState(0); //쿠폰할인
     const [date, setDate] = useState(new Date());
     const [hours ,setHours]  = useState('09');
     const [minite ,setMinite] = useState('00');
@@ -302,7 +302,7 @@ const OrderContainer = () => {
             let buyer_hp = `${firstPhoneNumber}`;//고객 번호
             let buyer_email = user && user.email; //고객 이메일
             let buy_goods = '테스트'; //구매하는 물건 이름
-            let buy_total = Number(parseInt(totalPrice) + parseInt(dlvCost)); //가격
+            let buy_total = Number(parseInt(totalPrice) + parseInt(dlvCost) - parseInt(cp_price) - parseInt(usePoint) ); //가격
             let buy_taxtotal = 0;
             let buy_istax = ''; //과세설정 DEFAULT :Y  비과세 N
             let order_num = order_id.current; //주문 번호

@@ -87,8 +87,6 @@ export default function App() {
                     dispatch(get_near_store(null));
                     dispatch(get_menulist(null));
                     dispatch(get_breakMenuList(null));
-
-
                 }
             }
         }

@@ -17,6 +17,11 @@ import { get_address } from '../../store/address/address';
 import { getActiveAddr } from '../../api/address/address';
 import { useModal } from '../../hooks/useModal';
 import { isEmailForm } from '../../lib/formatChecker';
+import {getNearStore} from '../../api/store/store';
+import {get_near_store} from '../../store/address/store';
+import {get_breakMenuList} from '../../store/product/braekfast';
+import {get_menulist} from  '../../store/product/product';
+
 const cx = cn.bind(styles);
 
 const SignInContainer = () => {
@@ -72,7 +77,10 @@ const SignInContainer = () => {
                     }
                     // 로그인 성공 했을 때.
                     else if (res.data.access_token) {
-                        const response = await getActiveAddr(res.data.access_token);
+                        //활성주소가 있는지 받아옴
+                        dispatch(get_user_info(res.data.access_token));
+
+                        const active_addr = await getActiveAddr(res.data.access_token);
                         sessionStorage.setItem('access_token', res.data.access_token);
                         if (checked) {
                             const newObj = {
@@ -84,8 +92,21 @@ const SignInContainer = () => {
                         } else {
                             localStorage.removeItem('user');
                         }
-                        dispatch(get_user_info(res.data.access_token));
-                        response ? dispatch(get_address(response)) :dispatch(get_address({addr1:null,addr2:null ,lat:null,lng:null,post_num:null}));
+                        if(active_addr){
+                            dispatch(get_address(active_addr))
+                            const {lat,lng,addr1} = active_addr;
+                            const near_store = await getNearStore(lat,lng,addr1);
+                            console.log(near_store);
+                            dispatch(get_near_store(near_store.data.query));
+                            dispatch(get_menulist(null));
+                            dispatch(get_breakMenuList(null));
+                        }
+                        else{
+                            dispatch(get_address({addr1:null, addr2:null,lat:null,lng:null,post_num:null}));
+                            dispatch(get_near_store(null));
+                            dispatch(get_menulist(null));
+                            dispatch(get_breakMenuList(null));
+                        }
                         const url = JSON.parse(sessionStorage.getItem('url'));
                         history.replace(url.prev);
                     }
