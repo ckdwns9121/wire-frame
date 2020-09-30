@@ -36,7 +36,7 @@ export default ({ match, location }) => {
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
     const [item, setItem] = useState({
-        images: ''
+        images: '[]'
     });
     const [mode] = useState(0);
 
@@ -51,7 +51,6 @@ export default ({ match, location }) => {
             //     setCount(res.count);
             // }
             setList(res.events);
-            console.log(res.events);
         } catch (e) {
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
         }
