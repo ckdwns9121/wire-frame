@@ -75,7 +75,7 @@ export const getMenuInfo = async (item_id) => {
     return result.data.query;
 };
 
-export const getSearchMenu = async (search, offset, limit) => {
+export const getSearchMenu = async (search, offset, limit ,shop_id) => {
     const req = Paths.api + 'user/item/search';
     const config = {
         headers: {
@@ -85,6 +85,7 @@ export const getSearchMenu = async (search, offset, limit) => {
             offset,
             limit,
             search,
+            shop_id
         },
     };
     const res = axios.get(req, config);
