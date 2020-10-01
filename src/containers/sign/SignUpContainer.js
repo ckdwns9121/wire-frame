@@ -15,6 +15,7 @@ import {
 import { useModal } from '../../hooks/useModal';
 import { isEmailForm, isPasswordForm } from '../../lib/formatChecker';
 import AuthPhone from '../../components/assets/AuthPhone';
+import ShowAgree from '../../components/modal/ShowAgree';
 
 const cx = classNames.bind(styles);
 
@@ -257,6 +258,9 @@ const SignUpContainer = () => {
 };
 
 const AcceptContainer = (props) => {
+
+    const [title, setTitle] = useState('');
+
     return (
         <div className={cx('agree')}>
             <div className={styles['const']}>이용약관</div>
@@ -277,6 +281,7 @@ const AcceptContainer = (props) => {
                             check={props.check1}
                             onChange={props.onChangeCheck1}
                             url={Paths.index}
+                            onClick={() => setTitle('개인정보처리방침')}
                         />
                     </div>
                     <div className={styles['chk-box']}>
@@ -285,7 +290,7 @@ const AcceptContainer = (props) => {
                             text={'이용약관 필수'}
                             check={props.check2}
                             onChange={props.onChangeCheck2}
-                            url={Paths.index}
+                            onClick={() => setTitle('이용약관')}
                         />
                     </div>
                     <div className={styles['chk-box']}>
@@ -306,6 +311,7 @@ const AcceptContainer = (props) => {
                     </div>
                 </div>
             </div>
+            <ShowAgree title={title} handleClose={() => setTitle('')} />
         </div>
     );
 };

@@ -37,6 +37,7 @@ const SignAuthInput = ({
             />
             <ButtonBase
                 onClick={onClick}
+                disabled={button_disabled}
                 className={cx('auth-btn', { disabled: button_disabled })}
             >
                 {buttonTitle}

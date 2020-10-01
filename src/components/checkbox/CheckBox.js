@@ -6,7 +6,7 @@ import { Link } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 
-export default function CheckBox({ id, text, check, onChange, url }) {
+export default function CheckBox({ id, text, check, onChange, onClick }) {
     return (
         <div className={cx('check', 'item')}>
             <div className={cx('sub-text')}>
@@ -19,8 +19,8 @@ export default function CheckBox({ id, text, check, onChange, url }) {
                     <Check on={check} />{text}
                 </label>
             </div>
-            {url !== null &&
-            <Link to={'/'} className={styles['link']} >보기</Link>}
+            {onClick &&
+            <Link onClick={onClick} className={styles['link']} >보기</Link>}
         </div>
     );
 };

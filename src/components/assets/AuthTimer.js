@@ -20,7 +20,7 @@ const AuthTimer = ({ start, setStart }) => {
             }, 1000);
             return () => clearInterval(Counter);
         } else if (!start) {
-            setTime(1 * 3);
+            setTime(60 * 3);
         }
     }, [start, setStart, time, openModal]);
 

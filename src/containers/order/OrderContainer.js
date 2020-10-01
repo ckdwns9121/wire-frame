@@ -29,6 +29,7 @@ import {noAuthGetCartList} from  '../../api/noAuth/cart';
 import Loading from '../../components/assets/Loading';
 import AuthTimer from '../../components/assets/AuthTimer';
 import {noAuth_order} from '../../api/noAuth/order';
+import ShowAgree from '../../components/modal/ShowAgree';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -86,6 +87,7 @@ const OrderContainer = () => {
     const [hours ,setHours]  = useState('09');
     const [minite ,setMinite] = useState('00');
 
+    const [agreeTitle, setAgreeTitle] = useState('');
     const [loading, setLoading] = useState(false);
     const [noAuthName, setNoAuthName] = useState('');
     const [firstPhoneNumber, setFirstPhoneNumber] = useState('');
@@ -758,12 +760,14 @@ const OrderContainer = () => {
                                     updateAllCheck={updateAllCheck}
                                     onChangeCheck1={onChangeCheck1}
                                     onChangeCheck2={onChangeCheck2}
+                                    setTitle={setAgreeTitle}
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <ShowAgree title={agreeTitle} handleClose={() => setAgreeTitle('')} />
             <Loading open={loading} />
         </ScrollTop>
     );
@@ -798,7 +802,7 @@ const AcceptContainer = (props) => (
                         text={'개인정보처리방침 필수 동의'}
                         check={props.check1}
                         onChange={props.onChangeCheck1}
-                        url={Paths.index}
+                        onClick={() => props.setTitle('개인정보처리방침')}
                     />
                 </div>
                 <div className={styles['chk-box']}>
@@ -807,7 +811,7 @@ const AcceptContainer = (props) => (
                         text={'이용약관 필수'}
                         check={props.check2}
                         onChange={props.onChangeCheck2}
-                        url={Paths.index}
+                        onClick={() => props.setTitle('이용약관')}
                     />
                 </div>
             </div>
