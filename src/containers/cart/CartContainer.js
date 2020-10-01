@@ -93,6 +93,7 @@ const CartContainer = () => {
     //수량 추가
     const handleIncrement = useCallback(
         (index) => {
+            console.log(index)
             setCartList(
                 produce(cartList, (draft) => {
                     draft[index].item.item_quanity++;
@@ -327,6 +328,7 @@ const CartContainer = () => {
         },
         [cartList],
     );
+
 
     //단일 선택
     const onClickCheckChild = useCallback(

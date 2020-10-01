@@ -323,7 +323,6 @@ const AddressContainer = () => {
                                             dispatch(get_menulist(null));
                                             dispatch(get_breakMenuList(null));
 
-
                                             callDeliveryList();
                                             setOpen(false);
                                         } else {
@@ -359,72 +358,92 @@ const AddressContainer = () => {
                             if (status === kakao.maps.services.Status.OK) {
                                 temp_lat = result[0].y;
                                 temp_lng = result[0].x;
-                                try {
-                                    //비회원일시 로컬스토리지에서 아이템을 들고온다.
-                                    const noAuthAddrs = JSON.parse(
-                                        localStorage.getItem('noAuthAddrs'),
-                                    );
-                                    //로컬 스토리지에 아이템이 있을시.
-                                    if (noAuthAddrs) {
-                                        //모든 활성화를 0으로 초기화
-                                        noAuthAddrs.map(
-                                            (item) => (item.active = 0),
-                                        );
-                                        //새로운 주소를 푸쉬
-                                        noAuthAddrs.push({
-                                            addr1: selectAddr,
-                                            addr2: detailAddr,
-                                            lat: temp_lat,
-                                            lng: temp_lng,
-                                            post_num: post_num,
-                                            active: 1,
-                                        });
-                                        localStorage.setItem(
-                                            'noAuthAddrs',
-                                            JSON.stringify(
-                                                noAuthAddrs.reverse(),
-                                            ),
-                                        );
-                                    }
-                                    //로컬스토리지에 아이템이 없을시.
-                                    else {
-                                        localStorage.setItem(
-                                            'noAuthAddrs',
-                                            JSON.stringify([
-                                                {
-                                                    addr1: selectAddr,
-                                                    addr2: detailAddr,
-                                                    lat: temp_lat,
-                                                    lng: temp_lng,
-                                                    post_num: post_num,
-                                                    active: 1,
-                                                },
-                                            ]),
-                                        );
-                                    }
-                                    //모든 작업이 완료 되었다면. 리덕스에 좌표정보저장, 추가된 배열로 상태 업데이트
-                                    const test2 = JSON.parse(
-                                        localStorage.getItem('noAuthAddrs'),
-                                    );
-                                    dispatch(
-                                        get_address({
-                                            addr1: selectAddr,
-                                            addr2: detailAddr,
-                                            lat: temp_lat,
-                                            lng: temp_lng,
-                                            post_num: post_num,
-                                        }),
-                                    );
 
+                                try{
                                     const near_store = await noAuthGetNearStore(temp_lat, temp_lng, selectAddr);
-                                    dispatch(get_near_store(near_store.data.query));
-                                    dispatch(get_menulist(null));
-                                    dispatch(get_breakMenuList(null));
+                                    if(near_store.data.msg==="배달 가능한 지역이 아닙니다."){
+                                        openMessage(
+                                            false,
+                                            near_store.data.msg,
+                                            '주변 매장정보를 확인해 주세요.',
+                                        );
+                                    }
 
-                                    setDeliveryList(test2);
-                                    setOpen(false);
-                                } catch (e) { }
+                                    //배달 가능한 지역이라면
+                                    else{
+                                        //비회원일시 로컬스토리지에서 아이템을 들고온다.
+                                        const noAuthAddrs = JSON.parse(
+                                            localStorage.getItem('noAuthAddrs'),
+                                        );
+                                        //로컬 스토리지에 아이템이 있을시.
+                                        if (noAuthAddrs) {
+                                            //모든 활성화를 0으로 초기화
+                                            noAuthAddrs.map(
+                                                (item) => (item.active = 0),
+                                            );
+                                            //새로운 주소를 푸쉬
+                                            noAuthAddrs.push({
+                                                addr1: selectAddr,
+                                                addr2: detailAddr,
+                                                lat: temp_lat,
+                                                lng: temp_lng,
+                                                post_num: post_num,
+                                                active: 1,
+                                            });
+                                            localStorage.setItem(
+                                                'noAuthAddrs',
+                                                JSON.stringify(
+                                                    noAuthAddrs.reverse(),
+                                                ),
+                                            );
+                                        }
+                                        //로컬스토리지에 아이템이 없을시.
+                                        else {
+                                            localStorage.setItem(
+                                                'noAuthAddrs',
+                                                JSON.stringify([
+                                                    {
+                                                        addr1: selectAddr,
+                                                        addr2: detailAddr,
+                                                        lat: temp_lat,
+                                                        lng: temp_lng,
+                                                        post_num: post_num,
+                                                        active: 1,
+                                                    },
+                                                ]),
+                                            );
+                                        }
+                                        //모든 작업이 완료 되었다면. 리덕스에 좌표정보저장, 추가된 배열로 상태 업데이트
+                                        const test2 = JSON.parse(
+                                            localStorage.getItem('noAuthAddrs'),
+                                        );
+                                        dispatch(
+                                            get_address({
+                                                addr1: selectAddr,
+                                                addr2: detailAddr,
+                                                lat: temp_lat,
+                                                lng: temp_lng,
+                                                post_num: post_num,
+                                            }),
+                                        );
+    
+                                        dispatch(get_near_store(near_store.data.query));
+                                        dispatch(get_menulist(null));
+                                        dispatch(get_breakMenuList(null));
+                                        setDeliveryList(test2);
+                                
+                                        setOpen(false);
+                                    }
+
+
+                                }
+
+                                catch(e){
+                                    
+                                }
+                               
                             }
+
                             //검색이 완료되지 않앗으면.
                             else {
                                 setLoading(false);

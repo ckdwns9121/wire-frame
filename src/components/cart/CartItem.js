@@ -12,7 +12,8 @@ import { ButtonBase } from '@material-ui/core';
 // 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
 
 const CartItem = (props) => {
-    const { id, item_name, item_price, item_quanity, cart_id, item_img } = props.item;
+    const { id }  = props;
+    const { item_name, item_price, item_quanity, cart_id, item_img } = props.item;
     const { options } = props;
 
     const total_price = () => {
@@ -22,6 +23,7 @@ const CartItem = (props) => {
         }
         return total;
     };
+    console.log('카트', id);
 
     return (
         <div className={styles['cart-item']}>
