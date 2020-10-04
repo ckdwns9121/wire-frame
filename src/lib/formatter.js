@@ -41,16 +41,19 @@ const DIF_MINUTES = 60 * MS;
 const DIF_HOURS = 60 * DIF_MINUTES;
 const DIF_DAYS = 24 * DIF_HOURS;
 
-const dateFormatting = (date) => (date < 10 ? '0' + date : date); // 달력의 수치를 두 자리로 변환해주는 함수
-export const dateToYYYYMMDD = (date, join = '-') => {
-    // Javascript Date 객체를 형식에 맞게 변환하여 표현함.
+const crossBrowsingDate = (date) => {
     let setDate = null;
     if (typeof date === 'string') {
         // IE 에서 YYYY-MM-DD HH:MM:SS 를 생성자로 사용할 수 없기 때문에 예외 처리.
         setDate = date.replace(/-/g, '/').split(' ')[0];
         // YYYY/MM/DD HH:MM:SS로 변경해줌
-    }  else setDate = date;
-    const absolute = new Date(setDate); // 만약에 Date 객체가 넘어오지 않을 것을 대비
+    } else setDate = date;
+    return new Date(setDate);
+}
+const dateFormatting = (date) => (date < 10 ? '0' + date : date); // 달력의 수치를 두 자리로 변환해주는 함수
+export const dateToYYYYMMDD = (date, join = '-') => {
+    // Javascript Date 객체를 형식에 맞게 변환하여 표현함.
+    const absolute = crossBrowsingDate(date); // 만약에 Date 객체가 넘어오지 않을 것을 대비
     const monthFormatting = dateFormatting(absolute.getMonth() + 1); // 월을 두 자리로 변환
     const dayFormatting = dateFormatting(absolute.getDate()); // 일을 두 자리로 변환
     return (
@@ -58,7 +61,7 @@ export const dateToYYYYMMDD = (date, join = '-') => {
     );
 };
 export const dateToYYYYMMDDHHMMSS = (date, join = '-') => {
-    const absolute = new Date(date);
+    const absolute = crossBrowsingDate(date);
     return (
         dateToYYYYMMDD(absolute, join) +
         ` ${dateFormatting(absolute.getHours())}:${dateFormatting(
@@ -70,7 +73,7 @@ export const dateToYYYYMMDDHHMMSS = (date, join = '-') => {
 export const dateToRelative = (date, join = '-') => {
     // Javascript Date 객체를 현재 시간과 비교하여 표현함.
     const current = Date.now(),
-        relative = new Date(date);
+        relative = crossBrowsingDate(date);
     const elapsed = current - relative.getTime();
 
     if (elapsed >= DIF_DAYS) {
