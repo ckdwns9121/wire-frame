@@ -41,14 +41,17 @@ const DIF_MINUTES = 60 * MS;
 const DIF_HOURS = 60 * DIF_MINUTES;
 const DIF_DAYS = 24 * DIF_HOURS;
 
-const crossBrowsingDate = (date) => {
-    let setDate = null;
-    if (typeof date === 'string') {
-        // IE 에서 YYYY-MM-DD HH:MM:SS 를 생성자로 사용할 수 없기 때문에 예외 처리.
-        setDate = date.replace(/-/g, '/');
-        // YYYY/MM/DD HH:MM:SS로 변경해줌
-    } else setDate = date;
-    return new Date(setDate);
+const crossBrowsingDate = date => {
+    if (date) {
+        let setDate = null;
+        if (typeof date === 'string') {
+            // IE 에서 YYYY-MM-DD HH:MM:SS 를 생성자로 사용할 수 없기 때문에 예외 처리.
+            setDate = date.replace(/-/g, '/');
+            // YYYY/MM/DD HH:MM:SS로 변경해줌
+        } else setDate = date;
+        return new Date(setDate);
+    }
+    return new Date(0);
 }
 const dateFormatting = (date) => (date < 10 ? '0' + date : date); // 달력의 수치를 두 자리로 변환해주는 함수
 export const dateToYYYYMMDD = (date, join = '-') => {
