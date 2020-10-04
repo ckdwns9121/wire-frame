@@ -45,7 +45,7 @@ const crossBrowsingDate = (date) => {
     let setDate = null;
     if (typeof date === 'string') {
         // IE 에서 YYYY-MM-DD HH:MM:SS 를 생성자로 사용할 수 없기 때문에 예외 처리.
-        setDate = date.replace(/-/g, '/').split(' ')[0];
+        setDate = date.replace(/-/g, '/');
         // YYYY/MM/DD HH:MM:SS로 변경해줌
     } else setDate = date;
     return new Date(setDate);

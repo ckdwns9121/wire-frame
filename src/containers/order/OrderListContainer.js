@@ -80,7 +80,7 @@ const OrderListContainer = () => {
             ) : (
                 <>
                     <div className={styles['order-list']}>
-                        {order_list.legnth !== 0 ? (
+                        {order_list.length !== 0 ? (
                             <>
                                 <PreviewOrderList
                                     order_list={order_list.slice((page - 1) * PAGE_PER_VIEW, page * PAGE_PER_VIEW)}

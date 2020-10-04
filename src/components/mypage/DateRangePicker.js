@@ -46,7 +46,7 @@ export default ({ startDate, setStartDate, endDate, setEndDate, onClick }) => {
                         maxDate={endDate}
                         selected={startDate}
                         onChange={onStartDateChange}
-                        withPortal
+                        // withPortal
                     />
                 </div>
                 <div className={styles['line']} />
@@ -58,7 +58,7 @@ export default ({ startDate, setStartDate, endDate, setEndDate, onClick }) => {
                         maxDate={new Date()}
                         selected={endDate}
                         onChange={onEndDateChange}
-                        withPortal
+                        // withPortal
                     />
                 </div>
                 <ButtonBase className={styles['btn']} onClick={onClick}>
