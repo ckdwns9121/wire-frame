@@ -7,7 +7,7 @@ export const noAuth_order = async (
     s_hp,
     post_num,
     addr1,
-    addr2='',
+    addr2,
     lat,
     lng,
     order_type='reserve',

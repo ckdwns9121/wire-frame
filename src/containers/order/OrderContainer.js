@@ -64,7 +64,7 @@ const OrderContainer = () => {
     const user_token = useStore(false);
     const openModal = useModal();
     const { user } = useSelector(state => state.auth);
-    const { addr1,addr2,lat,lng } = useSelector(state => state.address);
+    const { addr1,addr2,lat,lng,post_num } = useSelector(state => state.address);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const [addContact, setAddContact] = useState(false);
     const { check1, check2 } = check;
@@ -277,7 +277,7 @@ const OrderContainer = () => {
                 cart_ids,
                 noAuthName,
                 firstPhoneNumber,
-                16546,
+                post_num,
                 addr1,
                 addr2,
                 lat,
