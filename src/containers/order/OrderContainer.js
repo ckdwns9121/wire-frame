@@ -30,6 +30,7 @@ import Loading from '../../components/assets/Loading';
 import AuthTimer from '../../components/assets/AuthTimer';
 import {noAuth_order} from '../../api/noAuth/order';
 import ShowAgree from '../../components/modal/ShowAgree';
+import { requestPostMobileAuth, requestPostMobileAuthCheck } from '../../api/auth/auth';
 const cx = classNames.bind(styles);
 
 const initCheck = {
@@ -837,16 +838,25 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
     const authNumberInput = useRef(null);
 
 
-    const onClickStartAuth = useCallback(() => {
+    const onClickStartAuth = useCallback(async () => {
         if (secondValue.length >= 3 && thirdValue.length === 4) {
-            setStart(true);
-            alert('499996');
-            // openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
-            authNumberInput.current.focus();
+            try {
+                const res = await requestPostMobileAuth(firstValue + secondValue + thirdValue);
+                if (res.data.msg === '실패!') {
+                    // openModal('인증번호 발송에 실패했습니다.', '잠시 후 다시 시도해 주세요!');
+                    alert('SMS not enough point. please charge.');
+                } else {
+                    setStart(true);
+                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
+                    authNumberInput.current.focus();
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+            }
         } else {
             openModal('휴대폰 형식에 맞지 않습니다!', '휴대폰 번호를 확인해 주세요.');
         }
-    }, [secondValue, thirdValue, openModal]);
+    }, [firstValue, secondValue, thirdValue, openModal]);
 
     const onClickResendAuth = useCallback(() => {
         openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
@@ -855,13 +865,20 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
         }, true);
     }, [onClickStartAuth, openModal, setAuth]);
 
-    const onClickConfirmAuth = useCallback(() => {
-        if (authNumber === '499996') {
-            openModal('성공적으로 인증되었습니다!', '주문하기를 계속 진행하세요.');
-            setAuth(true);
-            setStart(false);
+    const onClickConfirmAuth = useCallback(async () => {
+        try {
+            const res = await requestPostMobileAuthCheck(firstValue + secondValue + thirdValue, authNumber);
+            if (res.data.msg === '성공!') {
+                openModal('성공적으로 인증되었습니다!', '회원가입 버튼을 누르세요!');
+                setAuth(true);
+                setStart(false);
+            } else {
+                openModal('인증번호가 틀렸습니다!', '인증번호를 다시 한 번 확인해 주세요!');
+            }
+        } catch (e) {
+            openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
         }
-    }, [authNumber, setAuth, openModal]);
+    }, [firstValue, secondValue, thirdValue, authNumber, openModal, setAuth]);
     
     const onChangeAuthNumber = useCallback(e => {
         if (e.target.value.length <= 6) {

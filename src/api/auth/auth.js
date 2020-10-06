@@ -140,12 +140,12 @@ export const requestPostMobileAuth = async (pv_hp) => {
     const res = await axios.post(req, form_data);
     return res;
 };
-export const requestPostMobileAuthCheck = async (pv_hp, pv_vnumm) => {
+export const requestPostMobileAuthCheck = async (pv_hp, pv_vnum) => {
     const req = Paths.api + 'mobile/confirm';
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         pv_hp,
-        pv_vnumm,
+        pv_vnum,
     };
     const res = await axios.post(req, form_data);
     return res;
