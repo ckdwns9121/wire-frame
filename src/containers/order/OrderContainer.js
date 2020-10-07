@@ -277,7 +277,7 @@ const OrderContainer = () => {
                 cart_ids,
                 noAuthName,
                 firstPhoneNumber,
-                post_num,
+                post_num, 
                 addr1,
                 addr2,
                 lat,

@@ -85,7 +85,6 @@ const SignInContainer = () => {
                         if (checked) {
                             const newObj = {
                                 email: email,
-                                password: password,
                                 checked: checked,
                             };
                             localStorage.setItem('user', JSON.stringify(newObj));
@@ -124,7 +123,6 @@ const SignInContainer = () => {
         if (data !== null) {
             const temp = JSON.parse(data);
             setEmail(temp.email);
-            setPassword(temp.password);
             setChecked(temp.checked);
         }
     }, []);
