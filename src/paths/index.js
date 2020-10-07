@@ -34,5 +34,5 @@ export const Paths = {
         agree: '/agree',
         search: '/search'
     },
-    api: 'http://devapi.ajoonamu.com/api/',
+    api: 'https://api.ajoonamu.com/api/',
 };

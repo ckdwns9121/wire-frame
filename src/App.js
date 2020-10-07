@@ -164,6 +164,9 @@ export default function App() {
                     path={`${Paths.ajoonamu.search}`}
                     component={Search}
                 ></Route>
+                <Route
+                    // render={() => <div>오류!</div>}
+                ></Route>
             </Switch>
             <Footer />
             <ModalContainer />
