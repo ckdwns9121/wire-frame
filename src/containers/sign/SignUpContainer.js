@@ -177,7 +177,7 @@ const SignUpContainer = () => {
                     setOverlap(true);
                 }
             } catch (e) {
-                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+                openModal("서버에 오류가 발생하였습니다.", "잠시후 다시 시도해 주세요.");
             }
         } else {
             openModal('잘못된 이메일 형식입니다.', '이메일 형식을 확인해 주세요.');
