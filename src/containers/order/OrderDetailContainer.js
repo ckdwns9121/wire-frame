@@ -95,10 +95,10 @@ const OrderDetailContainer = (props) => {
                 <div className={styles['title']}>배달정보</div>
                 <div className={styles['order-detail-view']}>
                     <div className={styles['context']}>
-                        <UserInfoBox text={'받는분'} value={user && user.name} />
+                        <UserInfoBox text={'받는분'} value={orders && orders.info.s_name} />
                         <UserInfoBox
                             text={'연락처'}
-                            value={user && user.hp && stringToTel(user.hp) }
+                            value={orders && stringToTel(orders.info.s_hp) }
                         />
                         <UserInfoBox
                             text={'배달 요청 시간'}
@@ -119,15 +119,17 @@ const OrderDetailContainer = (props) => {
                 <div className={styles['title']}>주문정보</div>
                 <div className={styles['order-detail-view']}>
                     <div className={styles['context']}>
-                        <UserInfoBox text={'주문자'} value={user && user.name} />
+                        <UserInfoBox text={'주문자'} value={orders && orders.info.s_name} />
                         <UserInfoBox
                             text={'연락처'}
-                            value={user && user.hp && stringToTel(user.hp)}
+                            value={orders && stringToTel(orders.info.s_hp)}
                         />
-                        <UserInfoBox
-                            text={'이메일'}
-                            value={user && user.email}
-                        />
+                        {user && 
+                          <UserInfoBox
+                          text={'이메일'}
+                          value={user.email}
+                      />
+                        }
                         <UserInfoBox
                             text={'주문종류'}
                             value={orders && orders.info.order_type ==='reserve' ? '배달주문' : '예약주문'}
