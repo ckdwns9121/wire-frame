@@ -1,19 +1,27 @@
 import React, { useCallback, useEffect, useState } from 'react';
+//hooks
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useStore } from '../../hooks/useStore';
 
-import OrderItemList from '../../components/order/OrderItemList';
+//style
 import styles from './OrderComplete.module.scss';
 import cn from 'classnames/bind';
-import { ButtonBase } from '@material-ui/core';
+//components
 import StickerModal from '../../components/modal/StickerModal';
-import { getDetailOrderView } from '../../api/order/orderItem';
-import {noAuthOrderView ,noAutuOrderCancle} from '../../api/noAuth/order';
-import { useStore } from '../../hooks/useStore';
 import Loading from '../../components/assets/Loading';
+import { ButtonBase } from '@material-ui/core';
+import OrderItemList from '../../components/order/OrderItemList';
+
+//lib
 import { numberFormat, stringToTel } from '../../lib/formatter';
 import { modalOpen } from '../../store/modal';
+
+//api
 import { order_cancle } from '../../api/order/order';
+import { getDetailOrderView } from '../../api/order/orderItem';
+import {noAuthOrderView ,noAutuOrderCancle} from '../../api/noAuth/order';
+//path
 import { Paths } from '../../paths';
 
 const cx = cn.bind(styles);
@@ -127,7 +135,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             </div>
                                             <div className={styles['msg']}>
                                                 <>
-                                                    {user && `${user.name}님`}  저희 아주나무 딜리버리 서비스를 이용해주셔서 감사합니다.
+                                                    {orders && `${orders.info.s_name}님`}  저희 아주나무 딜리버리 서비스를 이용해주셔서 감사합니다.
                                                      <br />
                                                       아래 주문상세내역서는 주문내역에서 다시 확인 가능합니다.
                                                     <br />
@@ -194,7 +202,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 />
                                                 <OrderInfoBox
                                                     text={'입금자명'}
-                                                    value={ user && user.name }
+                                                    value={ orders && orders.info.s_name }
                                                 />
                                                 {/* <OrderInfoBox
                                                     text={'입금계좌'}
@@ -226,11 +234,11 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             <div className={styles['context']}>
                                                 <UserInfoBox
                                                     text={'받는분'}
-                                                    value={ user && user.name ? user.name  : orders && orders.info.s_name }
+                                                    value={ orders && orders.info.s_name }
                                                 />
                                                 <UserInfoBox
                                                     text={'연락처'}
-                                                    value={user && user.hp ? stringToTel(user.hp) : orders && stringToTel(orders.info.s_hp) }
+                                                    value={orders && stringToTel(orders.info.s_hp) }
                                                 />
                                                 <UserInfoBox
                                                     text={'배달 요청 시간'}
@@ -255,11 +263,11 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             <div className={styles['context']}>
                                                 <UserInfoBox
                                                     text={'주문자'}
-                                                    value={user && user.name}
+                                                    value={ orders && orders.info.s_name}
                                                 />
                                                 <UserInfoBox
                                                     text={'연락처'}
-                                                    value={user && stringToTel(user.hp)}
+                                                    value={orders && stringToTel(orders.info.s_hp)}
                                                 />
                                                 <UserInfoBox
                                                     text={'이메일'}
@@ -267,7 +275,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 />
                                                 <UserInfoBox
                                                     text={'주문 종류'}
-                                                    value={orders && orders.info.order_type ==='reserve' ? '배달주문' : '예약주문'}
+                                                    value={orders && orders.info.order_type ==='reserve' ? '예약주문' : '배달주문'}
                                                 />
                                                 <UserInfoBox
                                                     text={'요청 사항'}
