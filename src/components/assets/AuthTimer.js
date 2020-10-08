@@ -12,7 +12,7 @@ const AuthTimer = ({ start, setStart }) => {
                 const temp = time - 1;
                 if (temp === -1) {
                     setStart(false);
-                    openModal('인증 제한 시간이 초과되었습니다.', '다시 시도해두세요!');
+                    openModal('인증 제한 시간이 초과되었습니다.', '다시 시도해주세요!');
                     clearInterval(Counter);
                 } else {
                     setTime(temp);
