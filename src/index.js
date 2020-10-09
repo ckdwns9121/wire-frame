@@ -2,7 +2,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import 'react-app-polyfill/ie9';
 import 'react-app-polyfill/stable';
-import "jspdf/dist/polyfills.es.js";
+import 'jspdf/dist/polyfills.es.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -13,7 +13,7 @@ import rootReducer, { rootSaga } from './store';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import {enableES5} from 'immer';
+import { enableES5 } from 'immer';
 enableES5();
 
 const sagaMiddleware = createSagaMiddleware();
@@ -29,7 +29,7 @@ ReactDOM.render(
             <App />
         </Provider>
     </BrowserRouter>,
-    document.getElementById('root'),
+    document.getElementById('ajoonamu'),
 );
 
 // If you want your app to work offline and load faster, you can change
