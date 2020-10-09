@@ -4,6 +4,7 @@ import Noimage from '../svg/noimage.png';
 
 import styles from './Menu.module.scss';
 import { numberFormat,DBImageFormat } from "../../lib/formatter";
+import ErrorCoverImage from '../assets/ErrorCoverImage';
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = (props) => {
@@ -27,7 +28,7 @@ const MenuItem = (props) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles['img']} src={src !== "[]" ? DBImageFormat(src)[0] : Noimage} alt={"메뉴 이미지"} />
+            <ErrorCoverImage className={styles['img']} src={src !== "[]" ? DBImageFormat(src)[0] : Noimage} alt={"메뉴 이미지"} />
         </div>
     );
 }

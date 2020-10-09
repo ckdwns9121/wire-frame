@@ -131,7 +131,7 @@ const Footer = styled.h3`
 `;
 
 export default ({
-    onDownload, company = '아주나무', created = new Date(),
+    onDownload, company = '샌달', created = new Date(),
     products = [
         {
             id: 101,

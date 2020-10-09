@@ -3,6 +3,7 @@ import styles from './MainMenu.module.scss';
 import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
 import Noimage from '../svg/noimage.png';
+import ErrorCoverImage from '../assets/ErrorCoverImage';
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = ({ item_name, item_price, item_img, onClick }) => (
@@ -20,7 +21,7 @@ const MenuItem = ({ item_name, item_price, item_img, onClick }) => (
 //홈 메뉴 이미지 컴포넌트
 const MenuImg = ({ src }) => (
     <div className={styles['menu-img']}>
-        <img className={styles['img']} src={src} alt="메뉴 이미지" />
+        <ErrorCoverImage className={styles['img']} src={src} alt="메뉴 이미지" />
     </div>
 );
 

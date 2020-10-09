@@ -4,6 +4,7 @@ import Noimage from '../svg/noimage.png';
 import { DBImageFormat, numberFormat } from "../../lib/formatter";
 import { Link } from 'react-router-dom';
 import { Paths } from '../../paths';
+import ErrorCoverImage from '../assets/ErrorCoverImage';
 
 //홈 메뉴 아이템 컴포넌트
 const OtherUserMenuItem = (props) => {
@@ -25,7 +26,7 @@ const OtherUserMenuItem = (props) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles['img']} src={src} alt="메뉴 아이템" />
+            <ErrorCoverImage className={styles['img']} src={src} alt="메뉴 아이템" />
         </div>
     );
 }

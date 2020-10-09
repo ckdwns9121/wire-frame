@@ -3,6 +3,7 @@ import styles from './Order.module.scss';
 import cn from 'classnames/bind';
 import Noimage from '../svg/noimage.png';
 import {DBImageFormat, numberFormat} from '../../lib/formatter';
+import ErrorCoverImage from '../assets/ErrorCoverImage';
 const cx = cn.bind(styles);
 
 const OrderItem = (props) => {
@@ -18,7 +19,7 @@ const OrderItem = (props) => {
     return (
         <div className={cx('order-item', { space: center })}>
             <div className={styles['menu-img']}>
-                <img src={( item_img !== undefined && item_img !== "[]") ? DBImageFormat(item_img)[0] : Noimage} alt="menu" />
+                <ErrorCoverImage src={( item_img !== undefined && item_img !== "[]") ? DBImageFormat(item_img)[0] : Noimage} alt="menu" />
             </div>
             <div className={styles['menu-info']}>
                 <div className={styles['name']}>{item_name}</div>

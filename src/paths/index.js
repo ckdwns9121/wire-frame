@@ -36,4 +36,5 @@ export const Paths = {
         oauth:'/oauth'
     },
     api: 'https://api.ajoonamu.com/api/',
+    storage: 'https://api.ajoonamu.com/storage/'
 };

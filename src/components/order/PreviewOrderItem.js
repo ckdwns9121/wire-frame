@@ -6,6 +6,7 @@ import { DBImageFormat, numberFormat } from "../../lib/formatter";
 import { ButtonBase } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
+import ErrorCoverImage from '../assets/ErrorCoverImage';
 
 const PreviewOrderItem = (props) => {
     const {
@@ -87,7 +88,7 @@ function MenuItem({ src, item_name, item_option, item_price }) {
     return (
         <div className={styles['menu-item']}>
             <div className={styles['menu-img']}>
-                <img src={( src !== undefined && src !== "[]") ? DBImageFormat(src)[0] : Noimage} alt="메뉴" />
+                <ErrorCoverImage src={( src !== undefined && src !== "[]") ? DBImageFormat(src)[0] : Noimage} alt="메뉴" />
             </div>
             <div className={styles['menu-name']}>{item_name}</div>
             <div className={styles['menu-price']}>

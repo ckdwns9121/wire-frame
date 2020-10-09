@@ -8,6 +8,7 @@ import Count from '../../components/svg/counter/Count';
 import { IconButton } from '@material-ui/core';
 import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
+import ErrorCoverImage from '../assets/ErrorCoverImage';
 
 // 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
 
@@ -38,7 +39,7 @@ const CartItem = (props) => {
             </div>
             <div className={styles['menu-info']}>
                 <div className={styles['menu-img']}>
-                    <img
+                    <ErrorCoverImage
                         src={
                             item_img !== '[]'
                                 ? DBImageFormat(item_img)[0]
