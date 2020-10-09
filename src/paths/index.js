@@ -35,5 +35,5 @@ export const Paths = {
         search: '/search'
     },
     api: 'https://api.ajoonamu.com/api/',
-    storage: 'https://api.ajoonamu.com/storage'
+    storage: 'https://api.ajoonamu.com/storage/'
 };
