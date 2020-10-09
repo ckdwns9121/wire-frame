@@ -1,3 +1,5 @@
+export const PROTOCOL_ENV = 'http://dev'
+
 export const Paths = {
     index: '/',
     ajoonamu: {
@@ -35,6 +37,6 @@ export const Paths = {
         search: '/search',
         oauth:'/oauth'
     },
-    api: 'https://api.ajoonamu.com/api/',
-    storage: 'https://api.ajoonamu.com/storage/'
+    api: PROTOCOL_ENV + 'api.ajoonamu.com/api/',
+    storage: PROTOCOL_ENV + 'api.ajoonamu.com/storage/'
 };

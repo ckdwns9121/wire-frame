@@ -4,7 +4,7 @@ import { get_user_info } from './store/auth/auth';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import './App.css';
-import { Paths } from 'paths';
+import { Paths, PROTOCOL_ENV } from 'paths';
 import {
     Signin,
     SignUp,
@@ -94,7 +94,6 @@ export default function App() {
             ) != null ||
             UserAgent.match(/LG|SAMSUNG|Samsung/) != null
         ) {
-            // location.href = 'https://m.ajoonamu.com/';
             return true;
         }
     }
@@ -102,7 +101,7 @@ export default function App() {
     useEffect(() => {
         console.log(location.pathname.indexOf(Paths.ajoonamu.oauth) === -1);
         if (isMobile() && location.pathname.indexOf(Paths.ajoonamu.oauth) === -1) {
-            window.location.href = 'https://m.ajoonamu.com';
+            window.location.href = PROTOCOL_ENV + 'm.ajoonamu.com';
         }
         getInfo();
         AOS.init({ duration: 1500, once: true });
