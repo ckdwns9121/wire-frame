@@ -64,6 +64,7 @@ const EstmModal = (props) => {
         let position = 0;
         const doc = new jsPDF('p', 'mm');
         window.scrollTo(0, 0);
+        setLoading(true);
         html2canvas(ref.current).then((canvas) => {
             const imageData = canvas.toDataURL('image/png');
             const imgWidth = 210; // 이미지 가로 길이(mm) A4 기준
@@ -81,11 +82,12 @@ const EstmModal = (props) => {
                 heightLeft -= pageHeight;
             }
             const blob = doc.output('blob');
-            const makeFile = new File([blob], '아주나무 견적서.pdf', {
+            const makeFile = new File([blob], '샌달 견적서.pdf', {
                 type: blob.type,
             });
             window.open(doc.output('bloburl'));
             setEstmFile(makeFile);
+            setLoading(false);
         });
     };
 
