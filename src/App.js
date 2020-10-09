@@ -110,7 +110,8 @@ export default function App() {
 
 
     return (
-        <div className="App">
+        <>
+        {!isMobile() && <div className="App">
             <Header />
             <Switch>
                 <Route exact={true} path={Paths.index} component={Home}></Route>
@@ -183,7 +184,6 @@ export default function App() {
                     path={`${Paths.ajoonamu.search}`}
                     component={Search}
                 ></Route>
-                <Route path={`${Paths.ajoonamu.oauth}/:type`} component={OAuth}></Route>
 
                 <Route
                     // render={() => <div>오류!</div>}
@@ -191,7 +191,9 @@ export default function App() {
             </Switch>
             <Footer />
             <ModalContainer />
-        </div>
+        </div>}
+        <Route path={`${Paths.ajoonamu.oauth}/:type`} component={OAuth}></Route>
+        </>
     );
 }
 
