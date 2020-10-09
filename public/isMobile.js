@@ -1,4 +1,5 @@
 var UserAgent = navigator.userAgent;
+
 if (
     UserAgent.match(
         /iPhone|iPod|iPad|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i,
@@ -6,4 +7,4 @@ if (
     UserAgent.match(/LG|SAMSUNG|Samsung/) != null
 ) {
     location.href = 'https://m.ajoonamu.com/';
-} 
+}
