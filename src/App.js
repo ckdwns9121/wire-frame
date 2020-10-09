@@ -24,7 +24,7 @@ import {
 } from 'pages';
 import { Home, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderComplete } from 'pages';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { get_address } from './store/address/address';
 import { get_near_store } from './store/address/store';
 import { getActiveAddr } from './api/address/address';
@@ -44,7 +44,6 @@ export default function App() {
     useUrl();
 
 
-    const history = useHistory();
     const location = useLocation();
     const dispatch = useDispatch();
     const getInfo = async () => {
@@ -103,7 +102,7 @@ export default function App() {
     useEffect(() => {
         console.log(location.pathname.indexOf(Paths.ajoonamu.oauth) === -1);
         if (isMobile() && location.pathname.indexOf(Paths.ajoonamu.oauth) === -1) {
-            window.location.href = 'http://devm.ajoonamu.com';
+            window.location.href = 'https://m.ajoonamu.com';
         }
         getInfo();
         AOS.init({ duration: 1500, once: true });
