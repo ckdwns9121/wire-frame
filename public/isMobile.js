@@ -6,5 +6,5 @@ if (
     ) != null ||
     UserAgent.match(/LG|SAMSUNG|Samsung/) != null
 ) {
-    location.href = 'https://m.ajoonamu.com/';
+    window.location.href = 'https://m.ajoonamu.com/';
 }
