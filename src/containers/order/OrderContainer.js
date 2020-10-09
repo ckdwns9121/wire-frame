@@ -1,36 +1,47 @@
-import React, {
-    useState,
-    useEffect,
-    useReducer,
-    useCallback,
-    useRef,
-} from 'react';
+import React, { useState,useEffect, useReducer, useCallback,useRef} from 'react';
 import { Paths } from 'paths';
-import { useSelector } from 'react-redux';
+
+//styles
 import styles from './Order.module.scss';
 import classNames from 'classnames/bind';
+
+//lib
+import $script from 'scriptjs';
+import { onlyNumberListener } from '../../lib/formatChecker';
+import { numberFormat, stringNumberToInt } from '../../lib/formatter';
+
+//datepicker
+import ko from 'date-fns/locale/ko';
+import DatePicker from 'react-datepicker';
+
+//components
+import ScrollTop from '../../components/scrollTop/ScrollToTop';
+import Select from '../../components/svg/select/Select';
+import Loading from '../../components/assets/Loading';
+import AuthTimer from '../../components/assets/AuthTimer';
+import ShowAgree from '../../components/modal/ShowAgree';
 import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
 import Button from '../../components/button/Button';
 import CheckBox from '../../components/checkbox/CheckBox';
 import { ButtonBase } from '@material-ui/core';
-import { getCartList } from '../../api/cart/cart';
-import { numberFormat, stringNumberToInt } from '../../lib/formatter';
-import { getOrderCoupons } from '../../api/coupon/coupon';
+
+//hooks
 import { useStore } from '../../hooks/useStore';
-import $script from 'scriptjs';
-import ko from 'date-fns/locale/ko';
-import DatePicker from 'react-datepicker';
-import { user_order } from '../../api/order/order';
-import ScrollTop from '../../components/scrollTop/ScrollToTop';
-import { onlyNumberListener } from '../../lib/formatChecker';
 import { useModal } from '../../hooks/useModal';
-import Select from '../../components/svg/select/Select';
-import {noAuthGetCartList} from  '../../api/noAuth/cart';
-import Loading from '../../components/assets/Loading';
-import AuthTimer from '../../components/assets/AuthTimer';
-import {noAuth_order} from '../../api/noAuth/order';
-import ShowAgree from '../../components/modal/ShowAgree';
+import { useSelector } from 'react-redux';
+
+
+//api
 import { requestPostMobileAuth, requestPostMobileAuthCheck } from '../../api/auth/auth';
+import { user_order } from '../../api/order/order';
+import {noAuth_order} from '../../api/noAuth/order';
+import {noAuthGetCartList} from  '../../api/noAuth/cart';
+import { getCartList } from '../../api/cart/cart';
+import { getOrderCoupons } from '../../api/coupon/coupon';
+
+
+
+
 const cx = classNames.bind(styles);
 
 const initCheck = {
