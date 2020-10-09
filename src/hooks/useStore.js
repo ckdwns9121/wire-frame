@@ -1,7 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Paths } from '../paths';
+import { useEffect,useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory,useLocation } from 'react-router-dom';
 import { useModal } from './useModal';
+import { get_address } from '../store/address/address';
+import { get_near_store } from '../store/address/store';
+import { get_menulist } from '../store/product/product';
+import { Paths } from '../paths';
 
 export const useStore = (isReplace = true) => {
     const user_token = sessionStorage.getItem('access_token');
@@ -42,4 +46,21 @@ export const useUrl = () => {
 export const useAddr = () => {
     const user_addr = sessionStorage.getItem('user_addr');
     return user_addr;
+};
+
+export const useInit = () => {
+    const dispatch = useDispatch();
+    const initStore = (
+        addr1 = null,
+        addr2 = null,
+        lat = null,
+        lng = null,
+        post_num = null,
+        near_store = null,
+    ) => {
+        dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
+        dispatch(get_near_store(near_store));
+        dispatch(get_menulist(null));
+    };
+    return initStore;
 };

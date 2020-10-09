@@ -20,10 +20,11 @@ import {
     Breakfast,
     Event,
     Agree,
+    OAuth
 } from 'pages';
 import { Home, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderComplete } from 'pages';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { get_address } from './store/address/address';
 import { get_near_store } from './store/address/store';
 import { getActiveAddr } from './api/address/address';
@@ -42,6 +43,9 @@ import { useUrl } from './hooks/useStore';
 export default function App() {
     useUrl();
 
+
+    const history = useHistory();
+    const location = useLocation();
     const dispatch = useDispatch();
     const getInfo = async () => {
         const token = sessionStorage.getItem('access_token');
@@ -83,12 +87,29 @@ export default function App() {
             }
         }
     };
+    const isMobile = () => {
+        var UserAgent = navigator.userAgent;
+        if (
+            UserAgent.match(
+                /iPhone|iPod|iPad|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i,
+            ) != null ||
+            UserAgent.match(/LG|SAMSUNG|Samsung/) != null
+        ) {
+            // location.href = 'https://m.ajoonamu.com/';
+            return true;
+        }
+    }
 
     useEffect(() => {
+        console.log(location.pathname.indexOf(Paths.ajoonamu.oauth) === -1);
+        if (isMobile() && location.pathname.indexOf(Paths.ajoonamu.oauth) === -1) {
+            window.location.href = 'http://devm.ajoonamu.com';
+        }
         getInfo();
         AOS.init({ duration: 1500, once: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
 
     return (
         <div className="App">
@@ -164,6 +185,8 @@ export default function App() {
                     path={`${Paths.ajoonamu.search}`}
                     component={Search}
                 ></Route>
+                <Route path={`${Paths.ajoonamu.oauth}/:type`} component={OAuth}></Route>
+
                 <Route
                     // render={() => <div>오류!</div>}
                 ></Route>

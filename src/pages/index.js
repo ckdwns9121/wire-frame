@@ -20,5 +20,6 @@ export { default as Event } from './event/Event';
 export { default as Logout } from './logout/Logout';
 export { default as Agree } from './agree/Agree';
 export { default as Search } from './search/Search';
+export {default as OAuth} from './oauth';
 
 export { default as Error } from './error/Error';
