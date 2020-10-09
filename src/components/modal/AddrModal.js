@@ -41,7 +41,7 @@ const AddressModal = (props) => {
                         className={styles['input']}
                         type="text"
                         value={searchAddr}
-                        placeholder="예) 아주나무동12-3 또는 아주나무 아파트"
+                        placeholder="예) 샌달동 12-3 또는 샌달 아파트"
                         onChange={onChangeSearchAddr}
                         onKeyPress={props.handleKeyPress}
                     ></input>
