@@ -397,9 +397,9 @@ const OrderCompleteContainer = ({ order_number }) => {
                                 </div>
                             </div>
                             <StickerModal
-                                order_number={order_number}
                                 open={stickyOpen}
                                 handleClose={handleClose}
+                                order_number={order_number}
                                 token={user_token}
                             />
                         </>
