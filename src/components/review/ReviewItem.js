@@ -4,11 +4,12 @@ import { DBImageFormat, hideEmail } from '../../lib/formatter';
 
 import Noimage from '../svg/noimage.png';
 import ReviewRating from './ReviewRating';
+import ErrorCoverImage from '../assets/ErrorCoverImage';
 
 //홈 메뉴 이미지 컴포넌트
 const ReviewImage = ({ src }) => (
     <div className={styles['review-img']}>
-        <img className={styles['img']} src={src} alt="메뉴 이미지" />
+        <ErrorCoverImage className={styles['img']} src={src} alt="메뉴 이미지" />
     </div>
 );
 

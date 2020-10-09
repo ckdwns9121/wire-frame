@@ -74,7 +74,7 @@ const Header = () => {
                                 className={styles['text']}
                                 onClick={() => { history.push(Paths.index); window.scrollTo(5000, 5000)}}
                             >
-                                {store ? store.shop_name : '아주나무 지점 미설정'}
+                                {store ? store.shop_name : '샌달 지점 미설정'}
                             </div>
                         </div>
                         <div className={styles['auth']}>

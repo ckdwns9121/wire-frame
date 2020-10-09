@@ -15,6 +15,7 @@ import { useModal } from '../../hooks/useModal';
 import TAG from '../svg/review/tag.svg';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
+import ErrorCoverImage from '../assets/ErrorCoverImage';
 
 const cx = cn.bind(styles);
 
@@ -133,7 +134,7 @@ const UserEmail = ({ mail }) => (
 );
 
 const MenuImg = ({ src }) => (
-    <img className={styles['img']} src={src} alt="메뉴" />
+    <ErrorCoverImage className={styles['img']} src={src} alt="메뉴" />
 );
 
 const PrevArrow = ({ style, onClick }) => (

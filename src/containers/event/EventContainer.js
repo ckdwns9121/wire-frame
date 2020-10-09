@@ -15,6 +15,7 @@ import { useModal } from '../../hooks/useModal';
 import Loading from '../../components/assets/Loading';
 import ListPaging from '../../components/sidebar/ListPaging';
 import DetailPaging from '../../components/sidebar/DetailPaging';
+import ErrorCoverImage from '../../components/assets/ErrorCoverImage';
 
 const cn = classnames.bind(styles);
 
@@ -111,7 +112,7 @@ export default ({ match, location }) => {
                         </div>
                         <div className={styles['e-content']}>
                             {(item && item.images === '[]') ? <img src={Noimage} alt="기본 이미지" />
-                            : <img src={DBImageFormat(item.images)[0]} alt="이벤트 이미지" />}
+                            : <ErrorCoverImage src={DBImageFormat(item.images)[0]} alt="이벤트 이미지" />}
                         </div>
                     </>
                 ) : list.length > 0 ? (
@@ -124,7 +125,7 @@ export default ({ match, location }) => {
                             >
                                 <div className={styles['image']}>
                                     {(images === '[]') ? <img src={Noimage} alt="기본 이미지"/>
-                                    : <img src={DBImageFormat(images)[0]} alt="이벤트 이미지" />}
+                                    : <ErrorCoverImage src={DBImageFormat(images)[0]} alt="이벤트 이미지" />}
                                 </div>
                                 <div className={styles['text']}>
                                     <p className={styles['warn']}>{warn}</p>

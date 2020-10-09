@@ -4,6 +4,9 @@ import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import { requestBannerList } from '../../../api/event/banner';
 import { useModal } from '../../../hooks/useModal';
+
+import NoImage from '../../../components/svg/noimage.png';
+
 import { DBImageFormat } from '../../../lib/formatter';
 
 const settings = {
@@ -39,7 +42,7 @@ const HomeSlick = () => {
             <Slider {...settings}>
                 {list.map(item => (
                     <Link key={item.id} to={item.bn_url}>
-                        <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "')" }}/>
+                        <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "'), url('" + NoImage + "')" }}/>
                     </Link>
                 ))}
             </Slider>
