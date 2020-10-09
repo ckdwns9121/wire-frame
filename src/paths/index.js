@@ -32,7 +32,8 @@ export const Paths = {
         policy: '/agree/policy',
         term_use: '/agree/term_use',
         agree: '/agree',
-        search: '/search'
+        search: '/search',
+        oauth:'/oauth'
     },
     api: 'https://api.ajoonamu.com/api/',
 };
