@@ -94,7 +94,7 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                     button_disabled={!auth}
                 />
                 <div className={styles['timer']}>
-                    {phoneAuth ? (<Check on={true} />) : auth && <AuthTimer start={auth} setStart={setAuth} />)}
+                    {phoneAuth ? (<Check on={true} />) : auth && <AuthTimer start={auth} setStart={setAuth} />}
                 </div>
             </div>
         </>
