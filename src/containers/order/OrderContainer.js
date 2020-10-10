@@ -38,6 +38,7 @@ import {noAuth_order} from '../../api/noAuth/order';
 import {noAuthGetCartList} from  '../../api/noAuth/cart';
 import { getCartList } from '../../api/cart/cart';
 import { getOrderCoupons } from '../../api/coupon/coupon';
+import { PROTOCOL_ENV } from '../../paths';
 
 
 
@@ -366,9 +367,9 @@ const OrderContainer = () => {
              */
             obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
             obj.PCD_RST_URL =
-                'http://devapi.ajoonamu.com/api/user/payple/order_mobile'; // (필수) 결제(요청)결과 RETURN URL
+                PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/order_mobile'; // (필수) 결제(요청)결과 RETURN URL
             obj.payple_auth_file =
-                'http://devapi.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
+                PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
 
            PaypleCpayAuthCheck(obj);
