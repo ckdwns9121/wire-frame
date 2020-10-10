@@ -78,7 +78,7 @@ const OAuth = ({ match, location }) => {
             if (type === 'login') {
                 window.location.href = `${PROTOCOL_ENV}m.ajoonamu.com/oauth/login?email=${email}&access_token=${access_token}&register_type=${register_type}`;
             } else if (type === 'register') {
-                window.location.href = `${PROTOCOL_ENV}m.ajoonamu.com/oauth/register?name=${name}&email=${email}$register_kind=1&register_type=${register_type}`;
+                window.location.href = `${PROTOCOL_ENV}m.ajoonamu.com/oauth/register?name=${name}&email=${email}&register_kind=1&register_type=${register_type}`;
             }
         }
         //pc이면
