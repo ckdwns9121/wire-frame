@@ -157,7 +157,7 @@ const SignUpContainer = () => {
                 await localRegister(email, password, password_confirm, check3);
                 history.push(`${Paths.ajoonamu.complete}/${email}`);
             } catch (e) {
-                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+                openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
             }
         } else {
             openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.');

@@ -52,7 +52,7 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
         try {
             const res = await requestPostMobileAuthCheck(phoneNumber, authNumber);
             if (res.data.msg === '성공!') {
-                openModal('성공적으로 인증되었습니다!', '회원가입 버튼을 누르세요!');
+                openModal('성공적으로 인증되었습니다!', '절차를 계속 진행해 주세요.');
                 setPhoneAuth(true);
                 setAuth(false);
             } else {
@@ -94,7 +94,7 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                     button_disabled={!auth}
                 />
                 <div className={styles['timer']}>
-                    {phoneAuth ? (<Check on={true} />) : (<AuthTimer start={auth} setStart={setAuth} />)}
+                    {phoneAuth ? (<Check on={true} />) : auth && <AuthTimer start={auth} setStart={setAuth} />)}
                 </div>
             </div>
         </>
