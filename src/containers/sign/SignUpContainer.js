@@ -280,7 +280,6 @@ const AcceptContainer = (props) => {
                             text={'개인정보처리방침 필수 동의'}
                             check={props.check1}
                             onChange={props.onChangeCheck1}
-                            url={Paths.index}
                             onClick={() => setTitle('개인정보처리방침')}
                         />
                     </div>

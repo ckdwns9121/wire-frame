@@ -142,7 +142,7 @@ const QNAWrite = ({ token, id }) => {
                     setContent(question);
                     // setFiles(q_files);
                 } else {
-                    openModal('없는 게시물입니다.', '게시글을 확인해 주세요.');
+                    openModal('없거나 삭제된 게시물입니다.', '게시물 번호를 확인해 주세요.');
                     history.replace(Paths.ajoonamu.support + '/qna');
                 }
             } catch (e) {

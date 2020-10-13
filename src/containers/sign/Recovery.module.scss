@@ -27,6 +27,7 @@
                 box-sizing: border-box;
                 text-align: left;
                 display: block;
+                transition: all .15s ease-in-out;
                 .icon {
                     display: inline-block;
                     width: 180px;
@@ -36,6 +37,7 @@
                     line-height: 160px;
                     img {
                         vertical-align: middle;
+                        width: 100px;
                     }
                 }
                 .table {
@@ -56,6 +58,10 @@
                             color: #555;
                         }
                     }
+                }
+                &:hover {
+                    border-color: #fff;
+                    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.15);
                 }
             }
         }

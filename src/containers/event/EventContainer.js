@@ -57,12 +57,14 @@ export default ({ match, location }) => {
         }
         setLoading(false);
     //}, [openModal, page, count]);
-    }, [openModal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const getEventShow = useCallback(async () => {
         setLoading(true);
         try {
             const res = await requestEventShow(match.params.id);
+            console.log(res);
             if (res.event) {
                 setItem(res.event);
             } else {
@@ -73,7 +75,8 @@ export default ({ match, location }) => {
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
         }
         setLoading(false);
-    }, [match, openModal, history]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [match, history]);
 
     const onClickDetail = useCallback(id => history.push(`${Paths.ajoonamu.event}/${id}`), [history]);
 
@@ -87,6 +90,7 @@ export default ({ match, location }) => {
         }
     }, [detail, getEventShow]);
 
+    console.log(item);
     return (
         <div className={styles['container']}>
             <div className={styles['title-area']}>

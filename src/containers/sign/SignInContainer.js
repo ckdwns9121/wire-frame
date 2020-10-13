@@ -17,10 +17,10 @@ import { get_address } from '../../store/address/address';
 import { getActiveAddr } from '../../api/address/address';
 import { useModal } from '../../hooks/useModal';
 import { isEmailForm } from '../../lib/formatChecker';
-import {getNearStore} from '../../api/store/store';
-import {get_near_store} from '../../store/address/store';
-import {get_breakMenuList} from '../../store/product/braekfast';
-import {get_menulist} from  '../../store/product/product';
+import { getNearStore } from '../../api/store/store';
+import { get_near_store } from '../../store/address/store';
+import { get_breakMenuList } from '../../store/product/braekfast';
+import { get_menulist } from '../../store/product/product';
 
 const cx = cn.bind(styles);
 
