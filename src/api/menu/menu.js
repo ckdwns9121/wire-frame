@@ -39,7 +39,12 @@ export const getPreferMenuList = async (
     return result.data.query;
 };
 
-export const getMainMenuList = async (ca_id, offset = 0, limit = 8, shop_id) => {
+export const getMainMenuList = async (
+    ca_id,
+    offset = 0,
+    limit = 8,
+    shop_id,
+) => {
     const req = Paths.api + 'user/item/main';
     axios.defaults.headers.get['Context-Type'] = 'application/json';
 
@@ -48,14 +53,14 @@ export const getMainMenuList = async (ca_id, offset = 0, limit = 8, shop_id) => 
             ca_id,
             limit,
             offset,
-            shop_id
+            shop_id,
         },
     };
     const result = await axios.get(req, config);
     return result.data.query.items;
 };
 
-export const getMenuList = async (ca_id,offset=0, limit=8,shop_id) => {
+export const getMenuList = async (ca_id, offset = 0, limit = 8, shop_id) => {
     const req = Paths.api + 'user/item/list';
     axios.defaults.headers.get['Context-Type'] = 'application/json';
 
@@ -64,9 +69,10 @@ export const getMenuList = async (ca_id,offset=0, limit=8,shop_id) => {
             ca_id,
             limit,
             offset,
-            shop_id
-        }
-    }
+            shop_id,
+        },
+    };
+
     const result = await axios.get(req, config);
     return result;
 };
@@ -82,7 +88,7 @@ export const getMenuInfo = async (item_id) => {
     return result.data.query;
 };
 
-export const getSearchMenu = async (search, offset, limit ,shop_id) => {
+export const getSearchMenu = async (search, offset, limit, shop_id) => {
     const req = Paths.api + 'user/item/search';
     const config = {
         headers: {
@@ -92,7 +98,7 @@ export const getSearchMenu = async (search, offset, limit ,shop_id) => {
             offset,
             limit,
             search,
-            shop_id
+            shop_id,
         },
     };
     const res = axios.get(req, config);

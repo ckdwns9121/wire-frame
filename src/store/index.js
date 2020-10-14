@@ -3,6 +3,7 @@ import auth, { auth_saga } from './auth/auth';
 import { product, breakfast } from './product';
 import modal from './modal';
 import { address, store } from './address';
+import company, { company_saga } from './company';
 import { all } from 'redux-saga/effects';
 
 const rootReducer = combineReducers({
@@ -10,12 +11,13 @@ const rootReducer = combineReducers({
     product,
     breakfast,
     modal,
+    company,
     address,
     store,
 });
 
 export function* rootSaga() {
-    yield all([auth_saga()]);
+    yield all([auth_saga(), company_saga()]);
 }
 
 export default rootReducer;

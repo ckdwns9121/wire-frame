@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { get_user_info } from './store/auth/auth';
+import { get_company_info } from './store/company';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import './App.css';
@@ -39,13 +40,14 @@ import 'aos/dist/aos.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Search } from './pages';
 import { useUrl } from './hooks/useStore';
+import Loading from './components/assets/Loading';
 
 export default function App() {
     useUrl();
-
-
     const location = useLocation();
     const dispatch = useDispatch();
+    const company = useSelector(state => state.company);
+
     const getInfo = async () => {
         const token = sessionStorage.getItem('access_token');
         if (token) {
@@ -99,7 +101,10 @@ export default function App() {
     }
 
     useEffect(() => {
-        console.log(location.pathname.indexOf(Paths.ajoonamu.oauth) === -1);
+        dispatch(get_company_info());
+    }, []);
+
+    useEffect(() => {
         if (isMobile() && location.pathname.indexOf(Paths.ajoonamu.oauth) === -1) {
             window.location.href = PROTOCOL_ENV + 'm.ajoonamu.com';
         }
@@ -108,91 +113,92 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
     return (
         <>
-        {!isMobile() && <div className="App">
-            <Header />
-            <Switch>
-                <Route exact={true} path={Paths.index} component={Home}></Route>
-                <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
-                <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
-                <Route
-                    path={`${Paths.ajoonamu.complete}/:name?`}
-                    component={SignupComplete}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.recovery}
-                    component={Recovery}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.recovery_id}
-                    component={RecoveryId}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.recovery_pw}
-                    component={RecoveryPw}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.find_email}
-                    component={FindEmail}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.find_password}
-                    component={FindPassword}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.address}
-                    component={Address}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.product}
-                    component={DetailMenu}
-                ></Route>
-                <Route path={Paths.ajoonamu.shop} component={Reserve}></Route>
-                <Route
-                    exact
-                    path={Paths.ajoonamu.cart}
-                    component={Cart}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.order_complete}
-                    component={OrderComplete}
-                ></Route>
-                <Route path={Paths.ajoonamu.order} component={Order}></Route>
-                <Route path={Paths.ajoonamu.logout} component={Logout} />
-                <Route
-                    exact
-                    path={`${Paths.ajoonamu.breakfast}/:name?`}
-                    component={Breakfast}
-                ></Route>
-                <Route
-                    path={Paths.ajoonamu.support}
-                    component={Support}
-                ></Route>
-                <Route
-                    path={`${Paths.ajoonamu.event}/:id?`}
-                    component={Event}
-                ></Route>
-                <Route path={Paths.ajoonamu.order} component={Order}></Route>
-                <Route path={Paths.ajoonamu.agree} component={Agree}></Route>
-                <Route
-                    path={`${Paths.ajoonamu.mypage}/:tab?`}
-                    component={Mypage}
-                ></Route>
-                <Route
-                    path={`${Paths.ajoonamu.search}`}
-                    component={Search}
-                ></Route>
-
-                <Route
-                    // render={() => <div>오류!</div>}
-                ></Route>
-            </Switch>
-            <Footer />
-            <ModalContainer />
-        </div>}
-        <Route path={`${Paths.ajoonamu.oauth}/:type`} component={OAuth}></Route>
+        {!company.company || company.loading ? <Loading open={company.loading} /> :
+        <>
+            {!isMobile() && <div className="App">
+                <Header />
+                <Switch>
+                    <Route exact={true} path={Paths.index} component={Home}></Route>
+                    <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
+                    <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
+                    <Route
+                        path={`${Paths.ajoonamu.complete}/:name?`}
+                        component={SignupComplete}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.recovery}
+                        component={Recovery}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.recovery_id}
+                        component={RecoveryId}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.recovery_pw}
+                        component={RecoveryPw}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.find_email}
+                        component={FindEmail}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.find_password}
+                        component={FindPassword}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.address}
+                        component={Address}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.product}
+                        component={DetailMenu}
+                    ></Route>
+                    <Route path={Paths.ajoonamu.shop} component={Reserve}></Route>
+                    <Route
+                        exact
+                        path={Paths.ajoonamu.cart}
+                        component={Cart}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.order_complete}
+                        component={OrderComplete}
+                    ></Route>
+                    <Route path={Paths.ajoonamu.order} component={Order}></Route>
+                    <Route path={Paths.ajoonamu.logout} component={Logout} />
+                    <Route
+                        exact
+                        path={`${Paths.ajoonamu.breakfast}/:name?`}
+                        component={Breakfast}
+                    ></Route>
+                    <Route
+                        path={Paths.ajoonamu.support}
+                        component={Support}
+                    ></Route>
+                    <Route
+                        path={`${Paths.ajoonamu.event}/:id?`}
+                        component={Event}
+                    ></Route>
+                    <Route path={Paths.ajoonamu.order} component={Order}></Route>
+                    <Route path={Paths.ajoonamu.agree} component={Agree}></Route>
+                    <Route
+                        path={`${Paths.ajoonamu.mypage}/:tab?`}
+                        component={Mypage}
+                    ></Route>
+                    <Route
+                        path={`${Paths.ajoonamu.search}`}
+                        component={Search}
+                    ></Route>
+                    {/* <Route
+                        render={() => <div>오류!</div>}
+                    ></Route> */}
+                </Switch>
+                <Footer />
+                <ModalContainer />
+            </div>}
+            <Route path={`${Paths.ajoonamu.oauth}/:type`} component={OAuth}></Route>
+            </>}
         </>
     );
 }

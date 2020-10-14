@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import qs from 'qs';
 
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 //api
-import { noAuthGetNearStore } from '../../api/noAuth/store';
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
 import { socialRegister } from '../../api/social';
 //hooks
 import { useInit } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
-
 
 //store
 import { get_user_info } from '../../store/auth/auth';
@@ -49,7 +47,6 @@ const OAuth = ({ match, location }) => {
                     initStore();
                 }
                 sessionStorage.setItem('access_token', access_token);
-
                 history.replace('/');
             } catch (e) {
                 history.replace('/error');
@@ -60,13 +57,13 @@ const OAuth = ({ match, location }) => {
     const Register = async (email, name, register_type) => {
         try {
             const res = await socialRegister(email, name, register_type);
-            console.log('소셜 회원가입');
-            console.log(res);
-            if(res.data.msg==='존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.'){
+            if (
+                res.data.msg ===
+                '존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.'
+            ) {
                 history.replace('/');
                 openModal('회원가입 실패', res.data.msg);
-            }
-            else if (res.data.access_token) {
+            } else if (res.data.access_token) {
                 dispatch(get_user_info(res.data.access_token));
                 sessionStorage.setItem('access_token', res.data.access_token);
                 initStore();
@@ -96,6 +93,7 @@ const OAuth = ({ match, location }) => {
                 Register(email, name, register_type);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const isMobile = () => {

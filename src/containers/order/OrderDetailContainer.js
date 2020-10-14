@@ -18,7 +18,7 @@ const OrderDetailContainer = (props) => {
     const query = qs.parse(props.location.search, {
         ignoreQueryPrefix: true,
     });
-    const {order_id} =query;
+    const { order_id } = query;
 
     const user_token = useStore();
     const history = useHistory();
@@ -85,9 +85,7 @@ const OrderDetailContainer = (props) => {
                 <div className={styles['title']}>주문 상세 내역</div>
                 <div className={styles['order-detail-view']}>
                     <div className={styles['order-item-list']}>
-                        {orders && 
-                            <OrderItemList items ={orders.items} center={true}/>
-                        }
+                        {orders && <OrderItemList items ={orders.items} center={true}/>}
                     </div>
                 </div>
             </div>
