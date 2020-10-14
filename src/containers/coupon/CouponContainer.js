@@ -107,6 +107,7 @@ const CouponConatiner = (props) => {
                     openModal('이미 다운로드 한 쿠폰입니다.', res.data.msg);
                 } else {
                     openModal('다운로드 성공했습니다.', res.data.msg);
+                    getMyCouponList();
                 }
                 const idx = down_cp_list.findIndex(
                     (item) => item.cz_id === cz_id,
