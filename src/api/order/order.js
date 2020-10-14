@@ -10,6 +10,8 @@ export const user_order = async (
     cp_id,
     point_price = 0,
 ) => {
+    order_memo = order_memo ? order_memo : "없음";
+    delivery_memo = delivery_memo ? delivery_memo : "없음";
     const req = Paths.api + 'user/order';
     let form_data;
     if (cp_id === null) {

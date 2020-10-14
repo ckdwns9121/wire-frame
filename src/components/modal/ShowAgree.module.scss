@@ -1,7 +1,6 @@
 @import '../../styles/Modal.scss';
 
 .dialog {
-
     .title {
         position: relative;
         background-color: #007246;
@@ -14,9 +13,13 @@
         }
     }
     .content {
+        padding: 16px 0;
         overflow: auto;
         white-space: pre-wrap;
         font-size: 1.5rem;
+        * {
+            margin: 0;
+        }
     }
     .button-area {
         padding: 0;

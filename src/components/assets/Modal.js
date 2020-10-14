@@ -55,8 +55,10 @@ export default ({ confirm, title, text, handleClick = () => {}, open }) => {
             <div className={cn('modal', { confirm,  open })}>
                 <div className={styles['area']}>
                     <div className={cn('content')}>
-                        <h3 className={styles['title']}>{title}</h3>
-                        {text && <p className={styles['text']}>{text}</p>}
+                        <h3 className={styles['title']}>
+                            {title.split('\n').map((line, index) => <span key={index}>{line} <br /></span>)}
+                        </h3>
+                        {text && <p className={styles['text']}>{text.split('\n').map((line, index) => <span key={index}>{line} <br /></span>)}</p>}
                     </div>
                     <div className={styles['bottom']}>
                         {confirm &&

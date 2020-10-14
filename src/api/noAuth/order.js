@@ -17,6 +17,8 @@ export const noAuth_order = async (
     // cp_id,
     // point_price,
 ) => {
+    order_memo = order_memo ? order_memo : "없음";
+    delivery_memo = delivery_memo ? delivery_memo : "없음";
     const req = Paths.api + 'noauth/order';
 
     const form_data = {

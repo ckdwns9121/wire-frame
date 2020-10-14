@@ -6,6 +6,7 @@ import Sidebar from '../../components/sidebar/Sidebar';
 import TermOfUse from '../../components/agree/TermOfUse';
 import Policy from '../../components/agree/Policy';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
+import { useSelector } from 'react-redux';
 
 const LinkList = [
     { name: "개인정보처리방침", url: Paths.ajoonamu.policy },
@@ -23,19 +24,21 @@ export default ({ pathname }) => {
         }
     }, []);
 
+    const { company } = useSelector(state => state.company);
+
     return (
         <ScrollTop>
-            <div className={styles['container']}>
+            {company && <div className={styles['container']}>
                 <Sidebar title={"약관 및 정책"} linkList={LinkList} active={getTitle(pathname)} />
                 <div className={styles['content']}>
                     <h2 className={styles['title']}>{getTitle(pathname)}</h2>
                     <Switch>
-                        <Route path={Paths.ajoonamu.policy} component={Policy} />
-                        <Route path={Paths.ajoonamu.term_use} component={TermOfUse} />
+                        <Route path={Paths.ajoonamu.policy} render={() => <Policy content={company.private_policy_user} />} />
+                        <Route path={Paths.ajoonamu.term_use} render={() => <TermOfUse content={company.use_terms_user} />} />
                         <Route render={() => <Redirect to={`${Paths.ajoonamu.policy}`} />}/>
                     </Switch>
                 </div>
-            </div>
+            </div>}
         </ScrollTop>
     );
 };

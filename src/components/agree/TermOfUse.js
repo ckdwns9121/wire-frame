@@ -1,11 +1,13 @@
 import React from 'react';
 import styles from './Agree.module.scss';
 
-export default () => {
+export default ({ content }) => {
 
     return (
         <div className={styles['table']}>
-            <div className={styles['column']}>
+            <div className={styles['wrap']} dangerouslySetInnerHTML={{ __html: content }} />
+            
+            {/* <div className={styles['column']}>
                 <div className={styles['count_row']}>
                     1. 개인정보처리방침의 의의
                 </div>
@@ -85,7 +87,7 @@ export default () => {
                         본 개인정보처리방침은 회사가 제공하는 카카오계정 기반의 서비스(이하 ‘서비스’라 함)에 적용됩니다.
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

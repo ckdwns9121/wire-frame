@@ -1,4 +1,10 @@
-import React, { useState,useEffect, useReducer, useCallback,useRef} from 'react';
+import React, {
+    useState,
+    useEffect,
+    useReducer,
+    useCallback,
+    useRef,
+} from 'react';
 
 //styles
 import styles from './Order.module.scss';
@@ -29,17 +35,17 @@ import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
 import { useSelector } from 'react-redux';
 
-
 //api
-import { requestPostMobileAuth, requestPostMobileAuthCheck } from '../../api/auth/auth';
+import {
+    requestPostMobileAuth,
+    requestPostMobileAuthCheck,
+} from '../../api/auth/auth';
 import { user_order } from '../../api/order/order';
-import {noAuth_order} from '../../api/noAuth/order';
-import {noAuthGetCartList} from  '../../api/noAuth/cart';
+import { noAuth_order } from '../../api/noAuth/order';
+import { noAuthGetCartList } from '../../api/noAuth/cart';
 import { getCartList } from '../../api/cart/cart';
 import { getOrderCoupons } from '../../api/coupon/coupon';
 import { PROTOCOL_ENV } from '../../paths';
-
-
 
 
 const cx = classNames.bind(styles);
@@ -94,12 +100,13 @@ const OrderContainer = () => {
     const [point_price, setPointPrice] = useState(0); //포인트 할인
     const order_id = useRef(null);
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
-    const [cp_id, setCpId] = useState(null); //쿠폰 번호
+    const [cp_id, setCpId] = useState('default'); //쿠폰 번호
     const [date, setDate] = useState(new Date());
     const [hours, setHours] = useState('09');
-    const [minite, setMinite] = useState('00');
+    const [minute, setMinute] = useState('00');
 
     const [agreeTitle, setAgreeTitle] = useState('');
+    const [agreeOpen, setAgreeOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [noAuthName, setNoAuthName] = useState('');
     const [firstPhoneNumber, setFirstPhoneNumber] = useState('');
@@ -165,7 +172,7 @@ const OrderContainer = () => {
                     let len = Object.keys(query).length;
                     for (let i = 0; i < len - 2; i++) {
                         const { item, options } = query[i];
-                        
+
                         price +=
                             parseInt(item.item_price) *
                             parseInt(item.item_quanity);
@@ -179,7 +186,6 @@ const OrderContainer = () => {
                     }
 
                     if (query.PCD_PAYER_ID === null) {
-                        
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID);
                     } else {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID.pp_tno);
@@ -187,44 +193,44 @@ const OrderContainer = () => {
                     setTotalPrice(price);
                     setDlvCost(query.delivery_cost);
                 }
-            } catch (e) {
-                
-            }
-        }
-        else {
+            } catch (e) {}
+        } else {
             try {
-                if(addr1){
-                const cart_id = JSON.parse(
-                    localStorage.getItem('noAuthCartId'),
-                );
-                const res = await noAuthGetCartList(cart_id, lat, lng, addr1);                
-                const { query } = res.data;
-                let len = Object.keys(query).length;
-                let price = 0;
+                if (addr1) {
+                    const cart_id = JSON.parse(
+                        localStorage.getItem('noAuthCartId'),
+                    );
+                    const res = await noAuthGetCartList(
+                        cart_id,
+                        lat,
+                        lng,
+                        addr1,
+                    );
+                    const { query } = res.data;
+                    let len = Object.keys(query).length;
+                    let price = 0;
 
-                for (let i = 0; i < len - 1; i++) {
-                    const { item, options } = query[i];
-                    price +=
-                        parseInt(item.item_price) * parseInt(item.item_quanity);
-
-                    for (let j = 0; j < options.length; j++) {
-                        const { option_price } = options[j];
+                    for (let i = 0; i < len - 1; i++) {
+                        const { item, options } = query[i];
                         price +=
-                            parseInt(option_price) *
+                            parseInt(item.item_price) *
                             parseInt(item.item_quanity);
-                    }
-                }
-                setDlvCost(query.delivery_cost);
-                setTotalPrice(price);
-            }
-            } catch (e) {
-                
-            }
 
+                        for (let j = 0; j < options.length; j++) {
+                            const { option_price } = options[j];
+                            price +=
+                                parseInt(option_price) *
+                                parseInt(item.item_quanity);
+                        }
+                    }
+                    setDlvCost(query.delivery_cost);
+                    setTotalPrice(price);
+                }
+            } catch (e) {}
         }
         setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[user_token,addr1]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user_token, addr1]);
 
     // 유저의 쿠폰 가져오기
     const getUserCoupons = async () => {
@@ -248,10 +254,15 @@ const OrderContainer = () => {
         const cp_id = e.target.value;
         if (cp_id !== 'default') {
             const index = cp_list.findIndex((item) => item.cp_id === cp_id);
-            setCpPrice(cp_list[index].cp_price);
-            setCpId(cp_id);
+            if (cp_list[index].cp_minimum <= totalPrice) {
+                setCpPrice(cp_list[index].cp_price);
+                setCpId(cp_id);
+            } else {
+                openModal('사용하실 수 없는 쿠폰입니다.', `최소 주문 금액이 ${numberFormat(cp_list[index].cp_minimum)}원 이상일 때\n 사용 가능한 쿠폰입니다.`);
+                e.preventDefault();
+            }
         }
-        else if(cp_id ==='default'){
+        else if (cp_id ==='default'){
             setCpPrice(0);
             setCpId(null);
         }
@@ -264,7 +275,7 @@ const OrderContainer = () => {
         const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
         const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
 
-        const delivery_req_time = `${year}-${month}-${day} ${hours}:${minite}:00`
+        const delivery_req_time = `${year}-${month}-${day} ${hours}:${minute}:00`
         //회원 주문
         setLoading(true);
         if (user_token) {
@@ -426,6 +437,13 @@ const OrderContainer = () => {
     }, [dlvMemoCheck, orderMemoCheck, dlvMemo, orderMemo]);
 
     useEffect(() => {
+        if (totalPrice + parseInt(dlvCost) - cp_price - point_price < 0) {
+            setPointPrice(totalPrice + parseInt(dlvCost) - cp_price);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cp_price, point_price]);
+
+    useEffect(() => {
         const boundingBox = paymentBox.current.getBoundingClientRect();
         const boundingInfo = paymentInfo.current.getBoundingClientRect();
         const STICKY = boundingInfo.top + window.pageYOffset;
@@ -514,7 +532,7 @@ const OrderContainer = () => {
                                         />
                                     </div>
                                     <div className={styles['second']}>
-                                        <select name="hours"onChange ={(e) => {setHours(e.target.value)}}>
+                                        <select name="hours" onChange ={e => setHours(e.target.value)} value={hours}>
                                             {[...new Array(22).keys()].splice(9, 13).map(item => (
                                                 <option value={item} key={item}>
                                                     {(item >= 12 ? '오후 ' : '오전 ') + (item > 12 ? item - 12: item) + '시'}
@@ -523,7 +541,7 @@ const OrderContainer = () => {
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
-                                        <select name="minute" onChange ={(e) => {setMinite(e.target.value)}}>
+                                        <select name="minute" onChange={e => setMinute(e.target.value)} value={minute}>
                                             <option value="00">00분</option>
                                             <option value="10">10분</option>
                                             <option value="20">20분</option>
@@ -635,6 +653,7 @@ const OrderContainer = () => {
                                             <select
                                                 name="coupon"
                                                 onChange={onChangeCpPrice}
+                                                value={cp_id}
                                             >
                                                 <option value="default">
                                                     적용할 쿠폰을 선택해주세요.
@@ -659,14 +678,14 @@ const OrderContainer = () => {
                                                 }
                                                 value={numberFormat(point_price)}
                                                 onKeyDown={onlyNumberListener}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     const value = stringNumberToInt(
                                                         e.target.value,
                                                     );
                                                     if (user.point < value) {
                                                         openModal(
                                                             '보유하신 포인트가 부족합니다!',
-                                                            '보유하신 포인트보다 사용하실 포인트가 많을 수 없습니다.',
+                                                            '보유하신 포인트보다\n많은 포인트를 사용할 수 없습니다.',
                                                         );
                                                         setPointPrice(
                                                             parseInt(
@@ -755,7 +774,8 @@ const OrderContainer = () => {
                                     {numberFormat(
                                         parseInt(totalPrice) +
                                             parseInt(dlvCost) -
-                                            parseInt(cp_price),
+                                            parseInt(cp_price) -
+                                            parseInt(point_price),
                                     )}
                                     <span>원</span>
                                 </div>
@@ -773,20 +793,23 @@ const OrderContainer = () => {
                                     updateAllCheck={updateAllCheck}
                                     onChangeCheck1={onChangeCheck1}
                                     onChangeCheck2={onChangeCheck2}
-                                    setTitle={setAgreeTitle}
+                                    setTitle={title => {
+                                        setAgreeOpen(true);
+                                        setAgreeTitle(title);
+                                    }}
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <ShowAgree title={agreeTitle} handleClose={() => setAgreeTitle('')} />
+            <ShowAgree title={agreeTitle} open={agreeOpen} handleClose={() => setAgreeOpen(false)} />
             <Loading open={loading} />
         </ScrollTop>
     );
 };
 
-function Payment({ text, onClick, check, payment }) {
+function Payment({ text, onClick, payment }) {
     return (
         <ButtonBase
             className={cx('payment-item', { check: payment === text })}
@@ -837,9 +860,9 @@ export default OrderContainer;
 
 const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
     const openModal = useModal();
-    const [firstValue, setFirstValue] = useState('010');
-    const [secondValue, setSecondValue] = useState('');
-    const [thirdValue, setThirdValue] = useState('');
+    const [firstValue, setFirstValue] = useState(phoneNumber.slice(0, 3));
+    const [secondValue, setSecondValue] = useState(phoneNumber.slice(3, 7));
+    const [thirdValue, setThirdValue] = useState(phoneNumber.slice(7, 11));
 
     const [start, setStart] = useState(false);
     const [authNumber, setAuthNumber] = useState('');
@@ -855,7 +878,6 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
             try {
                 const res = await requestPostMobileAuth(firstValue + secondValue + thirdValue);
                 if (res.data.msg === '실패!') {
-                    // openModal('인증번호 발송에 실패했습니다.', '잠시 후 다시 시도해 주세요!');
                     alert('SMS not enough point. please charge.');
                 } else {
                     setStart(true);
@@ -872,10 +894,10 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
 
     const onClickResendAuth = useCallback(() => {
         openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
-            setAuth(false);
+            setStart(false);
             onClickStartAuth();
         }, true);
-    }, [onClickStartAuth, openModal, setAuth]);
+    }, [onClickStartAuth, openModal, setStart]);
 
     const onClickConfirmAuth = useCallback(async () => {
         try {
@@ -932,7 +954,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
     return (
         <div className={styles['hp']}>
             <div className={styles['first']}>
-                <select name="phone" onChange={onChangePhoneFirst} disabled={start || auth}>
+                <select name="phone" onChange={onChangePhoneFirst} disabled={start || auth} value={firstValue}>
                     <option value="010">010</option>
                     <option value="011">011</option>
                     <option value="016">016</option>
@@ -944,6 +966,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
                     ref={secondPhoneInput}
                     onChange={onChangePhoneNext}
                     onKeyDown={onlyNumberListener}
+                    value={secondValue}
                     className={styles['sub-number']}
                     placeholder="핸드폰 앞자리"
                     disabled={start || auth}
@@ -954,6 +977,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
                     ref={thirdPhoneInput}
                     onChange={onChangePhonePrev}
                     onKeyDown={onlyNumberListener}
+                    value={thirdValue}
                     className={styles['sub-number']}
                     placeholder="핸드폰 뒷자리"
                     disabled={start || auth}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,27 +7,16 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import styles from './ShowAgree.module.scss';
-import { getAgreeTerm } from '../../api/agree/agree';
 import CloseIcon from '../svg/modal/CloseIcon';
+import { useSelector } from 'react-redux';
 
-export default ({ title, handleClose }) => {
-    const [content, setContent] = useState('');
-
-    const getContent = useCallback(async () => {
-        if (title !== '') {
-            const res = await getAgreeTerm();
-            setContent(res);
-        }
-    }, [title]);
-
-    useEffect(() => {
-        getContent()
-    }, [getContent])
+export default ({ open, title, handleClose }) => {
+    const { company } = useSelector(state => state.company);
 
     return (
         <Dialog
             className={styles['dialog']}
-            open={title !== ''}
+            open={open}
             scroll={'paper'}
             onClose={handleClose}
         >
@@ -43,9 +32,7 @@ export default ({ title, handleClose }) => {
                     id="scroll-dialog-description"
                     tabIndex={-1}
                 >
-                    <pre className={styles['content']}>
-                        {content}
-                    </pre>
+                    {company && <div className={styles['content']} dangerouslySetInnerHTML={{ __html: title !== '개인정보처리방침' ? company.private_policy_user : company.use_terms_user }} />}
                 </DialogContentText>
             </DialogContent>
             <DialogActions className={styles['button-area']}>

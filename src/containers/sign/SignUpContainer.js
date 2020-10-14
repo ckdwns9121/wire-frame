@@ -260,6 +260,12 @@ const SignUpContainer = () => {
 const AcceptContainer = (props) => {
 
     const [title, setTitle] = useState('');
+    const [open, setOpen] = useState(false);
+
+    const agreeOpen = useCallback(t => {
+        setTitle(t);
+        setOpen(true);
+    }, []);
 
     return (
         <div className={cx('agree')}>
@@ -280,7 +286,7 @@ const AcceptContainer = (props) => {
                             text={'개인정보처리방침 필수 동의'}
                             check={props.check1}
                             onChange={props.onChangeCheck1}
-                            onClick={() => setTitle('개인정보처리방침')}
+                            onClick={() => agreeOpen('개인정보처리방침')}
                         />
                     </div>
                     <div className={styles['chk-box']}>
@@ -289,13 +295,13 @@ const AcceptContainer = (props) => {
                             text={'이용약관 필수'}
                             check={props.check2}
                             onChange={props.onChangeCheck2}
-                            onClick={() => setTitle('이용약관')}
+                            onClick={() => agreeOpen('이용약관')}
                         />
                     </div>
                     <div className={styles['chk-box']}>
                         <CheckBox
                             id={'check3'}
-                            text={'이벤트알림 선택동의'}
+                            text={'이벤트 알림 선택 동의'}
                             check={props.check3}
                             onChange={props.onChangeCheck3}
                         />
@@ -310,7 +316,7 @@ const AcceptContainer = (props) => {
                     </div>
                 </div>
             </div>
-            <ShowAgree title={title} handleClose={() => setTitle('')} />
+            <ShowAgree open={open} title={title} handleClose={() => setOpen(false)} />
         </div>
     );
 };

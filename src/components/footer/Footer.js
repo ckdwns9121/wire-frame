@@ -20,6 +20,8 @@ const Footer = () => {
         sns_insta,
         sns_naverblog,
     } = company;
+
+    console.log(company);
     return (
         <div className={styles['footer']}>
             <div className={styles['content']}>
