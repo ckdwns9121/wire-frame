@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import styles from './TabMenu.module.scss';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -16,11 +15,10 @@ const useStyles = makeStyles((theme) => ({
 
 const TabMenu = ({ tabs, index, onChange }) => {
     const classes = useStyles();
-
     const tabList = tabs.map((tab) => (
         <Tab
             label={tab.name ? tab.name : tab.ca_name}
-            key={tab.name ? tab.name : tab.ca_name}
+            key={tab.name ? tab.name : tab.ca_id}
             className={styles['tab-item']}
         />
     ));

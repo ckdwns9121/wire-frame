@@ -20,7 +20,6 @@ import { getMainCategory } from '../../api/category/category';
 import { requestGetReviewList } from '../../api/review/review';
 import ReviewListView from '../../components/review/ReviewListView';
 import ReviewModal from '../../components/modal/ReviewModal';
-import { useSelector } from 'react-redux';
 
 const cx = cn.bind(styles);
 

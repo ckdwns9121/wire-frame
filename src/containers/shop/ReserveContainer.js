@@ -64,7 +64,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     const getCustomList = useCallback(async () => {
         setLoading(true);
         try {
-            // const res = await getCustomMenuList(); 임시데이터
             const res = await getPreferMenuList(0, 100, 0, 100, 1, budget, desireQuan, addr1, store.shop_id);
             setPreferMenuList(res.items_prefer);
             setGeneralMenuList(res.items_general);
@@ -95,8 +94,7 @@ const ReserveContainer = ({ tab = '0' }) => {
         //카테고리 길이가 1이면 받아오기.
         if (categorys.length === 1) {
             const res = await getCategory();
-            let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
-            dispatch(get_catergory(ca_list));
+            dispatch(get_catergory(res));
         }
         setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps

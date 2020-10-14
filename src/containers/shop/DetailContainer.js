@@ -41,6 +41,7 @@ const DetailContainer = ({ item_id }) => {
         setLoading(true);
         try {
             const res = await getMenuInfo(item_id);
+            console.log(res);
             if (res.item) {
                 setMenu(res);
             } else {
@@ -271,7 +272,11 @@ const DetailContainer = ({ item_id }) => {
                             {index === 0 && (
                             <div className={styles['detail-menu-view']}>
                                 <div className={styles['detail-img']}>
-                                    <ErrorCoverImage src={menu && menu.item.item_img !== "[]" ? DBImageFormat(menu.item.item_img)[0] : Noimage} alt="상세 이미지" />
+                                    {menu &&
+                                    menu.item &&
+                                    menu.item.item_img !== '[]' &&
+                                    DBImageFormat(menu.item.item_img).map(image =>
+                                    <ErrorCoverImage src={image} alt="상세 이미지" key={image} /> )}
                                 </div>
                                 <div className={styles['detail-text']}>
                                     <div className={styles['title']}>

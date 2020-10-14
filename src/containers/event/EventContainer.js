@@ -64,7 +64,6 @@ export default ({ match, location }) => {
         setLoading(true);
         try {
             const res = await requestEventShow(match.params.id);
-            console.log(res);
             if (res.event) {
                 setItem(res.event);
             } else {
@@ -90,7 +89,6 @@ export default ({ match, location }) => {
         }
     }, [detail, getEventShow]);
 
-    console.log(item);
     return (
         <div className={styles['container']}>
             <div className={styles['title-area']}>

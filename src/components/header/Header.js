@@ -28,9 +28,10 @@ const HeadLink = styled(Link)`
 
 const Header = () => {
     const history = useHistory();
-    const { user } = useSelector((state) => state.auth);
-    const { addr1 } = useSelector((state) => state.address);
-    const {store} = useSelector((state)=>state.store);
+    const { user } = useSelector(state => state.auth);
+    const { addr1 } = useSelector(state => state.address);
+    const { store } = useSelector(state => state.store);
+    const { company } = useSelector(state => state.company);
 
     const [logon, setLogon] = useState(false);
     const [search, setSearch] = useState('');
@@ -50,30 +51,22 @@ const Header = () => {
     const onClickHome = () => history.push(Paths.index);
     const onClickAddr = () => history.push(Paths.ajoonamu.address);
 
+    const {
+        tab_one, tab_two, tab_three, tab_four, tab_five
+    } = company;
+
     return (
         <div className={styles['header']}>
             <div className={styles['sub']}>
                 <div className={styles['content']}>
                     <div className={styles['addr-store']}>
                         <div className={styles['info']}>
-                            <img
-                                src={locationIcon}
-                                alt="배달"
-                                onClick={onClickAddr}
-                            />
-                            <div
-                                className={styles['text']}
-                                onClick={onClickAddr}
-                            >
-                                {addr1
-                                    ? addr1
-                                    : '배달받으실 주소를 입력해주세요.'}
+                            <img src={locationIcon} alt="배달" onClick={onClickAddr}/>
+                            <div className={styles['text']} onClick={onClickAddr}>
+                                {addr1 ? addr1 : '배달받으실 주소를 입력해주세요.'}
                             </div>
-                            <img src={storeIcon} alt="배달"></img>
-                            <div
-                                className={styles['text']}
-                                onClick={() => { history.push(Paths.index); window.scrollTo(5000, 5000)}}
-                            >
+                            <img src={storeIcon} alt="배달"/>
+                            <div className={styles['text']} onClick={() => { history.push(Paths.index); window.scrollTo(5000, 5000)}}>
                                 {store ? store.shop_name : '샌달 지점 미설정'}
                             </div>
                         </div>
@@ -136,27 +129,20 @@ const Header = () => {
                             />
                         </li>
                         <li onClick={onClickHome}>
-                            <HeadLink to={Paths.index}>브랜드홈</HeadLink>
+                            <HeadLink to={Paths.index}>{tab_one}</HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={`${Paths.ajoonamu.shop}?tab=1`}>
-                                예약주문
+                            <HeadLink to={`${Paths.ajoonamu.shop}?tab=1`}>{tab_two}
                             </HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={Paths.ajoonamu.breakfast}>
-                                기업조식
-                            </HeadLink>
+                            <HeadLink to={Paths.ajoonamu.breakfast}>{tab_three}</HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={Paths.ajoonamu.event}>
-                                이벤트
-                            </HeadLink>
+                            <HeadLink to={Paths.ajoonamu.event}>{tab_four}</HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={Paths.ajoonamu.support}>
-                                고객센터
-                            </HeadLink>
+                            <HeadLink to={Paths.ajoonamu.support}>{tab_five}</HeadLink>
                         </li>
                     </ul>
                 </div>

@@ -62,6 +62,8 @@ export default ({ listLength = 0, maxLength = 4, children }) => {
         speed: 2000,
         slidesToShow: listLength > maxLength ? maxLength : listLength,
         slidesToScroll: maxLength,
+        slidePerRow: 1,
+        variableWidth: !(listLength >= maxLength),
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
     };
