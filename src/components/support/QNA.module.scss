@@ -4,8 +4,6 @@
         border-top: solid 2px #222;
         border-bottom: solid 1px #dbdbdb;
         margin-bottom: 50px;
-
-
         .column {
             display: block;
             text-align: left;
@@ -53,8 +51,6 @@
         button.column:hover {
             background-color: #f9f9f9;
         }
-
-
         .input-area {
             display: table;
             margin-top: 30px;
@@ -68,6 +64,12 @@
             .content {
                 display: table-cell;
                 width: 100%;
+                input, textarea {
+                    transition: all .15s ease-in-out;
+                    &:focus {
+                        border-color: #222;
+                    }
+                }
                 .q-title {
                     width: 100%; height: 54px;
                     box-sizing: border-box;
@@ -103,6 +105,7 @@
                         width: 240px; height: 40px;
                         background-color: #F9F9F9;
                         border: solid 1px #DBDBDB;
+                        transition: all .15s ease-in-out;
                         .file-setter {
                             display: table;
                             width: 100%; height: 100%;
@@ -115,7 +118,6 @@
                     }
                 }
             }
-
             &.v-top {
                 .area-name {
                     vertical-align: top;
@@ -197,6 +199,11 @@
             color: #007240;
             border: solid 1px #007240;
             border-radius: 36px;
+            transition: all .15s ease-in-out;
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.15);
+            }
         }
     }
 
@@ -208,6 +215,12 @@
         font-size: 1.5rem;
         font-weight: bold;
         border: solid 2px #222;
+        transition: all .15s ease-in-out;
+        &:hover {
+            border-width: 1px;
+            transform: scale(1.05);
+            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.15);
+        }
     }
 }
 

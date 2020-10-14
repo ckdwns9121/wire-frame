@@ -32,7 +32,7 @@
             border: none; outline: none;
             font-size: 1.833rem;
             font-weight: normal;
-
+            transition: all .15s ease-in-out;
             border-bottom: 2px solid $main-color;
             &::placeholder {
                 color: #999;
@@ -40,11 +40,12 @@
             }
         }
         .icon {
-            cursor: pointer;
             position: absolute;
-            width: 32px; height: 32px;
             top: 50%; right: 0;
             transform: translateY(-50%);
+            img {
+                display: block;
+            }
         }
     }
     .search-result {
@@ -89,6 +90,10 @@
             font-size: 1.167rem;
             font-weight: normal;
 
+            transition: all .15s ease-in-out;
+            &:focus {
+                border-color: #222;
+            }
             &::placeholder {
                 color: #999;
             }
@@ -97,7 +102,7 @@
     .btn-box {
         padding: 20px 140px;
         .btn {
-            border: 2px solid $main-color;
+            border: 1px solid $main-color;
             width: 100%;
             height: 48px;
             font-size: 1.333rem;

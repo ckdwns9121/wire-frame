@@ -54,6 +54,7 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
             if (res.data.msg === '성공!') {
                 openModal('성공적으로 인증되었습니다!', '회원가입 버튼을 누르세요!');
                 setPhoneAuth(true);
+                setStartTimer(false);
                 setAuth(false);
             } else {
                 openModal('인증번호가 틀렸습니다!', '인증번호를 다시 한 번 확인해 주세요!');
@@ -91,10 +92,12 @@ export default ({ phoneNumber, setPhoneNumber, phoneAuth, setPhoneAuth, noLabel 
                     onChange={e => setAuthNumber(e.target.value)}
                     buttonTitle={'인증하기'}
                     noLabel={noLabel}
+                    input_disabled={!start_timer}
+                    button_disabled={!start_timer}
                     mypage
                 />
                 <div className={styles['timer']}>
-                    {phoneAuth ? (<Check on={true} />) : (<AuthTimer start={start_timer} />)}
+                    {phoneAuth ? (<Check on={true} />) : (start_timer && <AuthTimer start={start_timer} setStartTimer={setStartTimer} />)}
                 </div>
             </div>
         </>

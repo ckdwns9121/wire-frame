@@ -75,8 +75,10 @@
                     font-weight: bold;
                     color: #222;
                     background-color: #fdd800;
+                    transition: all .15s ease-in-out;
                     &:hover {
-                        background-color: #fee911;
+                        transform: scale(1.05);
+                        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.15);
                     }
                 }
             }
@@ -121,8 +123,10 @@
                 font-weight: bold;
                 color: #222;
                 background-color: #fdd800;
+                transition: all .15s ease-in-out;
                 &:hover {
-                    background-color: #fee911;
+                    transform: scale(1.05);
+                    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.15);
                 }
             }
         }

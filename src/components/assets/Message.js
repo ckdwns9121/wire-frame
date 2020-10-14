@@ -10,16 +10,16 @@ const Message = ({ msg,src, onClick, isButton, buttonName, size = 500 }) => {
         <div className={styles['msg']} style={{ height: size + 'px' }}>
             {src && (
                 <div className={styles['icon']}>
-                    <img src={Null_Item} alt={''}></img>
+                    <img src={Null_Item} alt={''} />
                 </div>
             )}
 
             <div className={styles['title-msg']}>{msg}</div>
-            {isButton ? (
+            {isButton && (
                 <Button className={styles['custom-btn']} onClick={onClick}>
                     {buttonName}
                 </Button>
-            ) : null}
+            )}
         </div>
     );
 };
@@ -35,7 +35,7 @@ Message.defaultProps = {
     msg: '아주나무',
     size: 500,
     isButton: false,
-    onClick: () => console.warn('onClick no defined'),
+    onClick: () => {},
 };
 
 export default Message;

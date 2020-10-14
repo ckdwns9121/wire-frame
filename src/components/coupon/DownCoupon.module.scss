@@ -24,6 +24,7 @@ $value2: 22px;
         border-radius: 10px;
         margin-top: 24px;
         background-color: #fff;
+        transition: all .15s ease-in-out;
         .down {
             min-width: 100px;
             height: 100%;
@@ -49,6 +50,10 @@ $value2: 22px;
             .sub-name {
                 margin-top: 8px;
             }
+        }
+        &:hover {
+            border-color: transparent;
+            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.15);
         }
     }
 }

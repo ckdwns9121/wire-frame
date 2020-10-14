@@ -5,10 +5,13 @@ import { ButtonBase } from '@material-ui/core';
 const cx = cn.bind(styles);
 
 const Button = ({ title, disable, onClick, toggle }) => {
-
-    const temp =()=>{}
     return (
-        <ButtonBase className={cx('btn', { toggle, disable })} onClick={!disable ? onClick: temp }>
+        <ButtonBase
+            className={cx('btn', { toggle, disable })}
+            onClick={onClick}
+            disabled={disable}
+            disableRipple={disable}
+        >
             {title}
         </ButtonBase>
     );
@@ -17,7 +20,7 @@ const Button = ({ title, disable, onClick, toggle }) => {
 Button.defaultProps = {
     toggle: false,
     disable: false,
-    onClick : ()=>console.warn('not found'),
+    onClick: () => {},
 };
 
 export default Button;

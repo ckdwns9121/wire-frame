@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import AddrItemList from 'components/address/AddrItemList';
 import CloseIcon from '../svg/modal/CloseIcon';
 import { searchIcon } from 'components/svg/header';
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, IconButton } from '@material-ui/core';
 
 const AddressModal = (props) => {
     const [fullWidth] = useState(true);
@@ -30,7 +30,7 @@ const AddressModal = (props) => {
             className={styles['dialog']}
         >
             <div className={styles['title-bar']}>
-                <div className={styles['title']}>배달 받을 주소 </div>
+                <div className={styles['title']}>배달 받을 주소</div>
                 <div className={styles['close']}>
                     <CloseIcon onClick={props.handleClose}/>
                 </div>
@@ -44,18 +44,19 @@ const AddressModal = (props) => {
                         placeholder="예) 샌달동 12-3 또는 샌달 아파트"
                         onChange={onChangeSearchAddr}
                         onKeyPress={props.handleKeyPress}
-                    ></input>
-                    <img
+                    />
+                    <IconButton
                         className={styles['icon']}
                         onClick={onClickSearch}
-                        src={searchIcon}
-                        alt="search"
-                    />
+                    >
+                        <img   
+                            src={searchIcon}
+                            alt="search"
+                        />
+                    </IconButton>
                 </div>
                 <div className={styles['search-result']}>
-                    {addrs
-                        ? `${addrs.length}개의 검색결과가 있습니다.`
-                        : '0개의 검색결과가 있습니다.'}
+                    {addrs && `${addrs.length}개의 검색결과가 있습니다.`}
                 </div>
                 <div className={styles['addrs-box']}>
                     <div className={styles['addrs-list']}>

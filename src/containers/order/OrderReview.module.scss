@@ -44,6 +44,10 @@
                     padding: 10px 20px;
                     font-size: 1.5rem;
                     outline: none;
+                    transition: all .15s ease-in-out;
+                    &:focus {
+                        border-color: #222;
+                    }
                 }
                 .file {
                     display: table;
@@ -127,6 +131,11 @@
             color: #007240;
             border: solid 1px #007240;
             border-radius: 36px;
+            transition: all .15s ease-in-out;
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.15);
+            }
         }
     }
 }

@@ -24,7 +24,6 @@ const CartItem = (props) => {
         }
         return total;
     };
-    console.log('카트', id);
 
     return (
         <div className={styles['cart-item']}>
@@ -88,11 +87,8 @@ const CartItem = (props) => {
             <div className={styles['menu-price']}>
                 {numberFormat(total_price())} 원
             </div>
-            <div
-                className={styles['close-box']}
-                onClick={() => props.handleDelete([cart_id])}
-            >
-                <CloseIcon black={true} />
+            <div className={styles['close-box']}>
+                <CloseIcon black={true} onClick={() => props.handleDelete([cart_id])} />
             </div>
         </div>
     );

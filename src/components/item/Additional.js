@@ -13,7 +13,7 @@ const Additional = (props) => {
                 htmlFor="test"
             >
                 <Select check={props.check} />
-                {props.option_name} <span> +{props.option_price}원</span>
+                {props.option_name} <span>(+{props.option_price}원)</span>
             </label>
         </div>
     );

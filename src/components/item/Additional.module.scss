@@ -2,7 +2,6 @@
 
 .additional-item {
     font-size: $font-size;
-    padding: 5px 0;
 
     .label {
         cursor: pointer;
@@ -11,11 +10,10 @@
         font-size: 1.5rem;
         color: #222;
 
-        transition: font-weight .15s ease-in-out;
+        transition: font-weight 0.15s ease-in-out;
         span {
             padding-left: 15px;
             font-size: 1.667rem;
-            font-weight: bold;
             color: #222;
         }
         span,
@@ -23,7 +21,7 @@
             vertical-align: middle;
         }
         &:hover {
-            font-weight:bold;
+            font-weight: bold;
         }
     }
 
@@ -37,6 +35,9 @@
         line-height: 1.2;
         position: relative;
         cursor: pointer;
+    }
+    & + & {
+        margin-top: 15px;
     }
 }
 input[type='checkbox'] {

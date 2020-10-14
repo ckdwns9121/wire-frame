@@ -33,7 +33,7 @@ const CartContainer = () => {
 
     const user_token = useStore(false);
 
-    const { addr1, addr2,lat,lng } = useSelector((state) => state.address);
+    const { addr1, lat, lng } = useSelector((state) => state.address);
     const [estmOpen, setEstmOpen] = useState(false);
     const [allChecked, setAllChecked] = useState(false); //전체선택
     const [estm, setEstm] = useState(true); //견적서 발송
@@ -88,12 +88,12 @@ const CartContainer = () => {
             setCount(0);
             setCartId(-1);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count, cartList]);
 
     //수량 추가
     const handleIncrement = useCallback(
         (index) => {
-            console.log(index)
             setCartList(
                 produce(cartList, (draft) => {
                     draft[index].item.item_quanity++;
@@ -140,47 +140,43 @@ const CartContainer = () => {
                     setCost(query.delivery_cost);
                     setCartList(list);
                 }
-            } catch (e) {
-
-            }
+            } catch (e) {}
             setLoading(false);
         } else {
             setLoading(true);
-     
+
             // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
-            setTimeout( async() => {
+            setTimeout(async () => {
                 setLoading(true);
                 if (addr1) {
-                     try {
-                         const cart_id = JSON.parse(
-                             localStorage.getItem('noAuthCartId'),
-                         );
-                         const res = await noAuthGetCartList(
-                             cart_id,
-                             lat,
-                             lng,
-                             addr1,
-                         );
-                         const { query } = res.data;
-                         let len = Object.keys(query).length;
-                         let list = [];
-                         for (let i = 0; i < len - 1; i++) {
-                             list[i] = query[i];
-                             list[i].checked = false;
-                         }
-                         setCost(query.delivery_cost);
-                         setCartList(list);
-                     } catch (e) {
-
-                     }
-                     setLoading(false);
-                }
-                else {
+                    try {
+                        const cart_id = JSON.parse(
+                            localStorage.getItem('noAuthCartId'),
+                        );
+                        const res = await noAuthGetCartList(
+                            cart_id,
+                            lat,
+                            lng,
+                            addr1,
+                        );
+                        const { query } = res.data;
+                        let len = Object.keys(query).length;
+                        let list = [];
+                        for (let i = 0; i < len - 1; i++) {
+                            list[i] = query[i];
+                            list[i].checked = false;
+                        }
+                        setCost(query.delivery_cost);
+                        setCartList(list);
+                    } catch (e) {}
+                    setLoading(false);
+                } else {
                     setLoading(false);
                 }
             }, 500);
         }
-    }, [user_token, addr1, lat,lng,history]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user_token, addr1, lat, lng, history]);
 
     //장바구니 메뉴 삭제
     const handleDelete = useCallback(
@@ -191,7 +187,7 @@ const CartContainer = () => {
                 async () => {
                     if (user_token) {
                         try {
-                            const res = await deleteCartItem(
+                            await deleteCartItem(
                                 user_token,
                                 cart_id,
                             );
@@ -206,7 +202,7 @@ const CartContainer = () => {
                         }
                     } else {
                         try {
-                            const res = await noAuthRemoveCartItem(cart_id);
+                            await noAuthRemoveCartItem(cart_id);
                             const cart_ids = JSON.parse(
                                 localStorage.getItem('noAuthCartId'),
                             );
@@ -231,6 +227,7 @@ const CartContainer = () => {
                 true,
             );
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [user_token],
     );
 
@@ -360,7 +357,7 @@ const CartContainer = () => {
             try {
                 for (let i = 0; i < cartList.length; i++) {
                     const { item } = cartList[i];
-                    const res = await updateCartQunaity(
+                    await updateCartQunaity(
                         user_token,
                         item.cart_id,
                         item.item_quanity,
@@ -373,7 +370,7 @@ const CartContainer = () => {
             try {
                 for (let i = 0; i < cartList.length; i++) {
                     const { item } = cartList[i];
-                    const res = await noAuthUpdateCartQunaity(
+                    await noAuthUpdateCartQunaity(
                         item.cart_id,
                         item.item_quanity,
                     );
@@ -490,12 +487,10 @@ const CartContainer = () => {
                             </div>
                             <div className={styles['order-btn']}>
                                 <Button
-                                    onClick={
-                                        estm ? onClickEstmOpen : onClickOrder
-                                    }
+                                    onClick={estm ? onClickEstmOpen : onClickOrder}
                                     toggle={true}
                                     title={'주문하기'}
-                                ></Button>
+                                />
                             </div>
                             <EstmModal
                                 cartList={cartList}

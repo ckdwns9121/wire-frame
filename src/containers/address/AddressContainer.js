@@ -185,9 +185,6 @@ const AddressContainer = () => {
                         dispatch(get_near_store(near_store.data.query));
                         dispatch(get_menulist(null));
                         dispatch(get_breakMenuList(null));
-
-
-
                     }
                 },
             );
@@ -269,14 +266,14 @@ const AddressContainer = () => {
         if (selectAddr === '') {
             openMessage(
                 false,
-                '주소가 선택되지 않았습니다.',
-                '주소를 선택해주세요.',
+                '주소를 선택하지 않으셨습니다.',
+                '주소를 선택해 주세요.',
             );
         } else if (detailAddr === '') {
             openMessage(
                 false,
-                '상세 주소를 입력해주세요',
-                '상세주소가 입력되지 않았습니다.',
+                '상세 주소를 입력하지 않으셨습니다.',
+                '상세 주소를 입력해 주세요',
             );
         } else {
             openMessage(

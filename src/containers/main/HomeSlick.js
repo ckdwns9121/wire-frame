@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from './HomeSlick.module.scss';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
-import { requestBannerList } from '../../../api/event/banner';
-import { useModal } from '../../../hooks/useModal';
+import { requestBannerList } from '../../api/event/banner';
+import { useModal } from '../../hooks/useModal';
 
-import NoImage from '../../../components/svg/noimage.png';
+import NoImage from '../../components/svg/noimage.png';
 
-import { DBImageFormat } from '../../../lib/formatter';
+import { DBImageFormat } from '../../lib/formatter';
 
 const settings = {
     infinite: true,

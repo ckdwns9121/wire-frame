@@ -1,5 +1,4 @@
 import React, { useState,useEffect, useReducer, useCallback,useRef} from 'react';
-import { Paths } from 'paths';
 
 //styles
 import styles from './Order.module.scss';
@@ -76,8 +75,8 @@ const checkReducer = (state, action) => {
 const OrderContainer = () => {
     const user_token = useStore(false);
     const openModal = useModal();
-    const { user } = useSelector(state => state.auth);
-    const { addr1,addr2,lat,lng,post_num } = useSelector(state => state.address);
+    const { user } = useSelector((state) => state.auth);
+    const { addr1, addr2, lat, lng, post_num } = useSelector(state => state.address);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const [addContact, setAddContact] = useState(false);
     const { check1, check2 } = check;
@@ -95,10 +94,10 @@ const OrderContainer = () => {
     const [point_price, setPointPrice] = useState(0); //포인트 할인
     const order_id = useRef(null);
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
-    const [cp_id ,setCpId] = useState(null); //쿠폰 번호
+    const [cp_id, setCpId] = useState(null); //쿠폰 번호
     const [date, setDate] = useState(new Date());
-    const [hours ,setHours]  = useState('09');
-    const [minite ,setMinite] = useState('00');
+    const [hours, setHours] = useState('09');
+    const [minite, setMinite] = useState('00');
 
     const [agreeTitle, setAgreeTitle] = useState('');
     const [loading, setLoading] = useState(false);
@@ -315,9 +314,9 @@ const OrderContainer = () => {
             let payple_payer_id = '';
 
             let buyer_no = ''; //고객 고유번호
-            let buyer_name = user ? user.name : noAuthName ; //고객 이름
-            let buyer_hp = `${firstPhoneNumber}`;//고객 번호
-            let buyer_email = user && user.email; //고객 이메일
+            // let buyer_name = user ? user.name : noAuthName ; //고객 이름
+            // let buyer_hp = `${firstPhoneNumber}`;//고객 번호
+            // let buyer_email = user && user.email; //고객 이메일
             let buy_goods = '테스트'; //구매하는 물건 이름
             let buy_total = Number(parseInt(totalPrice) + parseInt(dlvCost) - parseInt(cp_price) - parseInt(point_price) ); //가격
             let buy_taxtotal = 0;
@@ -398,6 +397,7 @@ const OrderContainer = () => {
                 setOrderMemo(temp.orderMemo);
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(()=>{
         getTotalPrice();

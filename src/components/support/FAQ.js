@@ -81,21 +81,21 @@ export default ({ location }) => {
         <div className={styles['box']}>
             <div className={styles['select']}>
                 <p className={styles['q-title']}>궁금하신 질문의 유형을 선택해주세요.</p>
-                <div className={styles['select-box']} onClick={handelSelectToggle}>
+                <ButtonBase component="div" className={styles['select-box']} onClick={handelSelectToggle}>
                     <img className={styles['opener']} src={DownArrow} alt="더보기" />
                     <div className={styles['current']}>
                         <h5 className={styles['value']}>{faq_list[quesCategory].value}</h5>
                     </div>
                     <div className={cn('embed', { open: selectOpen })}>
                         {faq_list.map((item) => item.id !== quesCategory
-                        &&  (<div key={item.id} className={styles['s-area']}
+                        &&  (<ButtonBase component="div" key={item.id} className={styles['s-area']}
                                 onClick={() => onChangeCategory(item.id)}>
                                 <div className={cn('selector')}>
                                     {item.value}
                                 </div>
-                            </div>))}
+                            </ButtonBase>))}
                     </div>
-                </div>
+                </ButtonBase>
             </div> 
             <div className={styles['table']}>
                 {list.length > 0 ? (

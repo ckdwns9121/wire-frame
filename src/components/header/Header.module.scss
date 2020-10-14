@@ -92,6 +92,10 @@ $header-height: 100px;
                 height: 48px;
                 outline: none;
                 padding-left: 24px;
+                transition: all .15s ease-in-out;
+                &:focus {
+                    border-color: $main-color;
+                }
             }
             .icon {
                 cursor: pointer;

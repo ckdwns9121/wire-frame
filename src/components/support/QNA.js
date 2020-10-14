@@ -27,7 +27,6 @@ export default ({ match, location }) => {
     const [loading, setLoading] = useState(false);
 
     const [list, setList] = useState([]);
-    // const [count, setCount] = useState(0);
     const history = useHistory();
 
     const writeMode = match.params.id === 'write';

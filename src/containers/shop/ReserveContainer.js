@@ -6,7 +6,6 @@ import styles from './Reserve.module.scss';
 import TabMenu from '../../components/tab/TabMenu';
 import MenuItemList from '../../components/item/MenuItemList';
 import Message from 'components/assets/Message';
-// import CustomItemList from '../../components/item/CustomItemList';
 import PreferModal from '../../components/modal/PreferModal';
 import { useHistory } from 'react-router';
 import ShopBanner from '../../components/svg/shop/shop_banner.png';
@@ -33,7 +32,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     const history = useHistory();
     const [open, setOpen] = useState(false);
     const [budget, setBudget] = useState(0); // 맞춤 가격
-    // const [endBudget, setEndBudget] = useState(0); // 맞춤 가격 끝
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [tabIndex, setTab] = useState(parseInt(tab));
@@ -82,11 +80,6 @@ const ReserveContainer = ({ tab = '0' }) => {
         setBudget(value);
     }, []);
 
-    // const onChangeEndBudget = useCallback((e) => {
-    //     const value = stringNumberToInt(e.target.value);
-    //     setEndBudget(value);
-    // }, []);
-
     const onClickMenuItem = useCallback(
         (item_id) => {
             history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
@@ -99,19 +92,14 @@ const ReserveContainer = ({ tab = '0' }) => {
     const getCategoryList = useCallback(async () => {
         setLoading(true);
 
-        //카테고리 길이가 1이면 받아오기.   
+        //카테고리 길이가 1이면 받아오기.
         if (categorys.length === 1) {
             const res = await getCategory();
-            // res.sort((a, b) => a.ca_id - b.ca_id);
-            // 카테고리를 분류 순서로 정렬.
             let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
             dispatch(get_catergory(ca_list));
-
-
-            // arr.sort((a, b) => a.ca_id - b.ca_id);
-            // dispatch(get_menulist(arr));
         }
         setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -145,7 +133,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     const PageNationMenuList = useCallback(async () => {
         if (!loading) {
             try {
-
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
                 if (tabIndex !== 0 && categorys.length !== 1 && items && store) {
                     setIsPaging(true);
@@ -241,12 +228,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isScrollEnd]);
 
-    // useEffect(() => {
-    //     if (budget > endBudget) {
-    //         setEndBudget(budget);
-    //     }
-    // }, [budget, endBudget]);
-
     const renderPost = useCallback(() => {
         return (
             <>
@@ -287,8 +268,8 @@ const ReserveContainer = ({ tab = '0' }) => {
                                 <>
                                     {preferList.length !== 0 ? (
                                         <>
-                                         <MenuItemList menuList={preferList} onClick={onClickMenuItem} />
-                                         <MenuItemList menuList={generalList} onClick={onClickMenuItem} />
+                                            <MenuItemList menuList={preferList} onClick={onClickMenuItem} />
+                                            <MenuItemList menuList={generalList} onClick={onClickMenuItem} />
                                         </>
                                     ) : (
                                             <Message
@@ -300,17 +281,11 @@ const ReserveContainer = ({ tab = '0' }) => {
                                             />
                                         )}
                                 </>
-                            ) : (
-                                    <>
-                                        {renderPost()}
-                                    </>
-                                )}
+                            ) : (<>{renderPost()}</>)}
                         </div>
-
-                    </> : <Message
-                            msg={
-                                '주소지가 설정되지 않았습니다.'
-                            }
+                        </>
+                        : <Message
+                            msg='주소지가 설정되지 않았습니다.'
                             src={true}
                             isButton={true}
                             buttonName={'주소지 설정하기'}

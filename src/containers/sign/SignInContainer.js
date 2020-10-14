@@ -7,11 +7,11 @@ import Button from 'components/button/Button';
 import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
 import cn from 'classnames/bind';
-// import {
-//     KakaoLogo,
-//     NaverLogo,
-//     FacebookLogo,
-// } from '../../components/svg/sign/social';
+import {
+    KakaoLogo,
+    NaverLogo,
+    FacebookLogo,
+} from '../../components/svg/sign/social';
 import CheckBox from 'components/checkbox/CheckBox';
 import { get_address } from '../../store/address/address';
 import { getActiveAddr } from '../../api/address/address';
@@ -118,6 +118,11 @@ const SignInContainer = () => {
         }
     }, [history, checked, dispatch, email, password, openModal]);
 
+    
+    const socialLoginClickHandler = useCallback((type) => {
+        window.location = Paths.api + 'user/' + type + '?device=pc';
+    }, []);
+
     useEffect(() => {
         const data = localStorage.getItem('user');
         if (data !== null) {
@@ -187,26 +192,26 @@ const SignInContainer = () => {
                     title={'로그인'}
                     onClick={onClickLogin}
                     toggle={true}
-                ></Button>
+                />
                 <Button title={'회원가입'} onClick={onClickSignUp}></Button>
 
                 <div className={styles['sns-box']}>
-                    {/* <div className={styles['social-login']}>
+                    <div className={styles['social-login']}>
                         <div className={styles['text']}>간편 로그인</div>
                         <div className={styles['line']}></div>
                     </div>
 
                     <div className={styles['social']}>
-                        <div className={styles['sns']}>
-                            <img src={NaverLogo} alt="naver"></img>
+                        <div className={styles.sns}>
+                            <img src={NaverLogo} onClick={() => socialLoginClickHandler('naver')} alt="naver"/>
                         </div>
                         <div className={styles.sns}>
-                            <img src={KakaoLogo} alt="kakao"></img>
+                            <img src={KakaoLogo} onClick={() => socialLoginClickHandler('kakao')} alt="kakao"/>
                         </div>
                         <div className={styles.sns}>
-                            <img src={FacebookLogo} alt="facebook"></img>
+                            <img src={FacebookLogo} alt="facebook"/>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
             </div>
         </div>

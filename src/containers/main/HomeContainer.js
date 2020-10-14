@@ -3,23 +3,23 @@ import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
 import HomeSlick from './HomeSlick';
-import MenuListView from '../../../components/item/MenuListView';
+import MenuListView from '../../components/item/MenuListView';
 import {
     bannerImg,
     backImg,
     orderServiceImg,
     templateImg,
-} from '../../../components/svg/home';
+} from '../../components/svg/home';
 import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 
-import KakaoMap from '../../../components/map/KakaoMap';
-import { getMainMenuList } from '../../../api/menu/menu';
+import KakaoMap from '../../components/map/KakaoMap';
+import { getMainMenuList } from '../../api/menu/menu';
 import Loading from 'components/assets/Loading';
-import { getMainCategory } from '../../../api/category/category';
-import { requestGetReviewList } from '../../../api/review/review';
-import ReviewListView from '../../../components/review/ReviewListView';
-import ReviewModal from '../../../components/modal/ReviewModal';
+import { getMainCategory } from '../../api/category/category';
+import { requestGetReviewList } from '../../api/review/review';
+import ReviewListView from '../../components/review/ReviewListView';
+import ReviewModal from '../../components/modal/ReviewModal';
 
 const cx = cn.bind(styles);
 

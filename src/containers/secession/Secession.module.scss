@@ -50,7 +50,6 @@
             .btn {
                 padding: 80px 350px;
                 .update {
-                    cursor: pointer;
                     width: 240px;
                     height: 64px;
                     border: 1px solid $main-color;
@@ -60,6 +59,11 @@
                     font-size: 2.167rem;
                     line-height: 64px;
                     font-weight: bold;
+                    transition: all .15s ease-in-out;
+                    &:hover {
+                        transform: scale(1.05);
+                        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.15);
+                    }
                 }
             }
         }

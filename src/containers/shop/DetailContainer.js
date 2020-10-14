@@ -25,7 +25,7 @@ const DetailContainer = ({ item_id }) => {
     const user_token = useStore(false);
     const openModal = useModal();
     const history = useHistory();
-    const { addr1, addr2, lat, lng } = useSelector((state) => state.address);
+    const { addr1, lat, lng } = useSelector((state) => state.address);
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
     const [quanity, setQuanity] = useState(1);
@@ -121,9 +121,7 @@ const DetailContainer = ({ item_id }) => {
                                 );
                             }
                             openModal('장바구니에 담았습니다.', '장바구니로 이동하시겠습니까?',
-                                () => {
-                                    history.push(Paths.ajoonamu.cart);
-                                },
+                                () => history.push(Paths.ajoonamu.cart),
                                 true,
                             );
                         }
@@ -132,9 +130,7 @@ const DetailContainer = ({ item_id }) => {
                     }
                 } else {
                     openModal('배달지 주소가 설정되지 않았습니다.', '배달지 주소를 설정하시려면 예를 눌러주세요',
-                        () => {
-                            history.push(Paths.ajoonamu.address);
-                        },
+                        () => history.push(Paths.ajoonamu.address),
                         true,
                     );
                 }
@@ -143,6 +139,7 @@ const DetailContainer = ({ item_id }) => {
             }
         }
         setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, item_id, options, quanity, user_token, addr1, lat, lng]);
 
     //옵션아이템 클릭

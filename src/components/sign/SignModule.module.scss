@@ -46,6 +46,10 @@
             font-weight: 500;
             color: #ccc;
         }
+        transition: all .15s ease-in-out;
+        &:focus {
+            border-color: #222;
+        }
     }
     .auth-btn {
         max-width: 160px;
