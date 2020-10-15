@@ -271,13 +271,6 @@ const DetailContainer = ({ item_id }) => {
                             />
                             {index === 0 && (
                             <div className={styles['detail-menu-view']}>
-                                <div className={styles['detail-img']}>
-                                    {menu &&
-                                    menu.item &&
-                                    menu.item.item_img !== '[]' &&
-                                    DBImageFormat(menu.item.item_img).map(image =>
-                                    <ErrorCoverImage src={image} alt="상세 이미지" key={image} /> )}
-                                </div>
                                 <div className={styles['detail-text']}>
                                     <div className={styles['title']}>
                                         {menu && menu.item.item_name}
@@ -295,6 +288,13 @@ const DetailContainer = ({ item_id }) => {
                                         변경가능 - 변경 시 단가 변동)
                                         {menu && menu.item.item_caution}
                                     </div>
+                                </div>
+                                <div className={styles['detail-img']}>
+                                    {menu &&
+                                    menu.item &&
+                                    menu.item.item_content !== '[]' &&
+                                    DBImageFormat(menu.item.item_content).map(image =>
+                                    <ErrorCoverImage src={image} alt="상세 이미지" key={image} /> )}
                                 </div>
                             </div>
                             )}
