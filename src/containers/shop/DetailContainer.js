@@ -254,7 +254,7 @@ const DetailContainer = ({ item_id }) => {
                     <div className={styles['content']}>
                         {other_menu_list.length !== 0 &&
                         <><div className={styles['title']}>
-                            다른 고객들이 함께 본 상품
+                            추천 상품
                         </div>
                         <div className={styles['other-menu-list']}>
                             <OtherUserMenuItemList menu_list={other_menu_list} />

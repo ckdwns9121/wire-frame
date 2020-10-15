@@ -37,9 +37,9 @@ const PreviewOrderItem = (props) => {
                             주문번호 : {order_id}
                         </div>
                         <div className={styles['order-type']}>
-                            {info.od_status === "order_cancel" && '주문취소'}
-                            {info.od_status === "order_apply" && '배달완료'}
-                            {!info.od_status && "상태없음"}
+                            {info[0].od_status === "order_cancel" && '주문취소'}
+                            {info[0].od_status === "order_apply" && '배달완료'}
+                            {!info[0].od_status && "상태없음"}
                         </div>
                         <ButtonBase className={styles['review-button']}
                             onClick={() => history.push(
@@ -51,13 +51,13 @@ const PreviewOrderItem = (props) => {
                     </div>
                     <div className={styles['bottom']}>
                         <div className={styles['req-date']}>
-                            배달 요청 시간 : {info.delivery_req_time ? info.delivery_req_time : '요청하신 시간이 없습니다.'}
+                            배달 요청 시간 : {info[0].delivery_req_time ? info[0].delivery_req_time : '요청하신 시간이 없습니다.'}
                         </div>
                     </div>
                 </div>
             </div>
             <div className={styles['menu-list']}>
-                <MenuList items={items}/>
+                <MenuList info={info} items={items}/>
             </div>
             <div className={styles['href-detail']} onClick={props.onClick}>
                 <div className={styles['text']}>주문 상세보기</div>
@@ -69,22 +69,23 @@ const PreviewOrderItem = (props) => {
     );
 };
 
-function MenuList ({items}){
+function MenuList({ items, info }) {
     const list = items.map((item, index) => (
         <MenuItem
             key={index}
             item_name={item.item_name}
             item_option={item.item_option}
             item_price={item.item_price}
+            qty={info[index].qty}
             src={item.item_img}
         />
     ));
-    return(
+    return (
         <> {list}</>
     )
-}
+};
 
-function MenuItem({ src, item_name, item_option, item_price }) {
+function MenuItem({ src, item_name, item_option, item_price, qty }) {
     return (
         <div className={styles['menu-item']}>
             <div className={styles['menu-img']}>
@@ -92,7 +93,7 @@ function MenuItem({ src, item_name, item_option, item_price }) {
             </div>
             <div className={styles['menu-name']}>{item_name}</div>
             <div className={styles['menu-price']}>
-                {1}개 ({numberFormat(item_price)}원)
+                {qty}개 ({numberFormat(item_price * qty)}원)
             </div>
             <div className={styles['menu-options']}>(추가선택: {item_option ? item_option : '없음'})</div>
         </div>

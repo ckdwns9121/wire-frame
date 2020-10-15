@@ -1,9 +1,9 @@
 import React from 'react';
 import OrderItem from './OrderItem';
 
-const OrderItemList = ({ items, center }) => {
+const OrderItemList = ({ items, info, center }) => {
     const list = items.map((item, index) => (
-        <OrderItem {...item} key={index} center={center} />
+        <OrderItem {...item} key={index} qty={info[index].qty} center={center} />
     ));
     return <>{list}</>;
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Order.module.scss';
 import cn from 'classnames/bind';
 import Noimage from '../svg/noimage.png';
-import {DBImageFormat, numberFormat} from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import ErrorCoverImage from '../assets/ErrorCoverImage';
 const cx = cn.bind(styles);
 
@@ -13,7 +13,8 @@ const OrderItem = (props) => {
         item_name,
         item_option,
         item_price,
-        item_img
+        item_img,
+        qty,
     } = props;
 
     return (
@@ -28,11 +29,11 @@ const OrderItem = (props) => {
                      {item_option ? item_option : '없음'}
                 </div>
                 <div className={styles['quanity']}>
-                    수량: <span>1</span>
+                    수량: <span>{qty}</span>
                 </div>
-                {!center && <div className={cx('price')}>{numberFormat(item_price)}원</div>}
+                {!center && <div className={cx('price')}>{numberFormat(item_price * qty)}원</div>}
             </div>
-            {center && <div className={cx('center-price')}>{numberFormat(item_price)}원</div>}
+            {center && <div className={cx('center-price')}>{numberFormat(item_price * qty)}원</div>}
         </div>
     );
 };

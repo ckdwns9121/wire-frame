@@ -10,13 +10,12 @@ import ErrorCoverImage from '../assets/ErrorCoverImage';
 const MenuItem = (props) => {
     return (
         <div className={styles['menu-item']}
-            // data-aos='fade-up' data-aos-delay={200 * ((props.index % 4))}
             onClick={props.onClick}>
             <MenuImg src={props.item_img} />
             <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>
                     <MenuTitle menuTitle={props.item_name} />
-                    <MenuText menuText={"아주나무의 여러가지 과일로 알찬 구성 도시락 입니다!"} />
+                    <MenuText menuText={props.item_sub} />
                     <MenuPrice menuPrice={props.item_price} />
                 </div>
             </div>

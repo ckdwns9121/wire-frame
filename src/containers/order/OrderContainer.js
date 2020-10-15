@@ -47,6 +47,8 @@ import { getCartList } from '../../api/cart/cart';
 import { getOrderCoupons } from '../../api/coupon/coupon';
 import { PROTOCOL_ENV } from '../../paths';
 
+import '../../styles/DatePicker.scss';
+
 
 const cx = classNames.bind(styles);
 
@@ -101,7 +103,7 @@ const OrderContainer = () => {
     const order_id = useRef(null);
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
     const [cp_id, setCpId] = useState('default'); //쿠폰 번호
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(new Date(new Date().setDate(new Date().getDate() + 2))); // 현재 시점으로 부터 2일 뒤 설정 가능
     const [hours, setHours] = useState('09');
     const [minute, setMinute] = useState('00');
 
@@ -525,7 +527,7 @@ const OrderContainer = () => {
                                         <DatePicker
                                             locale={ko}
                                             dateFormat="yyyy-MM-dd"
-                                            minDate={new Date()}
+                                            minDate={new Date(new Date().setDate(new Date().getDate() + 2))}
                                             selected={date}
                                             onChange={(date) => setDate(date)}
                                             // withPortal

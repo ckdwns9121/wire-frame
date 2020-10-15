@@ -40,11 +40,12 @@
         .item {
             margin: 40px 0;
             margin-left: 40px;
-            display: block;
+            width: 400px;
+            display: inline-block;
+            vertical-align: top;
             text-align: left;
-            float: left;
             .image {
-                width: 400px; height: 240px;
+                width: 100%; height: 240px;
                 & > img {
                     width: 100%; height: 100%;
                 }

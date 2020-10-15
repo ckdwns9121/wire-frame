@@ -69,13 +69,13 @@ const OrderDetailContainer = (props) => {
                                 주문번호 : {orders && orders.order_id}
                             </div>
                             <div className={styles['order-type']}>
-                            {orders && orders.info.od_status ==="order_cancel" && '주문취소'}
-                            {orders && orders.info.od_status ==="order_apply" && '배달완료'}
+                            {orders && orders.info[0].od_status ==="order_cancel" && '주문취소'}
+                            {orders && orders.info[0].od_status ==="order_apply" && '배달완료'}
                             </div>
                         </div>
                         <div className={styles['bottom']}>
                             <div className={styles['req-date']}>
-                                배달 요청 시간 : {orders && orders.info.delivery_req_time}
+                                배달 요청 시간 : {orders && orders.info[0].delivery_req_time}
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@ const OrderDetailContainer = (props) => {
                 <div className={styles['title']}>주문 상세 내역</div>
                 <div className={styles['order-detail-view']}>
                     <div className={styles['order-item-list']}>
-                        {orders && <OrderItemList items ={orders.items} center={true}/>}
+                        {orders && <OrderItemList items={orders.items} info={orders.info} center={true}/>}
                     </div>
                 </div>
             </div>
@@ -93,14 +93,14 @@ const OrderDetailContainer = (props) => {
                 <div className={styles['title']}>배달정보</div>
                 <div className={styles['order-detail-view']}>
                     <div className={styles['context']}>
-                        <UserInfoBox text={'받는분'} value={orders && orders.info.s_name} />
+                        <UserInfoBox text={'받는분'} value={orders && orders.info[0].s_name} />
                         <UserInfoBox
                             text={'연락처'}
-                            value={orders && stringToTel(orders.info.s_hp) }
+                            value={orders && stringToTel(orders.info[0].s_hp) }
                         />
                         <UserInfoBox
                             text={'배달 요청 시간'}
-                            value={orders && orders.info.delivery_req_time}
+                            value={orders && orders.info[0].delivery_req_time}
                         />
                         <UserInfoBox
                             text={'배달주소'}
@@ -108,7 +108,7 @@ const OrderDetailContainer = (props) => {
                         />
                         <UserInfoBox
                             text={'요청사항'}
-                            value={orders && orders.info.delivery_memo}
+                            value={orders && orders.info[0].delivery_memo}
                         />
                     </div>
                 </div>
@@ -117,10 +117,10 @@ const OrderDetailContainer = (props) => {
                 <div className={styles['title']}>주문정보</div>
                 <div className={styles['order-detail-view']}>
                     <div className={styles['context']}>
-                        <UserInfoBox text={'주문자'} value={orders && orders.info.s_name} />
+                        <UserInfoBox text={'주문자'} value={orders && orders.info[0].s_name} />
                         <UserInfoBox
                             text={'연락처'}
-                            value={orders && stringToTel(orders.info.s_hp)}
+                            value={orders && stringToTel(orders.info[0].s_hp)}
                         />
                         {user && 
                           <UserInfoBox
@@ -130,11 +130,11 @@ const OrderDetailContainer = (props) => {
                         }
                         <UserInfoBox
                             text={'주문종류'}
-                            value={orders && orders.info.order_type ==='reserve' ? '배달주문' : '예약주문'}
+                            value={orders && orders.info[0].order_type ==='reserve' ? '배달주문' : '예약주문'}
                         />
                         <UserInfoBox
                             text={'요청사항'}
-                            value={orders && orders.info.order_memo}
+                            value={orders && orders.info[0].order_memo}
                         />
                     </div>
                 </div>

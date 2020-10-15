@@ -20,6 +20,8 @@ const AddressModal = (props) => {
         onClickDeliveryAddrInsert,
         onKeyPressDeliveryAddr
     } = props;
+
+
     return (
         <Dialog
             fullWidth={fullWidth}
@@ -49,10 +51,7 @@ const AddressModal = (props) => {
                         className={styles['icon']}
                         onClick={onClickSearch}
                     >
-                        <img   
-                            src={searchIcon}
-                            alt="search"
-                        />
+                        <img src={searchIcon} alt="search"/>
                     </IconButton>
                 </div>
                 <div className={styles['search-result']}>

@@ -9,7 +9,7 @@ const UseCouponItem = () => {
         <div className={styles['coupon-item']}>
             <div className={styles['info']}>
                 <CouponEventName event_name={'첫 주문 3,000원 할인'} />
-                <CouponSale sale={'3000'} />
+                <CouponSale sale={'3,000'} />
                 <CouponEventSub sub_name={'첫 주문시 사용가능'} />
                 <CouponDate date={'2020-05-01 (목)'} />
             </div>

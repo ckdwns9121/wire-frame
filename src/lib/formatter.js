@@ -43,7 +43,7 @@ const DIF_MINUTES = 60 * MS;
 const DIF_HOURS = 60 * DIF_MINUTES;
 const DIF_DAYS = 24 * DIF_HOURS;
 
-const crossBrowsingDate = date => {
+export const crossBrowsingDate = date => {
     if (date) {
         let setDate = null;
         if (typeof date === 'string') {
