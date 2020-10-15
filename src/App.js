@@ -72,9 +72,9 @@ export default function App() {
             if (noAuth) {
                 const index = noAuth.findIndex((item) => item.active === 1);
                 if (index !== -1) {
-                    const {addr1, addr2,lat,lng,post_num} = noAuth[index];
-                    dispatch(get_address({addr1,addr2,lat,lng,post_num}));
-                    const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                    const { addr1, addr2, lat, lng, post_num } = noAuth[index];
+                    dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
+                    const near_store = await noAuthGetNearStore(lat, lng, addr1);
                     dispatch(get_near_store(near_store.data.query));
                     dispatch(get_menulist(null));
                     dispatch(get_breakMenuList(null));

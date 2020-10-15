@@ -206,7 +206,7 @@ const DetailContainer = ({ item_id }) => {
                                 {menu && numberFormat(menu.item.item_price)}원
                             </div>
                             <div className={styles['option-text']}>
-                                추가선택
+                                추가선택 {menu && menu.options.length === 0 && "없음"}
                             </div>
                             <div className={styles['item-additional-list']}>
                                 {menu && (

@@ -21,7 +21,6 @@ const Footer = () => {
         sns_naverblog,
     } = company;
 
-    console.log(company);
     return (
         <div className={styles['footer']}>
             <div className={styles['content']}>

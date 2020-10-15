@@ -22,8 +22,10 @@ const OtherUserMenuItemList = ({ menu_list ,onClick}) => {
     const settings = {
         infinite: true,
         speed: 500,
-        slidesToShow: 5,
+        slidesToShow: menu_list.length > 5 ? 5 : menu_list.length,
         slidesToScroll: 5,
+        slidePerRow: 1,
+        varialbeWidth: !(menu_list.length >= 5)
     };
 
     return (

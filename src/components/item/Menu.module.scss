@@ -17,11 +17,14 @@ $value2: 71px;
 .menu-item {
     @include animation(0.1s, fadeIn);
 
-    float: left;
+    display: inline-block;
+    vertical-align: top;
     box-sizing: border-box;
     width: 290px;
     margin-top: 40px;
     margin-bottom: 60px;
+    line-height: 1.4;
+    word-break: keep-all;
     cursor: pointer;
 
     .menu-img {
