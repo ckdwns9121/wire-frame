@@ -33,6 +33,7 @@ const CartContainer = () => {
 
     const user_token = useStore(false);
 
+    const { company } = useSelector(state => state.company);
     const { addr1, lat, lng } = useSelector((state) => state.address);
     const [estmOpen, setEstmOpen] = useState(false);
     const [allChecked, setAllChecked] = useState(false); //전체선택
@@ -58,7 +59,13 @@ const CartContainer = () => {
     const onChangeEstm = useCallback((e) => setEstm(true), []);
     const onChangeNotEstm = useCallback((e) => setEstm(false), []);
 
-    const onClickEstmOpen = () => setEstmOpen(true);
+    const onClickEstmOpen = () => {
+        if (total !== 0 && total >= company.minimum_order) {
+            setEstmOpen(true);
+        } else {
+            openModal("최소 주문 금액을 채워주세요.", `최소 주문 금액은 ${numberFormat(company.minimum_order)}원입니다.`);
+        }
+    }
     const handleClose = () => setEstmOpen(false);
 
     //수량 변경 모달 띄우기
@@ -78,7 +85,7 @@ const CartContainer = () => {
         const index = cartList.findIndex(
             ({ item }) => item.cart_id === tempCartId,
         );
-        if (count !== '0') {
+        if (count !== '0' && count !== '') {
             setCartList(
                 produce(cartList, (draft) => {
                     draft[index].item.item_quanity = parseInt(count);
@@ -126,9 +133,8 @@ const CartContainer = () => {
             try {
                 const res = await getCartList(user_token);
                 if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
-                    openModal(res.data.msg, '주소지 설정을 해주세요.', () => {
-                        history.push(Paths.ajoonamu.address);
-                    });
+                    openModal(res.data.msg, '주소지 설정을 해주세요.');
+                    history.push(Paths.ajoonamu.address);
                 } else {
                     const { query } = res.data;
                     let len = Object.keys(query).length;
@@ -352,36 +358,40 @@ const CartContainer = () => {
     }, [cartList]);
 
     const onClickOrder = useCallback(async () => {
-        setLoading(true);
-        if (user_token) {
-            try {
-                for (let i = 0; i < cartList.length; i++) {
-                    const { item } = cartList[i];
-                    await updateCartQunaity(
-                        user_token,
-                        item.cart_id,
-                        item.item_quanity,
-                    );
+        if (total !== 0 && total >= company.minimum_order) {
+            setLoading(true);
+            if (user_token) {
+                try {
+                    for (let i = 0; i < cartList.length; i++) {
+                        const { item } = cartList[i];
+                        await updateCartQunaity(
+                            user_token,
+                            item.cart_id,
+                            item.item_quanity,
+                        );
+                    }
+                } catch (e) {
+    
                 }
-            } catch (e) {
-
+            } else {
+                try {
+                    for (let i = 0; i < cartList.length; i++) {
+                        const { item } = cartList[i];
+                        await noAuthUpdateCartQunaity(
+                            item.cart_id,
+                            item.item_quanity,
+                        );
+                    }
+                } catch (e) {
+    
+                }
             }
+            setLoading(false);
+            history.push(Paths.ajoonamu.order);
         } else {
-            try {
-                for (let i = 0; i < cartList.length; i++) {
-                    const { item } = cartList[i];
-                    await noAuthUpdateCartQunaity(
-                        item.cart_id,
-                        item.item_quanity,
-                    );
-                }
-            } catch (e) {
-
-            }
+            openModal("최소 주문 금액을 채워주세요.", `최소 주문 금액은 ${numberFormat(company.minimum_order)}원입니다.`);
         }
-        setLoading(false);
-        history.push(Paths.ajoonamu.order);
-    }, [user_token, cartList, history]);
+    }, [total, company.minimum_order, user_token, history, cartList, openModal]);
 
     useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
 
@@ -392,8 +402,6 @@ const CartContainer = () => {
     useEffect(() => {
         onCompareAllChecked();
     }, [onCompareAllChecked]);
-    
-
 
     const render = () => {
         return (
@@ -495,6 +503,7 @@ const CartContainer = () => {
                             <EstmModal
                                 cartList={cartList}
                                 open={estmOpen}
+                                dlvCost={delivery_cost}
                                 handleClose={handleClose}
                                 order={onClickOrder}
                             />

@@ -13,6 +13,7 @@ import {
     getDownloadCpList,
     downloadCoupon,
     couponInput,
+    getUseCpList
 } from '../../api/coupon/coupon';
 import Loading from '../../components/assets/Loading';
 import Message from '../../components/assets/Message';
@@ -60,7 +61,9 @@ const CouponConatiner = (props) => {
     const [index, setIndex] = useState(0);
     const [cp_list, setCpList] = useState([]);
     const [user_input_cp, setUserInputCp] = useState('');
+    
     const [down_cp_list, setDownCpList] = useState([]);
+    const [use_cp_list, setUseCpList] = useState([]);
     const user_token = useStore();
 
     const onChangeIndex = (idx) => setIndex(idx);
@@ -95,6 +98,19 @@ const CouponConatiner = (props) => {
         }
         setLoading(false);
     };
+
+    const getUseCouponList = async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                const res = await getUseCpList(user_token, startDate, endDate);
+                console.log(res);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        setLoading(false);
+    }
 
     const callCouponDownload = useCallback(
         async (cz_id) => {
@@ -144,6 +160,7 @@ const CouponConatiner = (props) => {
     useEffect(() => {
         getMyCouponList();
         getDownCouponList();
+        getUseCouponList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -178,7 +195,7 @@ const CouponConatiner = (props) => {
                     <DateRangePicker
                         startDate={startDate} setStartDate={setStartDate}
                         endDate={endDate} setEndDate={setEndDate}
-                        onClick={getDownCouponList} // 임시
+                        onClick={getUseCouponList} // 임시
                     />}
                 <div className={styles['coupon-list']}>
                     {index === 0 && (
@@ -212,13 +229,15 @@ const CouponConatiner = (props) => {
                     )}
                     {index === 2 &&
                     <>
-                        <UseCouponItemList />
-                        <ListPaging
-                            baseURL={Paths.ajoonamu.mypage + '/coupon?tab=2'}
-                            currentPage={page}
-                            pagePerView={PAGE_PER_VIEW}
-                            totalCount={5}
-                        />
+                        {use_cp_list.length !== 0 ? (<>
+                            <UseCouponItemList />
+                            <ListPaging
+                                baseURL={Paths.ajoonamu.mypage + '/coupon?tab=2'}
+                                currentPage={page}
+                                pagePerView={PAGE_PER_VIEW}
+                                totalCount={5}
+                            />
+                        </>) : <Message msg="사용하신 쿠폰이 없습니다." />}
                     </>}
                 </div>
             </div>

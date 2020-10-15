@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './OtherMenu.module.scss';
-import Slider from 'react-slick';
 import OtherUserMenuItem from './OtherUserMenuItem';
+import ListView from '../assets/ListView';
 
 // 슬릭추가
 const OtherUserMenuItemList = ({ menu_list }) => {
@@ -15,20 +15,11 @@ const OtherUserMenuItemList = ({ menu_list }) => {
         <OtherUserMenuItem key={item.item_id} {...item} />
     ));
 
-    console.log(menu_list);
-
-    const settings = {
-        infinite: true,
-        speed: 500,
-        slidesToShow: menu_list.length > 5 ? 5 : menu_list.length,
-        slidesToScroll: 5,
-        slidePerRow: 1,
-        varialbeWidth: !(menu_list.length >= 5),
-    };
-
     return (
         <div className={styles['container']}>
-            <Slider {...settings}>{menuList}</Slider>
+            <ListView listLength={menu_list.length} maxLength={5}>
+                {menuList}
+            </ListView>
         </div>
     );
 };

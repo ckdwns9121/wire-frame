@@ -99,13 +99,6 @@ export default ({ match, location }) => {
     }, [getEventList]);
 
     useEffect(() => {
-        if (page !== 1 || detail) {
-            history.push(Paths.ajoonamu.event);
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [mode]);
-
-    useEffect(() => {
         if (detail) {
             getEventShow();
             // return () => setItem({});
@@ -118,11 +111,11 @@ export default ({ match, location }) => {
                 <h2 className={styles['title']}>이벤트</h2>
                 <div className={styles['mini-nav']}>
                     <span
-                        onClick={() => setMode(0)}
+                        onClick={() => { setMode(0); history.push(Paths.ajoonamu.event) }}
                         className={cn('mnav-item', { active: mode === 0 })}
                     >진행 중인 이벤트</span>
                     <span
-                        onClick={() => setMode(1)}
+                        onClick={() => { setMode(1); history.push(Paths.ajoonamu.event) }}
                         className={cn('mnav-item', { active: mode === 1 })}
                     >종료된 이벤트</span>
                 </div>
@@ -173,7 +166,7 @@ const EventListView = ({ list, page, onClickDetail }) => (
                     </ButtonBase>
                 );
             })) : (
-                <Message src={false} msg={'조회 이벤트가 없습니다 '} size={260} />
+                <Message src={false} msg={'조회된 이벤트가 없습니다 '} size={260} />
             )}
     </>
 );

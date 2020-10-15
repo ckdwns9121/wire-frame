@@ -44,7 +44,6 @@ const DetailContainer = ({ item_id }) => {
         setLoading(true);
         try {
             const res = await getMenuInfo(item_id);
-
             if (res.item) {
                 setMenu(res);
             } else {
@@ -185,6 +184,10 @@ const DetailContainer = ({ item_id }) => {
     useEffect(() => {
         getOtherUserMenuApi();
     }, []);
+
+    useEffect(() => {
+        setQuanity(1);
+    }, [item_id]);
 
     useEffect(() => {
         menu && setOptionItem();

@@ -1,7 +1,7 @@
 import { ButtonBase } from '@material-ui/core';
 import React, { Fragment, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import { dateToYYYYMMDD } from '../../lib/formatter';
+import { dateToYYYYMMDD, numberFormat } from '../../lib/formatter';
 
 const EstimateArea = styled.div`
     display: flex;
@@ -53,7 +53,7 @@ const Estimate = styled.div`
 const Title = styled.h2`
     text-align: center;
     font-size: 36px;
-    margin-top: 0;
+    margin-bottom: 50px;
 `;
 const SubTitle = styled.div`
     overflow: hidden;
@@ -81,7 +81,7 @@ const TableHead = styled.th`
     border: solid 1px #aaabaa;
 `;
 const TableHeadRow = styled.tr`
-    background-color: #d3d3d3 !important;
+    background-color: #f9f9f9 !important;
     border-top: solid 2px #000;
     border-bottom: solid 1px #000;
     & ~ tr:nth-child(odd) {
@@ -120,6 +120,7 @@ const TableColumn = styled.td`
         `}
 `;
 const Cautions = styled.div`
+    text-align: center;
     margin: 50px 0;
     line-height: 1.6;
     font-size: 14px;
@@ -132,34 +133,11 @@ const Footer = styled.h3`
 
 export default ({
     onDownload, company = '샌달', created = new Date(),
-    products = [
-        {
-            id: 101,
-            name: '사과',
-            list: [
-                { id: 1, item: '과일 도시락', name: '사과', value: 5000 },
-                { id: 2, item: '과일 도시락', name: '사과', value: 5000 },
-                { id: 3, item: '과일 도시락', name: '사과', value: 5000 },
-                { id: 4, item: '과일 도시락', name: '사과', value: 5000 },
-                { id: 5, item: '과일 도시락', name: '사과', value: 5000 },
-            ],
-        },
-        {
-            id: 102,
-            name: '포도',
-            list: [
-                { id: 6, item: '과일 도시락', name: '포도', value: 7000 },
-                { id: 7, item: '과일 도시락', name: '포도', value: 7000 },
-                { id: 8, item: '과일 도시락', name: '포도', value: 7000 },
-                { id: 9, item: '과일 도시락', name: '포도', value: 7000 },
-                { id: 10, item: '과일 도시락', name: '포도', value: 7000 },
-                { id: 11, item: '', name: '', value: 0 },
-                { id: 12, item: '', name: '', value: 0 },
-                { id: 13, item: '', name: '', value: 0 },
-            ],
-        },
-    ],
+    dlvCost,
+    products = [],
 }) => {
+    let total = 0;
+    let render_total = 0;
     const ref = useRef(null);
     return (
         <ButtonBase style={{ width: '100%', }} onClick={() => onDownload(ref)}>
@@ -174,20 +152,18 @@ export default ({
                     </SubTitle>
                     <Table id="estimate-table">
                         <colgroup>
+                            <col style={{ width: '250px' }} />
+                            <col style={{ width: '150px' }} />
+                            <col style={{ width: '50px' }} />
                             <col style={{ width: '100px' }} />
-                            <col style={{ width: '150px' }} />
-                            <col style={{ width: '150px' }} />
-                            <col style={{ width: '50px' }} />
-                            <col style={{ width: '50px' }} />
                             <col style={{}} />
                         </colgroup>
                         <thead>
                             <tr>
-                                <TableHead></TableHead>
                                 <TableHead>항목</TableHead>
-                                <TableHead>이름</TableHead>
-                                <TableHead></TableHead>
-                                <TableHead></TableHead>
+                                <TableHead>추가선택</TableHead>
+                                <TableHead>수량</TableHead>
+                                <TableHead>가격</TableHead>
                                 <TableHead>총액</TableHead>
                             </tr>
                         </thead>
@@ -200,72 +176,64 @@ export default ({
                                 const components = options.map((option) => {
                                     const {
                                         option_id: itemId,
-                                        item,
                                         option_name,
                                         option_price,
                                     } = option;
+                                    total += option_price * item.item_quanity;
                                     return (
                                         <TableRow key={itemId}>
                                             <TableColumn name="true"></TableColumn>
-                                            <TableColumn
-                                                name="true"
-                                                endpoint={true}
-                                            >
-                                                {item}
-                                            </TableColumn>
                                             <TableColumn>{option_name}</TableColumn>
-                                            <TableColumn></TableColumn>
-                                            <TableColumn></TableColumn>
+                                            <TableColumn>{item.item_quanity}</TableColumn>
+                                            <TableColumn>{numberFormat(option_price)}</TableColumn>
                                             <TableColumn value={true}>
-                                                {option_price}
+                                                {numberFormat(option_price * item.item_quanity)}원
                                             </TableColumn>
                                         </TableRow>
                                     );
                                 });
+                                total += item.item_price * item.item_quanity;
                                 return (
                                     <Fragment key={index}>
                                         <TableHeadRow>
                                             <TableColumn>
-                                                {index === 0 && <Tag>이름:</Tag>}
                                                 <Total>▼ {item.item_name}</Total>
                                             </TableColumn>
                                             <TableColumn></TableColumn>
-                                            <TableColumn></TableColumn>
-                                            <TableColumn></TableColumn>
-                                            <TableColumn></TableColumn>
+                                            <TableColumn>{item.item_quanity}</TableColumn>
+                                            <TableColumn>{numberFormat(item.item_price)}</TableColumn>
                                             <TableColumn value={true}>
-                                                {index === 0 && <Tag>소계:</Tag>}
-                                                <Total>{item.item_price}</Total>
+                                                <Total>{numberFormat(item.item_price * item.item_quanity)}원</Total>
                                             </TableColumn>
                                         </TableHeadRow>
                                         {components}
                                     </Fragment>
                                 );
                             })}
+                            <Fragment>
+                                <TableHeadRow>
+                                    <TableColumn>
+                                        <Tag>배달비:</Tag>
+                                        <Total>{dlvCost}</Total>
+                                    </TableColumn>
+                                    <TableColumn></TableColumn>
+                                    <TableColumn></TableColumn>
+                                    <TableColumn></TableColumn>
+                                    <TableColumn value={true}>
+                                        <Tag>합계:</Tag>
+                                        <Total>{numberFormat(total + parseInt(dlvCost))}원</Total>
+                                    </TableColumn>
+                                </TableHeadRow>
+                            </Fragment>
                         </tbody>
                     </Table>
                     <Cautions>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                        do eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Duis aute irure dolor in reprehenderit in voluptate velit
-                        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                        occaecat cupidatat non proident, sunt in culpa qui officia
-                        deserunt mollit anim id est laborum.Lorem ipsum dolor sit
-                        amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi
-                        ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id
-                        est laborum.
+                        상기와 같이 견적서를 제출합니다.
                     </Cautions>
                     <Footer>{company} 드림</Footer>
                 </Estimate>
                 <Estimate id="estimate" ref={ref}>
-                    <Title>견적서</Title>
+                <Title>견적서</Title>
                     <SubTitle>
                         <CompanyName>업체명: {company}</CompanyName>
                         <CreatedDate>
@@ -274,20 +242,18 @@ export default ({
                     </SubTitle>
                     <Table id="estimate-table">
                         <colgroup>
+                            <col style={{ width: '250px' }} />
+                            <col style={{ width: '150px' }} />
+                            <col style={{ width: '50px' }} />
                             <col style={{ width: '100px' }} />
-                            <col style={{ width: '150px' }} />
-                            <col style={{ width: '150px' }} />
-                            <col style={{ width: '50px' }} />
-                            <col style={{ width: '50px' }} />
                             <col style={{}} />
                         </colgroup>
                         <thead>
                             <tr>
-                                <TableHead></TableHead>
                                 <TableHead>항목</TableHead>
-                                <TableHead>이름</TableHead>
-                                <TableHead></TableHead>
-                                <TableHead></TableHead>
+                                <TableHead>추가선택</TableHead>
+                                <TableHead>수량</TableHead>
+                                <TableHead>가격</TableHead>
                                 <TableHead>총액</TableHead>
                             </tr>
                         </thead>
@@ -300,67 +266,59 @@ export default ({
                                 const components = options.map((option) => {
                                     const {
                                         option_id: itemId,
-                                        item,
                                         option_name,
                                         option_price,
                                     } = option;
+                                    render_total += option_price * item.item_quanity;
                                     return (
                                         <TableRow key={itemId}>
                                             <TableColumn name="true"></TableColumn>
-                                            <TableColumn
-                                                name="true"
-                                                endpoint={true}
-                                            >
-                                                {item}
-                                            </TableColumn>
                                             <TableColumn>{option_name}</TableColumn>
-                                            <TableColumn></TableColumn>
-                                            <TableColumn></TableColumn>
+                                            <TableColumn>{item.item_quanity}</TableColumn>
+                                            <TableColumn>{numberFormat(option_price)}</TableColumn>
                                             <TableColumn value={true}>
-                                                {option_price}
+                                                {numberFormat(option_price * item.item_quanity)}원
                                             </TableColumn>
                                         </TableRow>
                                     );
                                 });
+                                render_total += item.item_price * item.item_quanity;
                                 return (
                                     <Fragment key={index}>
                                         <TableHeadRow>
                                             <TableColumn>
-                                                {index === 0 && <Tag>이름:</Tag>}
                                                 <Total>▼ {item.item_name}</Total>
                                             </TableColumn>
                                             <TableColumn></TableColumn>
-                                            <TableColumn></TableColumn>
-                                            <TableColumn></TableColumn>
-                                            <TableColumn></TableColumn>
+                                            <TableColumn>{item.item_quanity}</TableColumn>
+                                            <TableColumn>{numberFormat(item.item_price)}</TableColumn>
                                             <TableColumn value={true}>
-                                                {index === 0 && <Tag>소계:</Tag>}
-                                                <Total>{item.item_price}</Total>
+                                                <Total>{numberFormat(item.item_price * item.item_quanity)}원</Total>
                                             </TableColumn>
                                         </TableHeadRow>
                                         {components}
                                     </Fragment>
                                 );
                             })}
+                            <Fragment>
+                                <TableHeadRow>
+                                    <TableColumn>
+                                        <Tag>배달비:</Tag>
+                                        <Total>{dlvCost}</Total>
+                                    </TableColumn>
+                                    <TableColumn></TableColumn>
+                                    <TableColumn></TableColumn>
+                                    <TableColumn></TableColumn>
+                                    <TableColumn value={true}>
+                                        <Tag>합계:</Tag>
+                                        <Total>{numberFormat(render_total + parseInt(dlvCost))}원</Total>
+                                    </TableColumn>
+                                </TableHeadRow>
+                            </Fragment>
                         </tbody>
                     </Table>
                     <Cautions>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                        do eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Duis aute irure dolor in reprehenderit in voluptate velit
-                        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                        occaecat cupidatat non proident, sunt in culpa qui officia
-                        deserunt mollit anim id est laborum.Lorem ipsum dolor sit
-                        amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi
-                        ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu
-                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id
-                        est laborum.
+                        상기와 같이 견적서를 제출합니다.
                     </Cautions>
                     <Footer>{company} 드림</Footer>
                 </Estimate>

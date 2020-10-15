@@ -68,8 +68,8 @@ const OrderCompleteContainer = ({ order_number }) => {
                     false,
                     '주문번호가 존재하지 않습니다.',
                     '주문번호를 확인해주세요',
-                    () => history.goBack(),
                 );
+                history.push(Paths.index);
                 setSuccess(false);
                 setError(true);
             }
@@ -87,8 +87,8 @@ const OrderCompleteContainer = ({ order_number }) => {
                 false,
                 '주문번호가 존재하지 않습니다.',
                 '주문번호를 확인해주세요',
-                () => history.goBack(),
             );
+            history.push(Paths.index);
         }
         setLoading(false);
     }, [history, openMessage, order_number, user_token]);
@@ -108,7 +108,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                     } else {
                         res = await noAutuOrderCancle(
                             order_number,
-                            orders.info.s_hp,
+                            orders.info[0].s_hp,
                         );
                     }
                     if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.') !== -1) {
@@ -149,7 +149,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             주문이 완료되었습니다.
                                         </div>
                                         <div className={styles['msg']}>
-                                            {orders && `${orders.info.s_name}님`}{' '}
+                                            {orders && `${orders.info[0].s_name}님`}{' '}
                                             저희 샌달 서비스를
                                             이용해주셔서 감사합니다.
                                             <br />
@@ -182,6 +182,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             {orders && (
                                                 <OrderItemList
                                                     items={orders.items}
+                                                    info={orders.info}
                                                     center={false}
                                                 />
                                             )}
@@ -207,14 +208,14 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             />
                                             <OrderInfoBox
                                                 text={'결제방식'}
-                                                value={orders && orders.info.pg}
+                                                value={orders && orders.info[0].pg}
                                             />
                                             <OrderInfoBox
                                                 text={'결제금액'}
                                                 value={
                                                     orders &&
                                                     `${numberFormat(
-                                                        orders.info
+                                                        orders.info[0]
                                                             .receipt_price,
                                                     )}원`
                                                 }
@@ -222,7 +223,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             <OrderInfoBox
                                                 text={'입금자명'}
                                                 value={
-                                                    orders && orders.info.s_name
+                                                    orders && orders.info[0].s_name
                                                 }
                                             />
                                             {/* <OrderInfoBox
@@ -256,7 +257,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             <UserInfoBox
                                                 text={'받는분'}
                                                 value={
-                                                    orders && orders.info.s_name
+                                                    orders && orders.info[0].s_name
                                                 }
                                             />
                                             <UserInfoBox
@@ -264,7 +265,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 value={
                                                     orders &&
                                                     stringToTel(
-                                                        orders.info.s_hp,
+                                                        orders.info[0].s_hp,
                                                     )
                                                 }
                                             />
@@ -272,7 +273,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 text={'배달 요청 시간'}
                                                 value={
                                                     orders &&
-                                                    orders.info
+                                                    orders.info[0]
                                                         .delivery_req_time
                                                 }
                                             />
@@ -287,7 +288,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 text={'요청 사항'}
                                                 value={
                                                     orders &&
-                                                    orders.info.delivery_memo
+                                                    orders.info[0].delivery_memo
                                                 }
                                             />
                                         </div>
@@ -300,7 +301,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             <UserInfoBox
                                                 text={'주문자'}
                                                 value={
-                                                    orders && orders.info.s_name
+                                                    orders && orders.info[0].s_name
                                                 }
                                             />
                                             <UserInfoBox
@@ -308,7 +309,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 value={
                                                     orders &&
                                                     stringToTel(
-                                                        orders.info.s_hp,
+                                                        orders.info[0].s_hp,
                                                     )
                                                 }
                                             />
@@ -323,7 +324,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 text={'주문 종류'}
                                                 value={
                                                     orders &&
-                                                    orders.info.order_type ===
+                                                    orders.info[0].order_type ===
                                                         'reserve'
                                                         ? '예약주문'
                                                         : '배달주문'
@@ -333,7 +334,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 text={'요청 사항'}
                                                 value={
                                                     orders &&
-                                                    orders.info.order_memo
+                                                    orders.info[0].order_memo
                                                 }
                                             />
                                         </div>
@@ -371,7 +372,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             className={styles['btn']}
                                             onClick={
                                                 orders &&
-                                                orders.info.od_status !==
+                                                orders.info[0].od_status !==
                                                     'order_cancel'
                                                     ? userOrderCancle
                                                     : () => {}
@@ -379,13 +380,13 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             disableRipple={
                                                 !(
                                                     orders &&
-                                                    orders.info.od_status !==
+                                                    orders.info[0].od_status !==
                                                         'order_cancel'
                                                 )
                                             }
                                         >
                                             {orders &&
-                                            orders.info.od_status ===
+                                            orders.info[0].od_status ===
                                                 'order_cancel'
                                                 ? '주문취소 완료'
                                                 : '주문취소'}

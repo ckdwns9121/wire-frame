@@ -9,19 +9,19 @@
         // border-bottom: 1px solid #ccc;
     }
     width: 100%;
-    height: 144px;
     padding: 20px;
     box-sizing: border-box;
     position: relative;
     .menu-img {
         float: left;
-        padding-right: 40px;
         img {
             width: 100px; height: 100px;
         }
     }
     .menu-info {
+        padding-left: 140px;
         position: relative;
+        line-height: 1.5;
         .name {
             font-size: 1.667rem;
             color: #222;
@@ -55,10 +55,10 @@
     .center-price {
         position: absolute;
         top: 50%;
-        right: 80px;
+        right: 40px;
+        width: 240px;
         height: 144px;
         text-align: center;
-        padding-left: 80px;
         line-height: 144px;
         border-left: 1px solid #ebebeb;
         transform: translateY(-50%);

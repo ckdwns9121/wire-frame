@@ -95,7 +95,7 @@ const OrderContainer = () => {
     const [payable, setPayable] = useState(false);
     const [payment, setPayment] = useState('페이플 카드 결제'); //결제 방법
     const [cp_list, setCouponList] = useState([]); //사용가능한 쿠폰
-    const [totalPrice, setTotalPrice] = useState(0); //총 결제금액
+    const [totalPrice, setTotalPrice] = useState(-1); //총 결제금액
     const [dlvCost, setDlvCost] = useState(0); // 배달비
     const [dlvMemo, setDlvMemo] = useState(''); //배달메모
     const [dlvMemoCheck, setDlvMemoCheck] = useState(false);
@@ -417,7 +417,7 @@ const OrderContainer = () => {
     }, []);
 
     useEffect(() => {
-        if (totalPrice && company) {
+        if (totalPrice !== -1 && company) {
             if (totalPrice < company.minimum_order) {
                 openModal("최소 주문 금액을 채워주세요.", `최소 주문 금액은 ${numberFormat(company.minimum_order)}원입니다.`);
                 history.push(Paths.ajoonamu.cart);
@@ -454,8 +454,10 @@ const OrderContainer = () => {
     }, [dlvMemoCheck, orderMemoCheck, dlvMemo, orderMemo]);
 
     useEffect(() => {
-        if (totalPrice + parseInt(dlvCost) - cp_price - point_price < 0) {
-            setPointPrice(totalPrice + parseInt(dlvCost) - cp_price);
+        if (totalPrice !== -1) {
+            if (totalPrice + parseInt(dlvCost) - cp_price - point_price < 0) {
+                setPointPrice(totalPrice + parseInt(dlvCost) - cp_price);
+            }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cp_price, point_price]);

@@ -132,7 +132,21 @@
                             }
                         }
                     }
+
                 }
+            }
+        }
+        .cancle-area {
+            text-align: center;
+            .btn {
+                width: 400px; height: 64px;
+                border: 1px solid #dbdbdb;
+                text-align: center;
+                font-size: 1.667rem;
+                border-radius: 20px;
+                color: #555;
+                font-weight: 500;
+                background-color: #ffffff;
             }
         }
     }

@@ -8,7 +8,6 @@ import { onlyNumber } from '../../lib/formatChecker';
 
 const ReserveModal = (props) => {
     const [value, setValue] = useState(1);
-
     const setMinus = useCallback(() => {
         if (value > 1) {
             setValue(value - 1);

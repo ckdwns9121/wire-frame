@@ -7,10 +7,16 @@ import { useModal } from '../../hooks/useModal';
 import { requestPutSecession } from '../../api/auth/auth';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
+import { useDispatch } from 'react-redux';
+import { get_address } from '../../store/address/address';
+import { noAuthGetNearStore } from '../../api/noAuth/store';
+import { get_near_store } from '../../store/address/store';
+import { get_menulist } from '../../store/product/product';
 
 const SecessionContainer = () => {
     
     const history = useHistory();
+    const dispatch = useDispatch();
     const user_token = useStore();
     const openModal = useModal();
 
@@ -26,6 +32,23 @@ const SecessionContainer = () => {
                     const res = await requestPutSecession(user_token, agree);
                     if (res.data.msg) {
                         openModal('정상적으로 회원탈퇴 되셨습니다!', '다음에도 저희 아주나무를 이용해 주시기 바랍니다.');
+                        
+                        const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                        if (noAuth) {
+                            const index = noAuth.findIndex((item) => item.active === 1);
+                            if (index !== -1) {
+                                const { addr1, addr2, lat, lng, post_num } = noAuth[index];
+                                dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
+                                const near_store = await noAuthGetNearStore(lat, lng, addr1);
+                                dispatch(get_near_store(near_store.data.query));
+                                dispatch(get_menulist(null));
+                            }
+                            else{
+                                dispatch(get_address({addr1:null,addr2:null,lat:null,lng:null,post_num:null}));
+                                dispatch(get_near_store(null));
+                                dispatch(get_menulist(null));
+                            }
+                        }
                         history.push(Paths.ajoonamu.logout);
                     }
                 } catch (e) {

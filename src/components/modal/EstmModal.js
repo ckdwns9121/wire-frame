@@ -116,7 +116,7 @@ const EstmModal = (props) => {
                         <input type="text" name="receiver_email" value={state.receiver_email} onChange={onStateChange}/>
                     </div>
                     <div className={styles['estimate']}>
-                        <Estimate onDownload={onDownload} products={props.cartList} />
+                        <Estimate onDownload={onDownload} products={props.cartList} dlvCost={props.dlvCost} />
                     </div>
                     <div className={styles['box']}>
                         <ButtonBase className={styles['btn']} onClick={props.order}>

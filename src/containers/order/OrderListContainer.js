@@ -29,7 +29,9 @@ const OrderListContainer = () => {
     const [startDate, setStartDate] = useState(
         calculateDate(new Date(), 7, 'DATE'),
     );
-    const [endDate, setEndDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(
+        new Date()
+    );
     const [order_list, setOrderList] = useState([]); //전체 데이터.
     const [loading, setLoading] = useState(false); //로딩
 
@@ -62,6 +64,11 @@ const OrderListContainer = () => {
         callOrderListApi();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        sessionStorage.setItem('order_start_date', `${startDate.getFullYear()}/${startDate.getMonth() + 1}/${startDate.getDate()}`);
+        sessionStorage.setItem('order_end_date', `${endDate.getFullYear()}/${endDate.getMonth() + 1}/${endDate.getDate()}`);
+    }, [startDate, endDate]);
 
     return (
         <div className={styles['container']}>

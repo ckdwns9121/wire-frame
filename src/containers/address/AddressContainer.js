@@ -26,7 +26,6 @@ import { get_near_store } from '../../store/address/store';
 import { getNearStore } from '../../api/store/store';
 import { noAuthGetNearStore } from '../../api/noAuth/store';
 import { get_menulist } from '../../store/product/product';
-import { get_breakMenuList } from '../../store/product/braekfast';
 import { Paths } from '../../paths';
 import { useHistory } from 'react-router-dom';
 
@@ -166,7 +165,6 @@ const AddressContainer = () => {
 
                             dispatch(get_near_store(near_store.data.query));
                             dispatch(get_menulist(null));
-                            dispatch(get_breakMenuList(null));
 
                             const redirect_url = JSON.parse(
                                 sessionStorage.getItem('url'),
@@ -218,7 +216,6 @@ const AddressContainer = () => {
 
                         dispatch(get_near_store(near_store.data.query));
                         dispatch(get_menulist(null));
-                        dispatch(get_breakMenuList(null));
 
                         const redirect_url = JSON.parse(
                             sessionStorage.getItem('url'),
@@ -259,7 +256,6 @@ const AddressContainer = () => {
                             );
                             dispatch(get_near_store(null));
                             dispatch(get_menulist(null));
-                            dispatch(get_breakMenuList(null));
                         }
                         setDeliveryList((list) =>
                             list.filter(
@@ -287,7 +283,6 @@ const AddressContainer = () => {
                                 );
                                 dispatch(get_near_store(null));
                                 dispatch(get_menulist(null));
-                                dispatch(get_breakMenuList(null));
                             }
                             //선택한 주소를 제일 위로 올리기.
                             noAuthAddrs.splice(delivery_id, 1);
@@ -390,7 +385,6 @@ const AddressContainer = () => {
                                                 ),
                                             );
                                             dispatch(get_menulist(null));
-                                            dispatch(get_breakMenuList(null));
 
                                             setOpen(false);
                                             const redirect_url = JSON.parse(
@@ -449,7 +443,7 @@ const AddressContainer = () => {
                                         );
                                     } else if (
                                         near_store.data.msg ===
-                                        '배달 가능한 매장이 없습니다'
+                                        '배달 가능한 매장이 없습니다.'
                                     ) {
                                         openMessage(
                                             false,
@@ -521,7 +515,6 @@ const AddressContainer = () => {
                                             ),
                                         );
                                         dispatch(get_menulist(null));
-                                        dispatch(get_breakMenuList(null));
                                         setDeliveryList(test2);
                                         setOpen(false);
 
