@@ -41,17 +41,16 @@ const HomeContainer = () => {
         try {
             const res = await getMainCategory();
             // 카테고리를 분류 순서로 정렬.
-            if (ca_list[0]) {
-                setUseCate(ca_list[0].ca_id);
+            if (res[0]) {
+                setUseCate(res[0].ca_id);
             }
             let arr = [];
-            for (let i = 0; i < ca_list.length; i++) {
-                const result = await getMainMenuList(ca_list[i].ca_id);
-                const temp = { ca_id: ca_list[i].ca_id, items: result };
+            for (let i = 0; i < res.length; i++) {
+                const result = await getMainMenuList(res[i].ca_id);
+                const temp = { ca_id: res[i].ca_id, items: result };
                 arr.push(temp);
             }
-            arr.sort((a, b) => a.ca_id - b.ca_id);
-            setCategories(ca_list);
+            setCategories(res);
             setItems(arr);
         } catch (e) {
 

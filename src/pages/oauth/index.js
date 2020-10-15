@@ -60,7 +60,7 @@ const OAuth = ({ match, location }) => {
                 history.replace('/');
                 openModal(
                     '회원가입 실패',
-                    '존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.',
+                    '존재하는 이메일 주소로\n가입을 시도하셔서 가입에 실패하셨습니다.',
                 );
             } else {
                 const res = await socialRegister(email, name, register_type);
