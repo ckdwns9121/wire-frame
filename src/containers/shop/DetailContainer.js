@@ -41,7 +41,6 @@ const DetailContainer = ({ item_id }) => {
         setLoading(true);
         try {
             const res = await getMenuInfo(item_id);
-            console.log(res);
             if (res.item) {
                 setMenu(res);
             } else {
@@ -252,14 +251,13 @@ const DetailContainer = ({ item_id }) => {
                         </div>
                     </div>
                     <div className={styles['content']}>
-                        <div className={styles['title']}>
+                        {other_menu_list.length !== 0 &&
+                        <><div className={styles['title']}>
                             다른 고객들이 함께 본 상품
                         </div>
                         <div className={styles['other-menu-list']}>
-                            {other_menu_list.length !== 0 && (
-                                <OtherUserMenuItemList menu_list={other_menu_list} />
-                            )}
-                        </div>
+                            <OtherUserMenuItemList menu_list={other_menu_list} />
+                        </div></>}
                         <div className={styles['detail-info']}>
                             <TabMenu
                                 tabs={[

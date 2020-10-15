@@ -229,11 +229,13 @@ const ReserveContainer = ({ tab = '0' }) => {
     const renderPost = useCallback(() => {
         return (
             <>
-                {posts && (
+                {posts.length ? (
                     <MenuItemList
                         menuList={posts.slice(0, offset)}
                         onClick={onClickMenuItem}
                     />
+                ) : (
+                    <Message msg="배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다." />
                 )}
             </>
         );
