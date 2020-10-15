@@ -41,8 +41,6 @@ const HomeContainer = () => {
         try {
             const res = await getMainCategory();
             // 카테고리를 분류 순서로 정렬.
-            const ca_list = res.slice(0, 5).sort((a, b) => a.ca_id - b.ca_id);
-
             if (ca_list[0]) {
                 setUseCate(ca_list[0].ca_id);
             }
