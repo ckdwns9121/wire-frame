@@ -49,7 +49,7 @@ const CartItem = (props) => {
                 </div>
                 <div className={styles['menu-value']}>
                     <div className={styles['menu-name-price']}>
-                        {item_name} <span>{numberFormat(total_price())}</span>원
+                        <div className={styles['m-name']}>{item_name}</div><div className={styles['m-price']}>{numberFormat(total_price())}원</div>
                     </div>
                     <div className={styles['menu-option']}>
                         추가선택:

@@ -101,7 +101,6 @@ export default ({ match, location }) => {
     useEffect(() => {
         if (page !== 1 || detail) {
             history.push(Paths.ajoonamu.event);
-            console.log('?');
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mode]);

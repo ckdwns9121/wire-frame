@@ -5,18 +5,20 @@ import { logout } from '../../store/auth/auth';
 import { get_address } from '../../store/address/address';
 import { useDispatch } from 'react-redux';
 import { modalOpen } from '../../store/modal';
-import {get_menulist} from  '../../store/product/product';
-import {get_breakMenuList} from '../../store/product/braekfast';
-import {get_near_store} from '../../store/address/store';
-import {noAuthGetNearStore} from '../../api/noAuth/store';
+import { get_menulist } from '../../store/product/product';
+import { get_near_store } from '../../store/address/store';
+import { noAuthGetNearStore } from '../../api/noAuth/store';
 
 export default ({ history }) => {
     const dispatch = useDispatch();
     const modalDispatch = useDispatch();
 
-    const openMessage = useCallback((isConfirm,title, text, handleClick = () => {}) => {
-        modalDispatch(modalOpen(isConfirm, title, text, handleClick));
-    }, [modalDispatch]);
+    const openMessage = useCallback(
+        (isConfirm, title, text, handleClick = () => {}) => {
+            modalDispatch(modalOpen(isConfirm, title, text, handleClick));
+        },
+        [modalDispatch],
+    );
 
     const onLogoutListener = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
@@ -30,7 +32,6 @@ export default ({ history }) => {
                     dispatch(get_address({addr1:null,addr2:null ,lat:null,lng:null}));
                     dispatch(get_near_store(null));
                     dispatch(get_menulist(null));
-                    dispatch(get_breakMenuList(null))
                     openMessage(false, '로그아웃 성공!', '성공적으로 로그아웃 되었습니다.');
                     sessionStorage.removeItem('access_token');
                     const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));

@@ -468,7 +468,7 @@ const CartContainer = () => {
                                     <div className={styles['chk-box']}>
                                         <CheckBox
                                             id={'check1'}
-                                            text={'견적서를 받고싶습니다.'}
+                                            text={'견적서를 받고 싶습니다.'}
                                             check={estm}
                                             onChange={onChangeEstm}
                                         />

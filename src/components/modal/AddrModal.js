@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './Addr.module.scss';
 import Dialog from '@material-ui/core/Dialog';
 import AddrItemList from 'components/address/AddrItemList';
@@ -9,6 +9,9 @@ import { ButtonBase, IconButton } from '@material-ui/core';
 const AddressModal = (props) => {
     const [fullWidth] = useState(true);
     const [maxWidth] = useState('sm');
+
+    const searchInputRef = useRef(null);
+    const detailInputRef = useRef(null);
 
     const { open, addrs, searchAddr, detailAddr, selectAddr } = props;
     const {
@@ -21,6 +24,12 @@ const AddressModal = (props) => {
         onKeyPressDeliveryAddr
     } = props;
 
+    const onAddressItemClick = useCallback((jibunAddr, zipNo, index) => {
+        onClickAddrItem(jibunAddr, zipNo, index);
+        if (detailInputRef.current) {
+            detailInputRef.current.focus();
+        } 
+    }, [onClickAddrItem]);
 
     return (
         <Dialog
@@ -34,7 +43,7 @@ const AddressModal = (props) => {
             <div className={styles['title-bar']}>
                 <div className={styles['title']}>배달 받을 주소</div>
                 <div className={styles['close']}>
-                    <CloseIcon onClick={props.handleClose}/>
+                    <CloseIcon onClick={handleClose}/>
                 </div>
             </div>
             <div className={styles['modal-content']}>
@@ -46,6 +55,7 @@ const AddressModal = (props) => {
                         placeholder="예) 샌달동 12-3 또는 샌달 아파트"
                         onChange={onChangeSearchAddr}
                         onKeyPress={props.handleKeyPress}
+                        ref={searchInputRef}
                     />
                     <IconButton
                         className={styles['icon']}
@@ -62,7 +72,7 @@ const AddressModal = (props) => {
                         {addrs ? (
                             <AddrItemList
                                 addrs={addrs}
-                                onClick={onClickAddrItem}
+                                onClick={onAddressItemClick}
                             />
                         ) : ('')}
                     </div>
@@ -76,9 +86,10 @@ const AddressModal = (props) => {
                             className={styles['modal-input']}
                             type="text"
                             value={detailAddr}
-                            placeholder="상세 주소를 입력하세요"
+                            placeholder="상세 주소를 입력하세요."
                             onChange={onChangeDetail}
                             onKeyPress={onKeyPressDeliveryAddr}
+                            ref={detailInputRef}
                         />
                     </div>
                     <div className={styles['btn-box']}>

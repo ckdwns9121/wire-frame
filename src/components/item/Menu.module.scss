@@ -25,6 +25,7 @@ $value2: 71px;
     margin-bottom: 60px;
     line-height: 1.4;
     word-break: keep-all;
+    transition: all .15s ease-in-out;
     cursor: pointer;
 
     .menu-img {
@@ -55,7 +56,11 @@ $value2: 71px;
             font-size: 2rem;
             color: #222222;
             font-weight: bold;
+            padding-bottom: 10px;
         }
+    }
+    &:hover {
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
     }
     & + & {
         margin-left: 40px;

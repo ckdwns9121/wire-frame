@@ -45,9 +45,10 @@ import { noAuth_order } from '../../api/noAuth/order';
 import { noAuthGetCartList } from '../../api/noAuth/cart';
 import { getCartList } from '../../api/cart/cart';
 import { getOrderCoupons } from '../../api/coupon/coupon';
-import { PROTOCOL_ENV } from '../../paths';
+import { Paths, PROTOCOL_ENV } from '../../paths';
 
 import '../../styles/DatePicker.scss';
+import { useHistory } from 'react-router-dom';
 
 
 const cx = classNames.bind(styles);
@@ -83,6 +84,8 @@ const checkReducer = (state, action) => {
 const OrderContainer = () => {
     const user_token = useStore(false);
     const openModal = useModal();
+    const { company } = useSelector(state => state.company);
+    const history = useHistory();
     const { user } = useSelector((state) => state.auth);
     const { addr1, addr2, lat, lng, post_num } = useSelector(state => state.address);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
@@ -111,7 +114,7 @@ const OrderContainer = () => {
     const [agreeOpen, setAgreeOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [noAuthName, setNoAuthName] = useState('');
-    const [firstPhoneNumber, setFirstPhoneNumber] = useState('');
+    const [firstPhoneNumber, setFirstPhoneNumber] = useState('010');
     const [secondPhoneNumber, setSecondPhoneNumber] = useState('');
     const [firstPhoneAuth, setFirstPhoneAuth] = useState('');
     const [secondPhoneAuth, setSecondPhoneAuth] = useState('');
@@ -412,6 +415,17 @@ const OrderContainer = () => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (totalPrice && company) {
+            if (totalPrice < company.minimum_order) {
+                openModal("최소 주문 금액을 채워주세요.", `최소 주문 금액은 ${numberFormat(company.minimum_order)}원입니다.`);
+                history.push(Paths.ajoonamu.cart);
+            }
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [totalPrice, company]);
+
     useEffect(()=>{
         getTotalPrice();
     },[getTotalPrice])
@@ -425,8 +439,9 @@ const OrderContainer = () => {
             toggle && firstPhoneAuth
             && (!addContact || secondPhoneAuth)
             && (user || noAuthName !== '')
+            && totalPrice >= company.minimum_order
         )
-    }, [addContact, firstPhoneAuth, secondPhoneAuth, noAuthName, user, toggle]);
+    }, [addContact, firstPhoneAuth, secondPhoneAuth, noAuthName, user, toggle, totalPrice, company.minimum_order]);
 
     useEffect(() => {
         localStorage.setItem(
@@ -782,12 +797,13 @@ const OrderContainer = () => {
                                     <span>원</span>
                                 </div>
                             </div>
+                            {company && <p className={styles['minimum-order']}>※ 최소 주문 금액은 {numberFormat(company.minimum_order)}원 입니다.</p>}
                             <div className={styles['order-btn']}>
                                 <Button
                                     title={'결제하기'}
                                     toggle={payable}
                                     onClick={payable ? onClickOrder : () => {}}
-                                ></Button>
+                                />
                             </div>
                             <div className={styles['agree-order']}>
                                 <AcceptContainer

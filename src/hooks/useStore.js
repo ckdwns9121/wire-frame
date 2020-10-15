@@ -26,20 +26,23 @@ export const useStore = (isReplace = true) => {
 };
 
 export const useUrl = () => {
-    const history = useHistory();
     const location = useLocation();
     const [current, setCurrent] = useState('/');
     const [prev, setPrev] = useState('');
 
+    const { pathname, search } = location;
+
     useEffect(() => {
-        setCurrent(location.pathname);
+        const next = pathname + search;
+        setCurrent(next);
         setPrev(current);
         const obj = {
-            current: location.pathname,
+            current: next,
             prev: current,
         };
         sessionStorage.setItem('url', JSON.stringify(obj));
-    }, [location.pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location]);
 
     return { prev, current };
 };

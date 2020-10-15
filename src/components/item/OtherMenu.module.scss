@@ -1,13 +1,15 @@
 @import '../../styles/Root.scss';
 
 .container {
+    .link {
+        text-decoration: none;
+        margin-top: 40px;
+        display: inline-block;
+    }
     .menu-item {
         @include animation(0.5s, fadeIn);
-        float: left;
         box-sizing: border-box;
         width: 240px;
-        padding-top: 40px;
-        height: auto;
         .menu-img {
             img {
                 width: 240px;

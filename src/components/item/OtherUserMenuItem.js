@@ -10,7 +10,7 @@ import ErrorCoverImage from '../assets/ErrorCoverImage';
 const OtherUserMenuItem = (props) => {
     // item_id 로 경로 줘야함
     return (
-        <Link to={Paths.ajoonamu.product + '?item_id=' + props.item_id}>
+        <Link className={styles['link']} to={Paths.ajoonamu.product + '?item_id=' + props.item_id}>
             <div className={styles['menu-item']} >
                 <MenuImg src={props.item_img !== "[]" ? DBImageFormat(props.item_img)[0] : Noimage} />
                 <div className={styles['menu-info']}>
@@ -18,7 +18,7 @@ const OtherUserMenuItem = (props) => {
                     <MenuPrice menuPrice={props.item_price} />
                 </div>
             </div>
-     </Link>
+        </Link>
     );
 };
 

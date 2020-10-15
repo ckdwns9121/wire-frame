@@ -157,7 +157,6 @@ const AccountContainer = () => {
                             } else {
                                 openModal(
                                     '정상적으로 정보가 변경되었습니다!',
-                                    '다음 로그인 시 바뀐 정보를 이용하여 주세요.',
                                 );
                             }
                         } else {

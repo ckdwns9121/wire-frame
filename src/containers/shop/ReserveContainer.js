@@ -181,7 +181,7 @@ const ReserveContainer = ({ tab = '0' }) => {
             const url = JSON.parse(sessionStorage.getItem('url'));
             if (url) {
                 //이전 페이지가 상품페이지라면 오프셋 유지.
-                if (url.prev === '/product') {
+                if (url.prev.indexOf('/product') !== -1) {
                     const OS = sessionStorage.getItem('offset');
                     if (OS) {
                         setOffset(parseInt(OS));
@@ -198,7 +198,7 @@ const ReserveContainer = ({ tab = '0' }) => {
         const url = JSON.parse(sessionStorage.getItem('url'));
         if (url) {
             //이전 주소가 상품페이지라면 스크롤 유지
-            if (url.prev === '/product') {
+            if (url.prev.indexOf('/product') !== -1) {
                 window.scrollTo(0, scrollTop);
             }
         }

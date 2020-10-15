@@ -39,22 +39,21 @@ const DetailContainer = ({ item_id }) => {
 
 
     const { company } = useSelector(state => state.company);
-    console.log(company);
-
     //메뉴 디테일 정보 가져오기
     const getDetailMenu = useCallback(async () => {
         setLoading(true);
         try {
             const res = await getMenuInfo(item_id);
+
             if (res.item) {
                 setMenu(res);
             } else {
                 openModal('삭제되거나 없는 상품입니다.', '상품 번호를 다시 한 번 확인해 주세요.');
-                history.push(Paths.ajoonamu.index);
+                history.push(Paths.ajoonamu.shop);
             }
         } catch (e) {
             openModal('잘못된 접근입니다.', '잠시 후 다시 시도해 주세요.');
-            history.push(Paths.ajoonamu.index);
+            history.push(Paths.ajoonamu.shop);
         }
         setLoading(false);
     }, [item_id, openModal, history]);
@@ -134,7 +133,7 @@ const DetailContainer = ({ item_id }) => {
                         
                     }
                 } else {
-                    openModal('배달지 주소가 설정되지 않았습니다.', '배달지 주소를 설정하시려면 예를 눌러주세요',
+                    openModal('배달지 주소가 설정되지 않았습니다.', '배달지 주소를 설정하시겠습니까?',
                         () => history.push(Paths.ajoonamu.address),
                         true,
                     );
@@ -238,7 +237,7 @@ const DetailContainer = ({ item_id }) => {
                                             className={styles['decrement']}
                                             onClick={onDecrement}
                                         >
-                                            <Count plue={false} />
+                                            <Count plus={false} />
                                         </ButtonBase>
                                     </div>
                                 </div>
@@ -282,13 +281,6 @@ const DetailContainer = ({ item_id }) => {
                                         {menu && menu.item.item_sub}
                                     </div>
                                     <div className={styles['explan']}>
-                                        제철 과일은 종류에 따라 당도가 높고,
-                                        가장 맛있는 맛을 내기 때문에 알맞은
-                                        때에 먹어주는 것이 좋습니다.
-                                        <br />
-                                        (쿠키 추가 가능 개당 1천 원) (불고기
-                                        샌드위치, 크랜베리 허니에그 샌드위치
-                                        변경가능 - 변경 시 단가 변동)
                                         {menu && menu.item.item_caution}
                                     </div>
                                 </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Additional.module.scss';
 import Select from '../svg/select/Select';
+import { numberFormat } from '../../lib/formatter';
 
 //추가선택 아이템
 const Additional = (props) => {
@@ -13,7 +14,7 @@ const Additional = (props) => {
                 htmlFor="test"
             >
                 <Select check={props.check} />
-                {props.option_name} <span>(+{props.option_price}원)</span>
+                {props.option_name} <span>(+ {numberFormat(props.option_price)}원)</span>
             </label>
         </div>
     );

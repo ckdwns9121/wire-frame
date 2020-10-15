@@ -3,9 +3,8 @@ import styles from './OtherMenu.module.scss';
 import Slider from 'react-slick';
 import OtherUserMenuItem from './OtherUserMenuItem';
 
-
 // 슬릭추가
-const OtherUserMenuItemList = ({ menu_list ,onClick}) => {
+const OtherUserMenuItemList = ({ menu_list }) => {
     /*
         슬릭 추가시 <slider>가 태그를 생성시킴
         그래서 따로 list를 렌더 해야함 
@@ -13,11 +12,10 @@ const OtherUserMenuItemList = ({ menu_list ,onClick}) => {
     */
 
     const menuList = menu_list.map((item) => (
-        <OtherUserMenuItem
-            key={item.item_id}
-            {...item}
-        />
+        <OtherUserMenuItem key={item.item_id} {...item} />
     ));
+
+    console.log(menu_list);
 
     const settings = {
         infinite: true,
@@ -25,7 +23,7 @@ const OtherUserMenuItemList = ({ menu_list ,onClick}) => {
         slidesToShow: menu_list.length > 5 ? 5 : menu_list.length,
         slidesToScroll: 5,
         slidePerRow: 1,
-        varialbeWidth: !(menu_list.length >= 5)
+        varialbeWidth: !(menu_list.length >= 5),
     };
 
     return (

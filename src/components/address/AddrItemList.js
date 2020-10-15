@@ -13,12 +13,12 @@ const AddrItemList = ({ addrs, onClick }) => {
             index={index}
             jibunAddr={addr.jibunAddr}
             roadAddr={addr.roadAddr}
-            post_num ={addr.zipNo}
-            active ={addr.active}
-            onClick={()=>onClick(addr.jibunAddr, addr.zipNo,index)}
+            post_num={addr.zipNo}
+            active={addr.active}
+            onClick={() => onClick(addr.jibunAddr, addr.zipNo, index)}
         />
     ));
-    return (<div className={styles['addr-list']}>{addrsList}</div>);
+    return <div className={styles['addr-list']}>{addrsList}</div>;
 };
 
 export default AddrItemList;
