@@ -21,6 +21,7 @@ import { useModal } from '../../hooks/useModal';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
 import ErrorCoverImage from '../../components/assets/ErrorCoverImage';
 
+
 const DetailContainer = ({ item_id }) => {
     const user_token = useStore(false);
     const openModal = useModal();
@@ -270,7 +271,7 @@ const DetailContainer = ({ item_id }) => {
                             {index === 0 && (
                             <div className={styles['detail-menu-view']}>
                                 <div className={styles['detail-text']}>
-                                    <div className={styles['title']}>
+                                    <div style={{ padding: '0 100px' }} className={styles['title']}>
                                         {menu && menu.item.item_name}
                                     </div>
                                     <div className={styles['sub-title']}>
