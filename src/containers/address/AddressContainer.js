@@ -358,7 +358,9 @@ const AddressContainer = () => {
 
                                 try{
                                     const near_store = await noAuthGetNearStore(temp_lat, temp_lng, selectAddr);
-                                    if(near_store.data.msg==="배달 가능한 지역이 아닙니다."){
+                                    if (
+                                        near_store.data.msg === '배달 가능한 지역이 아닙니다.'
+                                    ) {
                                         openMessage(
                                             false,
                                             near_store.data.msg,
@@ -367,7 +369,7 @@ const AddressContainer = () => {
                                     }
 
                                     //배달 가능한 지역이라면
-                                    else{
+                                    else {
                                         //비회원일시 로컬스토리지에서 아이템을 들고온다.
                                         const noAuthAddrs = JSON.parse(
                                             localStorage.getItem('noAuthAddrs'),
@@ -423,12 +425,16 @@ const AddressContainer = () => {
                                                 post_num: post_num,
                                             }),
                                         );
-    
-                                        dispatch(get_near_store(near_store.data.query));
+
+                                        dispatch(
+                                            get_near_store(
+                                                near_store.data.query,
+                                            ),
+                                        );
                                         dispatch(get_menulist(null));
                                         dispatch(get_breakMenuList(null));
                                         setDeliveryList(test2);
-                                
+
                                         setOpen(false);
                                     }
 

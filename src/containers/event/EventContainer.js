@@ -64,7 +64,6 @@ export default ({ match, location }) => {
                     const CB_end_date = crossBrowsingDate(event.end_date).getTime();
                     return today > CB_end_date; 
                 });
-                console.log(use, passed);
                 setUseList(use);
                 setPassedList(passed);
             }
@@ -99,11 +98,18 @@ export default ({ match, location }) => {
         getEventList();
     }, [getEventList]);
 
-    useEffect(() => history.push(Paths.ajoonamu.event), [mode]);
+    useEffect(() => {
+        if (page !== 1 || detail) {
+            history.push(Paths.ajoonamu.event);
+            console.log('?');
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mode]);
 
     useEffect(() => {
         if (detail) {
             getEventShow();
+            // return () => setItem({});
         }
     }, [detail, getEventShow]);
 

@@ -71,9 +71,8 @@ $header-height: 100px;
             justify-content: center;
             width: 100%;
             height: $header-height;
-            .logo{
-            cursor: pointer;
-
+            .logo {
+                cursor: pointer;
             }
         }
 
@@ -92,7 +91,7 @@ $header-height: 100px;
                 height: 48px;
                 outline: none;
                 padding-left: 24px;
-                transition: all .15s ease-in-out;
+                transition: all 0.15s ease-in-out;
                 &:focus {
                     border-color: $main-color;
                 }

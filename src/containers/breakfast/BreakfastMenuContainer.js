@@ -24,7 +24,11 @@ import {
     getBreakCategory,
     getBreakMenu,
 } from '../../api/break_fast/break_fast';
-import { get_break_catergory, get_breakMenuList ,add_breakMenuitem } from '../../store/product/braekfast';
+import {
+    get_break_catergory,
+    get_breakMenuList,
+    add_breakMenuitem,
+} from '../../store/product/braekfast';
 import { useScroll } from '../../hooks/useScroll';
 
 const OFFSET = 8;
@@ -32,7 +36,6 @@ const LIMIT = 8;
 
 const BreakfastMenuContainer = ({ tab = '0' }) => {
     const { categorys, items } = useSelector((state) => state.breakfast);
-    const {store} = useSelector((state)=> state.store);
     const dispatch = useDispatch();
 
     const titleTab = [
@@ -40,7 +43,6 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
         { name: '조식구성', url: `${Paths.ajoonamu.breakfast}/configure` },
     ];
     const history = useHistory();
-
 
     const [loading, setLoading] = useState(false);
     const { isScrollEnd } = useScroll(loading);
@@ -70,11 +72,9 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
                 const res = await getBreakCategory();
                 dispatch(get_break_catergory(res.data.query.categorys));
             }
-        } catch (e) {
-
-        }
+        } catch (e) {}
         setLoading(false);
-    },[categorys,dispatch]);
+    }, [categorys, dispatch]);
 
     //카테고리가 있으면 메뉴 불러와서 스토어에 저장
     const getBreakMenuList = useCallback(async () => {
@@ -82,9 +82,9 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
         let arr = [];
         try {
             //아이템이 없고 카테고리
-            if (!items && categorys.length !== 0 && store) {
+            if (!items && categorys.length !== 0) {
                 for (let i = 0; i < categorys.length; i++) {
-                    const res = await getBreakMenu(categorys[i].ca_id , 0, 8 , store.shop_id);
+                    const res = await getBreakMenu(categorys[i].ca_id, 0, 8);
                     const { query } = res.data;
                     const temp = {
                         ca_id: categorys[i].ca_id,
@@ -94,24 +94,21 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
                 }
                 dispatch(get_breakMenuList(arr));
             }
-        } catch (e) {
-
-        }
+        } catch (e) {}
         setLoading(false);
-    }, [categorys, dispatch, items, store]);
+    }, [categorys, dispatch, items]);
 
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
         if (!loading) {
             try {
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
-                if (tabIndex !== 0 && categorys.length !== 0 && items && store) {
+                if (tabIndex !== 0 && categorys.length !== 0 && items) {
                     setIsPaging(true);
                     const res = await getBreakMenu(
                         categorys[tabIndex].ca_id,
                         offset,
                         LIMIT,
-                        store.shop_id
                     );
 
                     const get_list = res.data.query.items;
@@ -128,12 +125,9 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
                         setIsPaging(false);
                     }, 1000);
                 }
-            }
-            catch (e) {
-                
-            }
+            } catch (e) {}
         }
-    }, [tabIndex, categorys, offset, items, loading, store, dispatch]);
+    }, [tabIndex, categorys, offset, items, loading, dispatch]);
 
     //메뉴 아이템을 클릭했을 시 상세보기 페이지로 푸쉬
     const onClickMenuItem = useCallback(
@@ -188,12 +182,10 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
         }
     }, [loading]);
 
- 
     // 탭 인덱스로 URL 이동c
     useEffect(() => {
         history.replace(`${Paths.ajoonamu.breakfast}/menu?tab=${tabIndex}`);
     }, [tabIndex, history]);
-
 
     //아이템과 인덱스가 변했을 시 보여줄 리스트 갱신.
     useEffect(() => {
@@ -207,7 +199,7 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
         if (isScrollEnd && !isPaging) {
             PageNationMenuList();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isScrollEnd]);
 
     return (
@@ -230,50 +222,34 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
             {titleIndex === 0 ? (
                 <div className={styles['container']}>
                     <div className={styles['content']}>
-                        {store ?
-                            <>
-                                {categorys.length !== 0 && (
-                                    <TabMenu
-                                        tabs={categorys}
-                                        index={tabIndex}
-                                        onChange={onChangeTabIndex}
-                                    />
-                                )}
+                        {categorys.length !== 0 && (
+                            <TabMenu
+                                tabs={categorys}
+                                index={tabIndex}
+                                onChange={onChangeTabIndex}
+                            />
+                        )}
 
-                                <div className={styles['shop']}>
-                                    {
-                                        <>
-                                            {posts.length !== 0 ? (
-                                                <MenuItemList
-                                                    menuList={posts}
-                                                    onClick={onClickMenuItem}
-                                                />
-                                            ) : (
-                                                    <Message
-                                                        msg={
-                                                            '추천드릴 메뉴 구성이 존재하지 않습니다.'
-                                                        }
-                                                        src={true}
-                                                        isButton={false}
-                                                    />
-                                                )}
-                                        </>
-                                    }
-                                </div>
-
-                            </>
-                            :
-                            <Message
-                            msg={
-                                '주소지가 설정되지 않았습니다.'
+                        <div className={styles['shop']}>
+                            {
+                                <>
+                                    {posts.length !== 0 ? (
+                                        <MenuItemList
+                                            menuList={posts}
+                                            onClick={onClickMenuItem}
+                                        />
+                                    ) : (
+                                        <Message
+                                            msg={
+                                                '추천드릴 메뉴 구성이 존재하지 않습니다.'
+                                            }
+                                            src={true}
+                                            isButton={false}
+                                        />
+                                    )}
+                                </>
                             }
-                            src={true}
-                            isButton={true}
-                            buttonName={'주소지 설정하기'}
-                            onClick={()=> history.push(Paths.ajoonamu.address)}
-                        />
-                        }
-                        
+                        </div>
 
                         <div
                             className={styles['bottom-banner']}

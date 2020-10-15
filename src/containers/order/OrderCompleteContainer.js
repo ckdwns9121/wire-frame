@@ -149,19 +149,16 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             주문이 완료되었습니다.
                                         </div>
                                         <div className={styles['msg']}>
-                                            <>
-                                                {orders &&
-                                                    `${orders.info.s_name}님`}{' '}
-                                                저희 아주나무 딜리버리 서비스를
-                                                이용해주셔서 감사합니다.
-                                                <br />
-                                                아래 주문상세내역서는
-                                                주문내역에서 다시 확인
-                                                가능합니다.
-                                                <br />
-                                                (비회원 주문시 주문내역을 확인이
-                                                어려울 수 있습니다.)
-                                            </>
+                                            {orders && `${orders.info.s_name}님`}{' '}
+                                            저희 샌달 서비스를
+                                            이용해주셔서 감사합니다.
+                                            <br />
+                                            아래 주문상세내역서는
+                                            주문내역에서 다시 확인
+                                            가능합니다.
+                                            <br />
+                                            (비회원 주문시 주문내역을 확인이
+                                            어려울 수 있습니다.)
                                         </div>
                                         <div className={styles['order-number']}>
                                             주문번호 : {order_number}

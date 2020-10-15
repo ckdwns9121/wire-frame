@@ -90,7 +90,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     //첫 로딩시 메뉴 받아오기
     const getCategoryList = useCallback(async () => {
         setLoading(true);
-
         //카테고리 길이가 1이면 받아오기.
         if (categorys.length === 1) {
             const res = await getCategory();
@@ -100,12 +99,9 @@ const ReserveContainer = ({ tab = '0' }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
-
     //첫 로딩시 메뉴 받아오기
     const getProductList = useCallback(async () => {
         setLoading(true);
-
         try {
             // 카테고리별로 메뉴 리스트 받아오기.
             let arr = [];
