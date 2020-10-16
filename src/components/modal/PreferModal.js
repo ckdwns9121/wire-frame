@@ -3,18 +3,13 @@ import styles from './PreferModal.module.scss';
 import Dialog from '@material-ui/core/Dialog';
 import CloseIcon from '../svg/modal/CloseIcon';
 import { ButtonBase, IconButton } from '@material-ui/core';
-import { numberFormat } from '../../lib/formatter';
+import { numberFormat, stringNumberToInt } from '../../lib/formatter';
 import { onlyNumber } from '../../lib/formatChecker';
 
 const ReserveModal = (props) => {
-    const [value, setValue] = useState(1);
-    const setMinus = useCallback(() => {
-        if (value > 1) {
-            setValue(value - 1);
-        }
-    }, [value]);
-    const setPlus = useCallback(() => setValue(value + 1), [value]);
-
+    const { desireQuan, setDesireQuan } = props;
+    const setMinus = useCallback(() => setDesireQuan(desireQuan - 1), [desireQuan]);
+    const setPlus = useCallback(() => setDesireQuan(desireQuan + 1), [desireQuan]);
     return (
         <Dialog
             fullWidth={true}
@@ -71,7 +66,7 @@ const ReserveModal = (props) => {
                             >
                                 -
                             </IconButton>
-                            <div className={styles['value']}>{value}</div>
+                            <input type="text" className={styles['value']} value={numberFormat(desireQuan)} onChange={e => setDesireQuan(stringNumberToInt(e.target.value)) } />
                             <IconButton
                                 onClick={setPlus}
                                 className={styles['increment']}

@@ -204,6 +204,12 @@ const ReserveContainer = ({ tab = '0' }) => {
         }
     }, [loading]);
 
+    useEffect(() => {
+        if (desireQuan < 1) {
+            setDesireQuan(1);
+        }
+    }, [desireQuan]);
+
     // 탭 인덱스로 URL 이동c
     useEffect(() => {
         history.replace(`${Paths.ajoonamu.shop}?tab=${tabIndex}`);
@@ -300,7 +306,7 @@ const ReserveContainer = ({ tab = '0' }) => {
                 // endBudget={endBudget}
                 onChangeBudget={onChangeBudget}
                 // onChangeEndBudget={onChangeEndBudget}
-                desireQuan={desireQuan}
+                desireQuan={desireQuan} setDesireQuan={setDesireQuan}
                 onClickCustomOrder={onClickCustomOrder}
             />
         </>
