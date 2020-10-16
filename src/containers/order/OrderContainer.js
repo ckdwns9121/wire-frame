@@ -923,7 +923,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
         try {
             const res = await requestPostMobileAuthCheck(firstValue + secondValue + thirdValue, authNumber);
             if (res.data.msg === '성공!') {
-                openModal('성공적으로 인증되었습니다!', '회원가입 버튼을 누르세요!');
+                openModal('성공적으로 인증되었습니다!', '다음 절차를 진행해 주세요!');
                 setAuth(true);
                 setStart(false);
             } else {
