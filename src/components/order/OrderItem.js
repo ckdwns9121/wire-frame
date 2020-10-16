@@ -4,6 +4,8 @@ import cn from 'classnames/bind';
 import Noimage from '../svg/noimage.png';
 import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import ErrorCoverImage from '../assets/ErrorCoverImage';
+import { Link } from 'react-router-dom';
+import { Paths } from '../../paths';
 const cx = cn.bind(styles);
 
 const OrderItem = (props) => {
@@ -14,13 +16,16 @@ const OrderItem = (props) => {
         item_option,
         item_price,
         item_img,
+        info,
         qty,
     } = props;
 
     return (
         <div className={cx('order-item', { space: center })}>
             <div className={styles['menu-img']}>
-                <ErrorCoverImage src={( item_img !== undefined && item_img !== "[]") ? DBImageFormat(item_img)[0] : Noimage} alt="menu" />
+                <Link to={Paths.ajoonamu.product + '?item_id=' + info.item_id}>
+                    <ErrorCoverImage src={( item_img !== undefined && item_img !== "[]") ? DBImageFormat(item_img)[0] : Noimage} alt="menu" />
+                </Link>
             </div>
             <div className={styles['menu-info']}>
                 <div className={styles['name']}>{item_name}</div>
@@ -42,3 +47,4 @@ OrderItem.defaultProps = {
     center: false,
 };
 export default OrderItem;
+    

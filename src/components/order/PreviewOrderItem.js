@@ -4,9 +4,10 @@ import Noimage from '../svg/noimage.png';
 import Arrow from '../svg/arrow/Arrow';
 import { DBImageFormat, numberFormat } from "../../lib/formatter";
 import { ButtonBase } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
 import ErrorCoverImage from '../assets/ErrorCoverImage';
+import ListView from '../assets/ListView';
 
 const PreviewOrderItem = (props) => {
     const {
@@ -22,7 +23,6 @@ const PreviewOrderItem = (props) => {
         // total_price,
     } = props;
     const history = useHistory();
-
 
     return (
         <div className={styles['preview-item']}>
@@ -57,7 +57,7 @@ const PreviewOrderItem = (props) => {
                 </div>
             </div>
             <div className={styles['menu-list']}>
-                <MenuList info={info} items={items}/>
+                {info && items && <MenuList info={info} items={items}/>}
             </div>
             <div className={styles['href-detail']} onClick={props.onClick}>
                 <div className={styles['text']}>주문 상세보기</div>
@@ -68,7 +68,6 @@ const PreviewOrderItem = (props) => {
         </div>
     );
 };
-
 function MenuList({ items, info }) {
     const list = items.map((item, index) => (
         <MenuItem
@@ -76,18 +75,21 @@ function MenuList({ items, info }) {
             item_name={item.item_name}
             item_option={item.item_option}
             item_price={item.item_price}
+            item_id={info[index].item_id}
             qty={info[index].qty}
             src={item.item_img}
         />
     ));
     return (
-        <> {list}</>
+        <ListView listLength={list.length} maxLength={5} infinite={false} autoplay={false}>
+            {list}
+        </ListView>
     )
 };
 
-function MenuItem({ src, item_name, item_option, item_price, qty }) {
+function MenuItem({ src, item_id, item_name, item_option, item_price, qty }) {
     return (
-        <div className={styles['menu-item']}>
+        <Link to={Paths.ajoonamu.product + '?item_id=' + item_id} className={styles['menu-item']}>
             <div className={styles['menu-img']}>
                 <ErrorCoverImage src={( src !== undefined && src !== "[]") ? DBImageFormat(src)[0] : Noimage} alt="메뉴" />
             </div>
@@ -96,7 +98,7 @@ function MenuItem({ src, item_name, item_option, item_price, qty }) {
                 {qty}개 ({numberFormat(item_price * qty)}원)
             </div>
             <div className={styles['menu-options']}>(추가선택: {item_option ? item_option : '없음'})</div>
-        </div>
+        </Link>
     );
 }
 export default PreviewOrderItem;

@@ -55,10 +55,10 @@ const PrevArrow = ({ style, onClick }) => (
 );
 
 // 슬릭추가
-export default ({ listLength = 0, maxLength = 4, children }) => {
+export default ({ listLength = 0, maxLength = 4, children, infinite = true, autoplay = true }) => {
     const settings = {
-        infinite: true,
-        autoplay: true,
+        infinite,
+        autoplay,
         speed: 2000,
         slidesToShow: listLength > maxLength ? maxLength : listLength,
         slidesToScroll: maxLength,

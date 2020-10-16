@@ -38,15 +38,19 @@ const OrderListContainer = () => {
     const callOrderListApi = useCallback(async () => {
         setLoading(true);
         if (user_token) {
-            const res = await getOrderList(
-                user_token,
-                0, 100,
-                // (page - 1) * PAGE_PER_VIEW,
-                // PAGE_PER_VIEW,
-                startDate,
-                endDate,
-            );
-            setOrderList(res.orders ? res.orders : []);
+            try {
+                const res = await getOrderList(
+                    user_token,
+                    0, 100,
+                    // (page - 1) * PAGE_PER_VIEW,
+                    // PAGE_PER_VIEW,
+                    startDate,
+                    endDate,
+                );
+                setOrderList(res.orders ? res.orders : []);
+            } catch (e) {
+                console.log(e);
+            }
         }
         setLoading(false);
     }, [user_token, startDate, endDate, /*page*/]);

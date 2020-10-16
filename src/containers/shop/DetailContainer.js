@@ -212,18 +212,20 @@ const DetailContainer = ({ item_id }) => {
                             <div className={styles['item-price']}>
                                 {menu && numberFormat(menu.item.item_price)}원
                             </div>
-                            <div className={styles['option-text']}>
-                                추가선택 {menu && menu.options.length === 0 && "없음"}
-                            </div>
-                            <div className={styles['item-additional-list']}>
-                                {menu && (
-                                    <AdditionalList
-                                        itemList={menu.options}
-                                        onClickAddItem={onClickOptionItem}
-                                    />
-                                )}
-                            </div>
-
+                            {menu && menu.options && menu.options.length !== 0 &&
+                            <>
+                                <div className={styles['option-text']}>
+                                    추가선택
+                                </div>
+                                <div className={styles['item-additional-list']}>
+                                    {menu && (
+                                        <AdditionalList
+                                            itemList={menu.options}
+                                            onClickAddItem={onClickOptionItem}
+                                        />
+                                    )}
+                                </div>
+                            </>}
                             <div className={styles['box']}>
                                 <div className={styles['counter']}>
                                     <div className={styles['value']}>
