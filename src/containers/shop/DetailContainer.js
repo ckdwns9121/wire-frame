@@ -288,13 +288,13 @@ const DetailContainer = ({ item_id }) => {
                                     </div>
                                 </div>
                                 <div className={styles['detail-img']}>
-                                    {company && <ErrorCoverImage src={DBImageFormat(company.item_content_top)[0]} alt="상단 랜딩 이미지" />}
+                                    {/* {company && <ErrorCoverImage src={DBImageFormat(company.item_content_top)[0]} alt="상단 랜딩 이미지" />} */}
                                     {menu &&
                                     menu.item &&
                                     menu.item.item_content !== '[]' &&
                                     DBImageFormat(menu.item.item_content).map(image =>
                                     <ErrorCoverImage src={image} alt="상세 이미지" key={image} /> )}
-                                    {company && <ErrorCoverImage src={DBImageFormat(company.item_content_bot)[0]} alt="상단 랜딩 이미지" />}
+                                    {/* {company && <ErrorCoverImage src={DBImageFormat(company.item_content_bot)[0]} alt="상단 랜딩 이미지" />} */}
                                 </div>
                             </div>
                             )}

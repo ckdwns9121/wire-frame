@@ -195,6 +195,10 @@ const OrderContainer = () => {
                     } else {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID.pp_tno);
                     }
+                    if (price === 0) {
+                        history.replace(Paths.index);
+                        openModal('잘못된 접근입니다.');
+                    } 
                     setTotalPrice(price);
                     setDlvCost(query.delivery_cost);
                 }
@@ -228,6 +232,10 @@ const OrderContainer = () => {
                                 parseInt(item.item_quanity);
                         }
                     }
+                    if (price === 0) {
+                        history.replace(Paths.index);
+                        openModal('잘못된 접근입니다.');
+                    } 
                     setDlvCost(query.delivery_cost);
                     setTotalPrice(price);
                 }
