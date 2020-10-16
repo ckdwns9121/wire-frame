@@ -100,6 +100,13 @@ export default function App() {
     }, []);
 
     useEffect(() => {
+        if (location.pathname.indexOf('취소') !== -1 && location.pathname.indexOf('결제')) {
+            if (isMobile()) {
+                window.location = PROTOCOL_ENV + 'm.ajoonamu.com/order';
+            } else {
+                window.location = PROTOCOL_ENV + 'ajoonamu.com/order';
+            }
+        }
         if (isMobile() && location.pathname.indexOf(Paths.ajoonamu.oauth) === -1) {
             window.location.href = PROTOCOL_ENV + 'm.ajoonamu.com';
         }
