@@ -105,7 +105,6 @@ export default ({ match, location }) => {
             // return () => setItem({});
         }
     }, [detail, getEventShow]);
-    console.log(item);
     return (
         <div className={styles['container']}>
             <div className={styles['title-area']}>
