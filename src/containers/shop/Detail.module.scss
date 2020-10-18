@@ -73,9 +73,9 @@
                     height: 72px;
                     .value {
                         box-sizing: border-box;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
+                        border: none;
+                        text-align: center;
+                        font-size: 1.5rem;
                         width: 84px;
                     }
                     .control {

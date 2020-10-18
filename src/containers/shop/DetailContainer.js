@@ -11,7 +11,7 @@ import Count from '../../components/svg/counter/Count';
 import Noimage from '../../components/svg/noimage.png';
 import { ButtonBase } from '@material-ui/core';
 import Loading from '../../components/assets/Loading';
-import { DBImageFormat, numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat, stringNumberToInt } from '../../lib/formatter';
 import { addCartItem } from '../../api/cart/cart';
 import { noAuthAddCart } from '../../api/noAuth/cart';
 import { useStore } from '../../hooks/useStore';
@@ -186,6 +186,12 @@ const DetailContainer = ({ item_id }) => {
     }, []);
 
     useEffect(() => {
+        if (quanity < 1) {
+            setQuanity(1);
+        }
+    }, [quanity])
+
+    useEffect(() => {
         setQuanity(1);
     }, [item_id]);
 
@@ -228,9 +234,7 @@ const DetailContainer = ({ item_id }) => {
                             </>}
                             <div className={styles['box']}>
                                 <div className={styles['counter']}>
-                                    <div className={styles['value']}>
-                                        {quanity}
-                                    </div>
+                                    <input type="text" className={styles['value']} value={numberFormat(quanity)} onChange={e => setQuanity(stringNumberToInt(e.target.value))} />
                                     <div className={styles['control']}>
                                         <ButtonBase
                                             className={styles['increment']}
