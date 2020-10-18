@@ -1,7 +1,11 @@
-import { ButtonBase } from '@material-ui/core';
 import React, { Fragment, useRef } from 'react';
+import classnames from 'classnames/bind';
+import { ButtonBase } from '@material-ui/core';
 import styled from 'styled-components';
 import { dateToYYYYMMDD, numberFormat } from '../../lib/formatter';
+import styles from './Estimate.module.scss';
+
+const cn = classnames.bind(styles);
 
 const EstimateArea = styled.div`
     display: flex;
@@ -49,9 +53,6 @@ const Title = styled.h2`
     font-size: 36px;
     margin-bottom: 50px;
 `;
-const Table = styled.table`
-    width: 100%;
-`;
 const Cautions = styled.div`
     text-align: center;
     margin: 50px 0;
@@ -76,11 +77,55 @@ export default ({
             <EstimateArea>
                 <Estimate view>
                     <Title>견적서</Title>
-                    <Table id="estimate-table">
+                    <table className={styles['table']} id="estimate-table">
+                        <colgroup>
+                            <col width="30px"></col>
+                            <col width="250px"></col>
+                            <col width="80px"></col>
+                            <col width="110px"></col>
+                            <col width="110px"></col>
+                            <col width="110px"></col>
+                            <col width="110px"></col>
+                        </colgroup>
                         <thead>
                             <tr>
+                                <td rowSpan="2">수신</td>
+                                <td className={cn('value')} rowSpan="2"></td>
+                                <td rowSpan="5">공급자</td>
+                                <td>사업자 번호</td>
+                                <td className={cn('value')} colSpan="3"></td>
+                            </tr>
+                            <tr>
+                                <td>상호</td>
+                                <td className={cn('value')}>아주나무 베이커리</td>
+                                <td>대표자</td>
+                                <td className={cn('value')}>이창훈</td>
+                            </tr>
+                            <tr>
+                                <td rowSpan="2">참조</td>
+                                <td className={cn('value')}></td>
+                                <td>소재지</td>
+                                <td className={cn('value')} colSpan="3"></td>
+                            </tr>
+                            <tr>
+                                <td className={cn('value')}></td>
+                                <td>업종</td>
+                                <td className={cn('value')}>즉석판매제조가공업</td>
+                                <td>업태</td>
+                                <td className={cn('value')}>빵류, 제과</td>
+                            </tr>
+                            <tr>
+                                <td>일자</td>
+                                <td className={cn('value')}>{dateToYYYYMMDD(new Date())}</td>
+                                <td>담당자</td>
+                                <td className={cn('value')}>이창훈</td>
+                                <td>연락처</td>
+                                <td className={cn('value')}>070-4253-3831</td>
+                            </tr>
+                            <tr><td className={cn('price', 'alert')} colSpan="7">단위(원)</td></tr>
+                            <tr>
                                 <th>부</th>
-                                <th>상품 명</th>
+                                <th>상품명</th>
                                 <th>규격</th>
                                 <th>수량</th>
                                 <th>단가</th>
@@ -88,7 +133,7 @@ export default ({
                                 <th>비고</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className={styles['value']}>
                             {products.map((product, index) => {
                                 const {
                                     item,
@@ -104,13 +149,11 @@ export default ({
                                     return (
                                         <tr key={itemId}>
                                             <td></td>
-                                            <td name="true"></td>
-                                            <td>{option_name}</td>
+                                            <td></td>
+                                            <td className={cn('name')}>{option_name}</td>
                                             <td>{item.item_quanity}</td>
-                                            <td>{numberFormat(option_price)}</td>
-                                            <td value={true}>
-                                                {numberFormat(option_price * item.item_quanity)}원
-                                            </td>
+                                            <td className={cn('price')}>{numberFormat(option_price)}</td>
+                                            <td className={cn('price')}>{numberFormat(option_price * item.item_quanity)}원</td>
                                             <td></td>
                                         </tr>
                                     );
@@ -120,11 +163,11 @@ export default ({
                                     <Fragment key={index}>
                                         <tr>
                                             <td></td>
-                                            <td>{item.item_name}</td>
+                                            <td className={cn('name')}>{item.item_name}</td>
                                             <td></td>
                                             <td>{item.item_quanity}</td>
-                                            <td>{numberFormat(item.item_price)}</td>
-                                            <td>{numberFormat(item.item_price * item.item_quanity)}원</td>
+                                            <td className={cn('price')}>{numberFormat(item.item_price)}</td>
+                                            <td className={cn('price')}>{numberFormat(item.item_price * item.item_quanity)}원</td>
                                             <td></td>
                                         </tr>
                                         {components}
@@ -133,15 +176,15 @@ export default ({
                             })}
                             <tr>
                                 <td></td>
-                                <td>배달비: {dlvCost}</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td value={true}>합계: {numberFormat(total + parseInt(dlvCost))}원</td>
                                 <td></td>
+                                <td className={cn('price')}>합계: {numberFormat(total + parseInt(dlvCost))}원</td>
+                                <td className={cn('price')}>배달비: {numberFormat(dlvCost)}원</td>
                             </tr>
                         </tbody>
-                    </Table>
+                    </table>
                     <Cautions>
                         상기와 같이 견적서를 제출합니다.
                     </Cautions>
