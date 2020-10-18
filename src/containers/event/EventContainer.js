@@ -16,6 +16,7 @@ import Loading from '../../components/assets/Loading';
 import ListPaging from '../../components/sidebar/ListPaging';
 import DetailPaging from '../../components/sidebar/DetailPaging';
 import ErrorCoverImage from '../../components/assets/ErrorCoverImage';
+import CoverImage from '../../components/assets/CoverImage';
 
 const cn = classnames.bind(styles);
 
@@ -104,7 +105,6 @@ export default ({ match, location }) => {
             // return () => setItem({});
         }
     }, [detail, getEventShow]);
-
     return (
         <div className={styles['container']}>
             <div className={styles['title-area']}>
@@ -132,6 +132,14 @@ export default ({ match, location }) => {
                         <div className={styles['e-content']}>
                             {(item && item.images === '[]') ? <img src={Noimage} alt="기본 이미지" />
                             : <ErrorCoverImage src={DBImageFormat(item.images)[0]} alt="이벤트 이미지" />}
+
+                            <div className={styles['e-detail']}>
+                                {item &&
+                                item.images_detail &&
+                                item.images_detail !== '[]' &&
+                                DBImageFormat(item.images_detail).map(image_detail =>
+                                <ErrorCoverImage src={image_detail} alt="상세 이미지" key={image_detail} />)}
+                            </div>
                         </div>
                     </>
                 ) : mode === 0 ? <EventListView list={useList} page={page} onClickDetail={onClickDetail} /> : <EventListView list={passedList} page={page} onClickDetail={onClickDetail} />}
@@ -155,7 +163,8 @@ const EventListView = ({ list, page, onClickDetail }) => (
                     >
                         <div className={styles['image']}>
                             {(images === '[]') ? <img src={Noimage} alt="기본 이미지" />
-                                : <ErrorCoverImage src={DBImageFormat(images)[0]} alt="이벤트 이미지" />}
+                                : <CoverImage src={DBImageFormat(images)[0]} vertical_rate="60%" />}
+                                {/* : <ErrorCoverImage src={DBImageFormat(images)[0]} alt="이벤트 이미지" />} */}
                         </div>
                         <div className={styles['text']}>
                             <p className={styles['warn']}>{warn}</p>
