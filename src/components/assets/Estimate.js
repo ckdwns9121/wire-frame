@@ -1,4 +1,4 @@
-import React, { Fragment, useRef } from 'react';
+import React, { Fragment } from 'react';
 import classnames from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 import styled from 'styled-components';
@@ -66,46 +66,38 @@ const Footer = styled.h3`
 `;
 
 export default ({
-    onDownload, company = '샌달',
+    receiver,
+    onDownload, com_name = '샌달', ceo_name,
+    address, tel, business_num,
     dlvCost,
     products = [],
 }) => {
     let total = 0;
-    const ref = useRef(null);
     return (
-        <ButtonBase style={{ width: '100%', }} onClick={() => onDownload(ref)}>
+        <ButtonBase style={{ width: '100%', }} onClick={() => onDownload()}>
             <EstimateArea>
                 <Estimate view>
                     <Title>견적서</Title>
                     <table className={styles['table']} id="estimate-table">
-                        <colgroup>
-                            <col width="30px"></col>
-                            <col width="250px"></col>
-                            <col width="80px"></col>
-                            <col width="110px"></col>
-                            <col width="110px"></col>
-                            <col width="110px"></col>
-                            <col width="110px"></col>
-                        </colgroup>
                         <thead>
                             <tr>
                                 <td rowSpan="2">수신</td>
-                                <td className={cn('value')} rowSpan="2"></td>
+                                <td className={cn('value')} rowSpan="2">{receiver}</td>
                                 <td rowSpan="5">공급자</td>
                                 <td>사업자 번호</td>
-                                <td className={cn('value')} colSpan="3"></td>
+                                <td className={cn('value')} colSpan="3">{business_num}</td>
                             </tr>
                             <tr>
                                 <td>상호</td>
                                 <td className={cn('value')}>아주나무 베이커리</td>
                                 <td>대표자</td>
-                                <td className={cn('value')}>이창훈</td>
+                                <td className={cn('value')}>{ceo_name}</td>
                             </tr>
                             <tr>
                                 <td rowSpan="2">참조</td>
                                 <td className={cn('value')}></td>
                                 <td>소재지</td>
-                                <td className={cn('value')} colSpan="3"></td>
+                                <td className={cn('value')} colSpan="3">{address}</td>
                             </tr>
                             <tr>
                                 <td className={cn('value')}></td>
@@ -118,9 +110,9 @@ export default ({
                                 <td>일자</td>
                                 <td className={cn('value')}>{dateToYYYYMMDD(new Date())}</td>
                                 <td>담당자</td>
-                                <td className={cn('value')}>이창훈</td>
+                                <td className={cn('value')}>{ceo_name}</td>
                                 <td>연락처</td>
-                                <td className={cn('value')}>070-4253-3831</td>
+                                <td className={cn('value')}>{tel}</td>
                             </tr>
                             <tr><td className={cn('price', 'alert')} colSpan="7">단위(원)</td></tr>
                             <tr>
@@ -188,7 +180,7 @@ export default ({
                     <Cautions>
                         상기와 같이 견적서를 제출합니다.
                     </Cautions>
-                    <Footer>{company} 드림</Footer>
+                    <Footer>{com_name} 드림</Footer>
                 </Estimate>
             </EstimateArea>
         </ButtonBase>

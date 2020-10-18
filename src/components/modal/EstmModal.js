@@ -10,7 +10,9 @@ import Estimate from '../assets/Estimate';
 import Loading from '../assets/Loading';
 import { isEmailForm } from '../../lib/formatChecker';
 import { useModal } from '../../hooks/useModal';
-import SDGothicNEO from './AppleSDGothicNeoR';
+import SDGothicNEO_R from './AppleSDGothicNeoR';
+import SDGothicNEO_B from './AppleSDGothicNeoB';
+import { useSelector } from 'react-redux';
 
 const reducer = (state, action) => ({
     ...state,
@@ -20,6 +22,9 @@ const reducer = (state, action) => ({
 const EstmModal = (props) => {
     const openModal = useModal();
 
+    const { company } = useSelector(state => state.company);
+    const { com_name, addr1, addr2, ceo_name, tel, business_num } = company;
+    
     const [loading, setLoading] = useState(false);
     const [fullWidth] = React.useState(true);
     const [maxWidth] = React.useState('sm');
@@ -30,7 +35,7 @@ const EstmModal = (props) => {
     });
     const [estmFile, setEstmFile] = useState(null);
 
-    const onStateChange = useCallback((e) => dispatch(e.target), []);
+    const onStateChange = useCallback(e => dispatch(e.target), []);
     const sendEstimate = useCallback(async () => {
         if (estmFile) {
             if (isEmailForm(state.receiver_email)) {
@@ -61,25 +66,64 @@ const EstmModal = (props) => {
         }
     }, [estmFile, state, openModal, props]);
 
-    const onDownload = (ref) => {
+    const onDownload = () => {
         const doc = new jsPDF('p', 'mm');
         window.scrollTo(0, 0);
-        doc.addFileToVFS('AppleSDGothicNeoR.ttf', SDGothicNEO);
+        doc.addFileToVFS('AppleSDGothicNeoR.ttf', SDGothicNEO_R);
+        doc.addFileToVFS('AppleSDGothicNeoB.ttf', SDGothicNEO_B);
         doc.addFont('AppleSDGothicNeoR.ttf', 'apple', 'normal');
+        doc.addFont('AppleSDGothicNeoB.ttf', 'apple', 'bold');
         doc.setFont('apple');
         doc.autoTable({
-            styles: { font: 'apple', fontStyle: 'normal' },
+            theme: 'plain',
+            styles: {
+                font: 'apple',
+                fontSize: '30',
+                fontStyle: 'bold',
+                halign: 'center'
+            },
+            body: [['견적서']]
+        })
+        doc.autoTable({
+            theme: 'plain',
+            styles: {
+                font: 'apple',
+                fontStyle: 'normal',
+                lineWidth: 0.5,
+                lineColor: '#222',
+                overflow: 'linebreak',
+                halign: 'right',
+                valign: 'middle'
+            },
+            headStyles: {
+                halign: 'center'
+            },
             html: '#estimate-table',
         });
+        doc.autoTable({
+            theme: 'plain',
+            styles: {
+                font: 'apple',
+                fontStyle: 'normal',
+                halign: 'center',
+                fontSize: '12',
+            },
+            footStyles: {
+                fontSize: '24',
+                fontStyle: 'bold',
+            },
+            margin: { top: 100 },
+            body: [['상기와 같이 견적서를 제출합니다.']],
+            foot: [['샌달 드림']]
+        })
         
+        const blob = doc.output('blob');
+        const makeFile = new File([blob], '샌달 견적서.pdf', {
+            type: blob.type,
+        });
         window.open(doc.output('bloburl'));
-        // const blob = doc.output('blob');
-        // const makeFile = new File([blob], '샌달 견적서.pdf', {
-        //     type: blob.type,
-        // });
-        // window.open(doc.output('bloburl'));
-        // setEstmFile(makeFile);
-        // setLoading(false);
+        setEstmFile(makeFile);
+        setLoading(false);
     };
 
     return (
@@ -93,27 +137,56 @@ const EstmModal = (props) => {
             >
                 <div className={styles['title-bar']}>
                     <div className={styles['title']}>견적서 발송</div>
-                    <div className={styles['close']} onClick={props.handleClose}>
+                    <div
+                        className={styles['close']}
+                        onClick={props.handleClose}
+                    >
                         <CloseIcon />
                     </div>
                 </div>
                 <div className={styles['modal-content']}>
                     <div className={styles['modal-input-box']}>
                         <div className={styles['label']}>수신자</div>
-                        <input type="text" name="receiver" value={state.receiver} onChange={onStateChange}/>
+                        <input
+                            type="text"
+                            name="receiver"
+                            value={state.receiver}
+                            onChange={onStateChange}
+                        />
                     </div>
                     <div className={styles['modal-input-box']}>
                         <div className={styles['label']}>받을 이메일 주소</div>
-                        <input type="text" name="receiver_email" value={state.receiver_email} onChange={onStateChange}/>
+                        <input
+                            type="text"
+                            name="receiver_email"
+                            value={state.receiver_email}
+                            onChange={onStateChange}
+                        />
                     </div>
                     <div className={styles['estimate']}>
-                        <Estimate onDownload={onDownload} products={props.cartList} dlvCost={props.dlvCost} />
+                        <Estimate
+                            receiver={state.receiver}
+                            com_name={com_name} ceo_name={ceo_name}
+                            address={addr1 + ' ' + addr2} business_num={business_num}
+                            tel={tel}
+                            onDownload={onDownload}
+                            products={props.cartList}
+                            dlvCost={props.dlvCost}
+                        />
                     </div>
                     <div className={styles['box']}>
-                        <ButtonBase className={styles['btn']} onClick={props.order}>
+                        <ButtonBase
+                            className={styles['btn']}
+                            onClick={props.order}
+                        >
                             건너뛰기
                         </ButtonBase>
-                        <ButtonBase className={styles['btn'] + ' ' + styles['active']} onClick={sendEstimate}>견적서발송</ButtonBase>
+                        <ButtonBase
+                            className={styles['btn'] + ' ' + styles['active']}
+                            onClick={sendEstimate}
+                        >
+                            견적서발송
+                        </ButtonBase>
                     </div>
                 </div>
             </Dialog>
