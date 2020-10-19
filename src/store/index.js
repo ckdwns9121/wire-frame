@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import auth, { auth_saga } from './auth/auth';
-import { product, breakfast } from './product';
+import { product, breakfast ,prefer} from './product';
 import modal from './modal';
 import { address, store } from './address';
 import company, { company_saga } from './company';
@@ -11,6 +11,7 @@ const rootReducer = combineReducers({
     product,
     breakfast,
     modal,
+    prefer,
     company,
     address,
     store,

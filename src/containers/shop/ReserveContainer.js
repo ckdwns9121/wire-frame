@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
+import cn from 'classnames/bind';
 import TabMenu from '../../components/tab/TabMenu';
 import MenuItemList from '../../components/item/MenuItemList';
 import Message from 'components/assets/Message';
@@ -19,14 +20,33 @@ import { getCategory } from '../../api/category/category';
 import { get_catergory, get_menulist, add_menuitem } from '../../store/product/product';
 import { stringNumberToInt } from '../../lib/formatter';
 import { useScroll } from '../../hooks/useScroll';
+import { ButtonBase } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
+
+import {
+    get_prefer_list,
+    get_general_list,
+    set_type,
+    set_serach,
+    init
+} from '../../store/product/prefer';
+
+import {useModal} from '../../hooks/useModal';
 
 const OFFSET = 8;
 const LIMIT = 8;
 
+const cx  = cn.bind(styles);
+
 const ReserveContainer = ({ tab = '0' }) => {
+
+    const openModal  = useModal();
     const { categorys, items } = useSelector((state) => state.product);
     const { addr1 } = useSelector((state) => state.address);
     const { store } = useSelector((state) => state.store);
+    const { prefer_items, general_items, type, search } = useSelector(
+        (state) => state.prefer,
+    );
     const dispatch = useDispatch();
 
     const history = useHistory();
@@ -36,8 +56,10 @@ const ReserveContainer = ({ tab = '0' }) => {
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [tabIndex, setTab] = useState(parseInt(tab));
     const [loading, setLoading] = useState(false);
-    const [preferList, setPreferMenuList] = useState([]); //추천메뉴 리스트
-    const [generalList, setGeneralMenuList] = useState([]); //추천메뉴 리스트
+
+    const [preferEmpty, setPreferEmpty] = useState(false);
+    const [generalEmpty, setGeneralEmpty] = useState(false);
+    const onChangeType = (type) => dispatch(set_type(type));
 
     const { isScrollEnd } = useScroll(loading);
     const [posts, setPosts] = useState([]); //보여줄 배열
@@ -55,23 +77,51 @@ const ReserveContainer = ({ tab = '0' }) => {
     };
 
     //추천메뉴 설정
-    const onClickCustomOrder = () => {
+    const onClickCustomOrder = async () => {
         setOpen(false);
-        getCustomList();
-    };
-
-    // 사용자 추천 메뉴들고오기
-    const getCustomList = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await getPreferMenuList(0, 100, 0, 100, 1, budget, desireQuan, addr1, store.shop_id);
-            setPreferMenuList(res.items_prefer);
-            setGeneralMenuList(res.items_general);
-        } catch {
-            alert('오류!');
+            const res = await getPreferMenuList(
+                0,
+                500,
+                0,
+                500,
+                1,
+                budget,
+                desireQuan,
+                addr1,
+                store.shop_id,
+            );
+            if (res.items_prefer.length !== 0) {
+                dispatch(get_prefer_list(res.items_prefer));
+                setPreferEmpty(false);
+            } else {
+                setPreferEmpty(true);
+            }
+            if (res.items_general.length !== 0) {
+                dispatch(get_general_list(res.items_general));
+                setGeneralEmpty(false);
+            } else {
+                setGeneralEmpty(true);
+            }
+            dispatch(set_serach(true));
+        } catch (e) {
+            console.error(e);
         }
         setLoading(false);
-    }, [budget, desireQuan, addr1, store]);
+    };
+    const onClickInit = () => {
+        openModal(
+            '추천메뉴 설정을 다시하시겠습니까?',
+            '재설정을 원하시면 예를 눌러주세요',
+            () => {
+                dispatch(init());
+            },
+            () => {},
+            true,
+        );
+    };
+
 
     //전체 예산 입력
     const onChangeBudget = useCallback((e) => {
@@ -268,20 +318,24 @@ const ReserveContainer = ({ tab = '0' }) => {
                         <div className={styles['shop']}>
                             {tabIndex === 0 ? (
                                 <>
-                                    {preferList.length !== 0 ? (
-                                        <>
-                                            <MenuItemList menuList={preferList} onClick={onClickMenuItem} />
-                                            <MenuItemList menuList={generalList} onClick={onClickMenuItem} />
-                                        </>
-                                    ) : (
-                                            <Message
-                                                msg="전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."
-                                                isButton={true}
-                                                buttonName={'맞춤주문 설정하기'}
-                                                onClick={handleOpen}
-                                                src={false}
-                                            />
-                                        )}
+                                        <PreferMenu
+                                            empty={
+                                                type === 0
+                                                    ? preferEmpty
+                                                    : generalEmpty
+                                            }
+                                            list={
+                                                type === 0
+                                                    ? prefer_items
+                                                    : general_items
+                                            }
+                                            type={type}
+                                            search={search}
+                                            onClick={onClickMenuItem}
+                                            handleOpen={handleOpen}
+                                            onChange={onChangeType}
+                                            init={onClickInit}
+                                        />
                                 </>
                             ) : (<>{renderPost()}</>)}
                         </div>
@@ -312,5 +366,78 @@ const ReserveContainer = ({ tab = '0' }) => {
         </>
     );
 };
+
+const PreferMenu =({  
+    empty,
+    search,
+    list,
+    onClick,
+    type,
+    handleOpen,
+    onChange,
+    init,})=>{
+    return(
+        <>
+        {!search ? (
+            <>
+                <Message
+                    msg={`전체 예산과 희망 수량을 선택하시면\n 메뉴 구성을 추천 받으실 수 있습니다.`}
+                    isButton={true}
+                    onClick={handleOpen}
+                    buttonName={'맞춤 주문 하기'}
+                />
+            </>
+        ) : (
+            <>
+                <ul>
+                    <li
+                        className={cx({ active: type === 0 })}
+                        onClick={() => {
+                            onChange(0);
+                        }}
+                    >
+                        <ButtonBase>맞춤메뉴</ButtonBase>
+                    </li>
+                    <li
+                        className={cx({ active: type === 1 })}
+                        onClick={() => {
+                            onChange(1);
+                        }}
+                    >
+                        <ButtonBase>일반메뉴</ButtonBase>
+                    </li>
+                </ul>
+                <Refesh onClick={init} />
+                {!empty ? (
+                    <>
+                        <div className={styles['length']}>
+                            총 <b> {list.length}</b>개의 추천메뉴가
+                            있습니다.
+                        </div>
+                        <MenuItemList menuList={list} onClick={onClick} />
+                    </>
+                ) : (
+                    <Message
+                        msg={`추천 드릴 메뉴 구성이 없습니다.`}
+                        isButton={true}
+                        onClick={handleOpen}
+                        buttonName={'맞춤 주문 하기'}
+                    />
+                )}
+            </>
+        )}
+    </>
+    )
+}
+
+function Refesh({ onClick }) {
+    return (
+        <IconButton className={styles['refesh']} onClick={onClick}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="#999">
+                <path d="M13.5 2c-5.629 0-10.212 4.436-10.475 10h-3.025l4.537 5.917 4.463-5.917h-2.975c.26-3.902 3.508-7 7.475-7 4.136 0 7.5 3.364 7.5 7.5s-3.364 7.5-7.5 7.5c-2.381 0-4.502-1.119-5.876-2.854l-1.847 2.449c1.919 2.088 4.664 3.405 7.723 3.405 5.798 0 10.5-4.702 10.5-10.5s-4.702-10.5-10.5-10.5z" />
+            </svg>
+        </IconButton>
+    );
+}
 
 export default ReserveContainer;
