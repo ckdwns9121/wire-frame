@@ -68,7 +68,6 @@ const EstmModal = (props) => {
 
     const onDownload = () => {
         const doc = new jsPDF('p', 'mm');
-        window.scrollTo(0, 0);
         doc.addFileToVFS('AppleSDGothicNeoR.ttf', SDGothicNEO_R);
         doc.addFileToVFS('AppleSDGothicNeoB.ttf', SDGothicNEO_B);
         doc.addFont('AppleSDGothicNeoR.ttf', 'apple', 'normal');
