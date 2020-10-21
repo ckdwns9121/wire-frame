@@ -87,8 +87,9 @@
         .e-content {
             padding: 60px 0;
             border-top: solid 1px #EBEBEB;
+            text-align: center;
             img {
-                width: 100%;
+                min-width: 700px;
             }
         }
         &.margin {

@@ -132,8 +132,9 @@
             }
             .detail-img {
                 padding-bottom: 120px;
+                text-align: center;
                 img {
-                    width: 100%;
+                    min-width: 700px;
                 }
             }
             .detail-text {

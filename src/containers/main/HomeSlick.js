@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 import { requestBannerList } from '../../api/event/banner';
 import { useModal } from '../../hooks/useModal';
 
-import NoImage from '../../components/svg/noimage.png';
+// import NoImage from '../../components/svg/noimage.png';
 
 import { DBImageFormat } from '../../lib/formatter';
+import ErrorCoverImage from '../../components/assets/ErrorCoverImage';
 
 const settings = {
     infinite: true,
@@ -15,6 +16,7 @@ const settings = {
     speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
+    adaptiveHeight: true,
 };
 
 const HomeSlick = () => {
@@ -42,7 +44,8 @@ const HomeSlick = () => {
             <Slider {...settings}>
                 {list.map(item => (
                     <Link key={item.id} to={item.bn_url}>
-                        <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "'), url('" + NoImage + "')" }}/>
+                        {/* <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "'), url('" + NoImage + "')" }}/> */}
+                        <ErrorCoverImage src={DBImageFormat(item.bn_img)[0]} alt="배너" />
                     </Link>
                 ))}
             </Slider>
