@@ -33,8 +33,8 @@ import {
 
 import {useModal} from '../../hooks/useModal';
 
-const OFFSET = 8;
-const LIMIT = 8;
+const OFFSET = 12;
+const LIMIT = 12;
 
 const cx  = cn.bind(styles);
 
