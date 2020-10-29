@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { dateToYYYYMMDDHHMMSS } from '../../lib/formatter';
 import { Paths } from '../../paths';
 
 export const getOrderList = async (
     token,
-    offset=0,
-    limit=10,
+    offset = 0,
+    limit = 10,
     start_date,
     end_date,
 ) => {
@@ -18,8 +19,8 @@ export const getOrderList = async (
         params: {
             offset,
             limit,
-            end_date: end_date,
-            start_date: start_date,
+            end_date: dateToYYYYMMDDHHMMSS(end_date),
+            start_date: dateToYYYYMMDDHHMMSS(start_date),
         },
     };
     const res = await axios.get(req, config);

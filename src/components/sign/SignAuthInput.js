@@ -21,6 +21,7 @@ const SignAuthInput = ({
     noLabel = false,
     onClick = () => {},
     mypage = false,
+    reference
 }) => {
     return (
         <div className={cx('sign-input')}>
@@ -34,6 +35,7 @@ const SignAuthInput = ({
                 onChange={onChange}
                 onKeyDown={onKeyDown}
                 disabled={input_disabled}
+                ref={reference}
             />
             <ButtonBase
                 onClick={onClick}

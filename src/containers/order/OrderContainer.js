@@ -82,6 +82,7 @@ const checkReducer = (state, action) => {
 };
 
 const OrderContainer = () => {
+
     const user_token = useStore(false);
     const openModal = useModal();
     const { company } = useSelector(state => state.company);
@@ -909,14 +910,13 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
                     alert('SMS not enough point. please charge.');
                 } else {
                     setStart(true);
-                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
-                    authNumberInput.current.focus();
+                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!', () => authNumberInput.current.focus());
                 }
             } catch (e) {
                 openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
             }
         } else {
-            openModal('휴대폰 형식에 맞지 않습니다!', '휴대폰 번호를 확인해 주세요.');
+            openModal('휴대폰 형식에 맞지 않습니다!', '휴대폰 번호를 확인해 주세요.', () => secondPhoneInput.current.focus());
         }
     }, [firstValue, secondValue, thirdValue, openModal]);
 
@@ -935,7 +935,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth }) => {
                 setAuth(true);
                 setStart(false);
             } else {
-                openModal('인증번호가 틀렸습니다!', '인증번호를 다시 한 번 확인해 주세요!');
+                openModal('인증번호가 틀렸습니다!', '인증번호를 다시 한 번 확인해 주세요!', () => authNumberInput.current.focus());
             }
         } catch (e) {
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');

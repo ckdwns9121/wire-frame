@@ -11,6 +11,7 @@ const SignNormalInput = ({
     initValue,
     placeholder,
     name,
+    reference
 }) => {
     return (
         <div className={styles['sign-input']}>
@@ -23,6 +24,7 @@ const SignNormalInput = ({
                 value={initValue}
                 onChange={onChange}
                 onKeyDown={onKeyDown}
+                ref={reference}
             />
         </div>
     );

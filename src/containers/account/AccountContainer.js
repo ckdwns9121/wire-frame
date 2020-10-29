@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Account.module.scss';
 import classNames from 'classnames/bind';
@@ -41,6 +41,8 @@ const AccountContainer = () => {
     const [phone, setPhone] = useState('');
     const [emailAgree, setEmailAgree] = useState(0);
     const [smsAgree, setSMSAgree] = useState(0);
+
+    const newPasswordInput = useRef(null);
 
     const [phoneAuth, setPhoneAuth] = useState(true);
     const [passwordChangeMode, setPasswordChangeMode] = useState(false);
@@ -172,10 +174,7 @@ const AccountContainer = () => {
                         );
                     }
                 } else {
-                    openModal(
-                        '형식에 맞지 않는 비밀번호입니다.',
-                        '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.',
-                    );
+                    openModal("비밀번호 형식에 맞지 않습니다!", '8자 이상으로 문자, 숫자 및 특수문자가 모두 포함되어야 합니다.', () => newPasswordInput.current.focus());
                 }
             } else {
                 openModal(
@@ -278,6 +277,7 @@ const AccountContainer = () => {
                                 <input
                                     name="pw"
                                     type="password"
+                                    ref={newPasswordInput}
                                     className={styles['user-input']}
                                     value={pw}
                                     onChange={onChangePassword}

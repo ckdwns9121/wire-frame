@@ -1,13 +1,13 @@
-import React,{useState,useEffect,useCallback} from 'react';
-import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import OrderItemList from '../../components/order/OrderItemList';
 import styles from './OrderDetail.module.scss';
 import cn from 'classnames/bind';
 import Loading from '../../components/assets/Loading';
 import { useStore } from '../../hooks/useStore';
 import { getDetailOrderView } from '../../api/order/orderItem';
-import { numberFormat,stringToTel } from '../../lib/formatter';
+import { numberFormat, stringToTel } from '../../lib/formatter';
 
 import qs from 'qs';
 import { ButtonBase } from '@material-ui/core';
@@ -41,7 +41,7 @@ const OrderDetailContainer = (props) => {
     const [orders, setOrders] = useState(null);
     const [payinfo, setPayInfo] = useState(null);
     const [payple_info , setPaypleInfo] = useState(null);
-    const [od_status , setOdStatus] = useState(false);
+    const [od_status, setOdStatus] = useState("order_apply");
 
     const getOrderInfo = useCallback(async () => {
 
@@ -51,7 +51,7 @@ const OrderDetailContainer = (props) => {
             setOrders(res.orders);
             setPayInfo(res.payinfo);
             const temp = JSON.parse(res.payinfo.pp_result);
-            setOdStatus(res.orders.info[0].od_status==='order_cancel');
+            setOdStatus(res.orders.info[0].od_status);
             setPaypleInfo(temp);
             setLoading(false);
         } else {
@@ -80,8 +80,8 @@ const OrderDetailContainer = (props) => {
                         openMessage(false, '이미 취소된 거래건 입니다.');
                     } else {
                         openMessage(false, '정상적으로 취소되었습니다.');
-                        setOdStatus(true);
                     }
+                    setOdStatus("order_cancel");
                 } catch (e) {
                     
                 }
@@ -120,22 +120,18 @@ const OrderDetailContainer = (props) => {
                                             {orders && orders.order_id}
                                         </div>
                                         <div className={styles['order-type']}>
-                                            {orders &&
-                                                orders.info[0].od_status ===
-                                                    'order_cancel' &&
-                                                '주문취소'}
-                                            {orders &&
-                                                orders.info[0].od_status ===
-                                                    'order_apply' &&
-                                                '배달완료'}
+                                            {od_status === 'order_cancel' && '주문취소'}
+                                            {od_status === 'order_apply' && '입금확인'}
+                                            {od_status === 'shipping' && '배송중'}
+                                            {od_status === 'delivery_complete' && '배달완료'}
+                                            {od_status === 'order_complete' && '주문완료'}
                                         </div>
                                     </div>
                                     <div className={styles['bottom']}>
                                         <div className={styles['req-date']}>
                                             배달 요청 시간 :{' '}
                                             {orders &&
-                                                orders.info[0]
-                                                    .delivery_req_time}
+                                                orders.info[0].delivery_req_time}
                                         </div>
                                     </div>
                                 </div>
@@ -343,23 +339,20 @@ const OrderDetailContainer = (props) => {
                         <div className={styles['cancle-area']}>
                             <ButtonBase
                                 className={styles['btn']}
-                                onClick={
-                                    orders &&
-                                !od_status
-                                        ? userOrderCancle
-                                        : () => {}
+                                onClick={orders &&
+                                (od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')
+                                    ? () => {}
+                                    : userOrderCancle
                                 }
-                                disableRipple={
-                                    !(
-                                        orders &&
-                                        !od_status
-                                    )
-                                }
+                                disabled={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
+                                disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
+                                
                             >
                                 {orders &&
-                                od_status
-                                    ? '주문취소 완료'
-                                    : '주문취소'}
+                                (od_status === 'order_cancel') ? '주문취소완료'
+                                : (od_status === 'delivery_complete') ? '배달완료'
+                                : (od_status === 'order_complete') ? '주문완료'
+                                : '주문 취소'}
                             </ButtonBase>
                         </div>
                     </div>

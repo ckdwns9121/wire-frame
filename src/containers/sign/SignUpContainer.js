@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import React, { useState, useEffect, useCallback, useReducer, useRef } from 'react';
 import useInputs from '../../hooks/useInputs';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
@@ -80,6 +80,9 @@ const SignUpContainer = () => {
     const { check1, check2, check3 } = check;
 
 
+    const emailInputRef = useRef(null);
+    const passwordInputRef = useRef(null);
+    
     const updateToggle = useCallback(() => {
         const checkbox = check1 && check2 ? true : false;
         const userinfo = email.length !== 0 && compare ? true : false;
@@ -160,7 +163,7 @@ const SignUpContainer = () => {
                 openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
             }
         } else {
-            openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.');
+            openModal("비밀번호 형식에 맞지 않습니다!", '8자 이상으로 문자, 숫자 및 특수문자가 모두 포함되어야 합니다.', () => passwordInputRef.current.focus());
         }
     }, [history, email, password, password_confirm, check3, openModal]);
 
@@ -206,6 +209,12 @@ const SignUpContainer = () => {
                     onClick={onClickOverlapCheck}
                     button_disabled={overlap}
                     buttonTitle={'중복검사'}
+                    reference={emailInputRef}
+                    onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                            onClickOverlapCheck();
+                        }
+                    }}
                 />
                 <div className={styles['divider']} />
                 <SignNormalInput
@@ -214,6 +223,7 @@ const SignUpContainer = () => {
                     name={'password'}
                     initValue={password}
                     onChange={onChange}
+                    reference={passwordInputRef}
                 />
                 <SignNormalInput
                     inputType={'password'}
