@@ -1,17 +1,34 @@
 import React from 'react';
 import styles from './Coupon.module.scss';
+import { numberFormat } from "../../lib/formatter";
+import {calculateDay} from '../../lib/calculateDate';
 // import classNames from 'classnames/bind';
 
 // const cx = classNames.bind(styles);
 
-const UseCouponItem = () => {
+const UseCouponItem = (props) => {
+
+    const {
+        // cp_datetime,
+        cp_end,
+        // cp_id,
+        cp_minimum,
+        cp_price,
+        cp_start,
+        cp_subject,
+        cp_target,
+        // cp_use,
+        cp_use_date,
+        // cz_id,
+        // user_id,
+    } = props.item;
     return (
         <div className={styles['coupon-item']}>
             <div className={styles['info']}>
-                <CouponEventName event_name={'첫 주문 3,000원 할인'} />
-                <CouponSale sale={'3,000'} />
-                <CouponEventSub sub_name={'첫 주문시 사용가능'} />
-                <CouponDate date={'2020-05-01 (목)'} />
+                <CouponEventName event_name={cp_subject} />
+                <CouponSale sale={`${numberFormat(cp_price)}원`} />
+                <CouponEventSub sub_name={`최소주문금액 ${numberFormat(cp_minimum)}원`} />
+                <CouponDate date={calculateDay(cp_use_date)} />
             </div>
         </div>
     );

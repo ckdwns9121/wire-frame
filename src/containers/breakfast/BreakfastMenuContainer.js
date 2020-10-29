@@ -31,8 +31,8 @@ import {
 } from '../../store/product/braekfast';
 import { useScroll } from '../../hooks/useScroll';
 
-const OFFSET = 8;
-const LIMIT = 8;
+const OFFSET = 20;
+const LIMIT = 20;
 
 const BreakfastMenuContainer = ({ tab = '0' }) => {
     const { categorys, items } = useSelector((state) => state.breakfast);
@@ -84,7 +84,7 @@ const BreakfastMenuContainer = ({ tab = '0' }) => {
             //아이템이 없고 카테고리
             if (!items && categorys.length !== 0) {
                 for (let i = 0; i < categorys.length; i++) {
-                    const res = await getBreakMenu(categorys[i].ca_id, 0, 8);
+                    const res = await getBreakMenu(categorys[i].ca_id, 0, LIMIT);
                     const { query } = res.data;
                     const temp = {
                         ca_id: categorys[i].ca_id,

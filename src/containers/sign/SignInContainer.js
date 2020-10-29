@@ -209,7 +209,7 @@ const SignInContainer = () => {
                             <img src={KakaoLogo} onClick={() => socialLoginClickHandler('kakao')} alt="kakao"/>
                         </div>
                         <div className={styles.sns}>
-                            <img src={FacebookLogo} alt="facebook"/>
+                            <img src={FacebookLogo} onClick={() => socialLoginClickHandler('facebook') } alt="facebook"/>
                         </div>
                     </div>
                 </div>

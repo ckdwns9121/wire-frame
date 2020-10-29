@@ -22,6 +22,7 @@ import cn from 'classnames/bind';
 import DateRangePicker from '../../components/mypage/DateRangePicker';
 import { useModal } from '../../hooks/useModal';
 import ListPaging from '../../components/sidebar/ListPaging';
+import { calculateDate } from '../../lib/calculateDate';
 
 const cx = cn.bind(styles);
 
@@ -54,14 +55,13 @@ const CouponConatiner = (props) => {
 
     const page = query.page ? parseInt(query.page) : 1;
 
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(calculateDate(new Date(), 7, 'DATE'));
     const [endDate, setEndDate] = useState(new Date());
 
     const [loading, setLoading] = useState(false);
     const [index, setIndex] = useState(0);
     const [cp_list, setCpList] = useState([]);
     const [user_input_cp, setUserInputCp] = useState('');
-    
     const [down_cp_list, setDownCpList] = useState([]);
     const [use_cp_list, setUseCpList] = useState([]);
     const user_token = useStore();
@@ -103,8 +103,10 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             try {
+                console.log(startDate);
+                console.log(endDate);
                 const res = await getUseCpList(user_token, startDate, endDate);
-                console.log(res);
+                setUseCpList(res);
             } catch (e) {
                 console.log(e);
             }
@@ -230,7 +232,7 @@ const CouponConatiner = (props) => {
                     {index === 2 &&
                     <>
                         {use_cp_list.length !== 0 ? (<>
-                            <UseCouponItemList />
+                            <UseCouponItemList  cp_list = {use_cp_list}/>
                             <ListPaging
                                 baseURL={Paths.ajoonamu.mypage + '/coupon?tab=2'}
                                 currentPage={page}
