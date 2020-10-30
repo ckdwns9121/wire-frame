@@ -72,7 +72,7 @@ export default ({ location }) => {
                                     />
                                 </div>
                                 <ListPaging
-                                    baseURL={Paths.ajoonamu.search + '?query=' + (q ? q : '') + '&'}
+                                    baseURL={Paths.ajoonamu.search + '?query=' + (q ? q : '')}
                                     currentPage={page}
                                     pagePerView={PAGE_PER_VIEW}
                                     totalCount={count}

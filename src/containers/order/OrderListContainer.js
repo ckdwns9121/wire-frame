@@ -48,6 +48,7 @@ const OrderListContainer = () => {
                     endDate,
                 );
                 setOrderList(res.orders ? res.orders : []);
+                history.replace(`${Paths.ajoonamu.mypage}/order_list`)
             } catch (e) {
                 console.log(e);
             }

@@ -4,7 +4,7 @@ import styles from './Coupon.module.scss';
 import SubTabMenu from '../../components/tab/SubTabMenu';
 import CouponItemList from '../../components/coupon/CouponItemList';
 import UseCouponItemList from '../../components/coupon/UseCouponItemList';
-import { withRouter } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import qs from 'qs';
 import DownCouponItemList from '../../components/coupon/DownCouponList';
 import { useStore } from '../../hooks/useStore';
@@ -52,6 +52,7 @@ const CouponConatiner = (props) => {
     const query = qs.parse(props.location.search, {
         ignoreQueryPrefix: true,
     });
+    const history = useHistory();
 
     const page = query.page ? parseInt(query.page) : 1;
 
@@ -103,10 +104,12 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             try {
-                console.log(startDate);
-                console.log(endDate);
+    
                 const res = await getUseCpList(user_token, startDate, endDate);
                 setUseCpList(res);
+                if(index===2)
+                  history.replace(`${Paths.ajoonamu.mypage}/coupon?tab=2`);
+
             } catch (e) {
                 console.log(e);
             }
@@ -232,7 +235,7 @@ const CouponConatiner = (props) => {
                     {index === 2 &&
                     <>
                         {use_cp_list.length !== 0 ? (<>
-                            <UseCouponItemList  cp_list = {use_cp_list}/>
+                            <UseCouponItemList  cp_list = {use_cp_list.slice((page - 1) * PAGE_PER_VIEW, page * PAGE_PER_VIEW) }/>
                             <ListPaging
                                 baseURL={Paths.ajoonamu.mypage + '/coupon?tab=2'}
                                 currentPage={page}

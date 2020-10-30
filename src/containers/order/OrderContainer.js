@@ -266,14 +266,19 @@ const OrderContainer = () => {
 
     const onChangeCpPrice = (e) => {
         const cp_id = e.target.value;
+        const total =    parseInt(totalPrice) + parseInt(dlvCost) - parseInt(point_price);
         if (cp_id !== 'default') {
             const index = cp_list.findIndex((item) => item.cp_id === cp_id);
-            if (cp_list[index].cp_minimum <= totalPrice) {
-                setCpPrice(cp_list[index].cp_price);
-                setCpId(cp_id);
-            } else {
+            if(total- cp_list[index].cp_price <10000){
+            openModal('주문 금액을 확인해주세요.','최소 결제 금액은 10,000원 이상부터 입니다.');
+            } 
+            else if ( totalPrice < cp_list[index].cp_minimum  ) {
                 openModal('사용하실 수 없는 쿠폰입니다.', `최소 주문 금액이 ${numberFormat(cp_list[index].cp_minimum)}원 이상일 때\n 사용 가능한 쿠폰입니다.`);
                 e.preventDefault();
+            }
+            else{
+                setCpPrice(cp_list[index].cp_price);
+                setCpId(cp_id);
             }
         }
         else if (cp_id ==='default'){
@@ -338,7 +343,7 @@ const OrderContainer = () => {
             let pay_work = 'CERT'; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
             let payple_payer_id = '';
 
-            let buyer_no = ''; //고객 고유번호
+            let buyer_no = user && user.id; //고객 고유번호
             // let buyer_name = user ? user.name : noAuthName ; //고객 이름
             // let buyer_hp = `${firstPhoneNumber}`;//고객 번호
             // let buyer_email = user && user.email; //고객 이메일
@@ -401,11 +406,7 @@ const OrderContainer = () => {
         setLoading(false);
     };
 
-    useEffect(() => {
-        if (user) {
-            setFirstPhoneNumber(user.hp);
-        }
-    }, [user]);
+    
 
     useEffect(() => {
         getPayment();
@@ -505,13 +506,23 @@ const OrderContainer = () => {
                             <div className={styles['sub-title']}>배달정보</div>
                             <div className={styles['user-info']}>
                                 <div className={styles['name']}>
-                                    {user ? (user.name) : (
+                                    {user ? (
+                                        user.name
+                                    ) : (
                                         <div>
                                             <input
-                                                onChange={e => setNoAuthName(e.target.value)}
+                                                onChange={(e) =>
+                                                    setNoAuthName(
+                                                        e.target.value,
+                                                    )
+                                                }
                                                 value={noAuthName}
-                                                className={styles['noauth-input']}
-                                                placeholder={'이름을 입력하세요.'}
+                                                className={
+                                                    styles['noauth-input']
+                                                }
+                                                placeholder={
+                                                    '이름을 입력하세요.'
+                                                }
                                             />
                                         </div>
                                     )}
@@ -553,23 +564,53 @@ const OrderContainer = () => {
                                         <DatePicker
                                             locale={ko}
                                             dateFormat="yyyy-MM-dd"
-                                            minDate={new Date(new Date().setDate(new Date().getDate() + 2))}
+                                            minDate={
+                                                new Date(
+                                                    new Date().setDate(
+                                                        new Date().getDate() +
+                                                            2,
+                                                    ),
+                                                )
+                                            }
                                             selected={date}
                                             onChange={(date) => setDate(date)}
                                             // withPortal
                                         />
                                     </div>
                                     <div className={styles['second']}>
-                                        <select name="hours" onChange ={e => setHours(e.target.value)} value={hours}>
-                                            {[...new Array(22).keys()].splice(9, 13).map(item => (
-                                                <option value={item} key={item}>
-                                                    {(item >= 12 ? '오후 ' : '오전 ') + (item > 12 ? item - 12: item) + '시'}
-                                                </option>
-                                            ))}
+                                        <select
+                                            name="hours"
+                                            onChange={(e) =>
+                                                setHours(e.target.value)
+                                            }
+                                            value={hours}
+                                        >
+                                            {[...new Array(22).keys()]
+                                                .splice(9, 13)
+                                                .map((item) => (
+                                                    <option
+                                                        value={item}
+                                                        key={item}
+                                                    >
+                                                        {(item >= 12
+                                                            ? '오후 '
+                                                            : '오전 ') +
+                                                            (item > 12
+                                                                ? item - 12
+                                                                : item) +
+                                                            '시'}
+                                                    </option>
+                                                ))}
                                         </select>
                                     </div>
                                     <div className={styles['second']}>
-                                        <select name="minute" onChange={e => setMinute(e.target.value)} value={minute}>
+                                        <select
+                                            name="minute"
+                                            onChange={(e) =>
+                                                setMinute(e.target.value)
+                                            }
+                                            value={minute}
+                                        >
                                             <option value="00">00분</option>
                                             <option value="10">10분</option>
                                             <option value="20">20분</option>
@@ -598,7 +639,9 @@ const OrderContainer = () => {
                                                     id={'order'}
                                                     text={'자동저장'}
                                                     check={orderMemoCheck}
-                                                    onChange={onChangeOrderCheck}
+                                                    onChange={
+                                                        onChangeOrderCheck
+                                                    }
                                                 />
                                             </div>
                                         </div>
@@ -704,13 +747,28 @@ const OrderContainer = () => {
                                                 className={
                                                     styles['point-input']
                                                 }
-                                                value={numberFormat(point_price)}
+                                                value={numberFormat(
+                                                    point_price,
+                                                )}
                                                 onKeyDown={onlyNumberListener}
-                                                onChange={e => {
+                                                onChange={(e) => {
                                                     const value = stringNumberToInt(
                                                         e.target.value,
                                                     );
-                                                    if (user.point < value) {
+                                                    if (
+                                                        parseInt(totalPrice) +
+                                                            parseInt(dlvCost) -
+                                                            parseInt(cp_price) -
+                                                            value <
+                                                        10000
+                                                    ) {
+                                                        openModal(
+                                                            '주문 금액을 확인해주세요',
+                                                            '최소 결제금액은\n10,000원입니다.',
+                                                        );
+                                                    } else if (
+                                                        user.point < value
+                                                    ) {
                                                         openModal(
                                                             '보유하신 포인트가 부족합니다!',
                                                             '보유하신 포인트보다\n많은 포인트를 사용할 수 없습니다.',
@@ -727,11 +785,26 @@ const OrderContainer = () => {
                                             />
                                             <ButtonBase
                                                 className={styles['btn']}
-                                                onClick={() =>
-                                                    setPointPrice(
-                                                        parseInt(user.point),
-                                                    )
-                                                }
+                                                onClick={() => {
+                                                    let price =
+                                                        parseInt(totalPrice) +
+                                                        parseInt(dlvCost) -
+                                                        parseInt(cp_price) -
+                                                        user.point;
+                                                    if (price < 10000) {
+                                                        setPointPrice(
+                                                            parseInt(
+                                                                user.point -(10000-price),
+                                                            ),
+                                                        );
+                                                    } else {
+                                                        setPointPrice(
+                                                            parseInt(
+                                                                user.point,
+                                                            ),
+                                                        );
+                                                    }
+                                                }}
                                             >
                                                 전체사용
                                             </ButtonBase>
@@ -774,22 +847,30 @@ const OrderContainer = () => {
                                     </div>
                                     {user && (
                                         <>
-                                            <div className={styles['text-price']}>
+                                            <div
+                                                className={styles['text-price']}
+                                            >
                                                 <div className={styles['text']}>
                                                     쿠폰할인
                                                 </div>
-                                                <div className={styles['price']}>
+                                                <div
+                                                    className={styles['price']}
+                                                >
                                                     -{numberFormat(cp_price)}
                                                     <span>원</span>
                                                 </div>
                                             </div>
-                                            <div className={styles['text-price']}>
+                                            <div
+                                                className={styles['text-price']}
+                                            >
                                                 <div className={styles['text']}>
                                                     포인트사용
                                                 </div>
-                                                <div className={styles['price']}>
+                                                <div
+                                                    className={styles['price']}
+                                                >
                                                     -{numberFormat(point_price)}
-                                                <span>원</span>
+                                                    <span>원</span>
                                                 </div>
                                             </div>
                                         </>
@@ -808,7 +889,13 @@ const OrderContainer = () => {
                                     <span>원</span>
                                 </div>
                             </div>
-                            {company && <p className={styles['minimum-order']}>※ 최소 주문 금액은 {numberFormat(company.minimum_order)}원 입니다.</p>}
+                            {company && (
+                                <p className={styles['minimum-order']}>
+                                    ※ 최소 주문 금액은{' '}
+                                    {numberFormat(company.minimum_order)}원
+                                    입니다.
+                                </p>
+                            )}
                             <div className={styles['order-btn']}>
                                 <Button
                                     title={'결제하기'}
@@ -822,7 +909,7 @@ const OrderContainer = () => {
                                     updateAllCheck={updateAllCheck}
                                     onChangeCheck1={onChangeCheck1}
                                     onChangeCheck2={onChangeCheck2}
-                                    setTitle={title => {
+                                    setTitle={(title) => {
                                         setAgreeOpen(true);
                                         setAgreeTitle(title);
                                     }}
@@ -832,7 +919,11 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
-            <ShowAgree title={agreeTitle} open={agreeOpen} handleClose={() => setAgreeOpen(false)} />
+            <ShowAgree
+                title={agreeTitle}
+                open={agreeOpen}
+                handleClose={() => setAgreeOpen(false)}
+            />
             <Loading open={loading} />
         </ScrollTop>
     );
