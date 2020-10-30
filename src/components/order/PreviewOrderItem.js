@@ -100,7 +100,7 @@ function MenuItem({ src, item_id, item_name, item_option, item_price, qty }) {
             </div>
             <div className={styles['menu-name']}>{item_name}</div>
             <div className={styles['menu-price']}>
-                {qty}개 ({numberFormat(item_price * qty)}원)
+                {qty}개 ({numberFormat(item_price)}원)
             </div>
             <div className={styles['menu-options']}>(추가선택: {item_option ? item_option : '없음'})</div>
         </Link>

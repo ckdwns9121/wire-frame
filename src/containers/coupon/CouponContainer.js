@@ -103,8 +103,6 @@ const CouponConatiner = (props) => {
         setLoading(true);
         if (user_token) {
             try {
-                console.log(startDate);
-                console.log(endDate);
                 const res = await getUseCpList(user_token, startDate, endDate);
                 setUseCpList(res);
             } catch (e) {
@@ -124,7 +122,7 @@ const CouponConatiner = (props) => {
                 ) {
                     openModal('이미 다운로드 한 쿠폰입니다.', res.data.msg);
                 } else {
-                    openModal('다운로드 성공했습니다.', res.data.msg);
+                    openModal('다운로드 성공했습니다.');
                     getMyCouponList();
                 }
                 const idx = down_cp_list.findIndex(

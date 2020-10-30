@@ -9,7 +9,6 @@ export const requestPostPhraseSerive = async (token, {
     const req = Paths.api + 'user/sticker';
 
     const formData = new FormData();
-    console.log(sticker_logo);
     formData.append('order_id', order_id);
     sticker_logo.forEach(logo => formData.append('sticker_logo[]', logo, logo.name));
     formData.append('sticker_text', sticker_text);

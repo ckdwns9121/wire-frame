@@ -193,6 +193,9 @@ const DetailContainer = ({ item_id }) => {
 
     useEffect(() => {
         setQuanity(1);
+        setOptions(null);
+        setOptionTotal(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [item_id]);
 
     useEffect(() => {

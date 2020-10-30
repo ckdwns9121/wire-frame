@@ -47,6 +47,7 @@ const OrderCompleteContainer = ({ order_number }) => {
     const [orders, setOrders] = useState(null);
     const [payinfo, setPayInfo] = useState(null);
     const [payple_info, setPaypleInfo] = useState(null);
+    const [od_status, setOdStatus] = useState("order_apply");
 
     const handleOpen = useCallback(() => setStickyOpen(true), []);
     const handleClose = useCallback(() => setStickyOpen(false), []);
@@ -74,6 +75,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                 setError(true);
             }
             else{
+                setOdStatus(orders.info[0].od_status);
                 setOrders(orders);
                 setSuccess(true);
                 setError(false);
@@ -117,6 +119,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                         openMessage(false, '정상적으로 취소되었습니다.');
                         history.push(Paths.index);
                     }
+                    setOdStatus("order_cancel");
                 } catch (e) {
                     
                 }
@@ -370,26 +373,19 @@ const OrderCompleteContainer = ({ order_number }) => {
                                     <div className={styles['order-cancle']}>
                                         <ButtonBase
                                             className={styles['btn']}
-                                            onClick={
-                                                orders &&
-                                                orders.info[0].od_status !==
-                                                    'order_cancel'
-                                                    ? userOrderCancle
-                                                    : () => {}
-                                            }
-                                            disableRipple={
-                                                !(
-                                                    orders &&
-                                                    orders.info[0].od_status !==
-                                                        'order_cancel'
-                                                )
-                                            }
+                                            onClick={orders &&
+                                                (od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')
+                                                    ? () => {}
+                                                    : userOrderCancle
+                                                }
+                                            disabled={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
+                                            disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
                                         >
                                             {orders &&
-                                            orders.info[0].od_status ===
-                                                'order_cancel'
-                                                ? '주문취소 완료'
-                                                : '주문취소'}
+                                            (od_status === 'order_cancel') ? '주문취소완료'
+                                            : (od_status === 'delivery_complete') ? '배달완료'
+                                            : (od_status === 'order_complete') ? '주문완료'
+                                            : '주문 취소'}
                                         </ButtonBase>
                                     </div>
                                 </div>

@@ -346,7 +346,6 @@ const OrderDetailContainer = (props) => {
                                 }
                                 disabled={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
                                 disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
-                                
                             >
                                 {orders &&
                                 (od_status === 'order_cancel') ? '주문취소완료'
