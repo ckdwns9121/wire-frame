@@ -18,6 +18,8 @@ export default ({ baseURL, currentPage, pagePerView, totalCount, onClick }) => {
     const prev = parseInt(currentPage) - 1;
     const next = parseInt(currentPage) + 1;
 
+    const connector = baseURL ? (baseURL.indexOf('?') !== -1 ? '&' : '?') : '?';
+
     return (
         <>
             {totalCount !== 0 && <div className={styles['paging']}>
@@ -25,7 +27,7 @@ export default ({ baseURL, currentPage, pagePerView, totalCount, onClick }) => {
                 <LinkItem onClick={() => prev > 0 && onClick(prev)}>
                     <Prev />
                 </LinkItem>
-                : <LinkItem to={(prev > 0) && (baseURL + '?page=' + prev)}>
+                : <LinkItem to={(prev > 0) && (baseURL + connector + 'page=' + prev)}>
                     <Prev />
                 </LinkItem>}
                 <ul className={styles['list']}>
@@ -35,7 +37,7 @@ export default ({ baseURL, currentPage, pagePerView, totalCount, onClick }) => {
                             <LinkItem onClick={() => onClick(value)}>
                                 {value}
                             </LinkItem>
-                            : <LinkItem to={baseURL + '?page=' + value}>
+                            : <LinkItem to={baseURL + connector + 'page=' + value}>
                                 {value}
                             </LinkItem>}
                         </li>
@@ -45,7 +47,7 @@ export default ({ baseURL, currentPage, pagePerView, totalCount, onClick }) => {
                 <LinkItem onClick={() => next <= lastPage && onClick(next)}>
                     <Next />
                 </LinkItem>
-                : <LinkItem to={(next <= lastPage) && (baseURL + '?page=' + next)}>
+                : <LinkItem to={(next <= lastPage) && (baseURL + connector + 'page=' + next)}>
                     <Next />
                 </LinkItem>}
             </div>}

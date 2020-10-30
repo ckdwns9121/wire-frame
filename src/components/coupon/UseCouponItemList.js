@@ -14,7 +14,7 @@ const UseCouponItemList = ({ cp_list }) => {
                 <TD text={'쿠폰명'} />
                 <TD text={'할인금액'} />
                 <TD text={'사용조건'} />
-                <TD text={'기간'} />
+                <TD text={'사용날짜'} />
             </div>
             {list}
         </div>
