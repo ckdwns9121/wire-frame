@@ -4,13 +4,14 @@ import { Paths } from '../../paths';
 export const requestGetReviewList = async (offset, limit) => {
     const req = Paths.api + 'user/review/list';
 
-    axios.defaults.headers['Context-Type'] = 'application/json';
     const config = {
         params: {
             offset, limit
+        },
+        headers:{
+            'Content-Type' : 'application/json'
         }
     };
-
     const res = await axios.get(req, config);
     return res;
 };
@@ -20,11 +21,12 @@ export const requestGetReviewMyList = async (token, offset, limit) => {
     const config = {
         params: {
             offset, limit
+        },
+        headers:{
+            Authorization: `Bearer ${token}`,
+            'content-type': 'application/json',
         }
     };
-
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers['Context-Type'] = 'application/json';
 
     const res = await axios.get(req, config);
     return res;
@@ -36,9 +38,11 @@ export const requestGetReviewView = async (review_id) => {
     const config = {
         params: {
             review_id
+        },
+        headers:{
+            'content-type': 'application/json',
         }
     };
-    axios.defaults.headers['Context-Type'] = 'application/json';
 
     const res = await axios.get(req, config);
     return res;
@@ -55,10 +59,14 @@ export const requestPostReviewStore = async (token, {
     formData.append('review_rating', review_rating);
     review_images.forEach(image => formData.append('review_images[]', image, image.name));
     
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers['Context-Type'] = 'multipart/form-data';
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
-    const res = await axios.post(req, formData);
+    const res = await axios.post(req, formData,config);
     return res;
 }
 
@@ -75,9 +83,13 @@ export const requestPostReviewUpdate = async (token, {
     review_images.forEach(image => formData.append('review_images[]', image, image.name));
     formData.append('_method', 'put');
     
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers['Context-Type'] = 'multipart/form-data';
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
-    const res = await axios.post(req, formData);
+    const res = await axios.post(req, formData,config);
     return res;
 }

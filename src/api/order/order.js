@@ -34,9 +34,15 @@ export const user_order = async (
             device: 'pc',
         };
     }
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-    const res = await axios.post(req, form_data);
+
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const res = await axios.post(req, form_data,config);
     return res;
 };
 
@@ -46,8 +52,12 @@ export const order_cancle = async (token, order_id) => {
     const form_data = {
         order_id: order_id,
     };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-    const res = await axios.put(req, form_data);
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const res = await axios.put(req, form_data,config);
     return res;
 };

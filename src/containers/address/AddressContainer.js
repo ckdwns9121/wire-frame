@@ -158,6 +158,7 @@ const AddressContainer = () => {
                                 }),
                             );
                             const near_store = await getNearStore(
+                                user_token,
                                 lat,
                                 lng,
                                 addr1,
@@ -375,6 +376,7 @@ const AddressContainer = () => {
                                             );
 
                                             const near_store = await getNearStore(
+                                                user_token,
                                                 temp_lat,
                                                 temp_lng,
                                                 selectAddr,

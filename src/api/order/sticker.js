@@ -13,9 +13,12 @@ export const requestPostPhraseSerive = async (token, {
     sticker_logo.forEach(logo => formData.append('sticker_logo[]', logo, logo.name));
     formData.append('sticker_text', sticker_text);
     
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers['Context-Type'] = 'multipart/form-data';
-
-    const res = await axios.post(req, formData);
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const res = await axios.post(req, formData,config);
     return res;
 };
