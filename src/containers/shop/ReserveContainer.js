@@ -354,8 +354,6 @@ const ReserveContainer = ({ tab = '0' }) => {
             <PreferModal
                 open={open}
                 handleClose={handleClose}
-                itemType={orderType}
-                onChangeType={onChangeOrderType}
                 budget={budget}
                 // endBudget={endBudget}
                 onChangeBudget={onChangeBudget}

@@ -26,18 +26,6 @@ const ReserveModal = (props) => {
                 </div>
             </div>
             <div className={styles['modal-content']}>
-                <div className={styles['label']}>주문종류</div>
-                <div className={styles['modal-input-box']}>
-                    <form>
-                        <select
-                            value={props.itemType}
-                            onChange={props.onChangeType}
-                        >
-                            <option value="reserve">예약주문</option>
-                            <option value="delivery">배달주문</option>
-                        </select>
-                    </form>
-                </div>
                 <div className={styles['label']}>전체예산</div>
                 <div className={styles['modal-input-box']}>
                     <input
