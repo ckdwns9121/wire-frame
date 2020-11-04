@@ -71,10 +71,7 @@ const ReserveContainer = ({ tab = '0' }) => {
     const onChangeIndex = (e, index) => {
         setTab(index);
     };
-    //주문 종류 선택
-    const onChangeOrderType = (e) => {
-        setOrderType(e.target.value);
-    };
+
 
     //추천메뉴 설정
     const onClickCustomOrder = async () => {
