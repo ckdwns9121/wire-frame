@@ -17,7 +17,6 @@ export const getStoreList = async (search, offset, limit) => {
     }
 
     const res = await axios.get(req, config);
-    console.log(res);
     return res;
 };
 
@@ -38,6 +37,5 @@ export const getNearStore = async (token,lat,lng,addr1)=>{
     }
 
     const res = await axios.get(req, config);
-    console.log(res);
     return res;
 }

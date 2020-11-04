@@ -17,6 +17,5 @@ export const noAuthGetNearStore = async (lat, lng, addr1) => {
     };
 
     const res = await axios.get(req, config);
-    console.log(res);
     return res;
 };

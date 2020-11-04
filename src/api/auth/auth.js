@@ -12,7 +12,6 @@ export const getUserInfo = async (token) => {
     }
 
     const res = await axios.post(req,null,config);
-    console.log(res);
     return res.data;
 };
 
@@ -29,7 +28,6 @@ export const requestAgreeChange = async (token, type, value) => {
         }
     }
     const res = await axios.put(req, form_data,config);
-    console.log(res);
     return res;
 };
 
