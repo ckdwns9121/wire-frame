@@ -40,7 +40,8 @@ const CartContainer = () => {
     const [estm, setEstm] = useState(true); //견적서 발송
     const [cartList, setCartList] = useState([]); //장바구니
     const [total, setTotal] = useState(0); //총 주문금액
-    const [delivery_cost, setCost] = useState(0); // 배달비
+    const [delivery_cost, setCost] = useState(0); // 주문 수량에 따른 배달비
+    const [default_cost ,setDefaultCost] =useState(0); //기존 배달비
     const [loading, setLoading] = useState(false);
     const [cntOpen, setCntOpen] = useState(false);
 
@@ -143,7 +144,7 @@ const CartContainer = () => {
                         list[i] = query[i];
                         list[i].checked = false;
                     }
-                    setCost(query.delivery_cost);
+                    setDefaultCost(query.delivery_cost);
                     setCartList(list);
                 }
             } catch (e) {}
@@ -172,7 +173,7 @@ const CartContainer = () => {
                             list[i] = query[i];
                             list[i].checked = false;
                         }
-                        setCost(query.delivery_cost);
+                        setDefaultCost(query.delivery_cost);
                         setCartList(list);
                     } catch (e) {}
                     setLoading(false);
@@ -392,16 +393,28 @@ const CartContainer = () => {
             openModal("최소 주문 금액을 채워주세요.", `최소 주문 금액은 ${numberFormat(company.minimum_order)}원입니다.`);
         }
     }, [total, company.minimum_order, user_token, history, cartList, openModal]);
+   
+
 
     useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
+
+
 
     useEffect(() => {
         getCartListApi();
     }, [getCartListApi]);
 
+    useEffect(()=>{
+        const cost = (total>200000) ? 0 : default_cost;
+        setCost(cost);
+    },[total,default_cost])
+
+
     useEffect(() => {
         onCompareAllChecked();
     }, [onCompareAllChecked]);
+    
+
 
     const render = () => {
         return (

@@ -97,7 +97,8 @@ const OrderContainer = () => {
     const [payment, setPayment] = useState('페이플 카드 결제'); //결제 방법
     const [cp_list, setCouponList] = useState([]); //사용가능한 쿠폰
     const [totalPrice, setTotalPrice] = useState(-1); //총 결제금액
-    const [dlvCost, setDlvCost] = useState(0); // 배달비
+    const [default_cost ,setDefaultCost] =useState(0); // 기존 배달비
+    const [dlvCost, setDlvCost] = useState(0); // 주문수량에 따른 배달비
     const [dlvMemo, setDlvMemo] = useState(''); //배달메모
     const [dlvMemoCheck, setDlvMemoCheck] = useState(false);
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
@@ -201,7 +202,7 @@ const OrderContainer = () => {
                         openModal('잘못된 접근입니다.');
                     } 
                     setTotalPrice(price);
-                    setDlvCost(query.delivery_cost);
+                    setDefaultCost(query.delivery_cost);
                 }
             } catch (e) {}
         } else {
@@ -237,8 +238,8 @@ const OrderContainer = () => {
                         history.replace(Paths.index);
                         openModal('잘못된 접근입니다.');
                     } 
-                    setDlvCost(query.delivery_cost);
                     setTotalPrice(price);
+                    setDefaultCost(query.delivery_cost);
                 }
             } catch (e) {}
         }
@@ -440,6 +441,13 @@ const OrderContainer = () => {
         getTotalPrice();
     },[getTotalPrice])
 
+    
+    useEffect(()=>{
+        const cost = (totalPrice>200000) ? 0 : default_cost;
+        setDlvCost(cost);
+
+    },[totalPrice,default_cost])
+
     useEffect(() => {
         isAllCheck();
     }, [isAllCheck]);
@@ -494,6 +502,8 @@ const OrderContainer = () => {
         window.addEventListener('scroll', scrollEvent);
         return () => window.removeEventListener('scroll', scrollEvent);
     }, [user]);
+
+
 
 
     return (
