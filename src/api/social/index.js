@@ -10,9 +10,8 @@ export const kakaoLogin = async()=>{
             device:"mobile"
         }
     }
-    console.log(config);
+  
     const res = await axios.get(req,config);
-    console.log(res);
     return res;
 }
 

@@ -41,6 +41,8 @@ import { Search } from './pages';
 import { useUrl } from './hooks/useStore';
 import Loading from './components/assets/Loading';
 
+import {searchAddress} from './api/address/address';
+
 export default function App() {
     useUrl();
     const location = useLocation();
@@ -55,7 +57,7 @@ export default function App() {
             if(res){
                 dispatch(get_address(res))
                 const {lat,lng,addr1} = res;
-                const near_store = await getNearStore(lat, lng, addr1);
+                const near_store = await getNearStore(token,lat, lng, addr1);
                 dispatch(get_near_store(near_store.data.query));
                 dispatch(get_menulist(null));
             }

@@ -12,15 +12,19 @@ export const addr_test= async () =>{
 
     axios.defaults.url = test;
 
-    // const config = {
-    //     params: {
-    //         confmKey:KEY,
-    //         currentPage:1,
-    //         countPerPage:10,
-    //         keyword:'동아대학교',
-    //         resultType:'json'
-    //     }
-    // }
+    const config = {
+        params: {
+            confmKey:KEY,
+            currentPage:1,
+            countPerPage:10,
+            keyword:'동아대학교',
+            resultType:'json'
+        },
+        headers:{
+            
+        }
+        
+    }
     
     const res = await axios.get();
     console.log(res);

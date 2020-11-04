@@ -41,9 +41,12 @@ export const noAuthRemoveCartItem = async (cart_id) => {
     const req = Paths.api + `noauth/cart/delete`;
 
     const form_data = { cart_id };
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
     const res = await axios.delete(req, {
         data: form_data,
+        headers:{
+            'Content-Type':'application/json',
+        }
     });
     return res;
 };
@@ -54,7 +57,13 @@ export const noAuthUpdateCartQunaity = async (cart_id, item_quanity) => {
         cart_id,
         item_quanity,
     };
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-    const res = await axios.put(req, form_data);
+
+    const config ={
+        headers:{
+        
+            'Content-Type' :'application/json',
+        }
+    }
+    const res = await axios.put(req, form_data,config);
     return res;
 };

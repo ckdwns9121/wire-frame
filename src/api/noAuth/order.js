@@ -36,15 +36,19 @@ export const noAuth_order = async (
         delivery_req_time,
         device: 'pc',
     };
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-    const res = await axios.post(req, form_data);
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+     
+        },
+    };
+    const res = await axios.post(req, form_data,config);
     return res;
 };
 
 export const noAuthOrderView = async (order_id) => {
     const req = Paths.api + `noauth/order/view?order_id=${order_id}`;
-    axios.defaults.baseURL = req;
-    const res = await axios.get();
+    const res = await axios.get(req);
     return res.data.query;
 };
 export const noAutuOrderCancle = async (order_id, s_hp) => {
@@ -54,7 +58,14 @@ export const noAutuOrderCancle = async (order_id, s_hp) => {
         order_id: order_id,
         s_hp: s_hp,
     };
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-    const res = await axios.put(req, form_data);
+
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+     
+        },
+    };
+
+    const res = await axios.put(req, form_data,config);
     return res;
 };

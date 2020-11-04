@@ -33,10 +33,12 @@ export const requestQNADetail = async (token, id) => {
 export const requestQNADelete = async (token, id) => {
     const req = Paths.api + 'user/qna/delete';
 
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
 
-    const res = await axios.delete(req, { data: { id } });
+    const res = await axios.delete(req, { data: { id },
+        headers:{
+        'Context-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+    } });
     return res;
 }
 
@@ -55,10 +57,14 @@ export const requestQNAUpdate = async (token, {
     q_files.forEach(image => formData.append('q_files[]', image, image.name));
     formData.append('_method', 'put');
     
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers['Context-Type'] = 'multipart/form-data';
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
-    const res = await axios.post(req, formData);
+    const res = await axios.post(req, formData,config);
     return res;
 }
 
@@ -75,9 +81,13 @@ export const requestQNAStore = async (token, {
     formData.append('question', question);
     q_files.forEach(image => formData.append('q_files[]', image, image.name));
     
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers['Context-Type'] = 'multipart/form-data';
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
-    const res = await axios.post(req, formData);
+    const res = await axios.post(req, formData,config);
     return res;
 };

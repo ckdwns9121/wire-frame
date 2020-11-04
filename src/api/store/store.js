@@ -4,33 +4,40 @@ import { Paths } from '../../paths';
 //지점 검색
 export const getStoreList = async (search, offset, limit) => {
     const req = Paths.api + 'user/shop/list';
-    axios.defaults.headers.get['Context-Type'] = 'application/json';
 
     const config = {
         params: {
             search,
             limit,
             offset
+        },
+        headers:{
+            'Content-Type' :'application/json'
         }
     }
 
     const res = await axios.get(req, config);
+    console.log(res);
     return res;
 };
 
 
-export const getNearStore = async (lat,lng,addr1)=>{
+export const getNearStore = async (token,lat,lng,addr1)=>{
     const req = Paths.api + 'user/delivery/select';
-    axios.defaults.headers.get['Context-Type'] = 'application/json';
 
     const config = {
         params: {
             lat,
             lng,
             addr1
+        },
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
         }
     }
 
     const res = await axios.get(req, config);
+    console.log(res);
     return res;
 }
