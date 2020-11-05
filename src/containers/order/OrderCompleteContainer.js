@@ -64,7 +64,7 @@ const OrderCompleteContainer = ({ order_number }) => {
             }
 
             const { orders } = res;
-            if(orders===undefined){
+            if (orders === undefined || orders === null) {
                 openMessage(
                     false,
                     '주문번호가 존재하지 않습니다.',
@@ -73,15 +73,13 @@ const OrderCompleteContainer = ({ order_number }) => {
                 history.push(Paths.index);
                 setSuccess(false);
                 setError(true);
-            }
-            else{
+            } else {
                 setOdStatus(orders.info[0].od_status);
                 setOrders(orders);
                 setSuccess(true);
                 setError(false);
+                openMessage(true, "문구 서비스를 신청하시겠습니까?", "", handleOpen);
             }
-      
-     
         } catch (e) {
             setSuccess(false);
             setError(true);
@@ -93,6 +91,7 @@ const OrderCompleteContainer = ({ order_number }) => {
             history.push(Paths.index);
         }
         setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, openMessage, order_number, user_token]);
 
 

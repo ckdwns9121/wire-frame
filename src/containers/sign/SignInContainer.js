@@ -136,17 +136,11 @@ const SignInContainer = () => {
         emailInput.current.focus();
     }, [])
 
-    useEffect(() => {
-        const kepressEvent = e => {
-            if (e.key === 'Enter') {
-                onClickLogin();
-            }
-        };
-        document.addEventListener('keypress', kepressEvent, true);
-        return () => {
-            document.removeEventListener('keypress', kepressEvent, true);
+    const kepressEvent = e => {
+        if (e.key === 'Enter') {
+            onClickLogin();
         }
-    }, [onClickLogin]);
+    };
 
     return (
         <div className={styles['container']}>
@@ -158,6 +152,7 @@ const SignInContainer = () => {
                         name={'email'}
                         value={email}
                         onChange={onChangeEmail}
+                        onKeyDown={kepressEvent}
                         placeholder="이메일"
                         ref={emailInput}
                     />
@@ -165,6 +160,7 @@ const SignInContainer = () => {
                         type="password"
                         name={'password'}
                         value={password}
+                        onKeyDown={kepressEvent}
                         onChange={onChangePassword}
                         placeholder="비밀번호"
                     />

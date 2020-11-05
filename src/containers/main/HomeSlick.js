@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './HomeSlick.module.scss';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
@@ -10,17 +10,21 @@ import { useModal } from '../../hooks/useModal';
 import { DBImageFormat } from '../../lib/formatter';
 import ErrorCoverImage from '../../components/assets/ErrorCoverImage';
 
+
 const settings = {
     infinite: true,
     autoplay: true,
     speed: 1000,
+    autoplaySpeed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
     adaptiveHeight: true,
+    initialSlide: 0
 };
 
 const HomeSlick = () => {
     const openModal = useModal();
+    const slider = useRef();
     const [list, setList] = useState([]);
     const getBannerList = useCallback(async () => {
         try {
@@ -41,14 +45,15 @@ const HomeSlick = () => {
 
     return (
         <div className={styles['container']}>
-            <Slider {...settings}>
+            {list.length !== 0 && 
+            <Slider {...settings} ref={slider}>
                 {list.map(item => (
                     <Link key={item.id} to={item.bn_url}>
                         {/* <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "'), url('" + NoImage + "')" }}/> */}
                         <ErrorCoverImage src={DBImageFormat(item.bn_img)[0]} alt="배너" />
                     </Link>
                 ))}
-            </Slider>
+            </Slider>}
         </div>
     );
 };
