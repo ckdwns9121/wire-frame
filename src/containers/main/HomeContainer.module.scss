@@ -58,6 +58,7 @@
     }
 
     .order {
+        @include wireframe;
         margin: 0 auto;
         margin-bottom: 160px;
         min-width: $min-width;
