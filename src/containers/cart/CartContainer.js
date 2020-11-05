@@ -15,7 +15,7 @@ import cn from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
 import Loading from '../../components/assets/Loading';
 import { useStore } from '../../hooks/useStore';
-import { numberFormat } from '../../lib/formatter';
+import { numberFormat ,numberToKorean} from '../../lib/formatter';
 import Message from '../../components/assets/Message';
 import { useModal } from '../../hooks/useModal';
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
@@ -405,9 +405,9 @@ const CartContainer = () => {
     }, [getCartListApi]);
 
     useEffect(()=>{
-        const cost = (total>200000) ? 0 : default_cost;
+        const cost = (total>company.free_cost_order) ? 0 : default_cost;
         setCost(cost);
-    },[total,default_cost])
+    },[total,default_cost,company])
 
 
     useEffect(() => {
@@ -478,7 +478,7 @@ const CartContainer = () => {
                                 </div>
                             </div>
                             <div className={styles['order-text']}>
-                                * 배달비는 거리에 따라 측정되며, 20만원 이상
+                                * 배달비는 거리에 따라 측정되며, {numberToKorean(company.free_cost_order)}원 이상
                                 결제시 배달비는 무료입니다.
                             </div>
                             <div className={styles['estm-box']}>

@@ -443,10 +443,10 @@ const OrderContainer = () => {
 
     
     useEffect(()=>{
-        const cost = (totalPrice>200000) ? 0 : default_cost;
+        const cost = (totalPrice>company.free_cost_order) ? 0 : default_cost;
         setDlvCost(cost);
 
-    },[totalPrice,default_cost])
+    },[totalPrice,default_cost,company])
 
     useEffect(() => {
         isAllCheck();
