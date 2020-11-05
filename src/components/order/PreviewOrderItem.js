@@ -45,7 +45,7 @@ const PreviewOrderItem = (props) => {
                             {!info[0].od_status && "상태없음"}
                         </div>
                         {(info[0].od_status === "order_complete"
-                        && info[0].od_status === "delivery_complete")
+                        || info[0].od_status === "delivery_complete")
                         && <ButtonBase className={styles['review-button']}
                             onClick={() => history.push(
                                 Paths.ajoonamu.mypage + '/order_review?' + (review_id === null ? 'order_id=' + order_id : 'review_id=' + review_id)
