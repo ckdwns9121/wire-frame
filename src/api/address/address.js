@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Paths } from '../../paths';
 
 const URL = 'https://www.juso.go.kr/addrlink/addrLinkApi.do';
-const KEY = 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU=';
+const KEY = 'U01TX0FVVEgyMDIwMTIyMjE1NTUyMjExMDU4MDU=';
 
 export const getDeliveryList = async (token) => {
     const req = `${Paths.api}user/delivery/list`;

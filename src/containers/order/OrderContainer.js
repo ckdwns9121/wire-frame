@@ -691,7 +691,7 @@ const OrderContainer = () => {
                             </div>
                         </div>
 
-                        <div className={styles['info-box']}>
+                        {/* <div className={styles['info-box']}>
                             <div className={styles['sub-title']}>결제방법</div>
                             <div className={styles['user-info']}>
                                 <div className={styles['payments']}>
@@ -721,7 +721,7 @@ const OrderContainer = () => {
                                     />
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         {user && (
                             <>
