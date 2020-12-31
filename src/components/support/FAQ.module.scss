@@ -117,7 +117,6 @@
                 overflow: hidden;
                 height: 0px;
                 background-color: #f9f9f9;
-                transition: all .4s ease-in-out;
             }
             &.open {
                 .row {
@@ -125,7 +124,7 @@
                     height: 63px;
                 }
                 .answer {
-                    height: 200px;
+                    height: auto;
                     padding: 40px;
                 }
                 .direct {
