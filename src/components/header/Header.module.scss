@@ -115,7 +115,10 @@ $header-height: 100px;
 .header li {
     display: table-cell;
     vertical-align: middle;
+    width: 16.6666667%;
+    text-align: center;
     &:first-child {
+        text-align: left;
         margin-left: 0;
     }
     &:last-child {
