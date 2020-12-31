@@ -46,7 +46,7 @@ const OAuth = ({ match, location }) => {
                 } else {
                     initStore();
                 }
-                sessionStorage.setItem('access_token', access_token);
+                localStorage.setItem('access_token', access_token);
                 history.replace('/');
             } catch (e) {
                 history.replace('/error');

@@ -21,7 +21,7 @@ export default ({ history }) => {
     );
 
     const onLogoutListener = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         if (token) {
             try {
                 const res = await localLogout(token);
@@ -33,7 +33,7 @@ export default ({ history }) => {
                     dispatch(get_near_store(null));
                     dispatch(get_menulist(null));
                     openMessage(false, '로그아웃 성공!', '성공적으로 로그아웃 되었습니다.');
-                    sessionStorage.removeItem('access_token');
+                    localStorage.removeItem('access_token');
                     const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
                     if(noAuthAddrs){
                         const index = noAuthAddrs.findIndex((item) =>item.active===1);

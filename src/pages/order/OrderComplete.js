@@ -15,7 +15,7 @@ const OrderComplete = ({location}) => {
         alert('한도를 초과하였습니다.');
         window.location = Paths.ajoonamu.order;
     } else if (message && message.indexOf('카드인증완료') !== -1) {
-        const access_token = sessionStorage.getItem('access_token');
+        const access_token = localStorage.getItem('access_token');
         if (!access_token) {
             localStorage.removeItem('noAuthCartId');
         }

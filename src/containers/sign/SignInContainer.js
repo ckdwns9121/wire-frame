@@ -81,7 +81,7 @@ const SignInContainer = () => {
                         dispatch(get_user_info(res.data.access_token));
 
                         const active_addr = await getActiveAddr(res.data.access_token);
-                        sessionStorage.setItem('access_token', res.data.access_token);
+                        localStorage.setItem('access_token', res.data.access_token);
                         if (checked) {
                             const newObj = {
                                 email: email,

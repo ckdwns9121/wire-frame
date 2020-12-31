@@ -9,7 +9,7 @@ function SignUp() {
     const openModal = useModal();
 
     useEffect(() => {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         if (token) {
             openModal(
                 '잘못된 접근입니다.',

@@ -8,7 +8,7 @@ import { get_menulist } from '../store/product/product';
 import { Paths } from '../paths';
 
 export const useStore = (isReplace = true) => {
-    const user_token = sessionStorage.getItem('access_token');
+    const user_token = localStorage.getItem('access_token');
     const history = useHistory();
     const openModal = useModal();
 

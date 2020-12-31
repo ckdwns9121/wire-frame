@@ -39,7 +39,7 @@ const EstmModal = (props) => {
     const sendEstimate = useCallback(async () => {
         if (estmFile) {
             if (isEmailForm(state.receiver_email)) {
-                const token = sessionStorage.getItem('access_token');
+                const token = localStorage.getItem('access_token');
                 setLoading(true);
                 try {
                     const { receiver, receiver_email } = state;

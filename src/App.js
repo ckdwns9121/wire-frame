@@ -50,7 +50,7 @@ export default function App() {
     const company = useSelector(state => state.company);
 
     const getInfo = async () => {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         if (token) {
             dispatch(get_user_info(token));
             const res = await getActiveAddr(token);

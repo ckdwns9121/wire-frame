@@ -128,7 +128,7 @@ const QNAWrite = ({ token, id }) => {
     }, []);
 
     const getQNADetail = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         if (token) {
             setLoading(true);
             try  {
@@ -290,7 +290,7 @@ const QNADetail = ({ id, token, onRemove, idList }) => {
     }, [history, id, onRemove, openModal, token]);
 
     const getQNADetail = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         if (token) {
             setLoading(true);
             try  {
