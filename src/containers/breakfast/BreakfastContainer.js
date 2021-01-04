@@ -22,7 +22,7 @@ import { useHistory } from 'react-router-dom';
 import { ButtonBase } from '@material-ui/core';
 
 import { Paths } from '../../paths';
-import Column from '../../components/breakfast/Column';
+// import Column from '../../components/breakfast/Column';
 import CardNews from '../../components/breakfast/CardNews';
 
 
@@ -167,24 +167,6 @@ const BreakfastContainer = () => {
                             right
                             buttonText="맞춤식단 상담하기"
                             onClick={() => history.push(Paths.ajoonamu.support + '/qna/write')}
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className={styles['area']}>
-                <div className={cn('container', 'happiness')}>
-                    <div className={styles['content']}>
-                        <div className={styles['table']}>
-                            <Column header type="패키지 구분" fee="배송비" location="지역별 하루 최소예산" />
-                            <Column type="베이직" fee="무료" location="서울/경기" cost="50,000원/일" />
-                            <Column type="플러스" fee="무료" location="서울/경기" cost="50,000원/일" />
-                            <Column type="프리미엄" fee="무료" location="서울/경기" cost="50,000원/일" />
-                        </div>
-                        <SideButtonArea
-                            text="합리적인 가격으로"
-                            keyText="하루의 행복을"
-                            green
-                            buttonText="가격 자세히 보기"
                         />
                     </div>
                 </div>

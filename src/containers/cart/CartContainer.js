@@ -287,7 +287,6 @@ const CartContainer = () => {
                         const cart_ids = JSON.parse( localStorage.getItem('noAuthCartId'));
                         const newState = cart_ids.filter(c => !obj.filter(o => o === c).length);
 
-
                         localStorage.setItem(
                             'noAuthCartId',
                             JSON.stringify(newState),
