@@ -120,6 +120,7 @@ const OrderDetailContainer = (props) => {
                                             {orders && orders.order_id}
                                         </div>
                                         <div className={styles['order-type']}>
+                                            {od_status === 'deposit_wait' && '입금대기'}
                                             {od_status === 'order_cancel' && '주문취소'}
                                             {od_status === 'order_apply' && '입금확인'}
                                             {od_status === 'shipping' && '배송중'}

@@ -37,6 +37,7 @@ const PreviewOrderItem = (props) => {
                             주문번호 : {order_id}
                         </div>
                         <div className={styles['order-type']}>
+                            {info[0].od_status === "deposit_wait" && '입금대기'}
                             {info[0].od_status === "order_cancel" && '주문취소'}
                             {info[0].od_status === "order_apply" && '입금확인'}
                             {info[0].od_status === "shipping" && '배송중'}
