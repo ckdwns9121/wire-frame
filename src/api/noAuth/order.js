@@ -14,6 +14,7 @@ export const noAuth_order = async (
     order_memo,
     delivery_memo,
     delivery_req_time,
+    settle_case
     // cp_id,
     // point_price,
 ) => {
@@ -35,6 +36,7 @@ export const noAuth_order = async (
         delivery_memo,
         delivery_req_time,
         device: 'pc',
+        settle_case
     };
     const config = {
         headers: {

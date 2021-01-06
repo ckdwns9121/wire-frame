@@ -9,7 +9,7 @@ import cn from 'classnames/bind';
 const cx = cn.bind(styles);
 
 const str = (<>
-    아주나무 딜리버리 회원가입이 완료 되었습니다.<br />
+    샌달 회원가입이 완료 되었습니다.<br />
     이메일 회원가입을 하신 회원님께서는<br />
     가입하신 이메일 주소로 지금 즉시 로그인이 가능합니다.
 </>);

@@ -60,7 +60,6 @@ export const noAuthUpdateCartQunaity = async (cart_id, item_quanity) => {
 
     const config ={
         headers:{
-        
             'Content-Type' :'application/json',
         }
     }

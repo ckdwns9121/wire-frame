@@ -15,6 +15,8 @@ import { modalOpen } from '../../store/modal';
 import { order_cancle } from '../../api/order/order';
 import { noAutuOrderCancle } from '../../api/noAuth/order';
 
+const payments = ['페이플 간편결제', '계좌이체', '만나서 결제', '무통장 입금'];
+const pay_type = ['card', 'transfer', 'meet', 'bank'];
 const cx = cn.bind(styles);
 
 const OrderDetailContainer = (props) => {
@@ -39,21 +41,45 @@ const OrderDetailContainer = (props) => {
     const { user } = useSelector((state) => state.auth);
     const [loading, setLoading] = useState(false);
     const [orders, setOrders] = useState(null);
-    const [payinfo, setPayInfo] = useState(null);
     const [payple_info , setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
+    const [type, setType] = useState(null);
+
+
+    const getPaymentType = (type) => {
+        switch (type) {
+            case pay_type[0]:
+                return payments[0];
+            case pay_type[1]:
+                return payments[1];
+            case pay_type[2]:
+                return payments[2];
+            case pay_type[3]:
+                return payments[3];
+            default:
+                return payments[0];
+        }
+    };
+
 
     const getOrderInfo = useCallback(async () => {
 
         if (user_token) {
             setLoading(true);
-            const res = await getDetailOrderView(user_token, order_id);
-            setOrders(res.orders);
-            setPayInfo(res.payinfo);
-            const temp = JSON.parse(res.payinfo.pp_result);
-            setOdStatus(res.orders.info[0].od_status);
-            setPaypleInfo(temp);
-            setLoading(false);
+            try{
+                const res = await getDetailOrderView(user_token, order_id);
+                setOrders(res.orders);
+                if(res.payple_info){
+                setPaypleInfo(JSON.parse(res.payinfo.pp_result));
+                }
+                setOdStatus(res.orders.info[0].od_status);
+                setType(getPaymentType(res.orders.settle_case))
+                setLoading(false);
+            }
+            catch(e){
+
+            }
+      
         } else {
             history.replace('/');
         }
@@ -113,7 +139,7 @@ const OrderDetailContainer = (props) => {
                                 <div className={styles['order-info']}>
                                     <div className={styles['top']}>
                                         <div className={styles['order-date']}>
-                                            {orders && orders.receipt_time}
+                                            {orders && (orders.receipt_time) ?  orders.receipt_time :'주문시간이 없습니다.'}
                                         </div>
                                         <div className={styles['order-id']}>
                                             주문번호 :{' '}
@@ -314,25 +340,26 @@ const OrderDetailContainer = (props) => {
                                                 <span>원</span>
                                             </div>
                                         </div>
-                                        <div className={cx('box', 'card')}>
-                                            <div
-                                                className={styles['text']}
-                                            ></div>
+                                        <div className={cx('box', 'payment')}>
+                                            <div className={styles['text']}>결제 방식</div>
                                             <div className={styles['value']}>
+                                                {type}
                                                 {payple_info &&
                                                     payple_info.PCD_PAY_CARDNAME}
                                             </div>
                                         </div>
-                                        <div className={cx('box', 'card-type')}>
-                                            <div
-                                                className={styles['text']}
-                                            ></div>
-                                            <div className={styles['value']}>
-                                                {payple_info &&
-                                                    payple_info.PCD_PAY_CARDNUM}{' '}
-                                                일시불
-                                            </div>
-                                        </div>
+                                        {type===payments[0] &&
+                                            <div className={cx('box', 'payment-type')}>
+                                               <div
+                                                   className={styles['text']}
+                                               ></div>
+                                               <div className={styles['value']}>
+                                                   {payple_info &&
+                                                       payple_info.PCD_PAY_CARDNUM}{' '}
+                                               </div>
+                                           </div>
+                                        }
+                                 
                                     </div>
                                 </div>
                             </div>

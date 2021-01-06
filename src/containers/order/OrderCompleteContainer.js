@@ -25,7 +25,8 @@ import {noAuthOrderView ,noAutuOrderCancle} from '../../api/noAuth/order';
 import { Paths } from '../../paths';
 
 const cx = cn.bind(styles);
-
+const payments = ['페이플 간편결제', '계좌이체', '만나서 결제', '무통장 입금'];
+const pay_type = ['card', 'transfer', 'meet', 'bank'];
 const OrderCompleteContainer = ({ order_number }) => {
     const user_token = useStore(false);
     const history = useHistory();
@@ -48,9 +49,24 @@ const OrderCompleteContainer = ({ order_number }) => {
     const [payinfo, setPayInfo] = useState(null);
     const [payple_info, setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
+    const [type, setType] = useState(null);
 
     const handleOpen = useCallback(() => setStickyOpen(true), []);
     const handleClose = useCallback(() => setStickyOpen(false), []);
+    const getPaymentType = (type) => {
+        switch (type) {
+            case pay_type[0]:
+                return payments[0];
+            case pay_type[1]:
+                return payments[1];
+            case pay_type[2]:
+                return payments[2];
+            case pay_type[3]:
+                return payments[3];
+            default:
+                return payments[0];
+        }
+    };
 
     const getOrderInfo = useCallback(async () => {
         setLoading(true);
@@ -70,11 +86,13 @@ const OrderCompleteContainer = ({ order_number }) => {
                     '주문번호가 존재하지 않습니다.',
                     '주문번호를 확인해주세요',
                 );
-                history.push(Paths.index);
+                history.replace(Paths.index);
                 setSuccess(false);
+
                 setError(true);
             } else {
                 setOdStatus(orders.info[0].od_status);
+                setType(getPaymentType(orders.settle_case));
                 setOrders(orders);
                 setSuccess(true);
                 setError(false);
@@ -88,7 +106,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                 '주문번호가 존재하지 않습니다.',
                 '주문번호를 확인해주세요',
             );
-            history.push(Paths.index);
+            history.replace(Paths.index);
         }
         setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -210,7 +228,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             />
                                             <OrderInfoBox
                                                 text={'결제방식'}
-                                                value={orders && orders.info[0].pg}
+                                                value={type}
                                             />
                                             <OrderInfoBox
                                                 text={'결제금액'}
@@ -228,24 +246,20 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                     orders && orders.info[0].s_name
                                                 }
                                             />
-                                            {/* <OrderInfoBox
+                                    {type===payments[3] && 
+                                        <>
+                                            <OrderInfoBox
                                                     text={'입금계좌'}
-                                                    value={'국민은행'}
+                                                    value={'농협'}
                                                     paddingBottom={'10px'}
                                                 />
                                                 <OrderInfoBox
                                                     text={''}
                                                     value={
-                                                        '574845-23-568521 김종완'
+                                                        '352-1039-8031-23 지혜림'
                                                     }
                                                 />
-                                                <OrderInfoBox
-                                                    text={'가상계좌 유효기간'}
-                                                    auto={true}
-                                                    value={
-                                                        '2020년 06월 09일 00시 00분 00초'
-                                                    }
-                                                /> */}
+                                        </>}
                                         </div>
                                     </div>
                                 </div>

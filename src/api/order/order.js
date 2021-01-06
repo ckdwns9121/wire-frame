@@ -9,6 +9,7 @@ export const user_order = async (
     delivery_req_time,
     cp_id,
     point_price = 0,
+    settle_case
 ) => {
     order_memo = order_memo ? order_memo : "없음";
     delivery_memo = delivery_memo ? delivery_memo : "없음";
@@ -22,6 +23,7 @@ export const user_order = async (
             delivery_req_time: delivery_req_time,
             point_price: point_price,
             device: 'pc',
+            settle_case
         };
     } else {
         form_data = {
@@ -32,6 +34,7 @@ export const user_order = async (
             cp_id: cp_id,
             point_price: point_price,
             device: 'pc',
+            settle_case
         };
     }
 

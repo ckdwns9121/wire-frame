@@ -49,6 +49,8 @@ import { Paths, PROTOCOL_ENV } from '../../paths';
 
 import '../../styles/DatePicker.scss';
 import { useHistory } from 'react-router-dom';
+const payments=['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
+const pay_type = ['card','transfer','meet','bank'];
 
 
 const cx = classNames.bind(styles);
@@ -94,7 +96,7 @@ const OrderContainer = () => {
     const { check1, check2 } = check;
     const [toggle, setToggle] = useState(false); // 결제 동의
     const [payable, setPayable] = useState(false);
-    const [payment, setPayment] = useState('페이플 카드 결제'); //결제 방법
+    const [payment, setPayment] = useState(payments[0]); //결제 방법
     const [cp_list, setCouponList] = useState([]); //사용가능한 쿠폰
     const [totalPrice, setTotalPrice] = useState(-1); //총 결제금액
     const [default_cost ,setDefaultCost] =useState(0); // 기존 배달비
@@ -288,14 +290,29 @@ const OrderContainer = () => {
         }
     };
 
+    const getPaymentType =(payment)=>{
+        switch (payment) {
+            case payments[0]:
+                return pay_type[0];
+            case payments[1]:
+                return pay_type[1];
+            case payments[2]:
+                return pay_type[2];
+            case payments[3]:
+                return pay_type[3];
+            default :
+                return pay_type[0];
+        }
+    }
+
     const onClickOrder = async () => {
         const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
 
         const year = date.getFullYear();
         const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
         const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
-
-        const delivery_req_time = `${year}-${month}-${day} ${hours}:${minute}:00`
+        const delivery_req_time = `${year}-${month}-${day} ${hours}:${minute}:00`;
+        const settle_case = getPaymentType(payment);
         //회원 주문
         setLoading(true);
         if (user_token) {
@@ -307,9 +324,11 @@ const OrderContainer = () => {
                 delivery_req_time,
                 cp_id,
                 point_price,
+                settle_case
                 
             );
             order_id.current = res.data.query;
+            console.log(res);
 
             //장바구니 삭제
         }
@@ -329,10 +348,22 @@ const OrderContainer = () => {
                 orderMemo,
                 dlvMemo,
                 delivery_req_time,
+                settle_case
             );
             order_id.current = res.data.query;
+            console.log(res);
             //장바구니 삭제
         }
+
+        if(payment===payments[2] || payment===payments[3]){
+            setLoading(true);
+            setTimeout(()=>{
+                setLoading(false);
+                history.push(Paths.ajoonamu.order_complete +'?order_number='+order_id.current);
+            },300)
+        }
+
+        else{
         $script(payple_url, () => {
             
             /*global PaypleCpayAuthCheck*/
@@ -370,11 +401,23 @@ const OrderContainer = () => {
              * DEFAULT SET 1
              */
             obj.PCD_CPAY_VER = '1.0.1'; // (필수) 결제창 버전 (Default : 1.0.0)
-            obj.PCD_PAY_TYPE = pay_type; // (필수) 결제 방법 (transfer | card)
             obj.PCD_PAY_WORK = pay_work; // (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
-
-            // 카드결제 시 필수
-            obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
+            obj.PCD_SIMPLE_FLAG = 'N';
+            if (simple_flag === 'Y' && payple_payer_id !== '') {
+                obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
+                //-- PCD_PAYER_ID 는 소스상에 표시하지 마시고 반드시 Server Side Script 를 이용하여 불러오시기 바랍니다. --//
+                obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
+            }
+            //간편 카드결제'
+            if(payment===payments[0]){
+                // 카드결제 시 필수
+                obj.PCD_PAY_TYPE = 'card'; // (필수) 결제 방법 (transfer | card)
+                obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
+            }
+            //간편 계좌결제
+            else if(payment ===payments[1]){
+                obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
+            }
 
             //## 2.2 간편결제 (재결제)
             obj.PCD_PAYER_NO = buyer_no; // (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
@@ -385,12 +428,7 @@ const OrderContainer = () => {
             obj.PCD_PAY_OID = order_num; // 주문번호 (미입력 시 임의 생성)
             obj.PCD_REGULER_FLAG = is_reguler; // (선택) 정기결제 여부 (Y|N)
             obj.PCD_TAXSAVE_FLAG = is_taxsave; // (선택) 현금영수증 발행 여부 (Y|N)
-            obj.PCD_SIMPLE_FLAG = 'N';
-            if (simple_flag === 'Y' && payple_payer_id !== '') {
-                obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
-                //-- PCD_PAYER_ID 는 소스상에 표시하지 마시고 반드시 Server Side Script 를 이용하여 불러오시기 바랍니다. --//
-                obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
-            }
+    
 
             /*
              * DEFAULT SET 2
@@ -401,9 +439,9 @@ const OrderContainer = () => {
             obj.payple_auth_file =
                 PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
-
-           PaypleCpayAuthCheck(obj);
+            PaypleCpayAuthCheck(obj);
         });
+      }
         setLoading(false);
     };
 
@@ -696,25 +734,25 @@ const OrderContainer = () => {
                             <div className={styles['user-info']}>
                                 <div className={styles['payments']}>
                                     <Payment
-                                        text={'페이플 카드 결제'}
+                                        text={payments[0]}
                                         check={true}
                                         onClick={onClickPayment}
                                         payment={payment}
                                     />
                                     <Payment
-                                        text={'가상계좌 결제'}
+                                        text={payments[1]}
                                         check={false}
                                         onClick={onClickPayment}
                                         payment={payment}
                                     />
                                     <Payment
-                                        text={'휴대폰 결제'}
+                                        text={payments[2]}
                                         check={false}
                                         onClick={onClickPayment}
                                         payment={payment}
                                     />
                                     <Payment
-                                        text={'만나서 직접 결제'}
+                                        text={payments[3]}
                                         check={false}
                                         onClick={onClickPayment}
                                         payment={payment}
