@@ -32,7 +32,7 @@ Message.propTypes = {
 
 Message.defaultProps = {
     src: true,
-    msg: '아주나무',
+    msg: '샌달',
     size: 500,
     isButton: false,
     onClick: () => {},

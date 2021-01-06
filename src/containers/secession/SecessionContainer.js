@@ -31,7 +31,7 @@ const SecessionContainer = () => {
                 try {
                     const res = await requestPutSecession(user_token, agree);
                     if (res.data.msg) {
-                        openModal('정상적으로 회원탈퇴 되셨습니다!', '다음에도 저희 아주나무를 이용해 주시기 바랍니다.');
+                        openModal('정상적으로 회원탈퇴 되셨습니다!', '다음에도 저희 샌달을 이용해 주시기 바랍니다.');
                         
                         const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
                         if (noAuth) {
