@@ -2,18 +2,28 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import OrderItemList from '../../components/order/OrderItemList';
+import { ButtonBase } from '@material-ui/core';
 import styles from './OrderDetail.module.scss';
 import cn from 'classnames/bind';
 import Loading from '../../components/assets/Loading';
-import { useStore } from '../../hooks/useStore';
-import { getDetailOrderView } from '../../api/order/orderItem';
+
+
+//lib
 import { numberFormat, stringToTel } from '../../lib/formatter';
+import {calculateDaySection} from '../../lib/calculateDate';
 
 import qs from 'qs';
-import { ButtonBase } from '@material-ui/core';
+
 import { modalOpen } from '../../store/modal';
+
+//hook
+import { useStore } from '../../hooks/useStore';
+
+//api
 import { order_cancle } from '../../api/order/order';
 import { noAutuOrderCancle } from '../../api/noAuth/order';
+import { getDetailOrderView } from '../../api/order/orderItem';
+
 
 const payments = ['페이플 간편결제', '계좌이체', '만나서 결제', '무통장 입금'];
 const pay_type = ['card', 'transfer', 'meet', 'bank'];
@@ -43,6 +53,7 @@ const OrderDetailContainer = (props) => {
     const [orders, setOrders] = useState(null);
     const [payple_info , setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
+    const [cancelAble , setCancelAble] = useState(false);
     const [type, setType] = useState(null);
 
 
@@ -73,12 +84,13 @@ const OrderDetailContainer = (props) => {
                 setPaypleInfo(JSON.parse(res.payinfo.pp_result));
                 }
                 setOdStatus(res.orders.info[0].od_status);
+                setCancelAble(calculateDaySection(res.orders.info[0].delivery_req_time,new Date()));
                 setType(getPaymentType(res.orders.settle_case))
                 setLoading(false);
             }
             catch(e){
-
-            }
+                console.error(e);
+            }   
       
         } else {
             history.replace('/');
@@ -368,18 +380,18 @@ const OrderDetailContainer = (props) => {
                             <ButtonBase
                                 className={styles['btn']}
                                 onClick={orders &&
-                                (od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')
+                                (od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete' || !cancelAble)
                                     ? () => {}
                                     : userOrderCancle
                                 }
-                                disabled={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
-                                disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
+                                disabled={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete'|| !cancelAble)}
+                                disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete'|| !cancelAble)}
                             >
                                 {orders &&
                                 (od_status === 'order_cancel') ? '주문취소완료'
                                 : (od_status === 'delivery_complete') ? '배달완료'
                                 : (od_status === 'order_complete') ? '주문완료'
-                                : '주문 취소'}
+                                : (cancelAble ? '주문 취소' :'주문 취소불가')}
                             </ButtonBase>
                         </div>
                     </div>

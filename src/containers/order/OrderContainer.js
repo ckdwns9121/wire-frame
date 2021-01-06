@@ -324,7 +324,9 @@ const OrderContainer = () => {
                 delivery_req_time,
                 cp_id,
                 point_price,
-                settle_case
+                settle_case,
+                noAuthName,
+                firstPhoneNumber,
                 
             );
             order_id.current = res.data.query;
@@ -351,7 +353,6 @@ const OrderContainer = () => {
                 settle_case
             );
             order_id.current = res.data.query;
-            console.log(res);
             //장바구니 삭제
         }
 
@@ -519,6 +520,12 @@ const OrderContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cp_price, point_price]);
 
+    useEffect(()=>{
+        if(user){
+            setNoAuthName(user.name);
+        }
+    },[user])
+
     useEffect(() => {
         const boundingBox = paymentBox.current.getBoundingClientRect();
         const boundingInfo = paymentInfo.current.getBoundingClientRect();
@@ -555,10 +562,7 @@ const OrderContainer = () => {
                             <div className={styles['sub-title']}>배달정보</div>
                             <div className={styles['user-info']}>
                                 <div className={styles['name']}>
-                                    {user ? (
-                                        user.name
-                                    ) : (
-                                        <div>
+                           
                                             <input
                                                 onChange={(e) =>
                                                     setNoAuthName(
@@ -573,8 +577,6 @@ const OrderContainer = () => {
                                                     '이름을 입력하세요.'
                                                 }
                                             />
-                                        </div>
-                                    )}
                                 </div>
                                 <div className={styles['addr']}>
                                     {addr1} {addr2}

@@ -16,7 +16,7 @@ import OrderItemList from '../../components/order/OrderItemList';
 //lib
 import { numberFormat, stringToTel } from '../../lib/formatter';
 import { modalOpen } from '../../store/modal';
-
+import {calculateDaySection} from '../../lib/calculateDate';
 //api
 import { order_cancle } from '../../api/order/order';
 import { getDetailOrderView } from '../../api/order/orderItem';
@@ -49,6 +49,7 @@ const OrderCompleteContainer = ({ order_number }) => {
     const [payinfo, setPayInfo] = useState(null);
     const [payple_info, setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
+    const [cancelAble , setCancelAble] = useState(false);
     const [type, setType] = useState(null);
 
     const handleOpen = useCallback(() => setStickyOpen(true), []);
@@ -93,6 +94,7 @@ const OrderCompleteContainer = ({ order_number }) => {
             } else {
                 setOdStatus(orders.info[0].od_status);
                 setType(getPaymentType(orders.settle_case));
+                setCancelAble(calculateDaySection(orders.info[0].delivery_req_time,new Date()));
                 setOrders(orders);
                 setSuccess(true);
                 setError(false);
@@ -387,18 +389,18 @@ const OrderCompleteContainer = ({ order_number }) => {
                                         <ButtonBase
                                             className={styles['btn']}
                                             onClick={orders &&
-                                                (od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')
+                                                (od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete' || !cancelAble)
                                                     ? () => {}
                                                     : userOrderCancle
                                                 }
-                                            disabled={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
-                                            disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
+                                            disabled={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete'|| !cancelAble)}
+                                            disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete'|| !cancelAble)}
                                         >
                                             {orders &&
                                             (od_status === 'order_cancel') ? '주문취소완료'
                                             : (od_status === 'delivery_complete') ? '배달완료'
                                             : (od_status === 'order_complete') ? '주문완료'
-                                            : '주문 취소'}
+                                            : (cancelAble ? '주문 취소' :'주문 취소불가')}
                                         </ButtonBase>
                                     </div>
                                 </div>
