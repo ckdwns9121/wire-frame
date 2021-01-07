@@ -164,7 +164,7 @@ const OrderDetailContainer = (props) => {
                                             {orders && orders.order_id}
                                         </div>
                                         <div className={styles['order-type']}>
-                                            {od_status === 'deposit_wait' && '입금대기'}
+                                            {od_status === "deposit_wait" && (orders.info[0].settle_case === 'meet' ? '만나서 결제' : '입금 대기')}
                                             {od_status === 'order_cancel' && '주문취소'}
                                             {od_status === 'order_apply' && '입금확인'}
                                             {od_status === 'shipping' && '배송중'}
@@ -264,8 +264,8 @@ const OrderDetailContainer = (props) => {
                                             orders &&
                                             orders.info[0].order_type ===
                                                 'reserve'
-                                                ? '배달주문'
-                                                : '예약주문'
+                                                ? '예약주문'
+                                                : '배달주문'
                                         }
                                     />
                                     <UserInfoBox
