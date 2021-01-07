@@ -53,7 +53,6 @@ const ReserveContainer = ({ tab = '0' }) => {
     const [open, setOpen] = useState(false);
     const [budget, setBudget] = useState(0); // 맞춤 가격
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
-    const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [tabIndex, setTab] = useState(parseInt(tab));
     const [loading, setLoading] = useState(false);
 
@@ -367,9 +366,7 @@ const PreferMenu =({
     search,
     list,
     onClick,
-    type,
     handleOpen,
-    onChange,
     init,})=>{
     return(
         <>
@@ -384,24 +381,6 @@ const PreferMenu =({
             </>
         ) : (
             <>
-                <ul>
-                    <li
-                        className={cx({ active: type === 0 })}
-                        onClick={() => {
-                            onChange(0);
-                        }}
-                    >
-                        <ButtonBase>맞춤메뉴</ButtonBase>
-                    </li>
-                    <li
-                        className={cx({ active: type === 1 })}
-                        onClick={() => {
-                            onChange(1);
-                        }}
-                    >
-                        <ButtonBase>일반메뉴</ButtonBase>
-                    </li>
-                </ul>
                 <Refesh onClick={init} />
                 {!empty ? (
                     <>
