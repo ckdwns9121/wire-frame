@@ -63,6 +63,7 @@ export default ({ listLength = 0, maxLength = 4, children, infinite = true, auto
         slidesToShow: listLength > maxLength ? maxLength : listLength,
         slidesToScroll: maxLength,
         slidePerRow: 1,
+        draggable:false,
         variableWidth: !(listLength >= maxLength),
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,

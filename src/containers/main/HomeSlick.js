@@ -4,25 +4,86 @@ import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import { requestBannerList } from '../../api/event/banner';
 import { useModal } from '../../hooks/useModal';
+import { IconButton } from '@material-ui/core';
 
 // import NoImage from '../../components/svg/noimage.png';
 
 import { DBImageFormat } from '../../lib/formatter';
 import ErrorCoverImage from '../../components/assets/ErrorCoverImage';
 
+import Prev from '../../components/svg/menu/prev.svg';
+import Next from '../../components/svg/menu/next.svg';
 
-const settings = {
-    infinite: true,
-    autoplay: true,
-    speed: 3000,
-    autoplaySpeed: 4000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    adaptiveHeight: true,
-    initialSlide: 0
+const arrowStyle = {
+    cursor: 'pointer',
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '64px',
+    height: '64px',
+    top: '40%',
+    borderRadius: '50%',
+    background: '#fff',
+    boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',
+    zIndex: 1000,
 };
 
+
+
+
+const NextArrow = ({ style, onClick }) => (
+    <IconButton
+        style={{
+            ...style,
+            ...arrowStyle,
+            right: '20px',
+        }}
+        onClick={onClick}
+    >
+        <img
+            style={{ display: 'block', width: '32px', height: '32px' }}
+            src={Next}
+            alt="next"
+        />
+    </IconButton>
+);
+
+const PrevArrow = ({ style, onClick }) => (
+    <IconButton
+        style={{
+            ...style,
+            ...arrowStyle,
+            left: '20px',
+        }}
+        onClick={onClick}
+    >
+        <img
+            style={{ display: 'block', width: '32px', height: '32px' }}
+            src={Prev}
+            alt="prev"
+        />
+    </IconButton>
+);
+
+
+
 const HomeSlick = () => {
+
+    const settings = {
+        infinite: true,
+        autoplay: true,
+        speed: 3000,
+        draggable:false,
+        autoplaySpeed: 4000,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        adaptiveHeight: true,
+        initialSlide: 0,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
+    };
+
     const openModal = useModal();
     const slider = useRef();
     const [list, setList] = useState([]);
