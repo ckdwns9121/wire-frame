@@ -337,7 +337,6 @@ const OrderContainer = () => {
                 
             );
             order_id.current = res.data.query;
-            console.log(res);
 
             //장바구니 삭제
         }

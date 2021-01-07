@@ -133,7 +133,6 @@ const CartContainer = () => {
             setLoading(true);
             try {
                 const res = await getCartList(user_token);
-                console.log(res);
                 if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
                     openModal(res.data.msg, '주소지 설정을 해주세요.');
                     history.push(Paths.ajoonamu.address);
