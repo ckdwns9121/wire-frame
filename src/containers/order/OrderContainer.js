@@ -49,7 +49,7 @@ import { Paths, PROTOCOL_ENV } from '../../paths';
 
 import '../../styles/DatePicker.scss';
 import { useHistory } from 'react-router-dom';
-const payments=['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
+const pay_arr=['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
 const pay_type = ['card','transfer','meet','bank'];
 
 
@@ -96,7 +96,7 @@ const OrderContainer = () => {
     const { check1, check2 } = check;
     const [toggle, setToggle] = useState(false); // 결제 동의
     const [payable, setPayable] = useState(false);
-    const [payment, setPayment] = useState(payments[0]); //결제 방법
+    const [payment, setPayment] = useState(pay_arr[0]); //결제 방법
     const [cp_list, setCouponList] = useState([]); //사용가능한 쿠폰
     const [totalPrice, setTotalPrice] = useState(-1); //총 결제금액
     const [default_cost ,setDefaultCost] =useState(0); // 기존 배달비
@@ -299,13 +299,13 @@ const OrderContainer = () => {
 
     const getPaymentType =(payment)=>{
         switch (payment) {
-            case payments[0]:
+            case pay_arr[0]:
                 return pay_type[0];
-            case payments[1]:
+            case pay_arr[1]:
                 return pay_type[1];
-            case payments[2]:
+            case pay_arr[2]:
                 return pay_type[2];
-            case payments[3]:
+            case pay_arr[3]:
                 return pay_type[3];
             default :
                 return pay_type[0];
@@ -363,7 +363,7 @@ const OrderContainer = () => {
             //장바구니 삭제
         }
 
-        if(payment===payments[2] || payment===payments[3]){
+        if(payment===pay_arr[2] || payment===pay_arr[3]){
             setLoading(true);
             setTimeout(()=>{
                 setLoading(false);
@@ -409,7 +409,7 @@ const OrderContainer = () => {
             //ID가 있으면 간편결제 시작
 
             // 카드 간편결제
-            if(payment===payments[0]){
+            if(payment===pay_arr[0]){
 
                 if (PCD_PAYER_ID !== null) {
                     payple_payer_id = PCD_PAYER_ID;
@@ -420,7 +420,7 @@ const OrderContainer = () => {
             }
 
             //계좌 간편결제
-            else if(payments===payments[1]){
+            else if(payment===pay_arr[1]){
                 if (PCD_PAYER_ID_TRANSFER !== null) {
                     payple_payer_id = PCD_PAYER_ID_TRANSFER;
                     simple_flag = 'Y';
@@ -750,25 +750,25 @@ const OrderContainer = () => {
                             <div className={styles['user-info']}>
                                 <div className={styles['payments']}>
                                     <Payment
-                                        text={payments[0]}
+                                        text={pay_arr[0]}
                                         check={true}
                                         onClick={onClickPayment}
                                         payment={payment}
                                     />
                                     <Payment
-                                        text={payments[1]}
+                                        text={pay_arr[1]}
                                         check={false}
                                         onClick={onClickPayment}
                                         payment={payment}
                                     />
                                     <Payment
-                                        text={payments[2]}
+                                        text={pay_arr[2]}
                                         check={false}
                                         onClick={onClickPayment}
                                         payment={payment}
                                     />
                                     <Payment
-                                        text={payments[3]}
+                                        text={pay_arr[3]}
                                         check={false}
                                         onClick={onClickPayment}
                                         payment={payment}
