@@ -48,7 +48,7 @@ const HomeSlick = () => {
             {list.length !== 0 && 
             <Slider {...settings} ref={slider}>
                 {list.map(item => (
-                    (item.bn_url.indexOf('http://') !== -1 || item.bn_url.indexOf('https://') ?
+                    (item.bn_url.indexOf('http://') !== -1 || item.bn_url.indexOf('https://') !== -1 ?
                     <a key={item.id} href={item.bn_url}>
                         {/* <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "'), url('" + NoImage + "')" }}/> */}
                         <ErrorCoverImage src={DBImageFormat(item.bn_img)[0]} alt="배너" />

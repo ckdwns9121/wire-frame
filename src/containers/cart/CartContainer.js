@@ -133,6 +133,7 @@ const CartContainer = () => {
             setLoading(true);
             try {
                 const res = await getCartList(user_token);
+                console.log(res);
                 if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
                     openModal(res.data.msg, '주소지 설정을 해주세요.');
                     history.push(Paths.ajoonamu.address);
@@ -140,7 +141,7 @@ const CartContainer = () => {
                     const { query } = res.data;
                     let len = Object.keys(query).length;
                     let list = [];
-                    for (let i = 0; i < len - 2; i++) {
+                    for (let i = 0; i < len - 3; i++) {
                         list[i] = query[i];
                         list[i].checked = false;
                     }

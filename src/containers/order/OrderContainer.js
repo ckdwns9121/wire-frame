@@ -105,7 +105,8 @@ const OrderContainer = () => {
     const [dlvMemoCheck, setDlvMemoCheck] = useState(false);
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
     const [orderMemo, setOrderMemo] = useState(''); //주문메모
-    const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
+    const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //간편결제 ID
+    const [PCD_PAYER_ID_TRANSFER, SET_PCD_PAYER_ID_TRANSFER] = useState(null); //계좌결제 ID
     const [point_price, setPointPrice] = useState(0); //포인트 할인
     const order_id = useRef(null);
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
@@ -179,7 +180,7 @@ const OrderContainer = () => {
                     let price = 0;
                     const { query } = res.data;
                     let len = Object.keys(query).length;
-                    for (let i = 0; i < len - 2; i++) {
+                    for (let i = 0; i < len - 3; i++) {
                         const { item, options } = query[i];
 
                         price +=
@@ -198,6 +199,12 @@ const OrderContainer = () => {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID);
                     } else {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID.pp_tno);
+                    }
+                    if (query.PCD_PAYER_ID_transfer === null) {
+                        SET_PCD_PAYER_ID_TRANSFER(query.PCD_PAYER_ID_transfer);
+                    } 
+                    else {
+                        SET_PCD_PAYER_ID_TRANSFER(query.PCD_PAYER_ID_transfer.pp_tno);
                     }
                     if (price === 0) {
                         history.replace(Paths.index);
@@ -377,10 +384,10 @@ const OrderContainer = () => {
             let payple_payer_id = '';
 
             let buyer_no = user && user.id; //고객 고유번호
-            // let buyer_name = user ? user.name : noAuthName ; //고객 이름
-            // let buyer_hp = `${firstPhoneNumber}`;//고객 번호
-            // let buyer_email = user && user.email; //고객 이메일
-            let buy_goods = '테스트'; //구매하는 물건 이름
+            let buyer_name = noAuthName ; //고객 이름
+            let buyer_hp = `${firstPhoneNumber}`;//고객 번호
+            let buyer_email = user && user.email; //고객 이메일
+            let buy_goods = '(주)샌달 상품 결제'; //구매하는 물건 이름
             let buy_total = Number(parseInt(totalPrice) + parseInt(dlvCost) - parseInt(cp_price) - parseInt(point_price) ); //가격
             let buy_taxtotal = 0;
             let buy_istax = ''; //과세설정 DEFAULT :Y  비과세 N
@@ -390,35 +397,42 @@ const OrderContainer = () => {
             let simple_flag = 'N';
             let card_ver = '01';
 
-            if (PCD_PAYER_ID !== null) {
-                payple_payer_id = PCD_PAYER_ID;
-                simple_flag = 'Y';
-            }
-
             let obj = new Object();
 
-            //#########################################################################################################################################################################
             /*
              * DEFAULT SET 1
              */
             obj.PCD_CPAY_VER = '1.0.1'; // (필수) 결제창 버전 (Default : 1.0.0)
             obj.PCD_PAY_WORK = pay_work; // (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
-            obj.PCD_SIMPLE_FLAG = 'N';
-            if (simple_flag === 'Y' && payple_payer_id !== '') {
-                obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
-                //-- PCD_PAYER_ID 는 소스상에 표시하지 마시고 반드시 Server Side Script 를 이용하여 불러오시기 바랍니다. --//
-                obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
-            }
-            //간편 카드결제'
+            obj.PCD_SIMPLE_FLAG = 'N'; //간편 결제 여부
+
+            //ID가 있으면 간편결제 시작
+
+            // 카드 간편결제
             if(payment===payments[0]){
-                // 카드결제 시 필수
+
+                if (PCD_PAYER_ID !== null) {
+                    payple_payer_id = PCD_PAYER_ID;
+                    simple_flag = 'Y';
+                }
                 obj.PCD_PAY_TYPE = 'card'; // (필수) 결제 방법 (transfer | card)
                 obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
             }
-            //간편 계좌결제
-            else if(payment ===payments[1]){
+
+            //계좌 간편결제
+            else if(payments===payments[1]){
+                if (PCD_PAYER_ID_TRANSFER !== null) {
+                    payple_payer_id = PCD_PAYER_ID_TRANSFER;
+                    simple_flag = 'Y';
+                }
                 obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
             }
+
+            if (simple_flag === 'Y' && payple_payer_id !== '') {
+                obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
+                obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
+            }
+    
 
             //## 2.2 간편결제 (재결제)
             obj.PCD_PAYER_NO = buyer_no; // (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
