@@ -53,12 +53,13 @@ export const noAuthOrderView = async (order_id) => {
     const res = await axios.get(req);
     return res.data.query;
 };
-export const noAutuOrderCancle = async (order_id, s_hp) => {
+export const noAutuOrderCancle = async (order_id, s_hp,settle_case) => {
     const req = Paths.api + 'noauth/order/cancel';
 
     const form_data = {
         order_id: order_id,
         s_hp: s_hp,
+        settle_case
     };
 
     const config = {

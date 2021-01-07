@@ -54,21 +54,20 @@ const OrderDetailContainer = (props) => {
     const [payple_info , setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
     const [cancelAble , setCancelAble] = useState(false);
-    const [type, setType] = useState(null);
+    const [payment_type, setPaymentType] = useState({kind:payments[0] ,settle_case:pay_type[0]});
 
-
-    const getPaymentType = (type) => {
-        switch (type) {
+    const getPaymentType = (settle_case) => {
+        switch (settle_case) {
             case pay_type[0]:
-                return payments[0];
+                return {kind: payments[0] , settle_case};
             case pay_type[1]:
-                return payments[1];
+                return {kind: payments[1] , settle_case};
             case pay_type[2]:
-                return payments[2];
+                return {kind: payments[2] , settle_case};
             case pay_type[3]:
-                return payments[3];
+                return {kind: payments[3] , settle_case};
             default:
-                return payments[0];
+                return {kind: payments[0] , settle_case};
         }
     };
 
@@ -85,7 +84,7 @@ const OrderDetailContainer = (props) => {
                 }
                 setOdStatus(res.orders.info[0].od_status);
                 setCancelAble(calculateDaySection(res.orders.info[0].delivery_req_time,new Date()));
-                setType(getPaymentType(res.orders.settle_case))
+                setPaymentType(getPaymentType(res.orders.settle_case))
                 setLoading(false);
             }
             catch(e){
@@ -107,19 +106,26 @@ const OrderDetailContainer = (props) => {
                 try {
                     let res = null;
                     if (user_token) {
-                        res = await order_cancle(user_token, order_id);
+                        res = await order_cancle(user_token, order_id,payment_type.settle_case);
                     } else {
                         res = await noAutuOrderCancle(
                             order_id,
                             orders.info[0].s_hp,
+                            payment_type.settle_case
                         );
                     }
                     if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.') !== -1) {
                         openMessage(false, '이미 취소된 거래건 입니다.');
-                    } else {
+                        setOdStatus("order_cancel");
+
+                    }else if(res.data.msg.index('잘못된')!==-1){
+                        openMessage(false, '취소 오류가 발생했습니다.');
+                    } 
+                    else {
                         openMessage(false, '정상적으로 취소되었습니다.');
+                        setOdStatus("order_cancel");
+
                     }
-                    setOdStatus("order_cancel");
                 } catch (e) {
                     
                 }
@@ -355,12 +361,12 @@ const OrderDetailContainer = (props) => {
                                         <div className={cx('box', 'payment')}>
                                             <div className={styles['text']}>결제 방식</div>
                                             <div className={styles['value']}>
-                                                {type}
+                                                {payment_type.kind}
                                                 {payple_info &&
                                                     payple_info.PCD_PAY_CARDNAME}
                                             </div>
                                         </div>
-                                        {type===payments[0] &&
+                                        {payment_type.kind===payments[0] &&
                                             <div className={cx('box', 'payment-type')}>
                                                <div
                                                    className={styles['text']}

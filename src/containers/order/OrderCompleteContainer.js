@@ -50,22 +50,23 @@ const OrderCompleteContainer = ({ order_number }) => {
     const [payple_info, setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
     const [cancelAble , setCancelAble] = useState(false);
-    const [type, setType] = useState(null);
+    const [payment_type, setPaymentType] = useState({kind:payments[0] ,settle_case:pay_type[0]});
+
 
     const handleOpen = useCallback(() => setStickyOpen(true), []);
     const handleClose = useCallback(() => setStickyOpen(false), []);
-    const getPaymentType = (type) => {
-        switch (type) {
+    const getPaymentType = (settle_case) => {
+        switch (settle_case) {
             case pay_type[0]:
-                return payments[0];
+                return {kind: payments[0] , settle_case};
             case pay_type[1]:
-                return payments[1];
+                return {kind: payments[1] , settle_case};
             case pay_type[2]:
-                return payments[2];
+                return {kind: payments[2] , settle_case};
             case pay_type[3]:
-                return payments[3];
+                return {kind: payments[3] , settle_case};
             default:
-                return payments[0];
+                return {kind: payments[0] , settle_case};
         }
     };
 
@@ -93,7 +94,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                 setError(true);
             } else {
                 setOdStatus(orders.info[0].od_status);
-                setType(getPaymentType(orders.settle_case));
+                setPaymentType(getPaymentType(orders.settle_case));
                 setCancelAble(calculateDaySection(orders.info[0].delivery_req_time,new Date()));
                 setOrders(orders);
                 setSuccess(true);
@@ -125,20 +126,25 @@ const OrderCompleteContainer = ({ order_number }) => {
                 try {
                     let res = null;
                     if (user_token) {
-                        res = await order_cancle(user_token, order_number);
+                        res = await order_cancle(user_token, order_number,payment_type.settle_case);
                     } else {
                         res = await noAutuOrderCancle(
                             order_number,
                             orders.info[0].s_hp,
+                            payment_type.settle_case
                         );
                     }
                     if (res.data.msg.indexOf('이미 취소 된 거래건 입니다.') !== -1) {
                         openMessage(false, '이미 취소된 거래건 입니다.');
-                    } else {
+                    }
+                    else if(res.data.msg.indexOf('잘못된') !==-1) {
+                        openMessage('주문 취소중 오류가 발생했습니다.');
+                    }
+                    else {
                         openMessage(false, '정상적으로 취소되었습니다.');
+                        setOdStatus("order_cancel");
                         history.push(Paths.index);
                     }
-                    setOdStatus("order_cancel");
                 } catch (e) {
                     
                 }
@@ -230,7 +236,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             />
                                             <OrderInfoBox
                                                 text={'결제방식'}
-                                                value={type}
+                                                value={payment_type.kind}
                                             />
                                             <OrderInfoBox
                                                 text={'결제금액'}
@@ -248,7 +254,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                     orders && orders.info[0].s_name
                                                 }
                                             />
-                                    {type===payments[3] && 
+                                    {payment_type.kind===payments[3] && 
                                         <>
                                             <OrderInfoBox
                                                     text={'입금계좌'}
