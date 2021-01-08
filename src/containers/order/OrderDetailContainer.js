@@ -98,7 +98,6 @@ const OrderDetailContainer = (props) => {
         }
     }, [order_id, history,user_token]);
 
-    console.log(orders);
     const userOrderCancle = async () => {
         openMessage(
             true,
