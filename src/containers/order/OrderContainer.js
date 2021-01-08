@@ -317,12 +317,12 @@ const OrderContainer = () => {
 
         const year = date.getFullYear();
         const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
-        const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
+        const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
         const delivery_req_time = `${year}-${month}-${day} ${hours}:${minute}:00`;
         const settle_case = getPaymentType(payment);
+        console.log(delivery_req_time);
         let res = null;
         //회원 주문
-        setLoading(true);
         if (user_token) {
              res = await user_order(
                 user_token,
@@ -467,7 +467,6 @@ const OrderContainer = () => {
         }
 
 
-        setLoading(false);
     };
 
     
