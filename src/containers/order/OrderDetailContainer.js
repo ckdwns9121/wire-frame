@@ -97,12 +97,13 @@ const OrderDetailContainer = (props) => {
     }, [order_id, history,user_token]);
 
     const userOrderCancle = async () => {
+        console.log('hello');
         openMessage(
             true,
             '해당 상품을 취소하시겠습니까?',
             '취소를 원하시면 예를 눌러주세요',
             async () => {
-                setLoading(true);
+               // setLoading(true);
                 try {
                     let res = null;
                     if (user_token) {
@@ -118,7 +119,8 @@ const OrderDetailContainer = (props) => {
                         openMessage(false, '이미 취소된 거래건 입니다.');
                         setOdStatus("order_cancel");
 
-                    }else if(res.data.msg.index('잘못된')!==-1){
+                    }
+                    else if(res.data.msg.indexOf('잘못된')!==-1){
                         openMessage(false, '취소 오류가 발생했습니다.');
                     } 
                     else {
@@ -127,9 +129,9 @@ const OrderDetailContainer = (props) => {
 
                     }
                 } catch (e) {
-                    
+                    console.error(e);
                 }
-                setLoading(false);
+               // setLoading(false);
             },
         );
     };
@@ -397,7 +399,8 @@ const OrderDetailContainer = (props) => {
                                 (od_status === 'order_cancel') ? '주문취소완료'
                                 : (od_status === 'delivery_complete') ? '배달완료'
                                 : (od_status === 'order_complete') ? '주문완료'
-                                : (cancelAble ? '주문 취소' :'주문 취소불가')}
+                                : (cancelAble ? '주문 취소' :'주문 취소불가')
+                                }
                             </ButtonBase>
                         </div>
                     </div>

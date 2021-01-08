@@ -363,6 +363,7 @@ const OrderContainer = () => {
             order_id.current = res.data.query;
             //장바구니 삭제
         }
+        console.log(res);
         if(res.data.state===1){
             if(payment===pay_arr[2] || payment===pay_arr[3]){
                 setLoading(true);

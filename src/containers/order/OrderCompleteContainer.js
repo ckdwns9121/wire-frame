@@ -146,7 +146,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                         history.push(Paths.index);
                     }
                 } catch (e) {
-                    
+                    console.error(e);
                 }
                 setLoading(false);
             },
