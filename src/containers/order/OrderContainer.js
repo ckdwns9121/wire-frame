@@ -320,7 +320,6 @@ const OrderContainer = () => {
         const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
         const delivery_req_time = `${year}-${month}-${day} ${hours}:${minute}:00`;
         const settle_case = getPaymentType(payment);
-        console.log(delivery_req_time);
         let res = null;
         //회원 주문
         if (user_token) {
@@ -338,8 +337,6 @@ const OrderContainer = () => {
                 
             );
             order_id.current = res.data.query;
-            
-
             //장바구니 삭제
         }
         //비회원 주문
@@ -363,7 +360,6 @@ const OrderContainer = () => {
             order_id.current = res.data.query;
             //장바구니 삭제
         }
-        console.log(res);
         if(res.data.state===1){
             if(payment===pay_arr[2] || payment===pay_arr[3]){
                 setLoading(true);

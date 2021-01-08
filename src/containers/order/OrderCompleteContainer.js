@@ -80,15 +80,14 @@ const OrderCompleteContainer = ({ order_number }) => {
             else {
                 res = await noAuthOrderView(order_number);
             }
-            console.log(res);
             const { orders } = res;
             if (orders === undefined || orders === null) {
-                // openMessage(
-                //     false,
-                //     '주문번호가 존재하지 않습니다.',
-                //     '주문번호를 확인해주세요',
-                // );
-                // history.replace(Paths.index);
+                openMessage(
+                    false,
+                    '주문번호가 존재하지 않습니다.',
+                    '주문번호를 확인해주세요',
+                );
+                history.replace(Paths.index);
                 setSuccess(false);
 
                 setError(true);

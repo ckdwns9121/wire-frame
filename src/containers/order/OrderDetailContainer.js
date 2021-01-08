@@ -97,13 +97,12 @@ const OrderDetailContainer = (props) => {
     }, [order_id, history,user_token]);
 
     const userOrderCancle = async () => {
-        console.log('hello');
         openMessage(
             true,
             '해당 상품을 취소하시겠습니까?',
             '취소를 원하시면 예를 눌러주세요',
             async () => {
-               // setLoading(true);
+               setLoading(true);
                 try {
                     let res = null;
                     if (user_token) {
@@ -131,7 +130,7 @@ const OrderDetailContainer = (props) => {
                 } catch (e) {
                     console.error(e);
                 }
-               // setLoading(false);
+               setLoading(false);
             },
         );
     };
