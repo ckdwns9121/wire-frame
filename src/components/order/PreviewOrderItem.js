@@ -38,7 +38,7 @@ const PreviewOrderItem = (props) => {
                         </div>
                         <div className={styles['order-type']}>
                             {info[0].od_status === "deposit_wait" && (info[0].settle_case === 'meet' ? '만나서 결제' : '입금 대기')}
-                            {info[0].od_status === "order_cancel" && '주문취소'}
+                            {info[0].od_status === 'order_cancel' && (info[0].cancel_reason === null ? '주문 취소' : '주문 거절')}
                             {info[0].od_status === "order_apply" && '입금확인'}
                             {info[0].od_status === "shipping" && '배송중'}
                             {info[0].od_status === "delivery_complete" && '배달완료'}

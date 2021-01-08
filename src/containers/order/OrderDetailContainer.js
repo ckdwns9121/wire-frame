@@ -36,7 +36,6 @@ const OrderDetailContainer = (props) => {
     });
     const { order_id } = query;
 
-
     const modalDispatch = useDispatch();
 
     const openMessage = useCallback(
@@ -54,7 +53,10 @@ const OrderDetailContainer = (props) => {
     const [payple_info , setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
     const [cancelAble , setCancelAble] = useState(false);
-    const [payment_type, setPaymentType] = useState({kind:payments[0] ,settle_case:pay_type[0]});
+    const [payment_type, setPaymentType] = useState({
+        kind: payments[0],
+        settle_case: pay_type[0],
+    });
 
     const getPaymentType = (settle_case) => {
         switch (settle_case) {
@@ -96,6 +98,7 @@ const OrderDetailContainer = (props) => {
         }
     }, [order_id, history,user_token]);
 
+    console.log(orders);
     const userOrderCancle = async () => {
         openMessage(
             true,
@@ -166,7 +169,7 @@ const OrderDetailContainer = (props) => {
                                         </div>
                                         <div className={styles['order-type']}>
                                             {od_status === "deposit_wait" && (orders.info[0].settle_case === 'meet' ? '만나서 결제' : '입금 대기')}
-                                            {od_status === 'order_cancel' && '주문취소'}
+                                            {od_status === 'order_cancel' && (orders.info[0].cancel_reason === null ? '주문 취소' : '주문 거절')}
                                             {od_status === 'order_apply' && '입금확인'}
                                             {od_status === 'shipping' && '배송중'}
                                             {od_status === 'delivery_complete' && '배달완료'}
@@ -176,10 +179,12 @@ const OrderDetailContainer = (props) => {
                                     <div className={styles['bottom']}>
                                         <div className={styles['req-date']}>
                                             배달 요청 시간 :{' '}
-                                            {orders &&
-                                                orders.info[0].delivery_req_time}
+                                            {orders && orders.info[0].delivery_req_time}
                                         </div>
                                     </div>
+                                    {orders && orders.info[0].cancel_reason && <p className={styles['reject-reason']}>
+                                        거절 사유: {orders.info[0].cancel_reason}
+                                    </p>}
                                 </div>
                             </div>
                         </div>
