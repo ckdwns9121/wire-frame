@@ -19,6 +19,8 @@ const OrderComplete = ({location}) => {
         if (!access_token) {
             localStorage.removeItem('noAuthCartId');
         }
+    } else if(message && message.indexOf('위변조') !==-1){
+        alert('잘못된 접근입니다.');
     }
     return (
         <OrderCompleteContainer order_number={order_number}/>
