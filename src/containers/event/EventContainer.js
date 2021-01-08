@@ -130,9 +130,6 @@ export default ({ match, location }) => {
                             </p>
                         </div>
                         <div className={styles['e-content']}>
-                            {(item && item.images === '[]') ? <img src={Noimage} alt="기본 이미지" />
-                            : <ErrorCoverImage src={DBImageFormat(item.images)[0]} alt="이벤트 이미지" />}
-
                             <div className={styles['e-detail']}>
                                 {item &&
                                 item.images_detail &&
