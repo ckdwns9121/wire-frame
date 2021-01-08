@@ -399,7 +399,7 @@ const OrderDetailContainer = (props) => {
                                 disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete'|| !cancelAble)}
                             >
                                 {orders &&
-                                (od_status === 'order_cancel') ? '주문취소완료'
+                                (od_status === 'order_cancel') ? (orders.info[0].cancel_reason === null ? '주문 취소 완료' : '주문 거절')
                                 : (od_status === 'delivery_complete') ? '배달완료'
                                 : (od_status === 'order_complete') ? '주문완료'
                                 : (cancelAble ? '주문 취소' :'주문 취소불가')
