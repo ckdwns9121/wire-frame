@@ -48,6 +48,7 @@ const OrderDetailContainer = (props) => {
     const user_token = useStore();
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
+    const company = useSelector(state => state.company.company);
     const [loading, setLoading] = useState(false);
     const [orders, setOrders] = useState(null);
     const [payple_info , setPaypleInfo] = useState(null);
@@ -160,7 +161,8 @@ const OrderDetailContainer = (props) => {
                                 <div className={styles['order-info']}>
                                     <div className={styles['top']}>
                                         <div className={styles['order-date']}>
-                                            {orders && (orders.receipt_time) ?  orders.receipt_time :'주문시간이 없습니다.'}
+                                            {orders && (orders.receipt_time ? orders.receipt_time
+                                            : (orders.info[0].settle_case === 'meet' ? '배송 접수' : company && `${company.company_bankname} ${company.company_banknum} ${company.company_bankuser}`))}
                                         </div>
                                         <div className={styles['order-id']}>
                                             주문번호 :{' '}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styles from './Preview.module.scss';
 import Noimage from '../svg/noimage.png';
 import Arrow from '../svg/arrow/Arrow';
@@ -24,6 +25,7 @@ const PreviewOrderItem = (props) => {
     } = props;
     
     const history = useHistory();
+    const company = useSelector(state => state.company.company);
 
     return (
         <div className={styles['preview-item']}>
@@ -32,7 +34,7 @@ const PreviewOrderItem = (props) => {
                     <div className={styles['top']}>
                         <div className={styles['order-date']}>
                             {receipt_time ? receipt_time.replace(/-/g, '/')
-                            : "샌달 배달 접수"}
+                            : (info[0].settle_case === 'meet' ? '배송 접수' : company && `${company.company_bankname} ${company.company_banknum} ${company.company_bankuser}`)}
                         </div>
                         <div className={styles['order-id']}>
                             주문번호 : {order_id}

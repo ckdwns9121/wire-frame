@@ -31,6 +31,7 @@ const OrderCompleteContainer = ({ order_number }) => {
     const user_token = useStore(false);
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
+    const company = useSelector(state => state.company.company);
 
     const modalDispatch = useDispatch();
 
@@ -259,16 +260,19 @@ const OrderCompleteContainer = ({ order_number }) => {
                                     {payment_type.kind===payments[3] && 
                                         <>
                                             <OrderInfoBox
-                                                    text={'입금계좌'}
-                                                    value={'농협'}
-                                                    paddingBottom={'10px'}
-                                                />
-                                                <OrderInfoBox
-                                                    text={''}
-                                                    value={
-                                                        '352-1039-8031-23 지혜림'
-                                                    }
-                                                />
+                                                text="입금은행"
+                                                value={company && company.company_bankname}
+                                                paddingBottom="10px"
+                                            />
+                                            <OrderInfoBox
+                                                text="입금계좌"
+                                                value={company && company.company_banknum}
+                                                paddingBottom="10px"
+                                            />
+                                            <OrderInfoBox
+                                                text="예금주명"
+                                                value={company && company.company_bankuser}
+                                            />
                                         </>}
                                         </div>
                                     </div>
