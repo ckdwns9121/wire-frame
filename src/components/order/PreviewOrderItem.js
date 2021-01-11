@@ -22,6 +22,7 @@ const PreviewOrderItem = (props) => {
         // send_cost,
         // total_price,
     } = props;
+    
     const history = useHistory();
 
     return (
@@ -31,7 +32,7 @@ const PreviewOrderItem = (props) => {
                     <div className={styles['top']}>
                         <div className={styles['order-date']}>
                             {receipt_time ? receipt_time.replace(/-/g, '/')
-                            : "주문 시간이 없습니다."}
+                            : "샌달 배달 접수"}
                         </div>
                         <div className={styles['order-id']}>
                             주문번호 : {order_id}
