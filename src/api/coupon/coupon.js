@@ -59,11 +59,14 @@ export const downloadCoupon = async (token, cz_id) => {
     const form_data = {
         cz_id: cz_id,
     };
+    const config={
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }
 
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-
-    const res = await axios.post(req, form_data);
+    const res = await axios.post(req, form_data,config);
     return res;
 };
 
@@ -72,9 +75,14 @@ export const couponInput = async (token, cp_id) => {
     const form_data = {
         cp_id: cp_id,
     };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const config={
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }
 
-    const res = await axios.put(req, form_data);
+
+    const res = await axios.put(req, form_data,config);
     return res;
 };

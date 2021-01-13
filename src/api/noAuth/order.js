@@ -15,8 +15,6 @@ export const noAuth_order = async (
     delivery_memo,
     delivery_req_time,
     settle_case
-    // cp_id,
-    // point_price,
 ) => {
     order_memo = order_memo ? order_memo : "없음";
     delivery_memo = delivery_memo ? delivery_memo : "없음";
@@ -59,13 +57,11 @@ export const noAutuOrderCancle = async (order_id, s_hp,settle_case) => {
     const form_data = {
         order_id: order_id,
         s_hp: s_hp,
-        settle_case
     };
 
     const config = {
         headers: {
             'content-type': 'application/json',
-     
         },
     };
 

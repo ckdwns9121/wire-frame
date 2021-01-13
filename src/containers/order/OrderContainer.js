@@ -337,7 +337,6 @@ const OrderContainer = () => {
                 
             );
             order_id.current = res.data.query;
-            //장바구니 삭제
         }
         //비회원 주문
         else {
@@ -382,9 +381,9 @@ const OrderContainer = () => {
                 let payple_payer_id = '';
     
                 let buyer_no = user && user.id; //고객 고유번호
-                let buyer_name = noAuthName ; //고객 이름
-                let buyer_hp = `${firstPhoneNumber}`;//고객 번호
-                let buyer_email = user && user.email; //고객 이메일
+               // let buyer_name = noAuthName ; //고객 이름
+               // let buyer_hp = `${firstPhoneNumber}`;//고객 번호
+               // let buyer_email = user && user.email; //고객 이메일
                 let buy_goods = '(주)샌달 상품 결제'; //구매하는 물건 이름
                 let buy_total = Number(parseInt(totalPrice) + parseInt(dlvCost) - parseInt(cp_price) - parseInt(point_price) ); //가격
                 let buy_taxtotal = 0;

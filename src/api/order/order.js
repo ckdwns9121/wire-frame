@@ -61,7 +61,6 @@ export const order_cancle = async (token, order_id,settle_case) => {
 
     const form_data = {
         order_id: order_id,
-        settle_case:settle_case
     };
     const config = {
         headers: {
