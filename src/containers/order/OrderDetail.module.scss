@@ -46,6 +46,14 @@
                             padding: 24px 0;
                         }
                     }
+                    .reject-reason {
+                        color: #A61332;
+                        &::before {
+                            content: '※';
+                            margin-right: 8px;
+                        }
+                        font-size: 1.833rem;
+                    }
                 }
             }
             .order-detail-view {

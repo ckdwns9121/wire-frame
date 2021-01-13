@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styles from './Preview.module.scss';
 import Noimage from '../svg/noimage.png';
 import Arrow from '../svg/arrow/Arrow';
@@ -22,7 +23,9 @@ const PreviewOrderItem = (props) => {
         // send_cost,
         // total_price,
     } = props;
+    
     const history = useHistory();
+    const company = useSelector(state => state.company.company);
 
     return (
         <div className={styles['preview-item']}>
@@ -31,14 +34,14 @@ const PreviewOrderItem = (props) => {
                     <div className={styles['top']}>
                         <div className={styles['order-date']}>
                             {receipt_time ? receipt_time.replace(/-/g, '/')
-                            : "주문 시간이 없습니다."}
+                            : (info[0].settle_case === 'meet' ? '배송 접수' : company && `${company.company_bankname} ${company.company_banknum} ${company.company_bankuser}`)}
                         </div>
                         <div className={styles['order-id']}>
                             주문번호 : {order_id}
                         </div>
                         <div className={styles['order-type']}>
                             {info[0].od_status === "deposit_wait" && (info[0].settle_case === 'meet' ? '만나서 결제' : '입금 대기')}
-                            {info[0].od_status === "order_cancel" && '주문취소'}
+                            {info[0].od_status === 'order_cancel' && (info[0].cancel_reason === null ? '주문 취소' : '주문 거절')}
                             {info[0].od_status === "order_apply" && '입금확인'}
                             {info[0].od_status === "shipping" && '배송중'}
                             {info[0].od_status === "delivery_complete" && '배달완료'}

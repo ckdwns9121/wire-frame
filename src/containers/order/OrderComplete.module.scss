@@ -43,6 +43,15 @@ $pd: 40px;
                     line-height: 64px;
                 }
             }
+            .reject-reason {
+                margin-top: 20px;
+                color: #A61332;
+                &::before {
+                    content: '※';
+                    margin-right: 8px;
+                }
+                font-size: 1.833rem;
+            }
         }
     }
     .view-content {

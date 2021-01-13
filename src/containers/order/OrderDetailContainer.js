@@ -36,7 +36,6 @@ const OrderDetailContainer = (props) => {
     });
     const { order_id } = query;
 
-
     const modalDispatch = useDispatch();
 
     const openMessage = useCallback(
@@ -49,12 +48,16 @@ const OrderDetailContainer = (props) => {
     const user_token = useStore();
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
+    const company = useSelector(state => state.company.company);
     const [loading, setLoading] = useState(false);
     const [orders, setOrders] = useState(null);
     const [payple_info , setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
     const [cancelAble , setCancelAble] = useState(false);
-    const [payment_type, setPaymentType] = useState({kind:payments[0] ,settle_case:pay_type[0]});
+    const [payment_type, setPaymentType] = useState({
+        kind: payments[0],
+        settle_case: pay_type[0],
+    });
 
     const getPaymentType = (settle_case) => {
         switch (settle_case) {
@@ -158,7 +161,8 @@ const OrderDetailContainer = (props) => {
                                 <div className={styles['order-info']}>
                                     <div className={styles['top']}>
                                         <div className={styles['order-date']}>
-                                            {orders && (orders.receipt_time) ?  orders.receipt_time :'주문시간이 없습니다.'}
+                                            {orders && (orders.receipt_time ? orders.receipt_time
+                                            : (orders.info[0].settle_case === 'meet' ? '배송 접수' : company && `${company.company_bankname} ${company.company_banknum} ${company.company_bankuser}`))}
                                         </div>
                                         <div className={styles['order-id']}>
                                             주문번호 :{' '}
@@ -166,7 +170,7 @@ const OrderDetailContainer = (props) => {
                                         </div>
                                         <div className={styles['order-type']}>
                                             {od_status === "deposit_wait" && (orders.info[0].settle_case === 'meet' ? '만나서 결제' : '입금 대기')}
-                                            {od_status === 'order_cancel' && '주문취소'}
+                                            {od_status === 'order_cancel' && (orders.info[0].cancel_reason === null ? '주문 취소' : '주문 거절')}
                                             {od_status === 'order_apply' && '입금확인'}
                                             {od_status === 'shipping' && '배송중'}
                                             {od_status === 'delivery_complete' && '배달완료'}
@@ -176,10 +180,12 @@ const OrderDetailContainer = (props) => {
                                     <div className={styles['bottom']}>
                                         <div className={styles['req-date']}>
                                             배달 요청 시간 :{' '}
-                                            {orders &&
-                                                orders.info[0].delivery_req_time}
+                                            {orders && orders.info[0].delivery_req_time}
                                         </div>
                                     </div>
+                                    {orders && orders.info[0].cancel_reason && <p className={styles['reject-reason']}>
+                                        거절 사유: {orders.info[0].cancel_reason}
+                                    </p>}
                                 </div>
                             </div>
                         </div>
@@ -395,7 +401,7 @@ const OrderDetailContainer = (props) => {
                                 disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete'|| !cancelAble)}
                             >
                                 {orders &&
-                                (od_status === 'order_cancel') ? '주문취소완료'
+                                (od_status === 'order_cancel') ? (orders.info[0].cancel_reason === null ? '주문 취소 완료' : '주문 거절')
                                 : (od_status === 'delivery_complete') ? '배달완료'
                                 : (od_status === 'order_complete') ? '주문완료'
                                 : (cancelAble ? '주문 취소' :'주문 취소불가')

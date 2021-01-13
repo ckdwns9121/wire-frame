@@ -31,6 +31,7 @@ const OrderCompleteContainer = ({ order_number }) => {
     const user_token = useStore(false);
     const history = useHistory();
     const { user } = useSelector((state) => state.auth);
+    const company = useSelector(state => state.company.company);
 
     const modalDispatch = useDispatch();
 
@@ -190,6 +191,9 @@ const OrderCompleteContainer = ({ order_number }) => {
                                         <div className={styles['order-number']}>
                                             주문번호 : {order_number}
                                         </div>
+                                        {orders && orders.info[0].cancel_reason && <p className={styles['reject-reason']}>
+                                            거절 사유: {orders.info[0].cancel_reason}
+                                        </p>}
                                         <div className={styles['btn']}>
                                             <ButtonBase
                                                 onClick={handleOpen}
@@ -230,7 +234,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                 text={'주문일시'}
                                                 value={
                                                     orders &&
-                                                    orders.receipt_time
+                                                    orders.receipt_time ? orders.receipt_time : '미완료 결제'
                                                 }
                                             />
                                             <OrderInfoBox
@@ -256,16 +260,19 @@ const OrderCompleteContainer = ({ order_number }) => {
                                     {payment_type.kind===payments[3] && 
                                         <>
                                             <OrderInfoBox
-                                                    text={'입금계좌'}
-                                                    value={'농협'}
-                                                    paddingBottom={'10px'}
-                                                />
-                                                <OrderInfoBox
-                                                    text={''}
-                                                    value={
-                                                        '352-1039-8031-23 지혜림'
-                                                    }
-                                                />
+                                                text="입금은행"
+                                                value={company && company.company_bankname}
+                                                paddingBottom="10px"
+                                            />
+                                            <OrderInfoBox
+                                                text="입금계좌"
+                                                value={company && company.company_banknum}
+                                                paddingBottom="10px"
+                                            />
+                                            <OrderInfoBox
+                                                text="예금주명"
+                                                value={company && company.company_bankuser}
+                                            />
                                         </>}
                                         </div>
                                     </div>
@@ -402,7 +409,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             disableRipple={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete'|| !cancelAble)}
                                         >
                                             {orders &&
-                                            (od_status === 'order_cancel') ? '주문취소완료'
+                                            (od_status === 'order_cancel') ? (orders.info[0].cancel_reason === null ? '주문 취소 완료' : '주문 거절')
                                             : (od_status === 'delivery_complete') ? '배달완료'
                                             : (od_status === 'order_complete') ? '주문완료'
                                             : (cancelAble ? '주문 취소' :'주문 취소불가')}

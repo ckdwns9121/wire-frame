@@ -103,7 +103,7 @@ export default function App() {
 
     useEffect(() => {
         if (isMobile() && location.pathname.indexOf(Paths.ajoonamu.oauth) === -1) {
-            window.location.href = PROTOCOL_ENV + 'm.ajoonamu.com' + location.pathname + location.search;
+            window.location.replace(PROTOCOL_ENV + 'm.ajoonamu.com' + location.pathname + location.search);
         }
         getInfo();
         AOS.init({ duration: 1500, once: true });
