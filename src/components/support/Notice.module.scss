@@ -24,10 +24,15 @@
             border-bottom: solid 1px #dbdbdb;
         }
         .content {
+            box-sizing: border-box;
+            width: 100%;
             padding: 40px 60px;
             min-height: 250px;
             font-size: 1.333rem;
             color: #555;
+            img {
+                max-width: 100%;
+            }
         }
         .id, .title, .created {
             display: table-cell;
