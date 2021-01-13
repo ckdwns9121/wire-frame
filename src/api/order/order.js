@@ -10,9 +10,8 @@ export const user_order = async (
     cp_id,
     point_price = 0,
     settle_case,
-    s_name,
-    s_hp
-
+    s_name, s_hp,
+    r_name, r_hp
 ) => {
     order_memo = order_memo ? order_memo : "없음";
     delivery_memo = delivery_memo ? delivery_memo : "없음";
@@ -27,8 +26,8 @@ export const user_order = async (
             point_price: point_price,
             device: 'pc',
             settle_case,
-            s_name,
-            s_hp
+            s_name, s_hp,
+            r_name, r_hp
         };
     } else {
         form_data = {
@@ -40,8 +39,8 @@ export const user_order = async (
             point_price: point_price,
             device: 'pc',
             settle_case,
-            s_name,
-            s_hp
+            s_name, s_hp,
+            r_name, r_hp
         };
     }
 
@@ -52,7 +51,7 @@ export const user_order = async (
         },
     };
 
-    const res = await axios.post(req, form_data,config);
+    const res = await axios.post(req, form_data, config);
     return res;
 };
 

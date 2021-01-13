@@ -115,7 +115,6 @@ const OrderCompleteContainer = ({ order_number }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, openMessage, order_number, user_token]);
 
-
     const userOrderCancle = async () => {
         openMessage(
             true,
@@ -287,16 +286,14 @@ const OrderCompleteContainer = ({ order_number }) => {
                                             <UserInfoBox
                                                 text={'받는분'}
                                                 value={
-                                                    orders && orders.info[0].s_name
+                                                    orders && orders.info[0].r_name
                                                 }
                                             />
                                             <UserInfoBox
                                                 text={'연락처'}
                                                 value={
                                                     orders &&
-                                                    stringToTel(
-                                                        orders.info[0].s_hp,
-                                                    )
+                                                    stringToTel(orders.info[0].r_hp)
                                                 }
                                             />
                                             <UserInfoBox

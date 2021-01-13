@@ -211,13 +211,13 @@ const OrderDetailContainer = (props) => {
                                 <div className={styles['context']}>
                                     <UserInfoBox
                                         text={'받는분'}
-                                        value={orders && orders.info[0].s_name}
+                                        value={orders && orders.info[0].r_name}
                                     />
                                     <UserInfoBox
                                         text={'연락처'}
                                         value={
                                             orders &&
-                                            stringToTel(orders.info[0].s_hp)
+                                            stringToTel(orders.info[0].r_hp)
                                         }
                                     />
                                     <UserInfoBox
