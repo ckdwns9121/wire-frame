@@ -258,7 +258,7 @@ const ReserveContainer = ({ tab = '0' }) => {
 
     // 탭 인덱스로 URL 이동c
     useEffect(() => {
-        history.replace(`${Paths.ajoonamu.shop}?tab=${tabIndex}`);
+        history.replace(`${Paths.ajoonamu.shop}?menu=${tabIndex}`);
     }, [history, tabIndex]);
 
     //아이템과 인덱스가 변했을 시 보여줄 리스트 갱신.

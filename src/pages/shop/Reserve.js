@@ -5,10 +5,10 @@ function Reserve({ location }) {
     const query = qs.parse(location.search, {
         ignoreQueryPrefix: true,
     });
-    let tab = query.tab;
-    if (tab === undefined) {
-        tab = '1';
+    let menu = query.menu;
+    if (menu === undefined) {
+        menu = '1';
     }
-    return <ReserveContainer tab={parseInt(tab)} />;
+    return <ReserveContainer tab={parseInt(menu)} />;
 }
 export default Reserve;

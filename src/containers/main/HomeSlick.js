@@ -111,10 +111,15 @@ const HomeSlick = () => {
             <Slider {...settings} ref={slider}>
                 {list.map(item => (
                     (item.bn_url.indexOf('http://') !== -1 || item.bn_url.indexOf('https://') !== -1 ?
+                    (item.bn_url.indexOf('ajoonamu.com') === -1 ?
                     <a key={item.id} href={item.bn_url}>
                         {/* <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "'), url('" + NoImage + "')" }}/> */}
                         <ErrorCoverImage src={DBImageFormat(item.bn_img)[0]} alt="배너" />
-                    </a> : 
+                    </a> :
+                    <Link key={item.id} to={item.bn_url.split('ajoonamu.com')[1]}>
+                        {/* <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "'), url('" + NoImage + "')" }}/> */}
+                        <ErrorCoverImage src={DBImageFormat(item.bn_img)[0]} alt="배너" />
+                    </Link>) : 
                     <Link key={item.id} to={item.bn_url}>
                         {/* <div className={styles['item']} style={{ backgroundImage: "url('" + DBImageFormat(item.bn_img)[0] + "'), url('" + NoImage + "')" }}/> */}
                         <ErrorCoverImage src={DBImageFormat(item.bn_img)[0]} alt="배너" />
