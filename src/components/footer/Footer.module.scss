@@ -67,12 +67,15 @@
                     }
 
                     .support {
+                        white-space: nowrap;
                         color: #222;
                     }
                     .info, .address {
+                        white-space: nowrap;
                         color: #999;
                     }
                     .copyright {
+                        white-space: nowrap;
                         color: #818181;
                     }
                     .have-divider::after {
