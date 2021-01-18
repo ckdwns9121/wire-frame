@@ -58,6 +58,7 @@ const SecessionContainer = () => {
         } else {
             openModal('확인 요소에 동의하셔야 합니다.', '위 글을 읽고 다시 신청해 주세요.');
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user_token, agree, openModal, history]);
 
     return (

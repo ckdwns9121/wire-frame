@@ -7,14 +7,14 @@ const KEY = 'U01TX0FVVEgyMDIwMTIyMjE1NTUyMjExMDU4MDU=';
 export const getDeliveryList = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
 
-    const config ={
-        headers:{
-            'Authorization' : `Bearer ${token}`,
-            'Content-Type' :'application/json',
-        }
-    }
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    };
 
-    const res = await axios.get(req,config);
+    const res = await axios.get(req, config);
     return res;
 };
 
@@ -43,57 +43,47 @@ export const insertAddress = async (
         lat: lat,
         lng: lng,
     };
-    const config ={
-        headers:{
-            'Authorization' : `Bearer ${token}`,
-            'Content-Type' :'application/json',
-        }
-    }
-    const res = await axios.post(req,form_data,config);
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    };
+    const res = await axios.post(req, form_data, config);
     return res;
 };
 
 export const deleteAddr = async (token, delivery_id) => {
-
     const req = Paths.api + 'user/delivery/delete';
     const form_data = { delivery_id };
-    const config ={
-        headers:{
-            'Authorization' : `Bearer ${token}`,
-            'Content-Type' :'application/json',
-        }
-    }
     const res = await axios.delete(req, {
         data: form_data,
-        headers:{
-            'Authorization' : `Bearer ${token}`,
-            'Content-Type' :'application/json',
-        }
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
     });
     return res;
 };
 export const searchAddress = async (searchAddr) => {
-
     const req = URL;
-    const config ={
-        params:{
-            confmKey : KEY,
-            currentPage:1,
-            countPerPage:10,
-            keyword:searchAddr,
-            resultType:'json'
+    const config = {
+        params: {
+            confmKey: KEY,
+            currentPage: 1,
+            countPerPage: 10,
+            keyword: searchAddr,
+            resultType: 'json',
         },
-        headers:{
-           Accept: "application/json, text/plain, */*",
-        }
-    }
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+        },
+    };
 
-    const res = await axios.get(req,config);
+    const res = await axios.get(req, config);
 
     return res.data.results.juso;
-
 };
-
 
 export const selectAddress = async (token, delivery_id) => {
     const req = Paths.api + 'user/delivery/update';
@@ -101,29 +91,27 @@ export const selectAddress = async (token, delivery_id) => {
         delivery_id: delivery_id,
     };
 
-    const config ={
-        headers:{
-            'Authorization' : `Bearer ${token}`,
-            'Content-Type' :'application/json',
-        }
-    }
-    const res = await axios.put(req, form_data,config);
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    };
+    const res = await axios.put(req, form_data, config);
     return res;
 };
-
-
 
 export const getActiveAddr = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
 
-    const config ={
-        headers:{
-            'Authorization' : `Bearer ${token}`,
-            'Content-Type' :'application/json',
-        }
-    }
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    };
 
-    const res = await axios.get(req,config);
+    const res = await axios.get(req, config);
 
     const { query } = res.data;
     let len = Object.keys(query).length;

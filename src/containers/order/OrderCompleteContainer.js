@@ -16,11 +16,11 @@ import OrderItemList from '../../components/order/OrderItemList';
 //lib
 import { numberFormat, stringToTel } from '../../lib/formatter';
 import { modalOpen } from '../../store/modal';
-import {calculateDaySection} from '../../lib/calculateDate';
+import { calculateDaySection } from '../../lib/calculateDate';
 //api
 import { order_cancle } from '../../api/order/order';
 import { getDetailOrderView } from '../../api/order/orderItem';
-import {noAuthOrderView ,noAutuOrderCancle} from '../../api/noAuth/order';
+import { noAuthOrderView, noAutuOrderCancle } from '../../api/noAuth/order';
 //path
 import { Paths } from '../../paths';
 
@@ -45,10 +45,7 @@ const OrderCompleteContainer = ({ order_number }) => {
     const [stickyOpen, setStickyOpen] = useState(false); //문구 서비스 모달
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
     const [orders, setOrders] = useState(null);
-    const [payinfo, setPayInfo] = useState(null);
-    const [payple_info, setPaypleInfo] = useState(null);
     const [od_status, setOdStatus] = useState("order_apply");
     const [cancelAble , setCancelAble] = useState(false);
     const [payment_type, setPaymentType] = useState({kind:payments[0] ,settle_case:pay_type[0]});
@@ -90,20 +87,16 @@ const OrderCompleteContainer = ({ order_number }) => {
                 );
                 history.replace(Paths.index);
                 setSuccess(false);
-
-                setError(true);
             } else {
                 setOdStatus(orders.info[0].od_status);
                 setPaymentType(getPaymentType(orders.settle_case));
                 setCancelAble(calculateDaySection(orders.info[0].delivery_req_time,new Date()));
                 setOrders(orders);
                 setSuccess(true);
-                setError(false);
                 openMessage(true, "문구 서비스를 신청하시겠습니까?", "", handleOpen);
             }
         } catch (e) {
             setSuccess(false);
-            setError(true);
             openMessage(
                 false,
                 '주문번호가 존재하지 않습니다.',

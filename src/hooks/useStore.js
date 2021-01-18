@@ -41,6 +41,7 @@ export const useUrl = () => {
             };
             sessionStorage.setItem('url', JSON.stringify(obj));
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
     return { prev, current };

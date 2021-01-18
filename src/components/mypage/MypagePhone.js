@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import classnames from 'classnames/bind';
 import { requestPostMobileAuth, requestPostMobileAuthCheck } from '../../api/auth/auth';
 import { useModal } from '../../hooks/useModal';
-import { isCellPhoneForm, onlyNumber } from '../../lib/formatChecker';
+import { isCellPhoneForm } from '../../lib/formatChecker';
 import { Paths } from '../../paths';
 import Check from 'components/svg/coupon/Check';
 import SignAuthInput from '../sign/SignAuthInput';

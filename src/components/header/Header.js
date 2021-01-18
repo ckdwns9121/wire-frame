@@ -128,12 +128,11 @@ const Header = () => {
                                 src={logo}
                             />
                         </li>
-                        <li onClick={onClickHome}>
-                            <HeadLink to={Paths.index}>{tab_one}</HeadLink>
+                        <li>
+                            <HeadLink to={`${Paths.ajoonamu.event}/13`}>{tab_one}</HeadLink>
                         </li>
                         <li>
-                            <HeadLink to={`${Paths.ajoonamu.shop}?tab=1`}>{tab_two}
-                            </HeadLink>
+                            <HeadLink to={`${Paths.ajoonamu.shop}?tab=1`}>{tab_two}</HeadLink>
                         </li>
                         <li>
                             <HeadLink to={Paths.ajoonamu.breakfast}>{tab_three}</HeadLink>

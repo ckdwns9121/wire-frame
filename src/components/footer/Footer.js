@@ -1,6 +1,7 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React from 'react';
 import styles from './Footer.module.scss';
-import { Fb_Icon, Insta_Icon, Blog_Icon } from '../svg/footer';
+import { Fb_Icon, Insta_Icon, Blog_Icon, YouTube_Icon, Kakao_Icon } from '../svg/footer';
 import { NavLink } from 'react-router-dom';
 import { Paths } from '../../paths';
 import { IconButton } from '@material-ui/core';
@@ -19,6 +20,8 @@ const Footer = () => {
         sns_facebook,
         sns_insta,
         sns_naverblog,
+        sns_kakao,
+        sns_youtube
     } = company;
 
     return (
@@ -35,6 +38,8 @@ const Footer = () => {
                         <Icon src={Fb_Icon} alt={'fb'} href={sns_facebook} />
                         <Icon src={Insta_Icon} alt={'insta'} href={sns_insta} />
                         <Icon src={Blog_Icon} alt={'blog'} href={sns_naverblog} />
+                        <Icon src={YouTube_Icon} alt={'youtube'} href={sns_youtube} />
+                        <Icon src={Kakao_Icon} alt={'kakao'} href={sns_kakao} />
                     </div>
                 </div>
                 <div className={styles['context']}>
@@ -78,11 +83,9 @@ const Footer = () => {
     );
 }
 const Icon = ({ src, alt, href }) => (
-    <a className={styles['asset']} href={href} target="_blank">
-        <IconButton>
-            <img src={src} alt={alt} />
-        </IconButton>
-    </a>
+    <IconButton component="a" href={href} target="_blank" className={styles['icon-button']}>
+        <img src={src} alt={alt} />
+    </IconButton>
 );
 
 export default Footer;

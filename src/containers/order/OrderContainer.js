@@ -21,7 +21,6 @@ import DatePicker from 'react-datepicker';
 
 //components
 import ScrollTop from '../../components/scrollTop/ScrollToTop';
-import Select from '../../components/svg/select/Select';
 import Loading from '../../components/assets/Loading';
 import AuthTimer from '../../components/assets/AuthTimer';
 import ShowAgree from '../../components/modal/ShowAgree';

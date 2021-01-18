@@ -37,9 +37,6 @@ const DetailContainer = ({ item_id }) => {
     const [index, setIndex] = useState(0);
     const onChangeIndex = (e, index) => setIndex(index);
 
-
-    const { company } = useSelector(state => state.company);
-    //메뉴 디테일 정보 가져오기
     const getDetailMenu = useCallback(async () => {
         setLoading(true);
         try {

@@ -32,16 +32,13 @@
             }
             .sns {
                 height: 64px;
-                width: 30px;
                 float: right;
                 display: table;
-                .asset {
-                    cursor: pointer;
-                    width: 32px;
-                    height: 32px;
+                .icon-button {
+                    width: 64px; height: 64px;
                     display: table-cell;
                     vertical-align: middle;
-                    padding: 0 20px;
+                    box-sizing: border-box;
                 }
             }
         }

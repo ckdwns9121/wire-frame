@@ -21,7 +21,7 @@ import {
     Breakfast,
     Event,
     Agree,
-    OAuth
+    OAuth,
 } from 'pages';
 import { Home, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderComplete } from 'pages';
@@ -40,8 +40,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Search } from './pages';
 import { useUrl } from './hooks/useStore';
 import Loading from './components/assets/Loading';
-
-import {searchAddress} from './api/address/address';
 
 export default function App() {
     useUrl();
@@ -99,6 +97,7 @@ export default function App() {
 
     useEffect(() => {
         dispatch(get_company_info());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
