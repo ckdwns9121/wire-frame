@@ -610,7 +610,7 @@ const OrderContainer = () => {
                             <div className={styles['sub-title']}>수령인 정보</div>
                             <div className={styles['receiver-box']}>
                                 <SquareCheckBox
-                                    id={'dlv'}
+                                    id={'od'}
                                     text={'주문자와 동일'}
                                     check={sameOrderReceiver}
                                     onChange={() => setSameOrderReceiver(!sameOrderReceiver)}
