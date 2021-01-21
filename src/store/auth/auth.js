@@ -28,6 +28,7 @@ function* get_user_info_saga(action) {
             payload: res,
         });
     } catch (e) {
+        localStorage.removeItem('access_token');
         yield put({
             type: GET_USERINFO_ERROR,
             payload: e,
