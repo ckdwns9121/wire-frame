@@ -25,7 +25,7 @@ import { noAutuOrderCancle } from '../../api/noAuth/order';
 import { getDetailOrderView } from '../../api/order/orderItem';
 
 
-const payments = ['페이플 간편결제', '계좌이체', '만나서 결제', '무통장 입금'];
+const payments = ['신용카드결제', '계좌이체', '만나서 결제', '무통장 입금'];
 const pay_type = ['card', 'transfer', 'meet', 'bank'];
 const cx = cn.bind(styles);
 
@@ -92,8 +92,8 @@ const OrderDetailContainer = (props) => {
             }
             catch(e){
                 console.error(e);
-            }   
-      
+            }
+
         } else {
             history.replace('/');
         }
@@ -124,7 +124,7 @@ const OrderDetailContainer = (props) => {
                     }
                     else if(res.data.msg.indexOf('잘못된')!==-1){
                         openMessage(false, '취소 오류가 발생했습니다.');
-                    } 
+                    }
                     else {
                         openMessage(false, '정상적으로 취소되었습니다.');
                         setOdStatus("order_cancel");
@@ -384,7 +384,7 @@ const OrderDetailContainer = (props) => {
                                                </div>
                                            </div>
                                         }
-                                 
+
                                     </div>
                                 </div>
                             </div>

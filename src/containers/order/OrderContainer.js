@@ -48,7 +48,7 @@ import { Paths, PROTOCOL_ENV } from '../../paths';
 
 import '../../styles/DatePicker.scss';
 import { useHistory } from 'react-router-dom';
-const pay_arr=['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
+const pay_arr=['신용카드결제','계좌이체','만나서 결제','무통장 입금'];
 const pay_type = ['card','transfer','meet','bank'];
 
 
@@ -202,14 +202,14 @@ const OrderContainer = () => {
                     }
                     if (query.PCD_PAYER_ID_transfer === null) {
                         SET_PCD_PAYER_ID_TRANSFER(query.PCD_PAYER_ID_transfer);
-                    } 
+                    }
                     else {
                         SET_PCD_PAYER_ID_TRANSFER(query.PCD_PAYER_ID_transfer.pp_tno);
                     }
                     if (price === 0) {
                         history.replace(Paths.index);
                         openModal('잘못된 접근입니다.');
-                    } 
+                    }
                     setTotalPrice(price);
                     setDefaultCost(query.delivery_cost);
                 }
@@ -246,7 +246,7 @@ const OrderContainer = () => {
                     if (price === 0) {
                         history.replace(Paths.index);
                         openModal('잘못된 접근입니다.');
-                    } 
+                    }
                     setTotalPrice(price);
                     setDefaultCost(query.delivery_cost);
                 }
@@ -281,7 +281,7 @@ const OrderContainer = () => {
             const index = cp_list.findIndex((item) => item.cp_id === cp_id);
             if(total- cp_list[index].cp_price <10000){
             openModal('주문 금액을 확인해주세요.','최소 결제 금액은 10,000원 이상부터 입니다.');
-            } 
+            }
             else if ( totalPrice < cp_list[index].cp_minimum  ) {
                 openModal('사용하실 수 없는 쿠폰입니다.', `최소 주문 금액이 ${numberFormat(cp_list[index].cp_minimum)}원 이상일 때\n 사용 가능한 쿠폰입니다.`);
                 e.preventDefault();
@@ -345,7 +345,7 @@ const OrderContainer = () => {
                 cart_ids,
                 name,
                 phoneNumber,
-                post_num, 
+                post_num,
                 addr1,
                 addr2,
                 lat,
@@ -368,19 +368,19 @@ const OrderContainer = () => {
                     history.push(Paths.ajoonamu.order_complete +'?order_number='+order_id.current);
                 },300)
             }
-    
+
             else{
             $script(payple_url, () => {
-                
+
                 /*global PaypleCpayAuthCheck*/
                 const getResult = function (res) {
                     alert('callback : ' + res.PCD_PAY_MSG);
                 };
-    
+
                 let pay_type = 'card'; //결제 수단
                 let pay_work = 'CERT'; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
                 let payple_payer_id = '';
-    
+
                 let buyer_no = user && user.id; //고객 고유번호
                // let buyer_name = noAuthName ; //고객 이름
                // let buyer_hp = `${firstPhoneNumber}`;//고객 번호
@@ -394,21 +394,21 @@ const OrderContainer = () => {
                 let is_taxsave = 'N';
                 let simple_flag = 'N';
                 let card_ver = '01';
-    
+
                 let obj = new Object();
-    
+
                 /*
                  * DEFAULT SET 1
                  */
                 obj.PCD_CPAY_VER = '1.0.1'; // (필수) 결제창 버전 (Default : 1.0.0)
                 obj.PCD_PAY_WORK = pay_work; // (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
                 obj.PCD_SIMPLE_FLAG = 'N'; //간편 결제 여부
-    
+
                 //ID가 있으면 간편결제 시작
-    
+
                 // 카드 간편결제
                 if(payment===pay_arr[0]){
-    
+
                     if (PCD_PAYER_ID !== null) {
                         payple_payer_id = PCD_PAYER_ID;
                         simple_flag = 'Y';
@@ -416,7 +416,7 @@ const OrderContainer = () => {
                     obj.PCD_PAY_TYPE = 'card'; // (필수) 결제 방법 (transfer | card)
                     obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
                 }
-    
+
                 //계좌 간편결제
                 else if(payment===pay_arr[1]){
                     if (PCD_PAYER_ID_TRANSFER !== null) {
@@ -425,13 +425,13 @@ const OrderContainer = () => {
                     }
                     obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
                 }
-    
+
                 if (simple_flag === 'Y' && payple_payer_id !== '') {
                     obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
                     obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
                 }
-        
-    
+
+
                 //## 2.2 간편결제 (재결제)
                 obj.PCD_PAYER_NO = buyer_no; // (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
                 obj.PCD_PAY_GOODS = buy_goods; // (필수) 결제 상품
@@ -441,8 +441,8 @@ const OrderContainer = () => {
                 obj.PCD_PAY_OID = order_num; // 주문번호 (미입력 시 임의 생성)
                 obj.PCD_REGULER_FLAG = is_reguler; // (선택) 정기결제 여부 (Y|N)
                 obj.PCD_TAXSAVE_FLAG = is_taxsave; // (선택) 현금영수증 발행 여부 (Y|N)
-        
-    
+
+
                 /*
                  * DEFAULT SET 2
                  */
@@ -466,7 +466,7 @@ const OrderContainer = () => {
 
     };
 
-    
+
 
     useEffect(() => {
         getPayment();
@@ -500,7 +500,7 @@ const OrderContainer = () => {
         getTotalPrice();
     }, [getTotalPrice])
 
-    
+
     useEffect(() => {
         if (company) {
             const cost = (totalPrice >= company.free_cost_order) ? 0 : default_cost;
@@ -605,7 +605,7 @@ const OrderContainer = () => {
                                 />
                             </div>
                         </div>
-                        
+
                         <div className={styles['info-box']}>
                             <div className={styles['sub-title']}>수령인 정보</div>
                             <div className={styles['receiver-box']}>
@@ -1110,7 +1110,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth, readOnly }
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
         }
     }, [firstValue, secondValue, thirdValue, authNumber, openModal, setAuth]);
-    
+
     const onChangeAuthNumber = useCallback(e => {
         if (e.target.value.length <= 6) {
             setAuthNumber(e.target.value);
@@ -1122,7 +1122,7 @@ const PhoneInputArea = ({ phoneNumber, setPhoneNumber, auth, setAuth, readOnly }
         }
     }, [authButton, authNumber, setAuthNumber]);
 
-    const onChangePhoneFirst = useCallback(e => {  
+    const onChangePhoneFirst = useCallback(e => {
         secondPhoneInput.current.focus();
         setFirstValue(e.target.value);
     }, []);

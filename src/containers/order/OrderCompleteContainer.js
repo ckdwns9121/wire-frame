@@ -25,7 +25,7 @@ import { noAuthOrderView, noAutuOrderCancle } from '../../api/noAuth/order';
 import { Paths } from '../../paths';
 
 const cx = cn.bind(styles);
-const payments = ['페이플 간편결제', '계좌이체', '만나서 결제', '무통장 입금'];
+const payments = ['신용카드결제', '계좌이체', '만나서 결제', '무통장 입금'];
 const pay_type = ['card', 'transfer', 'meet', 'bank'];
 const OrderCompleteContainer = ({ order_number }) => {
     const user_token = useStore(false);
@@ -74,7 +74,7 @@ const OrderCompleteContainer = ({ order_number }) => {
             let res = null;
             if (user_token) {
                 res = await getDetailOrderView(user_token, order_number);
-            } 
+            }
             else {
                 res = await noAuthOrderView(order_number);
             }
@@ -144,7 +144,7 @@ const OrderCompleteContainer = ({ order_number }) => {
             },
         );
     };
-    
+
 
     useEffect(() => {
         if (!order_number) {
@@ -249,7 +249,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                                     orders && orders.info[0].s_name
                                                 }
                                             />
-                                    {payment_type.kind===payments[3] && 
+                                    {payment_type.kind===payments[3] &&
                                         <>
                                             <OrderInfoBox
                                                 text="입금은행"
